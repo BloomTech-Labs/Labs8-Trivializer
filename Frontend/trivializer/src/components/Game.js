@@ -12,14 +12,14 @@ class Game extends Component {
             gameDate: "",
             roundId: 0,
             roundsList: [
-                {
-                    id: 0,
-                    title: "Round One",
-                    numberOfQs: 10,
-                    category: "",
-                    difficulty: "",
-                    type: ""
-                }
+                // {
+                //     id: 0,
+                //     title: "Round One",
+                //     numberOfQs: 10,
+                //     category: "",
+                //     difficulty: "",
+                //     type: ""
+                // }
             ]
         };
     }
