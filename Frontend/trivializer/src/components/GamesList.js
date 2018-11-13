@@ -4,13 +4,10 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 
 class GamesList extends Component {
-    // temp state, move to redux later
     constructor(props) {
         super(props);
         this.state = {};
     }
-
-    componentDidMount() {}
 
     render() {
         return (
@@ -55,10 +52,10 @@ class GamesList extends Component {
                             </Link>
                         ))
                     )}
-                    {this.props.gamesList.length > 1 ? (
+                    {this.props.gamesList.length > 0 ? (
                         <div>
                             <div>New Game</div>
-                            <button>+</button>
+                            <Link to={`/game/${this.props.gameId}`}>+</Link>
                         </div>
                     ) : null}
                 </div>

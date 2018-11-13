@@ -28,7 +28,20 @@ class Game extends Component {
         this.setState({ [e.target.name]: e.target.value });
     };
 
-    handleSaveGame = e => {};
+    handleCreateGame = () => {
+        console.log("GAME CREATED");
+        const game = {
+            id: "1",
+            title: "Game 1",
+            description: "Game 1",
+            image: "",
+            created: "",
+            played: "",
+            rounds: []
+        };
+
+        this.props.handleSaveGame(game);
+    };
 
     render() {
         return (
@@ -79,7 +92,9 @@ class Game extends Component {
                         />
                         <button>Print Answer Sheets</button>
                         <button>Print Answer Key</button>
-                        <button>Save Game</button>
+                        <button onClick={this.handleCreateGame}>
+                            Save Game
+                        </button>
 
                         {this.state.roundsList.length < 1 ? (
                             <div>

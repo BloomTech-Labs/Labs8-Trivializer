@@ -14,9 +14,7 @@ class App extends Component {
         super();
         this.state = {
             gameId: 0,
-            gamesList: [],
-            roundId: 0,
-            roundsList: [
+            gamesList: [
                 // {
                 //     id: "1",
                 //     title: "Game 1",
@@ -34,6 +32,17 @@ class App extends Component {
                 //     created: "",
                 //     played: ""
                 // }
+            ],
+            roundId: 0,
+            roundsList: [
+                // {
+                //     id: 0,
+                //     title: "Round One",
+                //     numberOfQs: 10,
+                //     category: "",
+                //     difficulty: "",
+                //     type: ""
+                // }
             ]
         };
     }
@@ -41,6 +50,15 @@ class App extends Component {
     handleGameId = () => {
         if (this.state.gamesList.length > 0) {
             this.setState({ gameId: this.state.gameId + 1 });
+        }
+    };
+
+    handleSaveGame = newGame => {
+        const currentGamesList = this.state.gamesList;
+        const result = currentGamesList.filter(game => game.id === newGame.id);
+        if (result.length < 1) {
+            console.log("GAME SAVED");
+            this.setState({ gamesList: [...this.state.gamesList, newGame] });
         }
     };
 
@@ -61,7 +79,12 @@ class App extends Component {
                 />
                 <Route path="/setting" component={Setting} />
                 <Route path="/invoices" component={Invoices} />
-                <Route path="/game/:id" component={Game} />
+                <Route
+                    path="/game/:id"
+                    render={props => (
+                        <Game {...props} handleSaveGame={this.handleSaveGame} />
+                    )}
+                />
                 <Route path="/game/:id/round/:id" component={Round} />
             </div>
         );
