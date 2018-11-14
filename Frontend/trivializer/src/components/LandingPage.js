@@ -359,6 +359,9 @@ class LandingPage extends React.Component {
               <Link to="/billing" className="btn btn-success">
                 Buy Now
               </Link>
+              <button className="btn btn-secondary" onClick={this.googleLogin}>
+                Login with Google
+              </button>
             </div>
           </div>
         </div>
