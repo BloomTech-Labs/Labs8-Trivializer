@@ -175,6 +175,7 @@ class LandingPage extends React.Component {
       const user = result.user;
       localStorage.setItem("username", user.email);
       localStorage.setItem("password", user.l);
+      window.location.reload();
       this.redirect();
       //this.setState({ user });
     });
