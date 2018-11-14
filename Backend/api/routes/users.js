@@ -179,7 +179,6 @@ server.post("/save", utilities.protected, async (req, res) => {
       let roundsIds;
 
       await Promise.all(roundsPromises).then(values => {
-        console.log("Promises!!: ", values);
         roundsIds = values;
       });
 
@@ -247,7 +246,7 @@ server.post(
 );
 
 // Delete a round based on round name
-server.delete("/round/:id", utilities.protected, async (req, res) => {
+server.delete("/round/:game_id", utilities.protected, async (req, res) => {
   const { id } = req.params;
 
   db("Rounds")
@@ -257,8 +256,37 @@ server.delete("/round/:id", utilities.protected, async (req, res) => {
       res.status(200).json(`Round ${id} deleted`);
     })
     .catch(err => {
-      res.status(404).json(`Error deleting round ${id}`);
+      res.status(400).json({ error: `Error deleting round ${id}` });
     });
+});
+
+// Save a round
+server.post("/round", utilities.protected, async (req, res) => {
+  try {
+    const {
+      gameId,
+      roundname,
+      category,
+      difficulty,
+      type,
+      questions
+    } = req.body;
+
+    let roundPackage = {
+      game_id: gameId,
+      name: roundname,
+      category: category,
+      type: type,
+      difficulty: difficulty,
+      number_of_questions: questions.length
+    };
+
+    let roundId = (await db("Rounds").insert(roundPackage))[0]; // Returns an array of 1 item
+
+    res.status(200).json(roundId);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 // users -> games -> rounds -> questions -> answers
 
