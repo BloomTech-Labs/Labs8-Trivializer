@@ -14,7 +14,17 @@ class App extends Component {
         super();
         this.state = {
             gameId: 0,
-            gamesList: [],
+            gamesList: [
+                // {
+                //     id: 0,
+                //     title: Game 0,
+                //     description: Game 0,
+                //     image: "",
+                //     created: "11-14-2018",
+                //     played: "",
+                //     rounds: []
+                // }
+            ],
             roundId: 0,
             roundsList: [
                 // {
@@ -73,6 +83,7 @@ class App extends Component {
                             {...props}
                             handleSaveGame={this.handleSaveGame}
                             gameId={this.state.gameId}
+                            gamesList={this.state.gamesList}
                         />
                     )}
                 />

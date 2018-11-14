@@ -7,6 +7,7 @@ class Game extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            game: null,
             gameTitle: "",
             gameDescription: "",
             gameDate: "",
@@ -24,15 +25,30 @@ class Game extends Component {
         };
     }
 
+    componentDidMount() {
+        const id = Number(this.props.match.params.id);
+        // implement redux actions later
+        const result = this.props.gamesList.filter(game => game.id === id);
+        console.log(result);
+        this.setState({ game: result[0] });
+    }
+
     handleChange = e => {
         this.setState({ [e.target.name]: e.target.value });
     };
 
     handleCreateGame = () => {
         console.log("GAME CREATED");
+        console.log(`GAME ID: ${this.props.match.params.id}`);
+        // console.log(typeof this.props.match.params.id);
+        // console.log(typeof this.props.gameId);
+        // const gameId = Number(this.props.match.params.id);
+        // const result = this.props.gamesList.filter(game => game.id === gameId);
+        // console.log(result);
+
         const d = new Date();
 
-        const game = {
+        let game = {
             id: this.props.gameId,
             title: this.state.gameTitle,
             description: this.state.gameDescription,
@@ -41,6 +57,16 @@ class Game extends Component {
             played: this.state.gameDate,
             rounds: []
         };
+
+        if (this.state.game) {
+            game.id = this.state.game.id;
+            game.title = this.state.game.title;
+            game.description = this.state.game.description;
+            game.image = this.state.game.image;
+            game.created = this.state.game.created;
+            game.played = this.state.game.played;
+            game.rounds = this.state.game.rounds;
+        }
 
         this.props.handleSaveGame(game);
     };
@@ -76,20 +102,32 @@ class Game extends Component {
                         <input
                             name="gameTitle"
                             placeholder="Game Title"
-                            value={this.state.gameTitle}
+                            value={
+                                this.state.game
+                                    ? this.state.game.title
+                                    : this.state.gameTitle
+                            }
                             onChange={this.handleChange}
                         />
                         <input
                             name="gameDescription"
                             placeholder="Game Description"
-                            value={this.state.gameDescription}
+                            value={
+                                this.state.game
+                                    ? this.state.game.description
+                                    : this.state.gameDescription
+                            }
                             onChange={this.handleChange}
                         />
                         <input
                             type="date"
                             name="gameDate"
                             placeholder="mm/dd/yyyy"
-                            value={this.state.gameDate}
+                            value={
+                                this.state.game
+                                    ? this.state.game.played
+                                    : this.state.gameDate
+                            }
                             onChange={this.handleChange}
                         />
                         <button>Print Answer Sheets</button>
