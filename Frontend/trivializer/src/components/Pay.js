@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Checkout from './Checkout';
 
 
-
 class Pay extends Component {
 
 
