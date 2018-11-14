@@ -179,7 +179,6 @@ server.post("/save", utilities.protected, async (req, res) => {
       let roundsIds;
 
       await Promise.all(roundsPromises).then(values => {
-        console.log("Promises!!: ", values);
         roundsIds = values;
       });
 
@@ -247,33 +246,80 @@ server.post(
 );
 
 // Get all rounds for a game_id passed in
-server.get(
-  "/rounds/:id",
-  utilities.protected,
-  async (req, res) => {
-    try {
-      const { id } = req.params
+server.get("/rounds/:id", utilities.protected, async (req, res) => {
+  try {
+    const { id } = req.params;
 
-      let rounds = await db
-        .select(
-          "r.id as roundId",
-          "r.name as roundName",
-          "r.Number_of_questions as numQs",
-          "r.category as category",
-          "r.difficulty as difficulty",
-          "r.type as type"
-        )
-        .from("Games as g")
-        .leftJoin("Rounds as r", "r.game_id", "g.id")
-        .where("g.id", "=", id);
+    let rounds = await db
+      .select(
+        "r.id as roundId",
+        "r.name as roundName",
+        "r.Number_of_questions as numQs",
+        "r.category as category",
+        "r.difficulty as difficulty",
+        "r.type as type"
+      )
+      .from("Games as g")
+      .leftJoin("Rounds as r", "r.game_id", "g.id")
+      .where("g.id", "=", id);
 
-        res.status(200).json(rounds);
-      }catch (err) {
-        res.status(500).json({error: "Problem getting rounds"})
-      }
-    }
-)
-    
+    res.status(200).json(rounds);
+  } catch (err) {
+    res.status(500).json({ error: "Problem getting rounds" });
+  }
+});
+
+// Delete a round based on round name
+server.delete("/round/:id", utilities.protected, async (req, res) => {
+  const { id } = req.params;
+
+  db("Rounds")
+    .where({ id })
+    .del()
+    .then(response => {
+      res.status(200).json(`Round ${id} deleted`);
+    })
+    .catch(err => {
+      res.status(400).json({ error: `Error deleting round ${id}` });
+    });
+});
+
+// Save a round
+server.post("/round", utilities.protected, async (req, res) => {
+  try {
+    // Get all pertinent info from req.body
+    const {
+      gameId,
+      roundname,
+      category,
+      difficulty,
+      type,
+      questions
+    } = req.body;
+
+    let validGame = await db("Games").where({ id: gameId }); // Returns empty array if no game
+
+    if (validGame.length < 1) throw new Error("no Game by that ID"); // Check to see if valid gameId
+
+    // Assemble round info to be entered in DB
+    let roundPackage = {
+      game_id: gameId,
+      name: roundname,
+      category: category,
+      type: type,
+      difficulty: difficulty,
+      number_of_questions: questions.length
+    };
+
+    let roundId = (await db("Rounds").insert(roundPackage))[0]; // Returns an array of 1 item
+
+    // Return new round ID
+    res.status(200).json(roundId);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 // users -> games -> rounds -> questions -> answers
 
 
