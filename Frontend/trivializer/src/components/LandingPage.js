@@ -46,82 +46,84 @@ class LandingPage extends React.Component {
     this.setState({ [e.target.name]: e.target.value, error: "" });
   };
 
-  // Checks input credentials and returns 1 if successful, 0 if unsuccessful
-  // There's a double checking below because I want to check several things: #1 if there's no errors AT ALL, return 1, and we get redirected. #2 if there is an error, show the flash message on what the error is (these errors are not mutually exclusive so I made several if statements, so like, not having a valid username doesn't mean the no valid email won't pop up. ) #3 there's an else statement in each one because if the user fills in something correctly, and does it again, it should check if that particular item is done, and if it is, the flash message for it should go away.
   validateRegister = () => {
-    if (
-      this.state.signup_password !== this.state.signup_password2 ||
-      !this.state.signup_username ||
-      !this.state.signup_email ||
-      !this.state.signup_password
-    ) {
-      if (
-        this.state.signup_password !== this.state.signup_password2 ||
-        (!this.state.signup_password && !this.state.signup_password2)
-      ) {
-        this.setState({ confirm_error: "Passwords do not match, please try again." });
-      } else {
-        this.setState({ confirm_error: "" });
-      }
-      if (!this.state.signup_username) {
-        this.setState({ username_error: "Username cannot be left blank." });
-      } else {
-        if (validate(this.state.signup_username, username_regex) !== true) {
-          this.setState({
-            username_error: "Needs to be: at least 4 characters, letters and numbers only."
-          });
-        } else {
-          this.setState({ username_error: "" });
-        }
-      }
-      if (!this.state.signup_email) {
-        this.setState({ email_error: "Please enter an email address." });
-      } else {
-        if (validate(this.state.signup_email, email_regex) !== true) {
-          this.setState({ email_error: "Invalid email format, please try again." });
-        } else {
-          this.setState({ email_error: "" });
-        }
-      }
-      if (!this.state.signup_password) {
-        this.setState({ password_error: "Please enter a password." });
-      } else {
-        if (validate(this.state.signup_password, password_regex) !== true) {
-          this.setState({
-            password_error: "1 lowercase letter, 1 number, and at least 8 characters needed."
-          });
-        } else {
-          this.setState({ password_error: "" });
-        }
-      }
-      return 0;
+    // Returning 1 lets us link to our backend, so we want to return 0 if any error occurs.
+    let validation = 1;
+    if (!this.state.signup_username) {
+      validation = 0;
+      this.setState({ username_error: "Username cannot be left blank." });
     } else {
-      return 1;
-    }
-  };
-
-  validateSignin = () => {
-    if (!this.state.signin_username || !this.state.signin_password) {
-      if (!this.state.signin_username) {
-        this.setState({ username_error: "Please enter a valid Username." });
+      if (validate(this.state.signup_username, username_regex) !== true) {
+        validation = 0;
+        this.setState({
+          username_error: "Needs to be: at least 4 characters, letters and numbers only."
+        });
       } else {
-        if (validate(this.state.signin_username, username_regex) !== true) {
-          this.setState({
-            username_error: "Needs to be: at least 4 characters, letters and numbers only."
-          });
-        } else {
-          this.setState({ username_error: "" });
-        }
+        this.setState({ username_error: "" });
       }
-      if (!this.state.sign_password) {
-        this.setState({ password_error: "Wrong password, please try again." });
+    }
+    if (!this.state.signup_email) {
+      validation = 0;
+      this.setState({ email_error: "Please enter an email address." });
+    } else {
+      if (validate(this.state.signup_email, email_regex) !== true) {
+        validation = 0;
+        this.setState({ email_error: "Invalid email format, please try again." });
+      } else {
+        this.setState({ email_error: "" });
+      }
+    }
+    if (!this.state.signup_password) {
+      validation = 0;
+      this.setState({ password_error: "Please enter a password." });
+    } else {
+      if (validate(this.state.signup_password, password_regex) !== true) {
+        validation = 0;
+        this.setState({
+          password_error: "1 lowercase letter, 1 number, and at least 8 characters needed."
+        });
       } else {
         this.setState({ password_error: "" });
       }
-      return 0;
-    } else {
-      return 1;
     }
+    if (
+      this.state.signup_password !== this.state.signup_password2 ||
+      (!this.state.signup_password && !this.state.signup_password2)
+    ) {
+      validation = 0;
+      this.setState({ confirm_error: "Passwords do not match, please try again." });
+    } else {
+      this.setState({ confirm_error: "" });
+    }
+
+    // Now that we've done all the checks, we can return the 0 or 1 message.
+    console.log("validation is: ", validation);
+    console.log("validation type is: ", typeof validation);
+    return validation;
+  };
+
+  validateSignin = () => {
+    let validation = 1;
+    if (!this.state.signin_username) {
+      validation = 0;
+      this.setState({ username_error: "Please enter a valid Username." });
+    } else {
+      if (validate(this.state.signin_username, username_regex) !== true) {
+        validation = 0;
+        this.setState({
+          username_error: "Needs to be: at least 4 characters, letters and numbers only."
+        });
+      } else {
+        this.setState({ username_error: "" });
+      }
+    }
+    if (!this.state.signin_password) {
+      validation = 0;
+      this.setState({ password_error: "Please put in a password." });
+    } else {
+      this.setState({ password_error: "" });
+    }
+    return validation;
   };
 
   // Handles the submit call on the Register modal
@@ -162,7 +164,7 @@ class LandingPage extends React.Component {
       })
       .catch(err => {
         console.log("err.response: ", err.response);
-        this.setState({ error: err.message });
+        this.setState({ password_error: "Incorrect password, please try again." });
       });
   };
 
