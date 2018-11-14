@@ -287,6 +287,7 @@ server.delete("/round/:id", utilities.protected, async (req, res) => {
 // Save a round
 server.post("/round", utilities.protected, async (req, res) => {
   try {
+    // Get all pertinent info from req.body
     const {
       gameId,
       roundname,
@@ -298,8 +299,9 @@ server.post("/round", utilities.protected, async (req, res) => {
 
     let validGame = await db("Games").where({ id: gameId }); // Returns empty array if no game
 
-    if (validGame.length < 1) throw new Error("no Game by that ID");
+    if (validGame.length < 1) throw new Error("no Game by that ID"); // Check to see if valid gameId
 
+    // Assemble round info to be entered in DB
     let roundPackage = {
       game_id: gameId,
       name: roundname,
@@ -311,6 +313,7 @@ server.post("/round", utilities.protected, async (req, res) => {
 
     let roundId = (await db("Rounds").insert(roundPackage))[0]; // Returns an array of 1 item
 
+    // Return new round ID
     res.status(200).json(roundId);
   } catch (err) {
     res.status(400).json({ error: err.message });
