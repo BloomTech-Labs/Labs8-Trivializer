@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import "./Components.css";
 import "./LandingPage.css";
+import { auth, provider } from "./OAuth/firebase";
 
 const username_regex = /^[a-zA-Z0-9]{4,}$/;
 const email_regex = /^([a-z\d\.-]+)@([a-z\d-]{2,8})\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
@@ -166,6 +167,17 @@ class LandingPage extends React.Component {
         console.log("err.response: ", err.response);
         this.setState({ password_error: "Incorrect password, please try again." });
       });
+  };
+
+  googleLogin = e => {
+    e.preventDefault();
+    auth.signInWithPopup(provider).then(result => {
+      const user = result.user;
+      localStorage.setItem("username", user.email);
+      localStorage.setItem("password", user.l);
+      this.props.history.push("/gameslist");
+      //this.setState({ user });
+    });
   };
 
   render() {
