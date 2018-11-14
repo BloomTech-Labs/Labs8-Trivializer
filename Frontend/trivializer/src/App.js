@@ -14,25 +14,7 @@ class App extends Component {
         super();
         this.state = {
             gameId: 0,
-            gamesList: [
-                // {
-                //     id: "1",
-                //     title: "Game 1",
-                //     description: "Game 1",
-                //     image: "",
-                //     created: "",
-                //     played: "",
-                //     rounds: [{ questions: [] }]
-                // },
-                // {
-                //     id: "2",
-                //     title: "Game 2",
-                //     description: "Game 2",
-                //     image: "",
-                //     created: "",
-                //     played: ""
-                // }
-            ],
+            gamesList: [],
             roundId: 0,
             roundsList: [
                 // {
@@ -55,10 +37,15 @@ class App extends Component {
 
     handleSaveGame = newGame => {
         const currentGamesList = this.state.gamesList;
-        const result = currentGamesList.filter(game => game.id === newGame.id);
+        const result = currentGamesList.filter(
+            game => game.title === newGame.title
+        );
         if (result.length < 1) {
             console.log("GAME SAVED");
-            this.setState({ gamesList: [...this.state.gamesList, newGame] });
+            this.setState({
+                gamesList: [...this.state.gamesList, newGame],
+                gameId: this.state.gameId + 1
+            });
         }
     };
 
@@ -82,7 +69,11 @@ class App extends Component {
                 <Route
                     path="/game/:id"
                     render={props => (
-                        <Game {...props} handleSaveGame={this.handleSaveGame} />
+                        <Game
+                            {...props}
+                            handleSaveGame={this.handleSaveGame}
+                            gameId={this.state.gameId}
+                        />
                     )}
                 />
                 <Route path="/game/:id/round/:id" component={Round} />

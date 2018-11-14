@@ -30,13 +30,15 @@ class Game extends Component {
 
     handleCreateGame = () => {
         console.log("GAME CREATED");
+        const d = new Date();
+
         const game = {
-            id: "1",
-            title: "Game 1",
-            description: "Game 1",
+            id: this.props.gameId,
+            title: this.state.gameTitle,
+            description: this.state.gameDescription,
             image: "",
-            created: "",
-            played: "",
+            created: `${d.getMonth() + 1}-${d.getDate()}-${d.getFullYear()}`,
+            played: this.state.gameDate,
             rounds: []
         };
 
