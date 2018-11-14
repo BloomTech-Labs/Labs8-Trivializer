@@ -47,14 +47,29 @@ class App extends Component {
 
     handleSaveGame = newGame => {
         const currentGamesList = this.state.gamesList;
-        const result = currentGamesList.filter(
-            game => game.title === newGame.title
-        );
+        const result = currentGamesList.filter(game => game.id === newGame.id);
         if (result.length < 1) {
             console.log("GAME SAVED");
+            // append new game
             this.setState({
                 gamesList: [...this.state.gamesList, newGame],
                 gameId: this.state.gameId + 1
+            });
+        } else {
+            console.log(
+                currentGamesList.findIndex(game => game.id === newGame.id)
+            );
+            const index = currentGamesList.findIndex(
+                game => game.id === newGame.id
+            );
+
+            // edit existing game
+            currentGamesList[index]["title"] = newGame.title;
+            currentGamesList[index]["description"] = newGame.description;
+            currentGamesList[index]["played"] = newGame.played;
+
+            this.setState({
+                gamesList: currentGamesList
             });
         }
     };

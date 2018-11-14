@@ -11,7 +11,7 @@ class Games extends Component {
             <div>
                 <div>{this.props.game.title}</div>
                 <div>{this.props.game.description}</div>
-                <div>Add game image</div>
+                {/* <div>Add game image</div> */}
                 <div>Created: {this.props.game.created}</div>
                 <div>Played: {this.props.game.played}</div>
             </div>
