@@ -246,6 +246,35 @@ server.post(
   }
 );
 
+// Get all rounds for a game_id passed in
+server.get(
+  "/rounds/:id",
+  utilities.protected,
+  async (req, res) => {
+    try {
+      const { id } = req.params
+
+      let rounds = await db
+        .select(
+          "r.id as roundId",
+          "r.name as roundName",
+          "r.Number_of_questions as numQs",
+          "r.category as category",
+          "r.difficulty as difficulty",
+          "r.type as type"
+        )
+        .from("Games as g")
+        .leftJoin("Rounds as r", "r.game_id", "g.id")
+        .where("g.id", "=", id);
+
+        res.status(200).json(rounds);
+      }catch (err) {
+        res.status(500).json({error: "Problem getting rounds"})
+      }
+    }
+)
+    
 // users -> games -> rounds -> questions -> answers
+
 
 module.exports = server;
