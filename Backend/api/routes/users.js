@@ -99,6 +99,7 @@ server.post("/register", (req, res) => {
     });
 });
 
+// Login a user takes in username
 server.post("/login", utilities.getUser, (req, res) => {
   let { username, password } = req.body;
   console.log("username: ", username);
@@ -122,6 +123,39 @@ server.post("/login", utilities.getUser, (req, res) => {
     .catch(err => res.status(401).json({ error: err.message }));
 });
 
+// Creates a new game, takes in username, created and gameName
+server.post("/creategame", utilities.protected, async (req, res) => {
+  try {
+    const { username, created, gameName, description } = req.body;
+
+    // Returns an array with a single user object, we just want the id here
+    let user = await db("Users")
+      .where({ username })
+      .first();
+
+    if (!user) throw new Error("No user by that name");
+
+    let userId = user.id;
+
+    let gamePackage = {
+      name: gameName,
+      date_created: created,
+      date_played: 0,
+      user_id: userId,
+      description: description
+    };
+
+    // inserting into games returns an array with 1 game ID if successful
+    let gameId = (await db("Games").insert(gamePackage))[0];
+
+    res.status(200).json(gameId);
+  } catch (err) {
+    console.log("err.message: ", err.message);
+    res.status(404).json({ error: err.message });
+  }
+});
+
+// Saves a whole game, takes in the usernam, description, gamename, dateCreated, datePlayed, and rounds array
 server.post("/save", utilities.protected, async (req, res) => {
   // Transactions allow us to perform multiple database calls, and if one of them doesn't work,
   // roll back all other calls. Maintains data consistency
@@ -157,9 +191,8 @@ server.post("/save", utilities.protected, async (req, res) => {
       let gameId = (await trx("Games").insert(gameInfo))[0];
 
       // Enter Rounds in Database
-      const numberOfRounds = rounds.length; // First get number of rounds
 
-      // Then assemble what we're going to insert in rounds table
+      // Assemble what we're going to insert in rounds table
       const roundsPackage = rounds.map(round => {
         return {
           name: round.roundname,
