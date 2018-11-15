@@ -55,10 +55,17 @@ export const fetchGameReq = id => {
 // }
 
 export const submitGameReq = game => {
+    const newGame = {
+        username: game.username,
+        gameName: game.gameName,
+        created: game.gameCreatedMS,
+        description: game.gameDescription
+    };
+
     return dispatch => {
         dispatch({ type: SAVING_GAME });
         axios
-            .post(`${BE_URL}/creategame`, game)
+            .post(`${BE_URL}/creategame`, newGame)
             .then(({ data }) => {
                 console.log(data);
                 dispatch({ type: SAVED_GAME, payload: data });

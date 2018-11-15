@@ -1,15 +1,18 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import NavBar from "./Navbar";
+import { connect } from "react-redux";
+import { submitGameReq } from "../actions";
 
 class CreateGameView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: "",
-            description: "",
-            created: "",
-            played: ""
+            gameTitle: "",
+            gameDescription: "",
+            gameCreated: "",
+            gameCreatedMS: "",
+            gameScheduled: ""
         };
     }
 
@@ -17,12 +20,32 @@ class CreateGameView extends Component {
         const d = new Date();
 
         this.setState({
-            title: "",
-            description: "",
-            created: `${d.getMonth() + 1}-${d.getDate()}-${d.getFullYear()}`,
-            played: ""
+            gameTitle: "",
+            gameDescription: "",
+            gameCreated: `${d.getMonth() +
+                1}-${d.getDate()}-${d.getFullYear()}`,
+            gameCreatedMS: Date.now(),
+            gameScheduled: ""
         });
     }
+
+    handleChange = e => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
+
+    handleSubmit = () => {
+        if (this.state.gameTitle === "") return null;
+
+        const game = {
+            username: sessionStorage.getItem("user"),
+            gameName: this.state.gameTitle,
+            gameDescription: this.state.gameDescription,
+            gameCreatedMS: this.state.gameCreatedMS
+            // gameScheduled: this.state.gameScheduled
+        };
+
+        this.props.submitGameReq(game);
+    };
 
     render() {
         return (
@@ -66,16 +89,14 @@ class CreateGameView extends Component {
                         />
                         <input
                             type="date"
-                            name="gameDate"
+                            name="gameScheduled"
                             placeholder="mm/dd/yyyy"
-                            value={this.state.gameDate}
+                            value={this.state.gameScheduled}
                             onChange={this.handleChange}
                         />
                         <button>Print Answer Sheets</button>
                         <button>Print Answer Key</button>
-                        <button onClick={this.handleCreateGame}>
-                            Save Game
-                        </button>
+                        <button onClick={this.handleSubmit}>Save Game</button>
                     </div>
                 </div>
             </div>
@@ -83,4 +104,11 @@ class CreateGameView extends Component {
     }
 }
 
-export default CreateGameView;
+const mapStateToProps = ({ games }) => {
+    return {};
+};
+
+export default connect(
+    mapStateToProps,
+    { submitGameReq }
+)(CreateGameView);
