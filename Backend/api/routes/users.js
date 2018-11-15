@@ -70,12 +70,14 @@ server.post("/register", async (req, res) => {
   // This table also includes credit card info, will handle in billing
   const { username, password, name, email, phone, logo } = req.body;
 
+  // Check to see if we have a username, password and email
   if (!username || !password || !email) {
     res.status(400).json({
       error: "Please include a valid User Name, password and email address"
     });
   }
 
+  // Encrypt password and add to package to be stored in Users table
   const hash = sc.encrypt(password);
   const credentials = {
     username: username,
@@ -87,9 +89,12 @@ server.post("/register", async (req, res) => {
   };
 
   try {
+    // Try to insert the user
     let userId = await db("Users").insert(credentials);
 
     if (!userId) throw new Error("Unable to add that user");
+
+    // Generate a new token and return it
     let token = utilities.generateToken(username);
     res.status(201).json(token);
   } catch (err) {
@@ -97,28 +102,30 @@ server.post("/register", async (req, res) => {
   }
 });
 
-// Login a user takes in username
-server.post("/login", utilities.getUser, (req, res) => {
+// Login a user takes in username and password. Validates credentials
+server.post("/login", utilities.getUser, async (req, res) => {
   let { username, password } = req.body;
-  console.log("username: ", username);
+  try {
+    // Hit users table searching for username
+    let user = await db("Users")
+      .where({ username })
+      .first();
 
-  db("Users")
-    .where({ username })
-    .first()
-    .then(user => {
-      if (user) {
-        decryptedPassword = sc.decrypt(user.password);
-        console.log("decryptedPassword: ", decryptedPassword);
-        if (decryptedPassword === password) {
-          // generate JWT and return it
-          let token = utilities.generateToken(username);
-          res.status(201).json(token);
-        } else {
-          res.status(401).json({ error: "Incorrect Credentials" });
-        }
-      }
-    })
-    .catch(err => res.status(401).json({ error: err.message }));
+    if (!user) throw new Error("Incorrect credentials");
+    // decrypt the returned, hashed password
+    decryptedPassword = sc.decrypt(user.password);
+
+    // Check that passwords match
+    if (decryptedPassword === password) {
+      // Generate a new token and return it
+      let token = utilities.generateToken(username);
+      res.status(201).json(token);
+    } else {
+      res.status(401).json({ error: "Incorrect Credentials" });
+    }
+  } catch (err) {
+    res.status(401).json({ error: err.message });
+  }
 });
 
 // Creates a new game, takes in username, created and gameName
