@@ -17,7 +17,8 @@ const errorPayment = data => {
   alert('Payment Error');
 };
 
-const onToken = (amount, description) => token =>
+const onToken = (amount, description) => token =>{
+console.log(description, token.id, CURRENCY, fromEuroToCent(amount))
   axios.post(PAYMENT_SERVER_URL,
     {
       description,
@@ -27,7 +28,7 @@ const onToken = (amount, description) => token =>
     })
     .then(successPayment)
     .catch(errorPayment);
-
+  }
 const Checkout = ({ name, description, amount }) =>
   <StripeCheckout
     name={name}
