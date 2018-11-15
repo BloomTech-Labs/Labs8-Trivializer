@@ -61,3 +61,22 @@ input:hover {
   cursor: pointer;
   background-color: rgb(241, 241, 241);
 }
+
+/*.landing-page {
+  background-image: url("../img/background-wood.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  background-position: center;
+}*/
+
+.landing-page {
+  background-image: url("../img/background-neon-sideright.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+.card {
+  margin-right: 200px;
+}
