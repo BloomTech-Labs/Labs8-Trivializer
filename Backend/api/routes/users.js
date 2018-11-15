@@ -128,7 +128,7 @@ server.post("/login", utilities.getUser, async (req, res) => {
   }
 });
 
-// Creates a new game, takes in username, created and gameName
+// Creates a new game, takes in username, created, gameName and description (string)
 server.post("/creategame", utilities.protected, async (req, res) => {
   try {
     const { username, created, gameName, description } = req.body;
@@ -344,9 +344,11 @@ server.post("/round", utilities.protected, async (req, res) => {
       questions
     } = req.body;
 
-    let validGame = await db("Games").where({ id: gameId }); // Returns empty array if no game
+    // Returns empty array if no game
+    let validGame = await db("Games").where({ id: gameId });
 
-    if (validGame.length < 1) throw new Error("no Game by that ID"); // Check to see if valid gameId
+    // Check to see if valid gameId
+    if (validGame.length < 1) throw new Error("no Game by that ID");
 
     // Assemble round info to be entered in DB
     let roundPackage = {
@@ -358,7 +360,8 @@ server.post("/round", utilities.protected, async (req, res) => {
       number_of_questions: questions.length
     };
 
-    let roundId = (await db("Rounds").insert(roundPackage))[0]; // Returns an array of 1 item
+    // Returns an array of 1 item, pull that item out with [0]
+    let roundId = (await db("Rounds").insert(roundPackage))[0];
 
     // Return new round ID
     res.status(200).json(roundId);
