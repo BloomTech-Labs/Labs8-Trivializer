@@ -286,12 +286,15 @@ server.post(
   }
 );
 
-// Get all rounds for a game_id passed in
+// Get all rounds for a game id passed in
 server.get("/rounds/:id", utilities.protected, async (req, res) => {
   try {
+    // Game Id passed in request URL
     const { id } = req.params;
 
+    // Gets all rounds from the Rounds table where the game id matches the passed in ID
     let rounds = await db
+      // Choose which columns we want to select, and assign an alias
       .select(
         "r.id as roundId",
         "r.name as roundName",
@@ -313,16 +316,19 @@ server.get("/rounds/:id", utilities.protected, async (req, res) => {
 // Delete a round based on round id
 server.delete("/round/:id", utilities.protected, async (req, res) => {
   const { id } = req.params;
+  try {
+    // Returns the id of the deleted round
+    let response = await db("Rounds")
+      .where({ id })
+      .del();
 
-  db("Rounds")
-    .where({ id })
-    .del()
-    .then(response => {
-      res.status(200).json(`Round ${id} deleted`);
-    })
-    .catch(err => {
-      res.status(400).json({ error: `Error deleting round ${id}` });
-    });
+    // If response === 0 no round was deleted
+    if (response === 0) throw new Error(`Error deleting round ${id}`);
+
+    res.status(200).json(`Round ${response} deleted`);
+  } catch (err) {
+    res.status(400).json({ error: `Error deleting round ${id}` });
+  }
 });
 
 // Save a round
