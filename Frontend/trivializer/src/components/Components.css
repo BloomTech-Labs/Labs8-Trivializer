@@ -53,7 +53,9 @@
   margin: 0 auto;
 }
 .pay-main {
-margin-left: 10px;
+margin-left: 10%;
+margin-top:5%;
+width: 20%
 }
 .pay-input {
   margin: 0 auto;

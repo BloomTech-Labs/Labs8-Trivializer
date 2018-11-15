@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import Checkout from './Checkout';
+import "./Components.css";
+import "./LandingPage.css";
 
 
 class Pay extends Component {
@@ -10,45 +12,21 @@ class Pay extends Component {
         
         
       <div className="pay-main">
-      <h3>Payment info</h3>
-        <form className="pay-input">
-        
-        <label>
-            CC#:
-            <input type="text" name="name" />
-        </label>
-        <br />
-         <label>
-            EXP:
-            <input type="text" name="name" />
-        </label>
-        <br />
-        <label>
-            CCV:
-            <input type="text" name="name" />
-        </label>
-        <br />
-        
-        
-        </form>
-        <span className="pay2">
-            <input type="checkbox" name="name" />
-            1 Year Subscription - $9.99
-        </span>
-        <br />
-        <span className="pay2">
-
-            <input type="checkbox" name="name" />
-            1 Year Premium Subscription - $29.99
-        </span>
-        <br />
-        <button className="buy">Buy Now</button>
-        <Checkout
+       
+              <h5 className="card-title">Trivializer Paid Tier $9.99</h5>
+              <p className="card-text">
+              Paid tier users may create up to 10 games with 10 rounds of 10 questions
+              </p>
+              <p>
+                
+              </p>
+              <Checkout
             name={'Trivializer'}
-            description={'Cash Money'}
+            description={'Premium'}
             amount={9.99}
           />
-      </div >
+            </div>
+        
       
     );
   }
