@@ -217,7 +217,7 @@ server.post("/save", utilities.protected, async (req, res) => {
   }
 });
 
-// Get all games for a username passed in
+// Get all games for a username passed in. Nedds a username passed in req.body
 server.post(
   "/games",
   utilities.getUser,
@@ -269,7 +269,7 @@ server.get("/rounds/:id", utilities.protected, async (req, res) => {
   }
 });
 
-// Delete a round based on round name
+// Delete a round based on round id
 server.delete("/round/:id", utilities.protected, async (req, res) => {
   const { id } = req.params;
 
@@ -320,7 +320,8 @@ server.post("/round", utilities.protected, async (req, res) => {
   }
 });
 
-// users -> games -> rounds -> questions -> answers
+// Delete Game
 
+// users -> games -> rounds -> questions -> answers
 
 module.exports = server;
