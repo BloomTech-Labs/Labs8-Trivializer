@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import "./Components.css";
 import "./LandingPage.css";
+import { auth, provider } from "./OAuth/firebase";
 
 const username_regex = /^[a-zA-Z0-9]{4,}$/;
 const email_regex = /^([a-z\d\.-]+)@([a-z\d-]{2,8})\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
@@ -168,6 +169,18 @@ class LandingPage extends React.Component {
       });
   };
 
+  googleLogin = e => {
+    e.preventDefault();
+    auth.signInWithPopup(provider).then(result => {
+      const user = result.user;
+      localStorage.setItem("username", user.email);
+      localStorage.setItem("password", user.l);
+      window.location.reload();
+      this.redirect();
+      //this.setState({ user });
+    });
+  };
+
   render() {
     return (
       <div className="landing-page">
@@ -197,6 +210,7 @@ class LandingPage extends React.Component {
                     <h5 className="signup-title modal-title" id="exampleModalLabel">
                       Sign Up Below
                     </h5>
+
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -272,6 +286,13 @@ class LandingPage extends React.Component {
                   >
                     Create My Account
                   </button>
+                  <div className="google-button-signup" onClick={this.googleLogin}>
+                    <img
+                      src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
+                      onClick={this.googleLogin}
+                    />
+                    <span className="google-text"> Sign Up With Google</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -336,6 +357,10 @@ class LandingPage extends React.Component {
                   >
                     Sign In
                   </button>
+                  <div className="google-button-signup" onClick={this.googleLogin}>
+                    <img src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg" />
+                    <span className="google-text"> Sign In With Google</span>
+                  </div>
                 </div>
               </div>
             </div>
