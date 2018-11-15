@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class Rounds extends Component {
     constructor(props) {
@@ -9,7 +10,7 @@ class Rounds extends Component {
     render() {
         return (
             <div>
-                <div>{this.props.round.title}</div>
+                <Link>{this.props.round.title}</Link>
                 <input type="number" min="1" />
                 <select>
                     <option value="1">Option 1</option>

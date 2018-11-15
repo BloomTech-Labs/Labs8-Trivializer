@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import Checkout from './Checkout';
 
 
 class Pay extends Component {
@@ -43,7 +43,11 @@ class Pay extends Component {
         </span>
         <br />
         <button className="buy">Buy Now</button>
-       
+        <Checkout
+            name={'Trivializer'}
+            description={'Cash Money'}
+            amount={9.99}
+          />
       </div >
       
     );
