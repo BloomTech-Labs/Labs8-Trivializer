@@ -12,8 +12,7 @@ export const UPDATED_GAME = "UPDATED_GAME";
 export const ERROR = "ERROR";
 
 const URL = process.env.REACT_APP_API_URL;
-// const BE_URL = process.env.REACT_APP_BE_URL;
-const BE_URL = "https://testsdepl.herokuapp.com/users";
+const BE_URL = process.env.REACT_APP_BE_URL;
 
 export const fetchGamesReq = () => {
     return dispatch => {
@@ -65,7 +64,11 @@ export const submitGameReq = game => {
     return dispatch => {
         dispatch({ type: SAVING_GAME });
         axios
-            .post(`${BE_URL}/creategame`, newGame)
+            .post(`${BE_URL}/creategame`, newGame, {
+                headers: {
+                    Authorization: `${sessionStorage.getItem("jwt")}`
+                }
+            })
             .then(({ data }) => {
                 console.log(data);
                 dispatch({ type: SAVED_GAME, payload: data });

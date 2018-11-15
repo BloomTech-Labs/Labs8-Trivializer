@@ -39,7 +39,7 @@ class GamesList extends Component {
                     {this.props.gamesList.length < 1 ? (
                         <div>
                             <h3 className="main-middle">Add New Game</h3>
-                            <Link to={`/game/${this.props.gameId}`}>+</Link>
+                            <Link to={`/creategame`}>+</Link>
                         </div>
                     ) : (
                         this.props.gamesList.map((game, i) => (
@@ -55,7 +55,7 @@ class GamesList extends Component {
                     {this.props.gamesList.length > 0 ? (
                         <div>
                             <div>New Game</div>
-                            <Link to={`/game/${this.props.gameId}`}>+</Link>
+                            <Link to={`/creategame`}>+</Link>
                         </div>
                     ) : null}
                 </div>
