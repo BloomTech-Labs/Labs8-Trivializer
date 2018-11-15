@@ -66,9 +66,9 @@ server.get("/questions", (req, res) => {
 });
 
 // Add new user
-server.post("/register", (req, res) => {
-  console.log("req.body: ", req.body);
-  const { username, password, name, email, phone, logo } = req.body; // This table also includes credit card info, will handle in billing
+server.post("/register", async (req, res) => {
+  // This table also includes credit card info, will handle in billing
+  const { username, password, name, email, phone, logo } = req.body;
 
   if (!username || !password || !email) {
     res.status(400).json({
@@ -86,17 +86,15 @@ server.post("/register", (req, res) => {
     logo: logo
   };
 
-  db("Users") // Hit Database table 'Users'
-    .insert(credentials) // Credentials should include at least username, password and email. No duplicate usernames allowed
-    .then(response => {
-      let token = utilities.generateToken(username);
-      res.status(201).json(token);
-    })
+  try {
+    let userId = await db("Users").insert(credentials);
 
-    .catch(err => {
-      console.log("err.message: ", err.message);
-      res.status(500).json({ error: err.message });
-    });
+    if (!userId) throw new Error("Unable to add that user");
+    let token = utilities.generateToken(username);
+    res.status(201).json(token);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Login a user takes in username
