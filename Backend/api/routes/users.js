@@ -140,8 +140,10 @@ server.post("/creategame", utilities.protected, async (req, res) => {
 
     if (!user) throw new Error("No user by that name");
 
+    // Get the id from the returned user object
     let userId = user.id;
 
+    // Create package with all necessary fields for the Games table
     let gamePackage = {
       name: gameName,
       date_created: created,
@@ -153,9 +155,10 @@ server.post("/creategame", utilities.protected, async (req, res) => {
     // inserting into games returns an array with 1 game ID if successful
     let gameId = (await db("Games").insert(gamePackage))[0];
 
-    res.status(200).json(gameId);
+    if (!gameId) throw new Error("Error creating new game");
+
+    res.status(201).json(gameId);
   } catch (err) {
-    console.log("err.message: ", err.message);
     res.status(404).json({ error: err.message });
   }
 });
