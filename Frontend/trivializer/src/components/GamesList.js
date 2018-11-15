@@ -43,7 +43,7 @@ class GamesList extends Component {
                         </div>
                     ) : (
                         this.props.gamesList.map((game, i) => (
-                            <Link to={`/game/${game["id"]}`}>
+                            <Link to={`/game`}>
                                 <GameDetails
                                     key={game["id"]}
                                     index={i}

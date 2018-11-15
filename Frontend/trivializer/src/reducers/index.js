@@ -15,6 +15,7 @@ import {
 const initialState = {
     games: [],
     game: [],
+    game_id: null,
     rounds: [],
     round: [],
     questions: [],
@@ -63,7 +64,8 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 saving_game: false,
                 saved_game: true,
-                games: action.payload
+                // games: action.payload
+                game_id: action.payload
             });
         case UPDATING_GAME:
             return Object.assign({}, state, {

@@ -12,7 +12,8 @@ export const UPDATED_GAME = "UPDATED_GAME";
 export const ERROR = "ERROR";
 
 const URL = process.env.REACT_APP_API_URL;
-const BE_URL = process.env.REACT_APP_BE_URL;
+// const BE_URL = process.env.REACT_APP_BE_URL;
+const BE_URL = "https://testsdepl.herokuapp.com/users";
 
 export const fetchGamesReq = () => {
     return dispatch => {
@@ -45,11 +46,19 @@ export const fetchGameReq = id => {
     };
 };
 
+// sample game submit
+// {
+//     "username": "user",
+//     "gameName": "game one",
+//     "created": "11-15-2018",
+//     "description": "This is a game"
+// }
+
 export const submitGameReq = game => {
     return dispatch => {
         dispatch({ type: SAVING_GAME });
         axios
-            .post(`${BE_URL}/game`, game)
+            .post(`${BE_URL}/creategame`, game)
             .then(({ data }) => {
                 console.log(data);
                 dispatch({ type: SAVED_GAME, payload: data });
