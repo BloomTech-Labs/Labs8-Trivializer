@@ -64,39 +64,6 @@ class App extends Component {
       currentGamesList[index]["title"] = newGame.title;
       currentGamesList[index]["description"] = newGame.description;
       currentGamesList[index]["played"] = newGame.played;
-
-    render() {
-        return (
-            <div className="App">
-                <Route exact path="/" component={LandingPage} />
-                <Route path="/billing" component={Billing} />
-                <Route
-                    path="/gameslist"
-                    render={props => (
-                        <GamesList
-                            {...props}
-                            gameId={this.state.gameId}
-                            gamesList={this.state.gamesList}
-                        />
-                    )}
-                />
-                <Route path="/creategame" component={CreateGameView} />
-                <Route path="/setting" component={Setting} />
-                <Route path="/invoices" component={Invoices} />
-                <Route
-                    path="/game/:id"
-                    render={props => (
-                        <Game
-                            {...props}
-                            handleSaveGame={this.handleSaveGame}
-                            gameId={this.state.gameId}
-                            gamesList={this.state.gamesList}
-                        />
-                    )}
-                />
-                <Route path="/game/:id/round/:id" component={Round} />
-            </div>
-        );
     }
   };
 
@@ -108,13 +75,10 @@ class App extends Component {
         <Route
           path="/gameslist"
           render={props => (
-            <GamesList
-              {...props}
-              gameId={this.state.gameId}
-              gamesList={this.state.gamesList}
-            />
+            <GamesList {...props} gameId={this.state.gameId} gamesList={this.state.gamesList} />
           )}
         />
+        <Route path="/creategame" component={CreateGameView} />
         <Route path="/setting" component={Round} />
         <Route path="/invoices" component={Invoices} />
         <Route
