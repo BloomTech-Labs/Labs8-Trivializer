@@ -14,11 +14,24 @@ export const ERROR = "ERROR";
 const URL = process.env.REACT_APP_API_URL;
 const BE_URL = process.env.REACT_APP_BE_URL;
 
+// sample games fetch with params
+// {
+//     username: "username"
+// }
+
 export const fetchGamesReq = () => {
+    const newGames = {
+        username: `${sessionStorage.getItem("user")}`
+    };
+
     return dispatch => {
         dispatch({ type: FETCHING_GAMES });
         axios
-            .get(`${URL}/games`)
+            .post(`${BE_URL}/games`, newGames, {
+                headers: {
+                    Authorization: `${sessionStorage.getItem("jwt")}`
+                }
+            })
             .then(({ data }) => {
                 console.log(data);
                 dispatch({ type: FETCHED_GAMES, payload: data });
