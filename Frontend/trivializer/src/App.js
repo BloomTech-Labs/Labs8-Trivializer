@@ -8,6 +8,7 @@ import Invoices from "./components/Invoices";
 import Game from "./components/Game";
 import { Route, withRouter } from "react-router-dom";
 import Round from "./components/Round";
+import CreateGameView from "./components/CreateGameView";
 
 class App extends Component {
   constructor() {
@@ -64,9 +65,38 @@ class App extends Component {
       currentGamesList[index]["description"] = newGame.description;
       currentGamesList[index]["played"] = newGame.played;
 
-      this.setState({
-        gamesList: currentGamesList
-      });
+    render() {
+        return (
+            <div className="App">
+                <Route exact path="/" component={LandingPage} />
+                <Route path="/billing" component={Billing} />
+                <Route
+                    path="/gameslist"
+                    render={props => (
+                        <GamesList
+                            {...props}
+                            gameId={this.state.gameId}
+                            gamesList={this.state.gamesList}
+                        />
+                    )}
+                />
+                <Route path="/creategame" component={CreateGameView} />
+                <Route path="/setting" component={Setting} />
+                <Route path="/invoices" component={Invoices} />
+                <Route
+                    path="/game/:id"
+                    render={props => (
+                        <Game
+                            {...props}
+                            handleSaveGame={this.handleSaveGame}
+                            gameId={this.state.gameId}
+                            gamesList={this.state.gamesList}
+                        />
+                    )}
+                />
+                <Route path="/game/:id/round/:id" component={Round} />
+            </div>
+        );
     }
   };
 

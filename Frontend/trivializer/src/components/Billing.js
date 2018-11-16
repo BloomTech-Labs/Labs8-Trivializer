@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Pay from "./Pay";
 import { Link } from "react-router-dom";
 
+
 const Billing = () => {
   return (
     <div className="billing-page">
@@ -25,9 +26,11 @@ const Billing = () => {
       </div>
       <div className="main-content">
         <Navbar />
+        
+        {/* <h1 className="main-middle">Billing Page</h1> */}
         <Pay />
-        <h1 className="main-middle">Billing Page</h1>
       </div>
+      
     </div>
   );
 };
