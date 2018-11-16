@@ -2,11 +2,20 @@ import React, { Component } from "react";
 import Games from "./Games";
 import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { fetchGamesReq } from "../actions";
 
 class GamesList extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            games: []
+        };
+    }
+
+    componentDidMount() {
+        this.props.fetchGamesReq();
+        this.setState({ notes: this.props.notes });
     }
 
     render() {
@@ -39,11 +48,11 @@ class GamesList extends Component {
                     {this.props.gamesList.length < 1 ? (
                         <div>
                             <h3 className="main-middle">Add New Game</h3>
-                            <Link to={`/game/${this.props.gameId}`}>+</Link>
+                            <Link to={`/creategame`}>+</Link>
                         </div>
                     ) : (
                         this.props.gamesList.map((game, i) => (
-                            <Link to={`/game/${game["id"]}`}>
+                            <Link to={`/game`}>
                                 <GameDetails
                                     key={game["id"]}
                                     index={i}
@@ -55,7 +64,7 @@ class GamesList extends Component {
                     {this.props.gamesList.length > 0 ? (
                         <div>
                             <div>New Game</div>
-                            <Link to={`/game/${this.props.gameId}`}>+</Link>
+                            <Link to={`/creategame`}>+</Link>
                         </div>
                     ) : null}
                 </div>
@@ -72,4 +81,14 @@ function GameDetails({ game }) {
     );
 }
 
-export default GamesList;
+const mapStateToProps = ({ games }) => {
+    console.log(games);
+    return {
+        games: games.games
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    { fetchGamesReq }
+)(GamesList);

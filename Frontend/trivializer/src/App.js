@@ -8,6 +8,7 @@ import Invoices from "./components/Invoices";
 import Game from "./components/Game";
 import { Route, withRouter } from "react-router-dom";
 import Round from "./components/Round";
+import CreateGameView from "./components/CreateGameView";
 
 class App extends Component {
     constructor() {
@@ -89,6 +90,7 @@ class App extends Component {
                         />
                     )}
                 />
+                <Route path="/creategame" component={CreateGameView} />
                 <Route path="/setting" component={Setting} />
                 <Route path="/invoices" component={Invoices} />
                 <Route
