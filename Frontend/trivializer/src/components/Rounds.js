@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+/**
+ * Rounds Component
+ * - renders props for each round
+ */
 class Rounds extends Component {
     constructor(props) {
         super(props);

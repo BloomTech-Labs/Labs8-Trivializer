@@ -15,9 +15,9 @@ class Game extends Component {
             curGameId: "",
             gameTitle: "",
             gameDescription: "",
-            gameDate: "",
+            gameScheduled: "",
             roundId: 0,
-            roundsList: [
+            rounds: [
                 // {
                 //     id: 0,
                 //     title: "Round One",
@@ -102,45 +102,11 @@ class Game extends Component {
                         <button onClick={this.handleCreateGame}>
                             Save Game
                         </button>
-
-                        {this.state.roundsList.length < 1 ? (
-                            <div>
-                                <h3 className="main-middle">Add New Round</h3>
-                                <Link to={`/round/${this.state.roundId}`}>
-                                    +
-                                </Link>
-                            </div>
-                        ) : (
-                            this.state.roundsList.map((round, i) => (
-                                <div>
-                                    <RoundDetails
-                                        key={round["id"]}
-                                        index={i}
-                                        round={round}
-                                    />
-                                </div>
-                            ))
-                        )}
-
-                        {this.state.roundsList.length > 1 ? (
-                            <div>
-                                <div>New Round</div>
-                                <button>+</button>
-                            </div>
-                        ) : null}
                     </div>
                 </div>
             </div>
         );
     }
-}
-
-function RoundDetails({ round }) {
-    return (
-        <div>
-            <Rounds round={round} />
-        </div>
-    );
 }
 
 export default Game;

@@ -19,7 +19,9 @@ class GamesList extends Component {
 
     componentDidMount() {
         this.props.fetchGamesReq();
-        this.setState({ games: this.props.games });
+        // NOTE: setState after API request doesn't render state in time
+        // this.setState({ games: this.props.games });
+        // SOLUTION: render with props directly
     }
 
     render() {
@@ -53,13 +55,13 @@ class GamesList extends Component {
                 <div className="main-content">
                     <Navbar />
                     {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
-                    {this.state.games.length < 1 ? (
+                    {this.props.games.length < 1 ? (
                         <div>
                             <h3 className="main-middle">Add New Game</h3>
                             <Link to={`/creategame`}>+</Link>
                         </div>
                     ) : (
-                        this.state.games.map((game, i) => (
+                        this.props.games.map((game, i) => (
                             <Link to={`/game/${game["gameId"]}`}>
                                 <GameDetails
                                     key={game["id"]}
@@ -69,7 +71,7 @@ class GamesList extends Component {
                             </Link>
                         ))
                     )}
-                    {this.state.games.length > 0 ? (
+                    {this.props.games.length > 0 ? (
                         <div>
                             <div>New Game</div>
                             <Link to={`/creategame`}>+</Link>
