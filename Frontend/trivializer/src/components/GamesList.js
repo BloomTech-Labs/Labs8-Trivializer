@@ -15,7 +15,7 @@ class GamesList extends Component {
 
     componentDidMount() {
         this.props.fetchGamesReq();
-        this.setState({ notes: this.props.notes });
+        this.setState({ games: this.props.games });
     }
 
     render() {
@@ -81,10 +81,10 @@ function GameDetails({ game }) {
     );
 }
 
-const mapStateToProps = ({ games }) => {
-    console.log(games);
+const mapStateToProps = ({ gamesList }) => {
+    console.log(gamesList);
     return {
-        games: games.games
+        games: gamesList.games
     };
 };
 
