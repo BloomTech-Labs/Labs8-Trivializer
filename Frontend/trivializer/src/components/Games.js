@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 
+/**
+ * Games Component
+ * - renders props for each game
+ */
 class Games extends Component {
     constructor(props) {
         super(props);

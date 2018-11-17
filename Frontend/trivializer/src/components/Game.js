@@ -3,6 +3,10 @@ import Navbar from "./Navbar";
 import Rounds from "./Rounds";
 import { Link } from "react-router-dom";
 
+/**
+ * Game Component
+ * - renders selected game with an EditGameView and RoundsList Components
+ */
 class Game extends Component {
     constructor(props) {
         super(props);

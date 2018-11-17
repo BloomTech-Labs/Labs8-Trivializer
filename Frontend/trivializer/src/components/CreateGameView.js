@@ -4,6 +4,10 @@ import NavBar from "./Navbar";
 import { connect } from "react-redux";
 import { submitGameReq } from "../actions";
 
+/**
+ * CreateGameView Component
+ * - view to create and submit a game
+ */
 class CreateGameView extends Component {
     constructor(props) {
         super(props);

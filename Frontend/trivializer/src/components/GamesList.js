@@ -5,6 +5,10 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchGamesReq } from "../actions";
 
+/**
+ * GamesList Component
+ * - renders a list of games for the logged in user
+ */
 class GamesList extends Component {
     constructor(props) {
         super(props);
@@ -45,13 +49,13 @@ class GamesList extends Component {
                 <div className="main-content">
                     <Navbar />
                     {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
-                    {this.props.gamesList.length < 1 ? (
+                    {this.state.games.length < 1 ? (
                         <div>
                             <h3 className="main-middle">Add New Game</h3>
                             <Link to={`/creategame`}>+</Link>
                         </div>
                     ) : (
-                        this.props.gamesList.map((game, i) => (
+                        this.state.games.map((game, i) => (
                             <Link to={`/game`}>
                                 <GameDetails
                                     key={game["id"]}
@@ -61,7 +65,7 @@ class GamesList extends Component {
                             </Link>
                         ))
                     )}
-                    {this.props.gamesList.length > 0 ? (
+                    {this.state.games.length > 0 ? (
                         <div>
                             <div>New Game</div>
                             <Link to={`/creategame`}>+</Link>
@@ -73,6 +77,10 @@ class GamesList extends Component {
     }
 }
 
+/**
+ * GameDetails function
+ * - helper function to render mapped properties for each game
+ */
 function GameDetails({ game }) {
     return (
         <div>
