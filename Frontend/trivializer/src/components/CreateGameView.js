@@ -16,7 +16,8 @@ class CreateGameView extends Component {
             gameDescription: "",
             gameCreated: "",
             gameCreatedMS: "",
-            gameScheduled: ""
+            gameScheduled: "",
+            gameScheduledMS: ""
         };
     }
 
@@ -29,7 +30,8 @@ class CreateGameView extends Component {
             gameCreated: `${d.getMonth() +
                 1}-${d.getDate()}-${d.getFullYear()}`,
             gameCreatedMS: Date.now(),
-            gameScheduled: ""
+            gameScheduled: "",
+            gameScheduledMS: ""
         });
     }
 
@@ -44,8 +46,8 @@ class CreateGameView extends Component {
             username: sessionStorage.getItem("user"),
             gameName: this.state.gameTitle,
             gameDescription: this.state.gameDescription,
-            gameCreatedMS: this.state.gameCreatedMS
-            // gameScheduled: this.state.gameScheduled
+            gameCreatedMS: this.state.gameCreatedMS,
+            gameScheduledMS: this.state.gameScheduled
         };
 
         this.props.submitGameReq(game);

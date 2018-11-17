@@ -23,6 +23,10 @@ class GamesList extends Component {
     }
 
     render() {
+        if (!this.props.games) {
+            return <div>Loading...</div>;
+        }
+
         return (
             <div className="gameslist-page">
                 <div className="top-content">
@@ -56,7 +60,7 @@ class GamesList extends Component {
                         </div>
                     ) : (
                         this.state.games.map((game, i) => (
-                            <Link to={`/game`}>
+                            <Link to={`/game/${game["gameId"]}`}>
                                 <GameDetails
                                     key={game["id"]}
                                     index={i}

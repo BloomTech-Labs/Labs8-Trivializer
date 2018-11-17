@@ -10,24 +10,14 @@ import { Route, withRouter } from "react-router-dom";
 import Round from "./components/Round";
 import CreateGameView from "./components/CreateGameView";
 
+/**
+ * App Component
+ * - handles routes to specified component
+ */
 class App extends Component {
     constructor() {
         super();
-        this.state = {
-            gameId: 0,
-            gamesList: [],
-            roundId: 0,
-            roundsList: [
-                // {
-                //     id: 0,
-                //     title: "Round One",
-                //     numberOfQs: 10,
-                //     category: "",
-                //     difficulty: "",
-                //     type: ""
-                // }
-            ]
-        };
+        this.state = {};
     }
 
     render() {
@@ -35,16 +25,7 @@ class App extends Component {
             <div className="App">
                 <Route exact path="/" component={LandingPage} />
                 <Route path="/billing" component={Billing} />
-                <Route
-                    path="/gameslist"
-                    render={props => (
-                        <GamesList
-                            {...props}
-                            gameId={this.state.gameId}
-                            gamesList={this.state.gamesList}
-                        />
-                    )}
-                />
+                <Route path="/gameslist" component={GamesList} />
                 <Route path="/creategame" component={CreateGameView} />
                 <Route path="/setting" component={Round} />
                 <Route path="/invoices" component={Invoices} />

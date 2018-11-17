@@ -11,13 +11,26 @@ class Games extends Component {
     }
 
     render() {
+        const created = new Date(this.props.game.dateCreated);
+        const played = new Date(this.props.game.datePlayed);
+
         return (
             <div>
-                <div>{this.props.game.title}</div>
+                <div>{this.props.game.gamename}</div>
                 <div>{this.props.game.description}</div>
                 {/* <div>Add game image</div> */}
-                <div>Created: {this.props.game.created}</div>
-                <div>Played: {this.props.game.played}</div>
+                <div>
+                    Created:{" "}
+                    {`${created.getMonth() +
+                        1}-${created.getDate()}-${created.getFullYear()}`}
+                </div>
+                <div>
+                    Played:{" "}
+                    {this.props.game.datePlayed === 0
+                        ? null
+                        : `${played.getMonth() +
+                              1}-${played.getDate()}-${played.getFullYear()}`}
+                </div>
             </div>
         );
     }

@@ -62,8 +62,9 @@ export const fetchGameReq = id => {
 // {
 //     "username": "user",
 //     "gameName": "game one",
-//     "created": "11-15-2018",
+//     "created": 1542422323472,
 //     "description": "This is a game"
+//     "played": 1542422323472
 // }
 
 export const submitGameReq = game => {
@@ -72,6 +73,7 @@ export const submitGameReq = game => {
         gameName: game.gameName,
         created: game.gameCreatedMS,
         description: game.gameDescription
+        // played: game.gameScheduledMS
     };
 
     return dispatch => {
