@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./Questions.css";
 
 class Questions extends Component {
   constructor(props) {
@@ -26,12 +27,12 @@ class Questions extends Component {
   render() {
     console.log("this.state.all: ", this.state.all);
     return (
-      <div>
+      <div className="question">
         <div>{this.state.question}</div>
         <div>
-          <ul>
+          <ul className="questions">
             {this.state.all.map(answer => {
-              return <li>{answer}</li>;
+              return <li className="answer">{answer}</li>;
             })}
           </ul>
         </div>

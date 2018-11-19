@@ -1,0 +1,9 @@
+.question {
+  border: 2px solid red;
+  border-radius: 2%;
+}
+
+.questions {
+  list-style-type: none;
+  text-align: left;
+}

@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import Questions from "./Questions";
 import axios from "axios";
+import "./Questions.css";
 
 class Round extends Component {
   constructor(props) {
