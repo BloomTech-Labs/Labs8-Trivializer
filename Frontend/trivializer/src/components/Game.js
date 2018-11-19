@@ -36,11 +36,13 @@ class Game extends Component {
         const id = Number(this.props.match.params.id);
         this.props.fetchGameReq(id);
 
-        // this.setState({
-        //     gameTitle: this.props.game.gamename,
-        //     gameDescription: this.props.game.description,
-        //     gameScheduled: this.props.game.datePlayed
-        // });
+        if (this.props.game) {
+            this.setState({
+                gameTitle: this.props.game.gamename,
+                gameDescription: this.props.game.description,
+                gameScheduled: this.props.game.datePlayed
+            });
+        }
     }
 
     handleChange = e => {
@@ -48,6 +50,8 @@ class Game extends Component {
     };
 
     render() {
+        if (!this.props.game) return <div>Loading...</div>;
+
         return (
             <div className="game-page">
                 <div className="top-content">
@@ -78,20 +82,32 @@ class Game extends Component {
                         <input
                             name="gameTitle"
                             placeholder="Game Title"
-                            value={this.state.gameTitle}
+                            value={
+                                this.state.gameTitle === ""
+                                    ? this.props.game.gamename
+                                    : this.state.gameTitle
+                            }
                             onChange={this.handleChange}
                         />
                         <input
                             name="gameDescription"
                             placeholder="Game Description"
-                            value={this.state.gameDescription}
+                            value={
+                                this.state.gameDescription === ""
+                                    ? this.props.game.description
+                                    : this.state.gameDescription
+                            }
                             onChange={this.handleChange}
                         />
                         <input
                             type="date"
-                            name="gameDate"
+                            name="gameScheduled"
                             placeholder="mm/dd/yyyy"
-                            value={this.state.gameDate}
+                            value={
+                                this.state.gameScheduled === ""
+                                    ? this.props.game.datePlayed
+                                    : this.state.gameScheduled
+                            }
                             onChange={this.handleChange}
                         />
                         <button>Print Answer Sheets</button>
@@ -107,9 +123,9 @@ class Game extends Component {
 }
 
 const mapStateToProps = ({ gamesList }) => {
-    console.log(gamesList);
+    console.log(gamesList.game[0]);
     return {
-        game: gamesList.game
+        game: gamesList.game[0]
         // rounds: gamesList.game.rounds
     };
 };

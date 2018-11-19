@@ -90,8 +90,8 @@ export const submitGameReq = game => {
         username: game.username,
         gameName: game.gameName,
         created: game.gameCreatedMS,
-        description: game.gameDescription
-        // played: game.gameScheduledMS
+        description: game.gameDescription,
+        played: game.gameScheduledMS
     };
 
     return dispatch => {
