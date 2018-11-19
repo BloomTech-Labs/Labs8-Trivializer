@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Navbar from "./Navbar";
 import Rounds from "./Rounds";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { fetchGameReq } from "../actions";
 
 /**
  * Game Component
@@ -32,18 +34,13 @@ class Game extends Component {
 
     componentDidMount() {
         const id = Number(this.props.match.params.id);
-        // // implement redux actions later
-        // const result = this.props.gamesList.filter(game => game.id === id);
-        // console.log(result);
-        // if (result.length === 1) {
-        //     this.setState({
-        //         game: result[0],
-        //         curGameId: id,
-        //         gameTitle: result[0]["title"],
-        //         gameDescription: result[0]["description"],
-        //         gameDate: result[0]["played"]
-        //     });
-        // }
+        this.props.fetchGameReq(id);
+
+        // this.setState({
+        //     gameTitle: this.props.game.gamename,
+        //     gameDescription: this.props.game.description,
+        //     gameScheduled: this.props.game.datePlayed
+        // });
     }
 
     handleChange = e => {
@@ -109,4 +106,15 @@ class Game extends Component {
     }
 }
 
-export default Game;
+const mapStateToProps = ({ gamesList }) => {
+    console.log(gamesList);
+    return {
+        game: gamesList.game
+        // rounds: gamesList.game.rounds
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    { fetchGameReq }
+)(Game);

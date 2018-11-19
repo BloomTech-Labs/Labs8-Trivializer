@@ -49,16 +49,28 @@ export const fetchGamesReq = () => {
 };
 
 export const fetchGameReq = id => {
+    const newGames = {
+        username: `${sessionStorage.getItem("user")}`
+    };
+
     return dispatch => {
         dispatch({ type: FETCHING_GAME });
         axios
-            .get(`${BE_URL}/game/${id}`)
+            .post(`${BE_URL}/games`, newGames, {
+                headers: {
+                    Authorization: `${sessionStorage.getItem("jwt")}`
+                }
+            })
             .then(({ data }) => {
                 console.log(data);
-                dispatch({ type: FETCHED_GAME, payload: data });
+
+                // filter game by id
+                const result = data.filter(item => item.gameId === id);
+                console.log(result);
+
+                dispatch({ type: FETCHED_GAME, payload: result });
             })
             .catch(err => {
-                console.log(err);
                 dispatch({ type: ERROR, payload: err });
             });
     };
