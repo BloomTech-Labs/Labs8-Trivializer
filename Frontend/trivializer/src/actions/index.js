@@ -34,6 +34,12 @@ export const fetchGamesReq = () => {
             })
             .then(({ data }) => {
                 console.log(data);
+
+                // return if null properties
+                if (!data[0]["gameId"]) {
+                    return;
+                }
+
                 dispatch({ type: FETCHED_GAMES, payload: data });
             })
             .catch(err => {

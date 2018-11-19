@@ -55,7 +55,7 @@ class GamesList extends Component {
                 <div className="main-content">
                     <Navbar />
                     {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
-                    {this.props.games.length < 1 ? (
+                    {!this.props.games[0] ? (
                         <div>
                             <h3 className="main-middle">Add New Game</h3>
                             <Link to={`/creategame`}>+</Link>
