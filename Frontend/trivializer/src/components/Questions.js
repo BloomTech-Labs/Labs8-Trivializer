@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import "./Questions.css";
+const createDOMPurify = require("dompurify");
+
+// Sanitizes incoming HTML from questions API and allows for HTML entities while protecting against XSS attacks
+const DOMPurify = createDOMPurify(window);
 
 class Questions extends Component {
   constructor(props) {
@@ -25,14 +29,26 @@ class Questions extends Component {
   };
 
   render() {
-    console.log("this.state.all: ", this.state.all);
+    // Utilizes dangerouslySetInnerHTML. This is because we trust our API to not send malicious content
+    // and
     return (
       <div className="question">
-        <div>{this.state.question}</div>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(this.state.question) // See line 5 for DOMPurify description
+          }}
+        />
         <div>
           <ul className="questions">
             {this.state.all.map(answer => {
-              return <li className="answer">{answer}</li>;
+              return (
+                <li
+                  className="answer"
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(answer) // See line 5 for DOMPurify description
+                  }}
+                />
+              );
             })}
           </ul>
         </div>

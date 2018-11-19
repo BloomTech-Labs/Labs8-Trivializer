@@ -1,9 +1,16 @@
 .question {
-  border: 2px solid red;
+  border: 2px solid black;
   border-radius: 2%;
+  margin: 2%;
 }
 
 .questions {
   list-style-type: none;
   text-align: left;
+}
+
+.main-content-round {
+  width: 100%;
+  display: flex;
+  flex-flow: column wrap;
 }

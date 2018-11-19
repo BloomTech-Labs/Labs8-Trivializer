@@ -70,11 +70,13 @@ class Round extends Component {
 
         <div className="main-content">
           <Navbar />
-          <div>Questions</div>
-          <div>
-            {this.state.questions.map((question, index) => {
-              return <Questions key={index} question={question} />;
-            })}
+          <div className="main-content-round">
+            <div>Questions</div>
+            <div>
+              {this.state.questions.map((question, index) => {
+                return <Questions key={index} question={question} />;
+              })}
+            </div>
           </div>
         </div>
       </div>
