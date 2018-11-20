@@ -3,7 +3,8 @@ import Navbar from "./Navbar";
 import Rounds from "./Rounds";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { fetchGameReq, updateGameReq } from "../actions";
+import { fetchGameReq } from "../actions";
+import EditGameView from "./EditGameView";
 
 /**
  * Game Component
@@ -15,10 +16,6 @@ class Game extends Component {
         this.state = {
             game: null,
             gameId: null,
-            gameTitle: null,
-            gameDescription: null,
-            gameScheduled: null,
-            gameScheduledMS: null,
             roundId: 0,
             rounds: [
                 // {
@@ -36,40 +33,10 @@ class Game extends Component {
     componentDidMount() {
         const id = Number(this.props.match.params.id);
         this.props.fetchGameReq(id);
-
-        if (this.props.game) {
-            this.setState({
-                gameId: id,
-                gameTitle: this.props.game.gamename,
-                gameDescription: this.props.game.description,
-                gameScheduled: this.props.game.datePlayed
-            });
-        }
     }
 
-    handleChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
-    };
-
-    handleUpdate = e => {
-        const d = new Date(this.state.gameScheduled);
-        const ms = d.getTime();
-
-        const game = {
-            username: sessionStorage.getItem("user"),
-            gameName: this.state.gameTitle,
-            // created: game.gameCreatedMS,
-            description: this.state.gameDescription,
-            played: ms
-        };
-
-        console.log(game);
-
-        // this.props.updateGameReq(this.state.gameId, game);
-    };
-
     render() {
-        if (!this.props.game) return <div>Loading...</div>;
+        // if (!this.props.game) return <div>Loading...</div>;
 
         return (
             <div className="game-page">
@@ -97,29 +64,7 @@ class Game extends Component {
                 <div className="main-content">
                     <Navbar />
                     <div>
-                        <div>Logo</div>
-                        <input
-                            name="gameTitle"
-                            placeholder="Game Title"
-                            value={this.state.gameTitle}
-                            onChange={this.handleChange}
-                        />
-                        <input
-                            name="gameDescription"
-                            placeholder="Game Description"
-                            value={this.state.gameDescription}
-                            onChange={this.handleChange}
-                        />
-                        <input
-                            type="date"
-                            name="gameScheduled"
-                            placeholder="mm/dd/yyyy"
-                            value={this.state.gameScheduled}
-                            onChange={this.handleChange}
-                        />
-                        <button>Print Answer Sheets</button>
-                        <button>Print Answer Key</button>
-                        <button onClick={this.handleUpdate}>Save Game</button>
+                        <EditGameView game={this.props.game} />
                     </div>
                 </div>
             </div>
@@ -137,5 +82,5 @@ const mapStateToProps = ({ gamesList }) => {
 
 export default connect(
     mapStateToProps,
-    { fetchGameReq, updateGameReq }
+    { fetchGameReq }
 )(Game);
