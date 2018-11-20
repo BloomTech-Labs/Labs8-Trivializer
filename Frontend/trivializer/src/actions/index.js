@@ -129,7 +129,7 @@ export const deleteGameReq = id => {
     };
 };
 
-// sample game submit
+// sample game update
 // {
 //     "username": "user",
 //     "gameName": "game one",
@@ -151,7 +151,7 @@ export const updateGameReq = (id, game) => {
     return dispatch => {
         dispatch({ type: UPDATING_GAME });
         axios
-            .put(`${BE_URL}/editgame`, newGame, {
+            .put(`${BE_URL}/editgame/${id}`, newGame, {
                 headers: {
                     Authorization: `${sessionStorage.getItem("jwt")}`
                 }

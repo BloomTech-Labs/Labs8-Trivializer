@@ -259,6 +259,18 @@ server.post("/save", utilities.protected, async (req, res) => {
     }
 });
 
+// Updates a game, takes in username, created, played, gameName and description (string)
+server.put("/editgame/:id", utilities.protected, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const game = { ...req.body };
+        res.status(200).json(game);
+    } catch (err) {
+        console.log("err.message: ", err.message);
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // Get all games for a username passed in. Nedds a username passed in req.body
 server.post(
     "/games",
