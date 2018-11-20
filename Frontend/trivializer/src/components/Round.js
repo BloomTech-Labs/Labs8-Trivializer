@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Questions from "./Questions";
 import axios from "axios";
 import "./Questions.css";
+import update from "react-addons-update";
 
 class Round extends Component {
   constructor(props) {
@@ -15,15 +16,13 @@ class Round extends Component {
       category: this.props.category || "",
       difficulty: this.props.difficulty || "easy",
       type: this.props.type || "multiple",
-      questions: [],
+      questions: this.props.questions || [],
       baseURL: "https://opentdb.com/api.php?"
     };
   }
 
   componentDidMount = () => {
-    console.log("this.state: ", this.state);
     //   Prepare arguments to questions API
-
     // Check is each is undefined, if it is, don't include it in the URL
     let amount = `&amount=${this.state.numberOfQuestions || 1}`;
     let category = `${
@@ -38,16 +37,38 @@ class Round extends Component {
       this.state.baseURL
     }${amount}${category}${difficulty}${type}`;
 
-    console.log("concatenatedURL: ", concatenatedURL);
     //   Call axios with input parameters
-
     axios.get(concatenatedURL).then(response => {
-      this.setState({ questions: response.data.results });
+      // Adding an id to each question lets us add a unique key when
+      // rendering the Questions components. This is necessary for Drag and Drop
+      let questionsWithId = response.data.results.map((question, i) => {
+        question.id = i;
+        return question;
+      });
+      this.setState({ questions: questionsWithId });
     });
   };
 
+  // Called from Questions.js, Reassigns the order of the questions array in state
+  moveQuestion = (dragIndex, hoverIndex) => {
+    const { questions } = this.state;
+
+    const dragQuestion = questions[dragIndex];
+
+    // Uses
+    this.setState(
+      update(this.state, {
+        questions: {
+          $splice: [[dragIndex, 1], [hoverIndex, 0, dragQuestion]]
+        }
+      })
+    );
+  };
+
   render() {
-    console.log("this.state.questions: ", this.state.questions);
+    // The following are for React Drag N Drop functionality
+    const { questions } = this.state;
+
     return (
       <div className="game-page">
         <div className="top-content">
@@ -73,8 +94,15 @@ class Round extends Component {
           <div className="main-content-round">
             <div>Questions</div>
             <div>
-              {this.state.questions.map((question, index) => {
-                return <Questions key={index} question={question} />;
+              {questions.map((question, index) => {
+                return (
+                  <Questions
+                    key={question.id}
+                    index={index}
+                    moveQuestion={this.moveQuestion}
+                    question={question}
+                  />
+                );
               })}
             </div>
           </div>

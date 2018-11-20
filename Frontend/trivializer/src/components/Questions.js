@@ -1,9 +1,66 @@
 import React, { Component } from "react";
 import "./Questions.css";
-const createDOMPurify = require("dompurify");
+import { DragSource, DropTarget } from "react-dnd";
+import { findDOMNode } from "react-dom";
+import flow from "lodash/flow"; // Necessary for react DnD to attach more than one function ("Role") to this component, i.e. any question is both a DragSource AND a DropTarget
+
+const createDOMPurify = require("dompurify"); // PRevents XSS attacks from incoming HTML
 
 // Sanitizes incoming HTML from questions API and allows for HTML entities while protecting against XSS attacks
 const DOMPurify = createDOMPurify(window);
+
+const questionSource = {
+  beginDrag(props) {
+    console.log("props.question: ", props.question);
+    return {
+      question: props.question,
+      index: props.index
+    };
+  }
+};
+
+const questionTarget = {
+  hover(props, monitor, component) {
+    const dragIndex = monitor.getItem().index;
+    const hoverIndex = props.index;
+
+    // Don't replace items with themselves
+    if (dragIndex === hoverIndex) {
+      return;
+    }
+
+    // Determine rectangle on screen
+    const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+
+    // Get vertical middle
+    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+    // Determine mouse position
+    const clientOffset = monitor.getClientOffset();
+
+    // Get pixels to the top
+    const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+    // Only perform the move when the mouse has crossed half of the items height
+    // When dragging downwards, only move when the cursor is below 50%
+    // When dragging upwards, only move when the cursor is above 50%
+
+    // Dragging downwards
+    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      return;
+    }
+
+    // Dragging upwards
+    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      return;
+    }
+
+    console.log("in Hover!!!!");
+    props.moveQuestion(dragIndex, hoverIndex);
+
+    monitor.getItem().index = hoverIndex;
+  }
+};
 
 class Questions extends Component {
   constructor(props) {
@@ -24,37 +81,136 @@ class Questions extends Component {
     // Splice into index, delete 0 elements, insert the correct answer
     let all = incorrect;
     all.splice(index, 0, correct);
-    console.log("all: ", all);
+
     this.setState({ all: all });
   };
 
   render() {
-    // Utilizes dangerouslySetInnerHTML. This is because we trust our API to not send malicious content
-    // and
-    return (
-      <div className="question">
-        <div
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(this.state.question) // See line 5 for DOMPurify description
-          }}
-        />
-        <div>
-          <ul className="questions">
-            {this.state.all.map(answer => {
-              return (
-                <li
-                  className="answer"
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(answer) // See line 5 for DOMPurify description
-                  }}
-                />
-              );
-            })}
-          </ul>
+    const {
+      question,
+      isDragging,
+      connectDragSource,
+      connectDropTarget
+    } = this.props;
+    const opacity = isDragging ? 0 : 1;
+
+    return connectDragSource(
+      connectDropTarget(
+        <div className="question" style={{ opacity: opacity }}>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(question.question) // See line 5 for DOMPurify description
+            }}
+          />
+          <div>
+            <ul className="questions">
+              {/* We use incorrect answers because splice in componentDidMount changed the original value */}
+              {question.incorrect_answers.map((answer, index) => {
+                return (
+                  <li
+                    key={index}
+                    className="answer"
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(answer) // See line 5 for DOMPurify description
+                    }}
+                  />
+                );
+              })}
+            </ul>
+          </div>
         </div>
-      </div>
+      )
     );
   }
 }
 
-export default Questions;
+// These functions below work with React DnD to determine the behavior of the dropped questions
+
+// const questionSource = {
+//   beginDrag(props) {
+//     return {
+//       index: props.index,
+//       listId: props.listId,
+//       question: props.question
+//     };
+//   },
+
+//   endDrag(props, monitor) {
+//     if (!monitor.didDrop()) {
+//       return;
+//     }
+//     const source = monitor.getItem();
+//     const target = monitor.getDropResult();
+
+//     if (source.id === target.id) {
+//       return;
+//     }
+//     props.moveCard(source.index, target.index);
+//   }
+// };
+
+// const questionTarget = {
+//   hover(props, monitor, component) {
+//     const dragIndex = monitor.getItem().index;
+//     const hoverIndex = props.index;
+//     const sourceListId = monitor.getItem().listId;
+
+//     console.log("dragIndex, hoverIndex: ", dragIndex, hoverIndex);
+//     // Don't replace items with themselves
+//     if (dragIndex === hoverIndex) {
+//       return;
+//     }
+
+//     // Determine rectangle on screen
+//     const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+
+//     // Get vertical middle
+//     const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+//     // Determine mouse position
+//     const clientOffset = monitor.getClientOffset();
+
+//     // Get pixels to the top
+//     const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+//     // Only perform the move when the mouse has crossed half of the items height
+//     // When dragging downwards, only move when the cursor is below 50%
+//     // When dragging upwards, only move when the cursor is above 50%
+
+//     // Dragging downwards
+//     if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+//       return;
+//     }
+
+//     // Dragging upwards
+//     if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+//       return;
+//     }
+
+//     console.log("in Hover!!!!");
+//     props.moveQuestion(dragIndex, hoverIndex);
+
+//     monitor.getItem().index = hoverIndex;
+//     // Time to actually perform the action
+//     console.log("props.listId: ", props.listId);
+//     if (props.listId === sourceListId) {
+//       props.moveQuestion(dragIndex, hoverIndex);
+
+//       // Note: we're mutating the monitor item here!
+//       // Generally it's better to avoid mutations,
+//       // but it's good here for the sake of performance
+//       // to avoid expensive index searches.
+//       monitor.getItem().index = hoverIndex;
+//     }
+//   }
+// };
+
+export default flow(
+  DropTarget("QUESTION", questionTarget, connect => ({
+    connectDropTarget: connect.dropTarget()
+  })),
+  DragSource("QUESTION", questionSource, (connect, monitor) => ({
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  }))
+)(Questions);
