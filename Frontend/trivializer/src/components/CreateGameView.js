@@ -42,12 +42,15 @@ class CreateGameView extends Component {
     handleSubmit = () => {
         if (this.state.gameTitle === "") return null;
 
+        const d = new Date(this.state.gameScheduled);
+        const ms = d.getTime();
+
         const game = {
             username: sessionStorage.getItem("user"),
             gameName: this.state.gameTitle,
             gameDescription: this.state.gameDescription,
             gameCreatedMS: this.state.gameCreatedMS,
-            gameScheduledMS: this.state.gameScheduled
+            gameScheduledMS: ms
         };
 
         this.props.submitGameReq(game);
