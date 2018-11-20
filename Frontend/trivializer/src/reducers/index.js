@@ -76,7 +76,7 @@ const gamesReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 updating_game: false,
                 updated_game: true,
-                games: action.payload
+                game: action.payload
             });
         case DELETING_GAME:
             return Object.assign({}, state, {

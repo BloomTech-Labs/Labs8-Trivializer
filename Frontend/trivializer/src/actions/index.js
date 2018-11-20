@@ -88,7 +88,7 @@ export const fetchGameReq = id => {
 export const submitGameReq = game => {
     const newGame = {
         username: game.username,
-        gameName: game.gameName,
+        gameName: game.gameTitle,
         created: game.gameCreatedMS,
         description: game.gameDescription,
         played: game.gameScheduledMS
@@ -129,11 +129,33 @@ export const deleteGameReq = id => {
     };
 };
 
-export const updateGameReq = id => {
+// sample game submit
+// {
+//     "username": "user",
+//     "gameName": "game one",
+//     "created": 1542422323472,
+//     "description": "This is a game"
+//     "played": 1542422323472
+// }
+
+export const updateGameReq = (id, game) => {
+    const newGame = {
+        username: game.username,
+        gameName: game.gameName,
+        dateCreated: game.gameCreatedMS,
+        description: game.gameDescription,
+        datePlayed: game.gameScheduledMS,
+        rounds: []
+    };
+
     return dispatch => {
         dispatch({ type: UPDATING_GAME });
         axios
-            .get(`${BE_URL}/game/${id}`)
+            .put(`${BE_URL}/editgame`, newGame, {
+                headers: {
+                    Authorization: `${sessionStorage.getItem("jwt")}`
+                }
+            })
             .then(({ data }) => {
                 console.log(data);
                 dispatch({ type: UPDATED_GAME, payload: data });

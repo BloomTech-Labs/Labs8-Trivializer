@@ -15,7 +15,6 @@ class Game extends Component {
         super(props);
         this.state = {
             game: null,
-            gameId: null,
             roundId: 0,
             rounds: [
                 // {

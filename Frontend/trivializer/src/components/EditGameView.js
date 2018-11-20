@@ -18,8 +18,6 @@ class EditGameView extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchGameReq(this.props.gameId);
-
         if (this.props.game) {
             const d = new Date(this.props.game.datePlayed);
             const s = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
@@ -43,15 +41,15 @@ class EditGameView extends Component {
 
         const game = {
             username: sessionStorage.getItem("user"),
-            gameName: this.state.gameTitle,
-            // created: game.gameCreatedMS,
-            description: this.state.gameDescription,
-            played: ms
+            gameTitle: this.state.gameTitle,
+            gameCreatedMS: this.props.game.dateCreated,
+            gameDescription: this.state.gameDescription,
+            gameScheduledMS: ms
         };
 
         console.log(game);
 
-        // this.props.updateGameReq(this.state.gameId, game);
+        this.props.updateGameReq(this.props.game.gameId, game);
     };
 
     render() {

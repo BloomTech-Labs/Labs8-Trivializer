@@ -47,7 +47,7 @@ class CreateGameView extends Component {
 
         const game = {
             username: sessionStorage.getItem("user"),
-            gameName: this.state.gameTitle,
+            gameTitle: this.state.gameTitle,
             gameDescription: this.state.gameDescription,
             gameCreatedMS: this.state.gameCreatedMS,
             gameScheduledMS: ms
