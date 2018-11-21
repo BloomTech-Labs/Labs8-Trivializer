@@ -11,6 +11,7 @@ import Round from "./components/Round";
 import CreateGameView from "./components/CreateGameView";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
+import RoundAnswers from "./components/RoundAnswers";
 
 class App extends Component {
   constructor() {
@@ -85,7 +86,7 @@ class App extends Component {
           )}
         />
         <Route path="/creategame" component={CreateGameView} />
-        <Route path="/setting" component={Round} />
+        <Route path="/setting" component={Setting} />
         <Route path="/invoices" component={Invoices} />
         <Route
           exact
@@ -100,6 +101,7 @@ class App extends Component {
           )}
         />
         <Route path="/game/:id/round/:id" component={Round} />
+        <Route path="/game/:id/round/:id/answers" component={RoundAnswers} />
       </div>
     );
   }
