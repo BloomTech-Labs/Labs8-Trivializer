@@ -14,23 +14,11 @@ class Questions extends Component {
     super(props);
     this.state = {
       question: this.props.question.question,
-      correct: this.props.question.correct_answer,
-      incorrect: this.props.question.incorrect_answers,
-      all: []
+      answers: this.props.question.answers
     };
   }
 
-  componentDidMount = () => {
-    let incorrect = this.state.incorrect;
-    let correct = this.state.correct;
-    // Get a random number, this will be where we insert the correct answer into the incorrect answers
-    let index = Math.floor(Math.random() * (incorrect.length + 1));
-    // Splice into index, delete 0 elements, insert the correct answer
-    let all = incorrect;
-    all.splice(index, 0, correct);
-
-    this.setState({ all: all });
-  };
+  componentDidMount = () => {};
 
   render() {
     const {
@@ -52,11 +40,15 @@ class Questions extends Component {
           />
           <div>
             <ul className="questions">
-              {/* We use incorrect answers because splice in componentDidMount changed the original value */}
-              {question.incorrect_answers.map((answer, index) => {
+              {question.answers.map((answer, index) => {
                 return (
                   <li
                     key={index}
+                    style={
+                      answer === question.correct_answer
+                        ? { fontWeight: "bold" }
+                        : { fontWeight: "normal" }
+                    }
                     className="answer"
                     dangerouslySetInnerHTML={{
                       // 0x41 is ASCII for 'A'

@@ -3,24 +3,24 @@ import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <ul class="navbar nav flex-column">
-      <div class="inner-nav">
-        <li class="nav-item">
+    <ul className="navbar nav flex-column">
+      <div className="inner-nav">
+        <li className="nav-item">
           <Link to="/gameslist" className="nav-link active">
             Games
           </Link>
         </li>
-        <li class="nav-item">
+        <li className="nav-item">
           <Link to="/invoices" className="nav-link">
             Invoices
           </Link>
         </li>
-        <li class="nav-item">
+        <li className="nav-item">
           <Link to="/billing" className="nav-link">
             Billing
           </Link>
         </li>
-        <li class="nav-item">
+        <li className="nav-item">
           <Link to="/setting" className="nav-link">
             Setting
           </Link>

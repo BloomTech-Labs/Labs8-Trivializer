@@ -29,3 +29,26 @@
 .info-round {
   padding: 1%;
 }
+
+.top-content-round {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+}
+.col-1-round {
+  min-width: 75%;
+}
+.col-2-round {
+  display: flex;
+  flex-flow: column;
+  max-width: 25%;
+}
+
+.btn-primary.round {
+  margin: 2%;
+}
+
+.modal-background {
+  border: 2px solid black;
+  background: white;
+}

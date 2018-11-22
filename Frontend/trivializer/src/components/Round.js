@@ -5,6 +5,7 @@ import Questions from "./Questions";
 import axios from "axios";
 import "./Questions.css";
 import update from "react-addons-update";
+import RoundAnswers from "./RoundAnswers";
 
 class Round extends Component {
   constructor(props) {
@@ -18,7 +19,6 @@ class Round extends Component {
       difficulty: this.props.difficulty || "easy",
       type: this.props.type || "multiple",
       questions: this.props.questions || [],
-      answers: [],
       baseURL: "https://opentdb.com/api.php?"
     };
   }
@@ -26,13 +26,10 @@ class Round extends Component {
   componentDidMount = () => {
     // If questions are passed in, just collect the answers, don't make the API call
     if (this.state.questions.length > 0) {
-      // questionsAndAnswers[0] is the questions with new Id's, questionsAndAnswers[1] is the answers with corresponding ids
-      let questionsAndAnswers = this.addIdsGetAnswers(this.state.questions);
+      // questions will now have unique Id's and complete answers array
+      let questions = this.addIds(this.state.questions);
 
-      this.setState({
-        questions: questionsAndAnswers[0],
-        answers: questionsAndAnswers[1]
-      });
+      this.setState({ questions: questions });
       return;
     }
 
@@ -56,29 +53,39 @@ class Round extends Component {
 
     //   Call axios with input parameters
     axios.get(concatenatedURL).then(response => {
-      // questionsAndAnswers[0] is the questions with new Id's, questionsAndAnswers[1] is the answers with corresponding ids
-      console.log(response.data);
-      let questionsAndAnswers = this.addIdsGetAnswers(response.data.results);
+      // questions will now have unique Id's and complete answers array
+      let questions = this.addIds(response.data.results);
 
-      this.setState({
-        questions: questionsAndAnswers[0],
-        answers: questionsAndAnswers[1]
-      });
+      this.setState({ questions: questions });
     });
   };
 
-  // This functions both adds id's to the incoming questions (necessary for drag and drop) and assembles the original answer sheet
-  addIdsGetAnswers = questionsIn => {
-    let answers = [];
-
+  // This functions both adds id's to the incoming
+  // questions (necessary for drag and drop) and complete answers
+  addIds = questionsIn => {
     let questions = questionsIn.map((question, i) => {
       question.id = i;
-      answers.push({ answer: question.correct_answer, id: i });
+      question.answers = this.assembleAnswers(
+        question.correct_answer,
+        question.incorrect_answers
+      );
       return question;
     });
 
-    return [questions, answers];
+    return questions;
   };
+
+  // Assembles all answers into one array
+  assembleAnswers = (correct_answer, incorrect_answers) => {
+    // Get a random number, this will be where we insert
+    // the correct answer into the incorrect answers
+    let index = Math.floor(Math.random() * (incorrect_answers.length + 1));
+    let answers = incorrect_answers.slice();
+    answers.splice(index, 0, correct_answer);
+
+    return answers;
+  };
+
   // Called from Questions.js, Reassigns the order of the questions array in state
   moveQuestion = (dragIndex, hoverIndex) => {
     const { questions } = this.state;
@@ -96,10 +103,11 @@ class Round extends Component {
   };
 
   render() {
-    // The following are for React Drag N Drop functionality
+    // Get questions from State
     const { questions } = this.state;
 
     return (
+      //********************  Side bar Navigation  ***************/
       <div className="game-page">
         <div className="top-content">
           <div className="top-leftside">
@@ -119,17 +127,42 @@ class Round extends Component {
           </Link>
         </div>
 
+        {/* ********************  Main Content  *************** */}
         <div className="main-content">
           <Navbar />
           <div className="main-content-round">
-            <div className="title-round">{`${this.state.gamename} - ${
-              this.state.roundname
-            }`}</div>
+            <div className="top-content-round">
+              <div className="col-1-round">
+                <div className="title-round">{`${this.state.gamename} - ${
+                  this.state.roundname
+                }`}</div>
 
-            <div className="info-round">{`Difficulty: ${this.state.difficulty ||
-              "All"} \xa0\xa0\xa0\xa0\xa0 Questions: ${
-              this.state.questions.length
-            }`}</div>
+                <div className="info-round">
+                  {`Difficulty: ${this.state.difficulty ||
+                    "All"} \xa0\xa0\xa0\xa0\xa0 Questions: ${
+                    this.state.questions.length
+                  }`}
+                </div>
+              </div>
+              <div className="col-2-round">
+                <button
+                  type="button"
+                  className="btn btn-primary round"
+                  data-toggle="modal"
+                  data-target="#answerSheet"
+                >
+                  Print Answer Sheets
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary round"
+                  data-toggle="modal"
+                  data-target="#answerKey"
+                >
+                  Print Answer Key
+                </button>
+              </div>
+            </div>
 
             <div>
               {questions.map((question, index) => {
@@ -142,6 +175,46 @@ class Round extends Component {
                   />
                 );
               })}
+            </div>
+            {/* ********************  Modals  *************** */}
+            <div
+              className="modal fade"
+              id="answerSheet"
+              tabIndex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div className="modal-dialog" role="document">
+                <div className="modal-background">
+                  <div className="">
+                    <h5 className="modal-title">Modal title</h5>
+                    <button
+                      type="button"
+                      className="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    <RoundAnswers questions={questions} />
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="button" className="btn btn-primary">
+                      Print Answer Sheet
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
