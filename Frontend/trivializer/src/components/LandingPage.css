@@ -1,8 +1,8 @@
-.landingpage-top {
-  display: flex;
-  justify-content: flex-end;
+/* Navbar */
+.landing-page-navbar {
+  text-align: right;
 }
-
+/* Signup & Signin Modal Customizations */
 .signup-title,
 .login-title {
   margin-left: 160px;
@@ -88,3 +88,7 @@ input:hover {
   height: 100vh;
   filter: blur(2px);
 }*/
+
+.carousel-one {
+  height: 600px;
+}
