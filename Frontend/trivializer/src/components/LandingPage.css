@@ -1,6 +1,7 @@
 /* Navbar */
 .landing-page-navbar {
   text-align: right;
+  height: 60px;
 }
 /* Signup & Signin Modal Customizations */
 .signup-title,
@@ -89,6 +90,26 @@ input:hover {
   filter: blur(2px);
 }*/
 
+.landingpage-main {
+}
+
 .carousel-one {
-  height: 600px;
+  height: 450px;
+}
+
+/*Main Text */
+.main-text h1 {
+  text-align: left;
+  margin-left: 10%;
+  margin-top: 40px;
+}
+
+.descriptions {
+  display: flex;
+  justify-content: center;
+}
+
+.description-text {
+  width: 20%;
+  margin-right: 6%;
 }

@@ -186,7 +186,7 @@ class LandingPage extends React.Component {
       <div className="landing-page">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <a class="navbar-brand" href="#">
-            How To Play
+            Bar Trivializer
           </a>
           <button
             class="navbar-toggler"
@@ -445,19 +445,26 @@ class LandingPage extends React.Component {
             <span class="sr-only">Next</span>
           </a>
         </div>
-        <div className="landingpage main">
+        <div className="landingpage-main">
           <div className="main-text">
             <h1>Welcome to Bar Trivia</h1>
-            <p className="card-text">
-              Trivializer helps bar trivia hosts create their question sets and answer sheets by
-              pulling from a large and free API of trivia questions. There are free and paid tiers
-              of the app.
-            </p>
-            <p>
-              Users who register get a welcome email and can reset their password via email as well.
-            </p>
+            <div className="descriptions">
+              <p className="description-text">
+                Trivializer helps bar trivia hosts create their question sets and answer sheets by
+                pulling from a large and free API of trivia questions.
+              </p>
+              <p className="description-text">
+                Categories for trivia questions include Entertainment, Science, Art, History, and
+                much more. Questions can be filtered by 3 different difficulty settings.{" "}
+              </p>
+              <p className="description-text">
+                There are free and paid tiers of the app. Users who register get a welcome email and
+                can reset their password via email as well.
+              </p>
+            </div>
+
             <Link to="/billing" className="btn btn-success">
-              Buy Now
+              Play Without Logging In
             </Link>
           </div>
         </div>
