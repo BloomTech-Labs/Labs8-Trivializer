@@ -48,7 +48,7 @@
   margin: 2%;
 }
 
-.modal-background {
+.modal-content.modal-background {
   border: 2px solid black;
   background: white;
 }

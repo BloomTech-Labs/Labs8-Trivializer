@@ -6,6 +6,7 @@ import axios from "axios";
 import "./Questions.css";
 import update from "react-addons-update";
 import RoundAnswers from "./RoundAnswers";
+import ReactToPrint from "react-to-print";
 
 class Round extends Component {
   constructor(props) {
@@ -102,6 +103,8 @@ class Round extends Component {
     );
   };
 
+  print = () => {};
+
   render() {
     // Get questions from State
     const { questions } = this.state;
@@ -186,8 +189,8 @@ class Round extends Component {
               aria-hidden="true"
             >
               <div className="modal-dialog" role="document">
-                <div className="modal-background">
-                  <div className="">
+                <div className="modal-content modal-background">
+                  <div className="modal-header">
                     <h5 className="modal-title">Modal title</h5>
                     <button
                       type="button"
@@ -199,7 +202,11 @@ class Round extends Component {
                     </button>
                   </div>
                   <div className="modal-body">
-                    <RoundAnswers questions={questions} />
+                    {/* Add a reference to RoundAnswers so we know what to print */}
+                    <RoundAnswers
+                      questions={questions}
+                      ref={el => (this.componentRef = el)}
+                    />
                   </div>
                   <div className="modal-footer">
                     <button
@@ -209,13 +216,25 @@ class Round extends Component {
                     >
                       Close
                     </button>
-                    <button type="button" className="btn btn-primary">
-                      Print Answer Sheet
-                    </button>
+                    {/* Wrap button in a ReactToPrint component, with button as it's trigger,
+                     and the referenced RoundAnswers component above as its content */}
+                    <ReactToPrint
+                      trigger={() => (
+                        <button
+                          type="button"
+                          onClick={this.print}
+                          className="btn btn-primary"
+                        >
+                          Print Answer Sheet
+                        </button>
+                      )}
+                      content={() => this.componentRef}
+                    />
                   </div>
                 </div>
               </div>
             </div>
+            {/* ********************  React to Print Components  *************** */}
           </div>
         </div>
       </div>
