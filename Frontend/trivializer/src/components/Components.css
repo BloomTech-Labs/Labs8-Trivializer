@@ -3,12 +3,6 @@
   flex-direction: column;
 }
 
-.main-text {
-  width: 25%;
-  margin: 0 auto;
-  margin-top: 10%;
-}
-
 /* Page Layout goes: [page-name]-page, top-content (top-rightside, top-leftside), main-content (Navbar, main-middle)*/
 .gameslist-page,
 .billing-page,

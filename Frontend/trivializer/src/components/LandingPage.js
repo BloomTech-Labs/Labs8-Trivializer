@@ -445,30 +445,20 @@ class LandingPage extends React.Component {
             <span class="sr-only">Next</span>
           </a>
         </div>
-        <div className="landingpage-top">
-          {/************  Sign up  Button and Modal ************/}
-
-          {/************  Sign in  Button and Modal ************/}
-        </div>
-
-        {/************  Main Landing Page ************/}
         <div className="landingpage main">
-          <div className="main-text card">
-            <div className="card-body">
-              <h5 className="card-title">Welcome to Bar Trivia</h5>
-              <p className="card-text">
-                Trivializer helps bar trivia hosts create their question sets and answer sheets by
-                pulling from a large and free API of trivia questions. There are free and paid tiers
-                of the app.
-              </p>
-              <p>
-                Users who register get a welcome email and can reset their password via email as
-                well.
-              </p>
-              <Link to="/billing" className="btn btn-success">
-                Buy Now
-              </Link>
-            </div>
+          <div className="main-text">
+            <h1>Welcome to Bar Trivia</h1>
+            <p className="card-text">
+              Trivializer helps bar trivia hosts create their question sets and answer sheets by
+              pulling from a large and free API of trivia questions. There are free and paid tiers
+              of the app.
+            </p>
+            <p>
+              Users who register get a welcome email and can reset their password via email as well.
+            </p>
+            <Link to="/billing" className="btn btn-success">
+              Buy Now
+            </Link>
           </div>
         </div>
       </div>
