@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import Questions from "./Questions";
 
-const createDOMPurify = require("dompurify"); // Prevents XSS attacks from incoming HTML
-
-// Sanitizes incoming HTML from questions API and allows for HTML entities while protecting against XSS attacks
-const DOMPurify = createDOMPurify(window);
-
 class RoundAnswers extends Component {
   constructor(props) {
     super(props);

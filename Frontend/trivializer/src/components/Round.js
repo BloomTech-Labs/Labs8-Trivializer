@@ -5,8 +5,12 @@ import Questions from "./Questions";
 import axios from "axios";
 import "./Questions.css";
 import update from "react-addons-update";
-import RoundAnswers from "./RoundAnswers";
 import ReactToPrint from "react-to-print";
+
+const createDOMPurify = require("dompurify"); // Prevents XSS attacks from incoming HTML
+
+// Sanitizes incoming HTML from questions API and allows for HTML entities while protecting against XSS attacks
+const DOMPurify = createDOMPurify(window);
 
 class Round extends Component {
   constructor(props) {
@@ -103,8 +107,6 @@ class Round extends Component {
     );
   };
 
-  print = () => {};
-
   render() {
     // Get questions from State
     const { questions } = this.state;
@@ -148,26 +150,26 @@ class Round extends Component {
                 </div>
               </div>
               <div className="col-2-round">
-                <button
-                  type="button"
-                  className="btn btn-primary round"
-                  data-toggle="modal"
-                  data-target="#answerSheet"
-                >
-                  Print Answer Sheets
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary round"
-                  data-toggle="modal"
-                  data-target="#answerKey"
-                >
-                  Print Answer Key
-                </button>
+                <ReactToPrint
+                  trigger={() => (
+                    <button type="button" className="btn btn-primary round">
+                      Print Answer Sheet
+                    </button>
+                  )}
+                  content={() => this.answerSheetRef}
+                />
+                <ReactToPrint
+                  trigger={() => (
+                    <button type="button" className="btn btn-primary round">
+                      Print Answer Key
+                    </button>
+                  )}
+                  content={() => this.answerKeyRef}
+                />
               </div>
             </div>
 
-            <div>
+            <div ref={el => (this.answerKeyRef = el)}>
               {questions.map((question, index) => {
                 return (
                   <Questions
@@ -179,62 +181,44 @@ class Round extends Component {
                 );
               })}
             </div>
-            {/* ********************  Modals  *************** */}
             <div
-              className="modal fade"
-              id="answerSheet"
-              tabIndex="-1"
-              role="dialog"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
+              className="hiddenAnswers"
+              ref={el => (this.answerSheetRef = el)}
             >
-              <div className="modal-dialog" role="document">
-                <div className="modal-content modal-background">
-                  <div className="modal-header">
-                    <h5 className="modal-title">Modal title</h5>
-                    <button
-                      type="button"
-                      className="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div className="modal-body">
-                    {/* Add a reference to RoundAnswers so we know what to print */}
-                    <RoundAnswers
-                      questions={questions}
-                      ref={el => (this.componentRef = el)}
+              <div>{this.state.gamename}</div>
+              <div>{this.state.roundname}</div>
+              {this.state.questions.map((question, index) => {
+                return (
+                  <div className="question">
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          `${index + 1}) ` +
+                          DOMPurify.sanitize(question.question) // See line 5 for DOMPurify description
+                      }}
                     />
+                    <div>
+                      <ul className="questions">
+                        {question.answers.map((answer, index) => {
+                          return (
+                            <li
+                              key={index}
+                              className="answer"
+                              dangerouslySetInnerHTML={{
+                                // 0x41 is ASCII for 'A'
+                                __html:
+                                  `${String.fromCharCode(0x41 + index)}) ` +
+                                  DOMPurify.sanitize(answer) // Purify incoming HTML while still displaying HTML entities
+                              }}
+                            />
+                          );
+                        })}
+                      </ul>
+                    </div>
                   </div>
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      data-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    {/* Wrap button in a ReactToPrint component, with button as it's trigger,
-                     and the referenced RoundAnswers component above as its content */}
-                    <ReactToPrint
-                      trigger={() => (
-                        <button
-                          type="button"
-                          onClick={this.print}
-                          className="btn btn-primary"
-                        >
-                          Print Answer Sheet
-                        </button>
-                      )}
-                      content={() => this.componentRef}
-                    />
-                  </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
-            {/* ********************  React to Print Components  *************** */}
           </div>
         </div>
       </div>

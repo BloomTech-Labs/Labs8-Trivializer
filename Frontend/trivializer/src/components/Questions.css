@@ -49,6 +49,17 @@
 }
 
 .modal-content.modal-background {
+  height: auto;
   border: 2px solid black;
   background: white;
+}
+
+.hiddenAnswers {
+  display: none;
+}
+
+@media print {
+  .hiddenAnswers {
+    display: block;
+  }
 }
