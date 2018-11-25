@@ -1,4 +1,7 @@
 .question {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
   border: 2px solid black;
   border-radius: 2%;
   margin: 2%;
@@ -10,6 +13,11 @@
   list-style-type: none;
   text-align: left;
   padding: 1%;
+}
+
+.questions-col2 {
+  display: flex;
+  flex-flow: column;
 }
 
 .answer {
@@ -58,8 +66,17 @@
   display: none;
 }
 
+.hiddenAnswers-info {
+  margin: 3%;
+}
 @media print {
   .hiddenAnswers {
     display: block;
+  }
+  .questions-col2 {
+    display: none;
+  }
+  .question {
+    flex-flow: column;
   }
 }

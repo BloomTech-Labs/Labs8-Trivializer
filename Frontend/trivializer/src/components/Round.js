@@ -24,7 +24,8 @@ class Round extends Component {
       difficulty: this.props.difficulty || "easy",
       type: this.props.type || "multiple",
       questions: this.props.questions || [],
-      baseURL: "https://opentdb.com/api.php?"
+      baseURL: "https://opentdb.com/api.php?",
+      replace: []
     };
   }
 
@@ -38,9 +39,22 @@ class Round extends Component {
       return;
     }
 
+    let concatenatedURL = this.buildApiCall();
+    //   Call axios with input parameters
+    axios.get(concatenatedURL).then(response => {
+      // questions will now have unique Id's and complete answers array
+      let questions = this.addIds(response.data.results);
+
+      this.setState({ questions: questions });
+    });
+  };
+
+  buildApiCall = howManyQuestions => {
     //   Prepare arguments to questions API
     // Check is each is undefined, if it is, don't include it in the URL
-    let amount = `&amount=${this.state.numberOfQuestions || 1}`;
+    let amount = `&amount=${howManyQuestions ||
+      this.state.numberOfQuestions ||
+      1}`;
 
     let category = `${
       this.state.category ? `&category=${this.state.category}` : ""
@@ -56,13 +70,7 @@ class Round extends Component {
       this.state.baseURL
     }${amount}${category}${difficulty}${type}`;
 
-    //   Call axios with input parameters
-    axios.get(concatenatedURL).then(response => {
-      // questions will now have unique Id's and complete answers array
-      let questions = this.addIds(response.data.results);
-
-      this.setState({ questions: questions });
-    });
+    return concatenatedURL;
   };
 
   // This functions both adds id's to the incoming
@@ -97,7 +105,7 @@ class Round extends Component {
 
     const dragQuestion = questions[dragIndex];
 
-    // Uses
+    // Uses React's update helper to increase speed and safely mutate state
     this.setState(
       update(this.state, {
         questions: {
@@ -105,6 +113,54 @@ class Round extends Component {
         }
       })
     );
+  };
+
+  replaceQuestion = (questionId, index) => {
+    let apiURL = this.buildApiCall(1);
+
+    axios.get(apiURL).then(response => {
+      // questions will now have unique Id's and complete answers array
+      let question = this.addIds(response.data.results)[0];
+      // replace the default question Id with the removed question id
+      question.id = questionId;
+
+      let questions = this.state.questions.slice();
+      let replace = this.state.replace.slice();
+
+      // If sub array of questionId already exists, push the replaced question,
+      // if not, create the sub-array
+      replace[questionId]
+        ? replace[questionId].push(questions[index])
+        : (replace[questionId] = [questions[index]]);
+
+      questions.splice(index, 1, question);
+
+      this.setState({
+        questions: questions,
+        replace: replace
+      });
+    });
+  };
+
+  undoReplace = (questionId, index) => {
+    // Only proceed if we have replaced that question
+    if (
+      !this.state.replace[questionId] ||
+      this.state.replace[questionId].length < 1
+    ) {
+      return;
+    }
+
+    let questions = this.state.questions.slice();
+    let replace = this.state.replace.slice();
+
+    let question = replace[questionId].shift();
+    questions.splice(index, 1, question);
+
+    this.setState({
+      questions: questions,
+      replace: replace
+    });
   };
 
   render() {
@@ -176,6 +232,12 @@ class Round extends Component {
                     key={question.id}
                     index={index}
                     moveQuestion={this.moveQuestion}
+                    replaceQuestion={() =>
+                      this.replaceQuestion(question.id, index)
+                    }
+                    undoReplace={() => {
+                      this.undoReplace(question.id, index);
+                    }}
                     question={question}
                   />
                 );
@@ -185,11 +247,14 @@ class Round extends Component {
               className="hiddenAnswers"
               ref={el => (this.answerSheetRef = el)}
             >
-              <div>{this.state.gamename}</div>
-              <div>{this.state.roundname}</div>
+              <div className="hiddenAnswers-info">{this.state.gamename}</div>
+              <div className="hiddenAnswers-info">{this.state.roundname}</div>
+              <div className="hiddenAnswers-info">
+                ***Please Circle the Correct Answer***
+              </div>
               {this.state.questions.map((question, index) => {
                 return (
-                  <div className="question">
+                  <div key={index} className="question">
                     <div
                       dangerouslySetInnerHTML={{
                         __html:

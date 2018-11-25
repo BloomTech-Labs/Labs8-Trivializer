@@ -33,33 +33,54 @@ class Questions extends Component {
     return connectDragSource(
       connectDropTarget(
         <div className="question" style={{ opacity: opacity }}>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: `${index + 1}) ` + DOMPurify.sanitize(question.question) // See line 5 for DOMPurify description
-            }}
-          />
-          <div>
-            <ul className="questions">
-              {question.answers.map((answer, index) => {
-                return (
-                  <li
-                    key={index}
-                    style={
-                      answer === question.correct_answer
-                        ? { fontWeight: "bold" }
-                        : { fontWeight: "normal" }
-                    }
-                    className="answer"
-                    dangerouslySetInnerHTML={{
-                      // 0x41 is ASCII for 'A'
-                      __html:
-                        `${String.fromCharCode(0x41 + index)}) ` +
-                        DOMPurify.sanitize(answer) // Purify incoming HTML while still displaying HTML entities
-                    }}
-                  />
-                );
-              })}
-            </ul>
+          <div className="questions-col1">
+            <div style={{ opacity: opacity }}>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    `${index + 1}) ` + DOMPurify.sanitize(question.question) // See line 5 for DOMPurify description
+                }}
+              />
+              <div>
+                <ul className="questions">
+                  {question.answers.map((answer, index) => {
+                    return (
+                      <li
+                        key={index}
+                        style={
+                          answer === question.correct_answer
+                            ? { fontWeight: "bold" }
+                            : { fontWeight: "normal" }
+                        }
+                        className="answer"
+                        dangerouslySetInnerHTML={{
+                          // 0x41 is ASCII for 'A'
+                          __html:
+                            `${String.fromCharCode(0x41 + index)}) ` +
+                            DOMPurify.sanitize(answer) // Purify incoming HTML while still displaying HTML entities
+                        }}
+                      />
+                    );
+                  })}
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="questions-col2">
+            <button
+              onClick={this.props.replaceQuestion}
+              type="button"
+              className="btn btn-primary round"
+            >
+              Replace Question
+            </button>
+            <button
+              onClick={this.props.undoReplace}
+              type="button"
+              className="btn btn-primary round"
+            >
+              Undo Replace
+            </button>
           </div>
         </div>
       )
@@ -73,7 +94,8 @@ const questionSource = {
   beginDrag(props) {
     return {
       question: props.question,
-      index: props.index
+      index: props.index,
+      listId: props.listId
     };
   }
 };
