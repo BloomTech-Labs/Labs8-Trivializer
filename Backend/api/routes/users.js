@@ -263,8 +263,21 @@ server.post("/save", utilities.protected, async (req, res) => {
 server.put("/editgame/:id", utilities.protected, async (req, res) => {
     try {
         const { id } = req.params;
-        const game = { ...req.body };
-        res.status(200).json(game);
+        const edit = { ...req.body };
+
+        // update game by id
+        let game = await db("Games")
+            .where("id", id)
+            .update({
+                name: edit.gamename,
+                description: edit.description,
+                date_played: edit.datePlayed
+            });
+
+        // get game by id
+        let newGame = await db("Games").where("id", id);
+
+        res.status(200).json(newGame);
     } catch (err) {
         console.log("err.message: ", err.message);
         res.status(500).json({ error: err.message });
