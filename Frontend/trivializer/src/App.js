@@ -9,6 +9,8 @@ import Game from "./components/Game";
 import { Route, withRouter } from "react-router-dom";
 import Round from "./components/Round";
 import CreateGameView from "./components/CreateGameView";
+import { DragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
 
 /**
  * App Component
@@ -36,4 +38,4 @@ class App extends Component {
     }
 }
 
-export default withRouter(App);
+export default withRouter(DragDropContext(HTML5Backend)(App));
