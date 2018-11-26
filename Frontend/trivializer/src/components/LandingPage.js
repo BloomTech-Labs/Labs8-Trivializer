@@ -313,16 +313,16 @@ class LandingPage extends React.Component {
                             >
                               {this.state.confirm_error}
                             </label>
+                            <button
+                              name="register"
+                              onClick={this.handleSubmit}
+                              className="create-button btn btn-primary"
+                            >
+                              Create My Account
+                            </button>
                           </form>
                         </div>
-                        <button
-                          name="register"
-                          onClick={this.handleSubmit}
-                          type="button"
-                          className="create-button btn btn-primary"
-                        >
-                          Create My Account
-                        </button>
+
                         <div className="google-button-signup" onClick={this.googleLogin}>
                           <img
                             src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
@@ -396,6 +396,7 @@ class LandingPage extends React.Component {
                             </button>
                           </form>
                         </div>
+
                         <div className="google-button-signup" onClick={this.googleLogin}>
                           <img src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg" />
                           <span className="google-text"> Sign In With Google</span>
