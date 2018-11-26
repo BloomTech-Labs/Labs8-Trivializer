@@ -15,7 +15,7 @@ import { combineReducers } from "redux";
 
 const initialState = {
     games: [],
-    game: [],
+    game: {},
     game_id: null,
     rounds: [],
     round: [],
