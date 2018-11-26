@@ -49,9 +49,8 @@ class Round extends Component {
     });
   };
 
+  // Builds a call to the questions API based on which parameters in state are set
   buildApiCall = howManyQuestions => {
-    //   Prepare arguments to questions API
-    // Check is each is undefined, if it is, don't include it in the URL
     let amount = `&amount=${howManyQuestions ||
       this.state.numberOfQuestions ||
       1}`;
@@ -115,6 +114,8 @@ class Round extends Component {
     );
   };
 
+  // Gets a new question from Questions API based on settings in state
+  // saves old question in state in case user hits "undo replace"
   replaceQuestion = (questionId, index) => {
     let apiURL = this.buildApiCall(1);
 
@@ -142,6 +143,8 @@ class Round extends Component {
     });
   };
 
+  // Retrieves the old question saved in state in "replace"
+  // replace is a 2d array, with each sub array corresponding to the id that question
   undoReplace = (questionId, index) => {
     // Only proceed if we have replaced that question
     if (
