@@ -11,175 +11,185 @@ const email_regex = /^([a-z\d\.-]+)@([a-z\d-]{2,8})\.([a-z]{2,8})(\.[a-z]{2,8})?
 const password_regex = /(?=.*\d)(?=.*[a-z])[0-9a-zA-Z]{8,}/;
 
 function validate(field, regex) {
-  if (regex.test(field)) {
-    return true;
-  }
-  return false;
+    if (regex.test(field)) {
+        return true;
+    }
+    return false;
 }
 
 class LandingPage extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      registerURL: "https://testsdepl.herokuapp.com/users/register",
-      signinURL: "https://testsdepl.herokuapp.com/users/login",
-      signup_username: "",
-      signup_email: "",
-      signup_password: "",
-      signup_password2: "",
-      signin_username: "",
-      signin_password: "",
-      username_error: "",
-      email_error: "",
-      password_error: "",
-      confirm_error: ""
+    constructor() {
+        super();
+        this.state = {
+            registerURL: "https://testsdepl.herokuapp.com/users/register",
+            signinURL: "https://testsdepl.herokuapp.com/users/login",
+            signup_username: "",
+            signup_email: "",
+            signup_password: "",
+            signup_password2: "",
+            signin_username: "",
+            signin_password: "",
+            username_error: "",
+            email_error: "",
+            password_error: "",
+            confirm_error: ""
+        };
+    }
+
+    redirect = e => {
+        // Note from nicky: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
+        window.location.reload();
+        this.props.history.push("/gameslist");
     };
-  }
 
-  redirect = e => {
-    // Note from nicky: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
-    window.location.reload();
-    this.props.history.push("/gameslist");
-  };
+    // Sets users input to local state
+    handleInput = e => {
+        this.setState({ [e.target.name]: e.target.value, error: "" });
+    };
 
-  // Sets users input to local state
-  handleInput = e => {
-    this.setState({ [e.target.name]: e.target.value, error: "" });
-  };
+    validateRegister = () => {
+        // Returning 1 lets us link to our backend, so we want to return 0 if any error occurs.
+        let validation = 1;
+        if (!this.state.signup_username) {
+            validation = 0;
+            this.setState({ username_error: "Username cannot be left blank." });
+        } else {
+            if (validate(this.state.signup_username, username_regex) !== true) {
+                validation = 0;
+                this.setState({
+                    username_error:
+                        "Needs to be: at least 4 characters, letters and numbers only."
+                });
+            } else {
+                this.setState({ username_error: "" });
+            }
+        }
+        if (!this.state.signup_email) {
+            validation = 0;
+            this.setState({ email_error: "Please enter an email address." });
+        } else {
+            if (validate(this.state.signup_email, email_regex) !== true) {
+                validation = 0;
+                this.setState({
+                    email_error: "Invalid email format, please try again."
+                });
+            } else {
+                this.setState({ email_error: "" });
+            }
+        }
+        if (!this.state.signup_password) {
+            validation = 0;
+            this.setState({ password_error: "Please enter a password." });
+        } else {
+            if (validate(this.state.signup_password, password_regex) !== true) {
+                validation = 0;
+                this.setState({
+                    password_error:
+                        "1 lowercase letter, 1 number, and at least 8 characters needed."
+                });
+            } else {
+                this.setState({ password_error: "" });
+            }
+        }
+        if (
+            this.state.signup_password !== this.state.signup_password2 ||
+            (!this.state.signup_password && !this.state.signup_password2)
+        ) {
+            validation = 0;
+            this.setState({
+                confirm_error: "Passwords do not match, please try again."
+            });
+        } else {
+            this.setState({ confirm_error: "" });
+        }
 
-  validateRegister = () => {
-    // Returning 1 lets us link to our backend, so we want to return 0 if any error occurs.
-    let validation = 1;
-    if (!this.state.signup_username) {
-      validation = 0;
-      this.setState({ username_error: "Username cannot be left blank." });
-    } else {
-      if (validate(this.state.signup_username, username_regex) !== true) {
-        validation = 0;
-        this.setState({
-          username_error: "Needs to be: at least 4 characters, letters and numbers only."
+        // Now that we've done all the checks, we can return the 0 or 1 message.
+        console.log("validation is: ", validation);
+        console.log("validation type is: ", typeof validation);
+        return validation;
+    };
+
+    validateSignin = () => {
+        let validation = 1;
+        if (!this.state.signin_username) {
+            validation = 0;
+            this.setState({ username_error: "Please enter a valid Username." });
+        } else {
+            if (validate(this.state.signin_username, username_regex) !== true) {
+                validation = 0;
+                this.setState({
+                    username_error:
+                        "Needs to be: at least 4 characters, letters and numbers only."
+                });
+            } else {
+                this.setState({ username_error: "" });
+            }
+        }
+        if (!this.state.signin_password) {
+            validation = 0;
+            this.setState({ password_error: "Please put in a password." });
+        } else {
+            this.setState({ password_error: "" });
+        }
+        return validation;
+    };
+
+    // Handles the submit call on the Register modal
+    handleSubmit = e => {
+        e.preventDefault();
+
+        let credentials;
+        let url;
+
+        if (e.target.name === "register" && this.validateRegister()) {
+            credentials = {
+                username: this.state.signup_username,
+                password: this.state.signup_password,
+                email: this.state.signup_email
+            };
+            url = this.state.registerURL;
+        } else if (e.target.name === "signin" && this.validateSignin()) {
+            credentials = {
+                username: this.state.signin_username,
+                password: this.state.signin_password
+            };
+            url = this.state.signinURL;
+        } else {
+            return;
+        }
+
+        axios
+            .post(url, {
+                username: credentials.username,
+                password: credentials.password,
+                email: credentials.email || ""
+            })
+            .then(res => {
+                const token = res.data;
+
+                sessionStorage.setItem("jwt", token);
+                sessionStorage.setItem("user", credentials.username);
+                this.redirect();
+            })
+            .catch(err => {
+                console.log("err.response: ", err.response);
+                this.setState({
+                    password_error: "Incorrect password, please try again."
+                });
+            });
+    };
+
+    googleLogin = e => {
+        e.preventDefault();
+        auth.signInWithPopup(provider).then(result => {
+            const user = result.user;
+            localStorage.setItem("username", user.email);
+            localStorage.setItem("password", user.l);
+            window.location.reload();
+            this.redirect();
+            //this.setState({ user });
         });
-      } else {
-        this.setState({ username_error: "" });
-      }
-    }
-    if (!this.state.signup_email) {
-      validation = 0;
-      this.setState({ email_error: "Please enter an email address." });
-    } else {
-      if (validate(this.state.signup_email, email_regex) !== true) {
-        validation = 0;
-        this.setState({ email_error: "Invalid email format, please try again." });
-      } else {
-        this.setState({ email_error: "" });
-      }
-    }
-    if (!this.state.signup_password) {
-      validation = 0;
-      this.setState({ password_error: "Please enter a password." });
-    } else {
-      if (validate(this.state.signup_password, password_regex) !== true) {
-        validation = 0;
-        this.setState({
-          password_error: "1 lowercase letter, 1 number, and at least 8 characters needed."
-        });
-      } else {
-        this.setState({ password_error: "" });
-      }
-    }
-    if (
-      this.state.signup_password !== this.state.signup_password2 ||
-      (!this.state.signup_password && !this.state.signup_password2)
-    ) {
-      validation = 0;
-      this.setState({ confirm_error: "Passwords do not match, please try again." });
-    } else {
-      this.setState({ confirm_error: "" });
-    }
-
-    // Now that we've done all the checks, we can return the 0 or 1 message.
-    console.log("validation is: ", validation);
-    console.log("validation type is: ", typeof validation);
-    return validation;
-  };
-
-  validateSignin = () => {
-    let validation = 1;
-    if (!this.state.signin_username) {
-      validation = 0;
-      this.setState({ username_error: "Please enter a valid Username." });
-    } else {
-      if (validate(this.state.signin_username, username_regex) !== true) {
-        validation = 0;
-        this.setState({
-          username_error: "Needs to be: at least 4 characters, letters and numbers only."
-        });
-      } else {
-        this.setState({ username_error: "" });
-      }
-    }
-    if (!this.state.signin_password) {
-      validation = 0;
-      this.setState({ password_error: "Please put in a password." });
-    } else {
-      this.setState({ password_error: "" });
-    }
-    return validation;
-  };
-
-  // Handles the submit call on the Register modal
-  handleSubmit = e => {
-    e.preventDefault();
-
-    let credentials;
-    let url;
-
-    if (e.target.name === "register" && this.validateRegister()) {
-      credentials = {
-        username: this.state.signup_username,
-        password: this.state.signup_password,
-        email: this.state.signup_email
-      };
-      url = this.state.registerURL;
-    } else if (e.target.name === "signin" && this.validateSignin()) {
-      credentials = {
-        username: this.state.signin_username,
-        password: this.state.signin_password
-      };
-      url = this.state.signinURL;
-    } else {
-      return;
-    }
-
-    axios
-      .post(url, {
-        username: credentials.username,
-        password: credentials.password,
-        email: credentials.email || ""
-      })
-      .then(res => {
-        const token = res.data;
-
-        sessionStorage.setItem("jwt", token);
-        this.redirect();
-      })
-      .catch(err => {
-        console.log("err.response: ", err.response);
-        this.setState({ password_error: "Incorrect password, please try again." });
-      });
-  };
-
-  googleLogin = e => {
-    e.preventDefault();
-    auth.signInWithPopup(provider).then(result => {
-      const user = result.user;
-      localStorage.setItem("username", user.email);
-      localStorage.setItem("password", user.l);
-      window.location.reload();
-      this.redirect();
-      //this.setState({ user });
-    });
-  };
+    };
 
   render() {
     return (
@@ -474,14 +484,14 @@ class LandingPage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+    return {};
 };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    {
-      /*mapped functions here*/
-    }
-  )(LandingPage)
+    connect(
+        mapStateToProps,
+        {
+            /*mapped functions here*/
+        }
+    )(LandingPage)
 );

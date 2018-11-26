@@ -66,16 +66,18 @@ server.get("/questions", (req, res) => {
 });
 
 // Add new user
-server.post("/register", (req, res) => {
-  console.log("req.body: ", req.body);
-  const { username, password, name, email, phone, logo } = req.body; // This table also includes credit card info, will handle in billing
+server.post("/register", async (req, res) => {
+  // This table also includes credit card info, will handle in billing
+  const { username, password, name, email, phone, logo } = req.body;
 
+  // Check to see if we have a username, password and email
   if (!username || !password || !email) {
     res.status(400).json({
       error: "Please include a valid User Name, password and email address"
     });
   }
 
+  // Encrypt password and add to package to be stored in Users table
   const hash = sc.encrypt(password);
   const credentials = {
     username: username,
@@ -86,42 +88,82 @@ server.post("/register", (req, res) => {
     logo: logo
   };
 
-  db("Users") // Hit Database table 'Users'
-    .insert(credentials) // Credentials should include at least username, password and email. No duplicate usernames allowed
-    .then(response => {
+  try {
+    // Try to insert the user
+    let userId = await db("Users").insert(credentials);
+
+    if (!userId) throw new Error("Unable to add that user");
+
+    // Generate a new token and return it
+    let token = utilities.generateToken(username);
+    res.status(201).json(token);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Login a user takes in username and password. Validates credentials
+server.post("/login", utilities.getUser, async (req, res) => {
+  let { username, password } = req.body;
+  try {
+    // Hit users table searching for username
+    let user = await db("Users")
+      .where({ username })
+      .first();
+
+    if (!user) throw new Error("Incorrect credentials");
+    // decrypt the returned, hashed password
+    decryptedPassword = sc.decrypt(user.password);
+
+    // Check that passwords match
+    if (decryptedPassword === password) {
+      // Generate a new token and return it
       let token = utilities.generateToken(username);
       res.status(201).json(token);
-    })
-
-    .catch(err => {
-      console.log("err.message: ", err.message);
-      res.status(500).json({ error: err.message });
-    });
+    } else {
+      res.status(401).json({ error: "Incorrect Credentials" });
+    }
+  } catch (err) {
+    res.status(401).json({ error: err.message });
+  }
 });
 
-server.post("/login", utilities.getUser, (req, res) => {
-  let { username, password } = req.body;
-  console.log("username: ", username);
+// Creates a new game, takes in username, created, gameName and description (string)
+server.post("/creategame", utilities.protected, async (req, res) => {
+  try {
+    const { username, created, gameName, description } = req.body;
 
-  db("Users")
-    .where({ username })
-    .first()
-    .then(user => {
-      if (user) {
-        decryptedPassword = sc.decrypt(user.password);
-        console.log("decryptedPassword: ", decryptedPassword);
-        if (decryptedPassword === password) {
-          // generate JWT and return it
-          let token = utilities.generateToken(username);
-          res.status(201).json(token);
-        } else {
-          res.status(401).json({ error: "Incorrect Credentials" });
-        }
-      }
-    })
-    .catch(err => res.status(401).json({ error: err.message }));
+    // Returns an array with a single user object, we just want the id here
+    let user = await db("Users")
+      .where({ username })
+      .first();
+
+    if (!user) throw new Error("No user by that name");
+
+    // Get the id from the returned user object
+    let userId = user.id;
+
+    // Create package with all necessary fields for the Games table
+    let gamePackage = {
+      name: gameName,
+      date_created: created,
+      date_played: 0,
+      user_id: userId,
+      description: description
+    };
+
+    // inserting into games returns an array with 1 game ID if successful
+    let gameId = (await db("Games").insert(gamePackage))[0];
+
+    if (!gameId) throw new Error("Error creating new game");
+
+    res.status(201).json(gameId);
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
 });
 
+// Saves a whole game, takes in the usernam, description, gamename, dateCreated, datePlayed, and rounds array
 server.post("/save", utilities.protected, async (req, res) => {
   // Transactions allow us to perform multiple database calls, and if one of them doesn't work,
   // roll back all other calls. Maintains data consistency
@@ -157,9 +199,8 @@ server.post("/save", utilities.protected, async (req, res) => {
       let gameId = (await trx("Games").insert(gameInfo))[0];
 
       // Enter Rounds in Database
-      const numberOfRounds = rounds.length; // First get number of rounds
 
-      // Then assemble what we're going to insert in rounds table
+      // Assemble what we're going to insert in rounds table
       const roundsPackage = rounds.map(round => {
         return {
           name: round.roundname,
@@ -245,12 +286,15 @@ server.post(
   }
 );
 
-// Get all rounds for a game_id passed in
+// Get all rounds for a game id passed in
 server.get("/rounds/:id", utilities.protected, async (req, res) => {
   try {
+    // Game Id passed in request URL
     const { id } = req.params;
 
+    // Gets all rounds from the Rounds table where the game id matches the passed in ID
     let rounds = await db
+      // Choose which columns we want to select, and assign an alias
       .select(
         "r.id as roundId",
         "r.name as roundName",
@@ -272,16 +316,19 @@ server.get("/rounds/:id", utilities.protected, async (req, res) => {
 // Delete a round based on round id
 server.delete("/round/:id", utilities.protected, async (req, res) => {
   const { id } = req.params;
+  try {
+    // Returns the id of the deleted round
+    let response = await db("Rounds")
+      .where({ id })
+      .del();
 
-  db("Rounds")
-    .where({ id })
-    .del()
-    .then(response => {
-      res.status(200).json(`Round ${id} deleted`);
-    })
-    .catch(err => {
-      res.status(400).json({ error: `Error deleting round ${id}` });
-    });
+    // If response === 0 no round was deleted
+    if (response === 0) throw new Error(`Error deleting round ${id}`);
+
+    res.status(200).json(`Round ${response} deleted`);
+  } catch (err) {
+    res.status(400).json({ error: `Error deleting round ${id}` });
+  }
 });
 
 // Save a round
@@ -297,9 +344,11 @@ server.post("/round", utilities.protected, async (req, res) => {
       questions
     } = req.body;
 
-    let validGame = await db("Games").where({ id: gameId }); // Returns empty array if no game
+    // Returns empty array if no game
+    let validGame = await db("Games").where({ id: gameId });
 
-    if (validGame.length < 1) throw new Error("no Game by that ID"); // Check to see if valid gameId
+    // Check to see if valid gameId
+    if (validGame.length < 1) throw new Error("no Game by that ID");
 
     // Assemble round info to be entered in DB
     let roundPackage = {
@@ -311,7 +360,8 @@ server.post("/round", utilities.protected, async (req, res) => {
       number_of_questions: questions.length
     };
 
-    let roundId = (await db("Rounds").insert(roundPackage))[0]; // Returns an array of 1 item
+    // Returns an array of 1 item, pull that item out with [0]
+    let roundId = (await db("Rounds").insert(roundPackage))[0];
 
     // Return new round ID
     res.status(200).json(roundId);
