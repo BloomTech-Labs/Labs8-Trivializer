@@ -13,7 +13,10 @@
 
 .navbar-right-list:hover {
   cursor: pointer;
-  /*color: red;*/
+}
+
+.navbar-link:hover {
+  color: red;
 }
 
 /* Signup & Signin Modal*/

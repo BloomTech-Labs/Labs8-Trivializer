@@ -202,24 +202,24 @@ class LandingPage extends React.Component {
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="landingpage-navbar-right navbar-nav ml-auto">
               <li class="navbar-right-list active">
-                <div>
+                <div className="navbar-link">
                   How To Play <span class="sr-only">(current)</span>
                 </div>
               </li>
               <li class="navbar-right-list active">
-                <div>
+                <div className="navbar-link">
                   FAQ <span class="sr-only">(current)</span>
                 </div>
               </li>
               <li class="navbar-right-list active">
-                <div>
+                <div className="navbar-link">
                   About Us <span class="sr-only">(current)</span>
                 </div>
               </li>
               {/* Navbar Signup Link */}
               <li class="navbar-right-list">
                 <div className="signup">
-                  <div className="nav-signup" data-toggle="modal" data-target="#signup">
+                  <div className="navbar-link" data-toggle="modal" data-target="#signup">
                     Sign Up
                   </div>
 
@@ -338,7 +338,7 @@ class LandingPage extends React.Component {
               {/* Navbar Sign In Link */}
               <li class="navbar-right-list">
                 <div className="signin">
-                  <div className="nav-signin" data-toggle="modal" data-target="#signin">
+                  <div className="navbar-link" data-toggle="modal" data-target="#signin">
                     Sign In
                   </div>
 
