@@ -9,6 +9,8 @@ import Game from "./components/Game";
 import { Route, withRouter } from "react-router-dom";
 import Round from "./components/Round";
 import CreateGameView from "./components/CreateGameView";
+import { DragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
 
 class App extends Component {
   constructor() {
@@ -75,11 +77,15 @@ class App extends Component {
         <Route
           path="/gameslist"
           render={props => (
-            <GamesList {...props} gameId={this.state.gameId} gamesList={this.state.gamesList} />
+            <GamesList
+              {...props}
+              gameId={this.state.gameId}
+              gamesList={this.state.gamesList}
+            />
           )}
         />
         <Route path="/creategame" component={CreateGameView} />
-        <Route path="/setting" component={Round} />
+        <Route path="/setting" component={Setting} />
         <Route path="/invoices" component={Invoices} />
         <Route
           exact
@@ -99,4 +105,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+export default withRouter(DragDropContext(HTML5Backend)(App));
