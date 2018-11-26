@@ -269,7 +269,7 @@ server.put("/editgame/:id", utilities.protected, async (req, res) => {
         let game = await db("Games")
             .where("id", id)
             .update({
-                name: edit.gamename,
+                name: edit.gameName,
                 description: edit.description,
                 date_played: edit.datePlayed
             });
@@ -277,7 +277,13 @@ server.put("/editgame/:id", utilities.protected, async (req, res) => {
         // get game by id
         let newGame = await db("Games").where("id", id);
 
-        res.status(200).json(newGame);
+        res.status(200).json({
+            gameId: newGame[0]["id"],
+            gamename: newGame[0]["name"],
+            description: newGame[0]["description"],
+            dateCreated: newGame[0]["date_created"],
+            datePlayed: newGame[0]["date_played"]
+        });
     } catch (err) {
         console.log("err.message: ", err.message);
         res.status(500).json({ error: err.message });
