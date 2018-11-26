@@ -1,3 +1,5 @@
+/* Handles Styles for both Questions.js and Round.js */
+
 .question {
   display: flex;
   flex-flow: row;
