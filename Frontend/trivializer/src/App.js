@@ -12,97 +12,30 @@ import CreateGameView from "./components/CreateGameView";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
+/**
+ * App Component
+ * - handles routes to specified component
+ */
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      gameId: 0,
-      gamesList: [
-        // {
-        //     id: 0,
-        //     title: Game 0,
-        //     description: Game 0,
-        //     image: "",
-        //     created: "11-14-2018",
-        //     played: "",
-        //     rounds: []
-        // }
-      ],
-      roundId: 0,
-      roundsList: [
-        // {
-        //     id: 0,
-        //     title: "Round One",
-        //     numberOfQs: 10,
-        //     category: "",
-        //     difficulty: "",
-        //     type: ""
-        // }
-      ]
-    };
-  }
-
-  handleGameId = () => {
-    if (this.state.gamesList.length > 0) {
-      this.setState({ gameId: this.state.gameId + 1 });
+    constructor() {
+        super();
+        this.state = {};
     }
-  };
 
-  handleSaveGame = newGame => {
-    const currentGamesList = this.state.gamesList;
-    const result = currentGamesList.filter(game => game.id === newGame.id);
-    if (result.length < 1) {
-      console.log("GAME SAVED");
-      // append new game
-      this.setState({
-        gamesList: [...this.state.gamesList, newGame],
-        gameId: this.state.gameId + 1
-      });
-    } else {
-      console.log(currentGamesList.findIndex(game => game.id === newGame.id));
-      const index = currentGamesList.findIndex(game => game.id === newGame.id);
-
-      // edit existing game
-      currentGamesList[index]["title"] = newGame.title;
-      currentGamesList[index]["description"] = newGame.description;
-      currentGamesList[index]["played"] = newGame.played;
+    render() {
+        return (
+            <div className="App">
+                <Route exact path="/" component={LandingPage} />
+                <Route path="/billing" component={Billing} />
+                <Route path="/gameslist" component={GamesList} />
+                <Route path="/creategame" component={CreateGameView} />
+                <Route path="/setting" component={Round} />
+                <Route path="/invoices" component={Invoices} />
+                <Route path="/game/:id" component={Game} />
+                <Route path="/game/:id/round/:id" component={Round} />
+            </div>
+        );
     }
-  };
-
-  render() {
-    return (
-      <div className="App">
-        <Route exact path="/" component={LandingPage} />
-        <Route path="/billing" component={Billing} />
-        <Route
-          path="/gameslist"
-          render={props => (
-            <GamesList
-              {...props}
-              gameId={this.state.gameId}
-              gamesList={this.state.gamesList}
-            />
-          )}
-        />
-        <Route path="/creategame" component={CreateGameView} />
-        <Route path="/setting" component={Setting} />
-        <Route path="/invoices" component={Invoices} />
-        <Route
-          exact
-          path="/game/:id"
-          render={props => (
-            <Game
-              {...props}
-              handleSaveGame={this.handleSaveGame}
-              gameId={this.state.gameId}
-              gamesList={this.state.gamesList}
-            />
-          )}
-        />
-        <Route path="/game/:id/round/:id" component={Round} />
-      </div>
-    );
-  }
 }
 
 export default withRouter(DragDropContext(HTML5Backend)(App));

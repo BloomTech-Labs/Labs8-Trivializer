@@ -2,18 +2,21 @@ import React, { Component } from "react";
 import Navbar from "./Navbar";
 import Rounds from "./Rounds";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { fetchGameReq } from "../actions";
+import EditGameView from "./EditGameView";
 
+/**
+ * Game Component
+ * - renders selected game with an EditGameView and RoundsList Component
+ */
 class Game extends Component {
     constructor(props) {
         super(props);
         this.state = {
             game: null,
-            curGameId: "",
-            gameTitle: "",
-            gameDescription: "",
-            gameDate: "",
             roundId: 0,
-            roundsList: [
+            rounds: [
                 // {
                 //     id: 0,
                 //     title: "Round One",
@@ -28,54 +31,12 @@ class Game extends Component {
 
     componentDidMount() {
         const id = Number(this.props.match.params.id);
-        // implement redux actions later
-        const result = this.props.gamesList.filter(game => game.id === id);
-        console.log(result);
-        if (result.length === 1) {
-            this.setState({
-                game: result[0],
-                curGameId: id,
-                gameTitle: result[0]["title"],
-                gameDescription: result[0]["description"],
-                gameDate: result[0]["played"]
-            });
-        }
+        this.props.fetchGameReq(id);
     }
 
-    handleChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
-    };
-
-    handleCreateGame = () => {
-        console.log("GAME CREATED");
-        console.log(`GAME ID: ${this.props.match.params.id}`);
-        // console.log(typeof this.props.match.params.id);
-        // console.log(typeof this.props.gameId);
-        // const gameId = Number(this.props.match.params.id);
-        // const result = this.props.gamesList.filter(game => game.id === gameId);
-        // console.log(result);
-
-        const d = new Date();
-
-        let game = {
-            id: this.props.gameId,
-            title: this.state.gameTitle,
-            description: this.state.gameDescription,
-            image: "",
-            created: `${d.getMonth() + 1}-${d.getDate()}-${d.getFullYear()}`,
-            played: this.state.gameDate,
-            rounds: []
-        };
-
-        // change id to edit existing game
-        if (this.state.game) {
-            game.id = this.state.game.id;
-        }
-
-        this.props.handleSaveGame(game);
-    };
-
     render() {
+        // if (!this.props.game) return <div>Loading...</div>;
+
         return (
             <div className="game-page">
                 <div className="top-content">
@@ -102,57 +63,7 @@ class Game extends Component {
                 <div className="main-content">
                     <Navbar />
                     <div>
-                        <div>Logo</div>
-                        <input
-                            name="gameTitle"
-                            placeholder="Game Title"
-                            value={this.state.gameTitle}
-                            onChange={this.handleChange}
-                        />
-                        <input
-                            name="gameDescription"
-                            placeholder="Game Description"
-                            value={this.state.gameDescription}
-                            onChange={this.handleChange}
-                        />
-                        <input
-                            type="date"
-                            name="gameDate"
-                            placeholder="mm/dd/yyyy"
-                            value={this.state.gameDate}
-                            onChange={this.handleChange}
-                        />
-                        <button>Print Answer Sheets</button>
-                        <button>Print Answer Key</button>
-                        <button onClick={this.handleCreateGame}>
-                            Save Game
-                        </button>
-
-                        {this.state.roundsList.length < 1 ? (
-                            <div>
-                                <h3 className="main-middle">Add New Round</h3>
-                                <Link to={`/round/${this.state.roundId}`}>
-                                    +
-                                </Link>
-                            </div>
-                        ) : (
-                            this.state.roundsList.map((round, i) => (
-                                <div>
-                                    <RoundDetails
-                                        key={round["id"]}
-                                        index={i}
-                                        round={round}
-                                    />
-                                </div>
-                            ))
-                        )}
-
-                        {this.state.roundsList.length > 1 ? (
-                            <div>
-                                <div>New Round</div>
-                                <button>+</button>
-                            </div>
-                        ) : null}
+                        <EditGameView game={this.props.game} />
                     </div>
                 </div>
             </div>
@@ -160,12 +71,15 @@ class Game extends Component {
     }
 }
 
-function RoundDetails({ round }) {
-    return (
-        <div>
-            <Rounds round={round} />
-        </div>
-    );
-}
+const mapStateToProps = ({ gamesList }) => {
+    console.log(gamesList.game[0]);
+    return {
+        game: gamesList.game[0]
+        // rounds: gamesList.game.rounds
+    };
+};
 
-export default Game;
+export default connect(
+    mapStateToProps,
+    { fetchGameReq }
+)(Game);

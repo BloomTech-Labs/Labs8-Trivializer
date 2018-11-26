@@ -4,6 +4,10 @@ import NavBar from "./Navbar";
 import { connect } from "react-redux";
 import { submitGameReq } from "../actions";
 
+/**
+ * CreateGameView Component
+ * - view to create and submit a game
+ */
 class CreateGameView extends Component {
     constructor(props) {
         super(props);
@@ -12,7 +16,8 @@ class CreateGameView extends Component {
             gameDescription: "",
             gameCreated: "",
             gameCreatedMS: "",
-            gameScheduled: ""
+            gameScheduled: "",
+            gameScheduledMS: ""
         };
     }
 
@@ -25,7 +30,8 @@ class CreateGameView extends Component {
             gameCreated: `${d.getMonth() +
                 1}-${d.getDate()}-${d.getFullYear()}`,
             gameCreatedMS: Date.now(),
-            gameScheduled: ""
+            gameScheduled: "",
+            gameScheduledMS: ""
         });
     }
 
@@ -36,12 +42,15 @@ class CreateGameView extends Component {
     handleSubmit = () => {
         if (this.state.gameTitle === "") return null;
 
+        const d = new Date(this.state.gameScheduled);
+        const ms = d.getTime();
+
         const game = {
             username: sessionStorage.getItem("user"),
-            gameName: this.state.gameTitle,
+            gameTitle: this.state.gameTitle,
             gameDescription: this.state.gameDescription,
-            gameCreatedMS: this.state.gameCreatedMS
-            // gameScheduled: this.state.gameScheduled
+            gameCreatedMS: this.state.gameCreatedMS,
+            gameScheduledMS: ms
         };
 
         this.props.submitGameReq(game);

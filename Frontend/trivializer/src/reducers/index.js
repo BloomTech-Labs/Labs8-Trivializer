@@ -11,6 +11,7 @@ import {
     UPDATED_GAME,
     ERROR
 } from "../actions";
+import { combineReducers } from "redux";
 
 const initialState = {
     games: [],
@@ -34,7 +35,7 @@ const initialState = {
     error: null
 };
 
-export default (state = initialState, action) => {
+const gamesReducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCHING_GAMES:
             return Object.assign({}, state, {
@@ -75,7 +76,7 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 updating_game: false,
                 updated_game: true,
-                games: action.payload
+                game: action.payload
             });
         case DELETING_GAME:
             return Object.assign({}, state, {
@@ -95,3 +96,9 @@ export default (state = initialState, action) => {
             return state;
     }
 };
+
+const rootReducer = combineReducers({
+    gamesList: gamesReducer
+});
+
+export default rootReducer;

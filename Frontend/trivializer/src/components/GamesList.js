@@ -5,6 +5,10 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchGamesReq } from "../actions";
 
+/**
+ * GamesList Component
+ * - renders a list of games for the logged in user
+ */
 class GamesList extends Component {
     constructor(props) {
         super(props);
@@ -15,10 +19,16 @@ class GamesList extends Component {
 
     componentDidMount() {
         this.props.fetchGamesReq();
-        this.setState({ notes: this.props.notes });
+        // NOTE: setState after API request doesn't render state in time
+        // this.setState({ games: this.props.games });
+        // SOLUTION: render with props directly
     }
 
     render() {
+        if (!this.props.games) {
+            return <div>Loading...</div>;
+        }
+
         return (
             <div className="gameslist-page">
                 <div className="top-content">
@@ -45,14 +55,14 @@ class GamesList extends Component {
                 <div className="main-content">
                     <Navbar />
                     {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
-                    {this.props.gamesList.length < 1 ? (
+                    {!this.props.games[0] ? (
                         <div>
                             <h3 className="main-middle">Add New Game</h3>
                             <Link to={`/creategame`}>+</Link>
                         </div>
                     ) : (
-                        this.props.gamesList.map((game, i) => (
-                            <Link to={`/game`}>
+                        this.props.games.map((game, i) => (
+                            <Link to={`/game/${game["gameId"]}`}>
                                 <GameDetails
                                     key={game["id"]}
                                     index={i}
@@ -61,7 +71,7 @@ class GamesList extends Component {
                             </Link>
                         ))
                     )}
-                    {this.props.gamesList.length > 0 ? (
+                    {this.props.games.length > 0 ? (
                         <div>
                             <div>New Game</div>
                             <Link to={`/creategame`}>+</Link>
@@ -73,6 +83,10 @@ class GamesList extends Component {
     }
 }
 
+/**
+ * GameDetails function
+ * - helper function to render mapped properties for each game
+ */
 function GameDetails({ game }) {
     return (
         <div>
@@ -81,10 +95,10 @@ function GameDetails({ game }) {
     );
 }
 
-const mapStateToProps = ({ games }) => {
-    console.log(games);
+const mapStateToProps = ({ gamesList }) => {
+    console.log(gamesList);
     return {
-        games: games.games
+        games: gamesList.games
     };
 };
 

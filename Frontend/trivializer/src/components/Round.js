@@ -12,6 +12,10 @@ const createDOMPurify = require("dompurify"); // Prevents XSS attacks from incom
 // Sanitizes incoming HTML from questions API and allows for HTML entities while protecting against XSS attacks
 const DOMPurify = createDOMPurify(window);
 
+/**
+ * Round Component
+ * - renders selected round with an EditRoundView and Questions Component
+ */
 class Round extends Component {
   constructor(props) {
     super(props);
@@ -65,10 +69,10 @@ class Round extends Component {
 
     let type = `${this.state.category ? `&type=${this.state.type}` : ""}`;
 
-    let concatenatedURL = `${
-      this.state.baseURL
-    }${amount}${category}${difficulty}${type}`;
-
+        let concatenatedURL = `${
+            this.state.baseURL
+        }${amount}${category}${difficulty}${type}`;
+    
     return concatenatedURL;
   };
 
