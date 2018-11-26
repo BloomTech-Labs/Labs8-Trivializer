@@ -1,17 +1,6 @@
-.landingpage-top {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .signup-body {
   display: flex;
   flex-direction: column;
-}
-
-.main-text {
-  width: 25%;
-  margin: 0 auto;
-  margin-top: 10%;
 }
 
 /* Page Layout goes: [page-name]-page, top-content (top-rightside, top-leftside), main-content (Navbar, main-middle)*/
@@ -38,14 +27,14 @@
   margin-top: 20px;
 }
 
-.navbar {
+.vertical-navbar {
   width: 10%;
   border: 2px solid black;
   height: 75vh;
   margin-left: 20px;
 }
 
-.navbar li {
+.vertical-navbar li {
   line-height: 5px;
 }
 
@@ -53,9 +42,8 @@
   margin: 0 auto;
 }
 .pay-main {
-margin-left: 10%;
-margin-top:5%;
-width: 20%
+  margin-left: 10px;
+
 }
 .pay-input {
   margin: 0 auto;
@@ -64,9 +52,8 @@ width: 20%
 .pay2 {
   margin: 0 auto;
   display: flex;
- 
 }
-.buy{
+.buy {
   width: 275px;
   height: 75px;
 }
