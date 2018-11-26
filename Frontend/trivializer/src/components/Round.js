@@ -229,6 +229,11 @@ class Round extends Component {
                   )}
                   content={() => this.answerKeyRef}
                 />
+                <div>
+                    <button type="button" className="btn btn-primary save" >
+                      Save Round
+                    </button>
+                </div>
               </div>
             </div>
 

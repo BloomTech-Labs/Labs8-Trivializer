@@ -57,6 +57,10 @@
 .btn-primary.round {
   margin: 2%;
 }
+.btn-primary.save {
+  margin: 2%;
+  background:#74CC21;
+}
 
 .modal-content.modal-background {
   height: auto;
