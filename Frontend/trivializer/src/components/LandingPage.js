@@ -202,21 +202,26 @@ class LandingPage extends React.Component {
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="landing-page-navbar navbar-nav ml-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">
+              <li class="nav-right nav-item active">
+                <a class="nav-aboutus nav-link" href="#">
+                  How To Play <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-right nav-item active">
+                <a class="nav-aboutus nav-link" href="#">
+                  FAQ <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-right nav-item active">
+                <a class="nav-aboutus nav-link" href="#">
                   About Us <span class="sr-only">(current)</span>
                 </a>
               </li>
               <li class="nav-item">
                 <div className="signup">
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    data-toggle="modal"
-                    data-target="#signup"
-                  >
+                  <div className="nav-signup" data-toggle="modal" data-target="#signup">
                     Sign Up
-                  </button>
+                  </div>
 
                   <div
                     className="modal fade"
@@ -331,14 +336,9 @@ class LandingPage extends React.Component {
               </li>
               <li class="nav-item">
                 <div className="signin">
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    data-toggle="modal"
-                    data-target="#signin"
-                  >
+                  <div className="nav-signin" data-toggle="modal" data-target="#signin">
                     Sign In
-                  </button>
+                  </div>
 
                   <div
                     className="modal fade"
@@ -415,15 +415,15 @@ class LandingPage extends React.Component {
             <div class="carousel-item active">
               <img
                 className="carousel-one d-block w-100"
-                src="../img/back3.jpg"
+                src="../img/back4.jpg"
                 alt="First slide"
               />
             </div>
             <div class="carousel-item">
-              <img class="carousel-one d-block w-100" src="../img/back3.jpg" alt="Second slide" />
+              <img class="carousel-one d-block w-100" src="../img/back4.jpg" alt="Second slide" />
             </div>
             <div class="carousel-item">
-              <img class="carousel-one d-block w-100" src="../img/back3.jpg" alt="Third slide" />
+              <img class="carousel-one d-block w-100" src="../img/back4.jpg" alt="Third slide" />
             </div>
           </div>
           <a
@@ -463,7 +463,7 @@ class LandingPage extends React.Component {
               </p>
             </div>
 
-            <Link to="/billing" className="btn btn-success">
+            <Link to="/billing" className="main-button btn btn-success">
               Play Without Logging In
             </Link>
           </div>
