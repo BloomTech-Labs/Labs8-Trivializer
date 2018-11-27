@@ -109,7 +109,9 @@ class Rounds extends Component {
     }
   };
 
-  saveRound = () => {};
+  saveRound = () => {
+    let formattedRound = {};
+  };
 
   render() {
     console.log("this.state.changed: ", this.state.changed);

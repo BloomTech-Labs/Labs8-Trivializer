@@ -15,11 +15,9 @@ export const SAVING_ROUND = "SAVING_ROUNDS";
 export const SAVED_ROUND = "SAVED_ROUNDS";
 export const ERROR = "ERROR";
 
-// const URL = process.env.REACT_APP_API_URL;
-// const BE_URL = process.env.REACT_APP_BE_URL;
-
-// const URL = "https://testsdepl.herokuapp.com/users";
-const URL = "http://localhost:3300/users";
+const URL = process.env.REACT_APP_API_URL || "https://opentdb.com/api.php?";
+const BE_URL =
+  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
 
 // sample games fetch with params
 // {
@@ -34,7 +32,7 @@ export const fetchGamesReq = () => {
   return dispatch => {
     dispatch({ type: FETCHING_GAMES });
     axios
-      .post(`${URL}/games`, newGames, {
+      .post(`${BE_URL}/games`, newGames, {
         headers: {
           Authorization: `${sessionStorage.getItem("jwt")}`
         }
@@ -63,7 +61,7 @@ export const fetchGameReq = id => {
   return dispatch => {
     dispatch({ type: FETCHING_GAME });
     axios
-      .post(`${URL}/games`, newGames, {
+      .post(`${BE_URL}/games`, newGames, {
         headers: {
           Authorization: `${sessionStorage.getItem("jwt")}`
         }
@@ -104,7 +102,7 @@ export const submitGameReq = game => {
   return dispatch => {
     dispatch({ type: SAVING_GAME });
     axios
-      .post(`${URL}/creategame`, newGame, {
+      .post(`${BE_URL}/creategame`, newGame, {
         headers: {
           Authorization: `${sessionStorage.getItem("jwt")}`
         }
@@ -124,7 +122,7 @@ export const deleteGameReq = id => {
   return dispatch => {
     dispatch({ type: DELETING_GAME });
     axios
-      .get(`${URL}/game/${id}`)
+      .get(`${BE_URL}/game/${id}`)
       .then(({ data }) => {
         console.log(data);
         dispatch({ type: DELETED_GAME, payload: data });
@@ -156,34 +154,34 @@ export const updateGameReq = (id, game) => {
     rounds: []
   };
 
-    return dispatch => {
-        dispatch({ type: UPDATING_GAME });
-        axios
-            .put(`${BE_URL}/editgame/${id}`, newGame, {
-                headers: {
-                    Authorization: `${sessionStorage.getItem("jwt")}`
-                }
-            })
-            .then(({ data }) => {
-                console.log(data);
+  return dispatch => {
+    dispatch({ type: UPDATING_GAME });
+    axios
+      .put(`${BE_URL}/editgame/${id}`, newGame, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        console.log(data);
 
-                // // format result
-                // const result = {
-                //     gameId: data[0]["id"],
-                //     gamename: data[0]["gamename"],
-                //     description: data[0]["description"],
-                //     dateCreated: data[0]["date_created"],
-                //     datePlayed: data[0]["date_played"]
-                // };
+        // // format result
+        // const result = {
+        //     gameId: data[0]["id"],
+        //     gamename: data[0]["gamename"],
+        //     description: data[0]["description"],
+        //     dateCreated: data[0]["date_created"],
+        //     datePlayed: data[0]["date_played"]
+        // };
 
-                // dispatch({ type: UPDATED_GAME, payload: result });
-            })
-            .catch(err => {
-                console.log(err);
-                dispatch({ type: ERROR, payload: err });
-            });
-        // fetchGameReq(id);
-    };
+        // dispatch({ type: UPDATED_GAME, payload: result });
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch({ type: ERROR, payload: err });
+      });
+    // fetchGameReq(id);
+  };
 };
 
 export const fetchRoundsReq = id => {
@@ -191,7 +189,7 @@ export const fetchRoundsReq = id => {
   return dispatch => {
     dispatch({ type: FETCHING_ROUNDS });
     axios
-      .get(`${URL}/rounds/${id}`, {
+      .get(`${BE_URL}/rounds/${id}`, {
         headers: {
           Authorization: `${sessionStorage.getItem("jwt")}`
         }
@@ -205,7 +203,11 @@ export const fetchRoundsReq = id => {
         dispatch({ type: ERROR, payload: err });
       });
   };
-
 };
 
-export const saveRoundReq = (id, round) => {};
+export const saveRoundReq = (id, round) => {
+  return dispatch => {
+    dispatch({ type: SAVING_ROUND });
+    axios.post(`${BE_URL}/round`);
+  };
+};
