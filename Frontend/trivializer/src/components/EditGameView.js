@@ -10,6 +10,7 @@ class EditGameView extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            game: null,
             gameTitle: "",
             gameDescription: "",
             gameScheduled: "",
@@ -20,9 +21,14 @@ class EditGameView extends Component {
     componentDidMount() {
         if (this.props.game) {
             const d = new Date(this.props.game.datePlayed);
-            const s = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+            const day =
+                d.getDate() + 1 < 10
+                    ? `0${d.getDate() + 1}`
+                    : `${d.getDate() + 1}`;
+            const s = `${d.getFullYear()}-${d.getMonth() + 1}-${day}`;
 
             this.setState({
+                game: this.props.game,
                 gameTitle: this.props.game.gamename,
                 gameDescription: this.props.game.description,
                 gameScheduledMS: this.props.game.datePlayed,
