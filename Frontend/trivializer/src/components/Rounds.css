@@ -1,0 +1,49 @@
+/* Styles RoundsList.js and Rounds.js */
+
+.roundsList {
+  display: flex;
+  flex-flow: row wrap;
+}
+.rounds {
+  border: 2px solid black;
+  margin: 4%;
+  display: flex;
+  flex-flow: column;
+}
+
+.roundsTitle {
+  align-self: center;
+  max-width: 75%;
+}
+.roundsOption {
+  max-width: 20px;
+}
+.dropdown {
+  display: flex;
+  justify-content: space-between;
+  margin: 2% 4% 2% 4%;
+}
+.select {
+  max-width: 50%;
+  font-size: 10px;
+}
+
+.roundsButtons {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+}
+.roundsDelete {
+  margin: 2%;
+  justify-self: self-end;
+  border-radius: 10%;
+}
+.roundsSave {
+  margin: 2%;
+  align-self: flex-start;
+  border-radius: 10%;
+}
+
+.hidden {
+  visibility: hidden;
+}

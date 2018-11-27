@@ -9,10 +9,17 @@ export const DELETING_GAME = "DELETING_GAME";
 export const DELETED_GAME = "DELETED_GAME";
 export const UPDATING_GAME = "UPDATING_GAME";
 export const UPDATED_GAME = "UPDATED_GAME";
+export const FETCHING_ROUNDS = "FETCHING_ROUNDS";
+export const FETCHED_ROUNDS = "FETCHED_ROUNDS";
+export const SAVING_ROUND = "SAVING_ROUNDS";
+export const SAVED_ROUND = "SAVED_ROUNDS";
 export const ERROR = "ERROR";
 
-const URL = process.env.REACT_APP_API_URL;
-const BE_URL = process.env.REACT_APP_BE_URL;
+// const URL = process.env.REACT_APP_API_URL;
+// const BE_URL = process.env.REACT_APP_BE_URL;
+
+// const URL = "https://testsdepl.herokuapp.com/users";
+const URL = "http://localhost:3300/users";
 
 // sample games fetch with params
 // {
@@ -20,60 +27,60 @@ const BE_URL = process.env.REACT_APP_BE_URL;
 // }
 
 export const fetchGamesReq = () => {
-    const newGames = {
-        username: `${sessionStorage.getItem("user")}`
-    };
+  const newGames = {
+    username: `${sessionStorage.getItem("user")}`
+  };
 
-    return dispatch => {
-        dispatch({ type: FETCHING_GAMES });
-        axios
-            .post(`${BE_URL}/games`, newGames, {
-                headers: {
-                    Authorization: `${sessionStorage.getItem("jwt")}`
-                }
-            })
-            .then(({ data }) => {
-                console.log(data);
+  return dispatch => {
+    dispatch({ type: FETCHING_GAMES });
+    axios
+      .post(`${URL}/games`, newGames, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        console.log(data);
 
-                // return if null properties
-                if (!data[0]["gameId"]) {
-                    return;
-                }
+        // return if null properties
+        if (!data[0]["gameId"]) {
+          return;
+        }
 
-                dispatch({ type: FETCHED_GAMES, payload: data });
-            })
-            .catch(err => {
-                dispatch({ type: ERROR, payload: err });
-            });
-    };
+        dispatch({ type: FETCHED_GAMES, payload: data });
+      })
+      .catch(err => {
+        dispatch({ type: ERROR, payload: err });
+      });
+  };
 };
 
 export const fetchGameReq = id => {
-    const newGames = {
-        username: `${sessionStorage.getItem("user")}`
-    };
+  const newGames = {
+    username: `${sessionStorage.getItem("user")}`
+  };
 
-    return dispatch => {
-        dispatch({ type: FETCHING_GAME });
-        axios
-            .post(`${BE_URL}/games`, newGames, {
-                headers: {
-                    Authorization: `${sessionStorage.getItem("jwt")}`
-                }
-            })
-            .then(({ data }) => {
-                console.log(data);
+  return dispatch => {
+    dispatch({ type: FETCHING_GAME });
+    axios
+      .post(`${URL}/games`, newGames, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        console.log(data);
 
-                // filter game by id
-                const result = data.filter(item => item.gameId === id);
-                console.log(result);
+        // filter game by id
+        const result = data.filter(item => item.gameId === id);
+        console.log(result);
 
-                dispatch({ type: FETCHED_GAME, payload: result });
-            })
-            .catch(err => {
-                dispatch({ type: ERROR, payload: err });
-            });
-    };
+        dispatch({ type: FETCHED_GAME, payload: result });
+      })
+      .catch(err => {
+        dispatch({ type: ERROR, payload: err });
+      });
+  };
 };
 
 // sample game submit
@@ -86,47 +93,47 @@ export const fetchGameReq = id => {
 // }
 
 export const submitGameReq = game => {
-    const newGame = {
-        username: game.username,
-        gameName: game.gameTitle,
-        created: game.gameCreatedMS,
-        description: game.gameDescription,
-        played: game.gameScheduledMS
-    };
+  const newGame = {
+    username: game.username,
+    gameName: game.gameTitle,
+    created: game.gameCreatedMS,
+    description: game.gameDescription,
+    played: game.gameScheduledMS
+  };
 
-    return dispatch => {
-        dispatch({ type: SAVING_GAME });
-        axios
-            .post(`${BE_URL}/creategame`, newGame, {
-                headers: {
-                    Authorization: `${sessionStorage.getItem("jwt")}`
-                }
-            })
-            .then(({ data }) => {
-                console.log(data);
-                dispatch({ type: SAVED_GAME, payload: data });
-            })
-            .catch(err => {
-                console.log(err);
-                dispatch({ type: ERROR, payload: err });
-            });
-    };
+  return dispatch => {
+    dispatch({ type: SAVING_GAME });
+    axios
+      .post(`${URL}/creategame`, newGame, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        console.log(data);
+        dispatch({ type: SAVED_GAME, payload: data });
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch({ type: ERROR, payload: err });
+      });
+  };
 };
 
 export const deleteGameReq = id => {
-    return dispatch => {
-        dispatch({ type: DELETING_GAME });
-        axios
-            .get(`${BE_URL}/game/${id}`)
-            .then(({ data }) => {
-                console.log(data);
-                dispatch({ type: DELETED_GAME, payload: data });
-            })
-            .catch(err => {
-                console.log(err);
-                dispatch({ type: ERROR, payload: err });
-            });
-    };
+  return dispatch => {
+    dispatch({ type: DELETING_GAME });
+    axios
+      .get(`${URL}/game/${id}`)
+      .then(({ data }) => {
+        console.log(data);
+        dispatch({ type: DELETED_GAME, payload: data });
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch({ type: ERROR, payload: err });
+      });
+  };
 };
 
 // sample game update
@@ -140,16 +147,14 @@ export const deleteGameReq = id => {
 // }
 
 export const updateGameReq = (id, game) => {
-    const newGame = {
-        username: game.username,
-        gameName: game.gameTitle,
-        dateCreated: game.gameCreatedMS,
-        description: game.gameDescription,
-        datePlayed: game.gameScheduledMS,
-        rounds: []
-    };
-
-    // console.log(newGame);
+  const newGame = {
+    username: game.username,
+    gameName: game.gameName,
+    dateCreated: game.gameCreatedMS,
+    description: game.gameDescription,
+    datePlayed: game.gameScheduledMS,
+    rounds: []
+  };
 
     return dispatch => {
         dispatch({ type: UPDATING_GAME });
@@ -180,3 +185,27 @@ export const updateGameReq = (id, game) => {
         // fetchGameReq(id);
     };
 };
+
+export const fetchRoundsReq = id => {
+  console.log("fetching Rounds!!!");
+  return dispatch => {
+    dispatch({ type: FETCHING_ROUNDS });
+    axios
+      .get(`${URL}/rounds/${id}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        console.log("data: ", data);
+        dispatch({ type: FETCHED_ROUNDS, payload: data });
+      })
+      .catch(err => {
+        console.log("err: ", err);
+        dispatch({ type: ERROR, payload: err });
+      });
+  };
+
+};
+
+export const saveRoundReq = (id, round) => {};
