@@ -407,3 +407,70 @@ server.post("/round", utilities.protected, async (req, res) => {
 // users -> games -> rounds -> questions -> answers
 
 module.exports = server;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Get all questions for a round id passed in
+server.get("/questions/:id", utilities.protected, async (req, res) => {
+    try {
+        // Game Id passed in request URL
+        const { id } = req.params;
+
+        // Gets all rounds from the Rounds table where the game id matches the passed in ID
+        let rounds = await db
+            // Choose which columns we want to select, and assign an alias
+            .select(
+                "q.id as questionId",
+                "q.category as category",
+                "q.difficulty as difficulty",
+                "q.type as type",
+                "q.question as question",
+                "q.correct_answer as correctAnswer",
+                "incorrect_answers as incorrectAnswers"
+            )
+            .from("Rounds as r")
+            .leftJoin("Questions as q", "q.rounds_id", "r.id")
+            .where("r.id", "=", id);
+
+        res.status(200).json(rounds);
+    } catch (err) {
+        res.status(500).json({ error: "Problem getting questions" });
+    }
+});
