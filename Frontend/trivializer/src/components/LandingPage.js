@@ -57,8 +57,7 @@ class LandingPage extends React.Component {
       if (validate(this.state.signup_username, username_regex) !== true) {
         validation = 0;
         this.setState({
-          username_error:
-            "Needs to be: at least 4 characters, letters and numbers only."
+          username_error: "Needs to be: at least 4 characters, letters and numbers only."
         });
       } else {
         this.setState({ username_error: "" });
@@ -84,8 +83,7 @@ class LandingPage extends React.Component {
       if (validate(this.state.signup_password, password_regex) !== true) {
         validation = 0;
         this.setState({
-          password_error:
-            "1 lowercase letter, 1 number, and at least 8 characters needed."
+          password_error: "1 lowercase letter, 1 number, and at least 8 characters needed."
         });
       } else {
         this.setState({ password_error: "" });
@@ -118,8 +116,7 @@ class LandingPage extends React.Component {
       if (validate(this.state.signin_username, username_regex) !== true) {
         validation = 0;
         this.setState({
-          username_error:
-            "Needs to be: at least 4 characters, letters and numbers only."
+          username_error: "Needs to be: at least 4 characters, letters and numbers only."
         });
       } else {
         this.setState({ username_error: "" });
@@ -185,6 +182,8 @@ class LandingPage extends React.Component {
       const user = result.user;
       localStorage.setItem("username", user.email);
       localStorage.setItem("password", user.l);
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("photoURL", JSON.stringify(user.photoURL));
       window.location.reload();
       this.redirect();
       //this.setState({ user });
@@ -194,7 +193,9 @@ class LandingPage extends React.Component {
   render() {
     return (
       <div className="landing-page">
+        {/* Top Navbar */}
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          {/* Navbar Left Side */}
           <a class="navbar-brand" href="#">
             Bar Trivializer
           </a>
@@ -210,24 +211,26 @@ class LandingPage extends React.Component {
             <span class="navbar-toggler-icon" />
           </button>
 
+          {/* Navbar Right Side */}
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="landing-page-navbar navbar-nav ml-auto">
-              <li class="nav-right nav-item active">
-                <a class="nav-aboutus nav-link" href="#">
+            <ul class="landingpage-navbar-right navbar-nav ml-auto">
+              <li class="navbar-right-list active">
+                <div className="navbar-link">
                   How To Play <span class="sr-only">(current)</span>
-                </a>
+                </div>
               </li>
-              <li class="nav-right nav-item active">
-                <a class="nav-aboutus nav-link" href="#">
+              <li class="navbar-right-list active">
+                <div className="navbar-link">
                   FAQ <span class="sr-only">(current)</span>
-                </a>
+                </div>
               </li>
-              <li class="nav-right nav-item active">
-                <a class="nav-aboutus nav-link" href="#">
+              <li class="navbar-right-list active">
+                <div className="navbar-link">
                   About Us <span class="sr-only">(current)</span>
-                </a>
+                </div>
               </li>
-              <li class="nav-item">
+              {/* Navbar Signup Link */}
+              <li class="navbar-right-list">
                 <div className="signup">
                   <div
                     className="nav-signup"
@@ -237,6 +240,7 @@ class LandingPage extends React.Component {
                     Sign Up
                   </div>
 
+                  {/* Sign Up Modal */}
                   <div
                     className="modal fade"
                     id="signup"
@@ -335,35 +339,29 @@ class LandingPage extends React.Component {
                             >
                               {this.state.confirm_error}
                             </label>
+                            <button
+                              name="register"
+                              onClick={this.handleSubmit}
+                              className="create-button btn btn-primary"
+                            >
+                              Create My Account
+                            </button>
                           </form>
                         </div>
-                        <button
-                          name="register"
-                          onClick={this.handleSubmit}
-                          type="button"
-                          className="create-button btn btn-primary"
-                        >
-                          Create My Account
-                        </button>
-                        <div
-                          className="google-button-signup"
-                          onClick={this.googleLogin}
-                        >
+                        <div className="google-button-signup" onClick={this.googleLogin}>
                           <img
                             src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
                             onClick={this.googleLogin}
                           />
-                          <span className="google-text">
-                            {" "}
-                            Sign Up With Google
-                          </span>
+                          <span className="google-text"> Sign In With Google</span>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </li>
-              <li class="nav-item">
+              {/* Navbar Sign In Link */}
+              <li class="navbar-right-list">
                 <div className="signin">
                   <div
                     className="nav-signin"
@@ -373,6 +371,7 @@ class LandingPage extends React.Component {
                     Sign In
                   </div>
 
+                  {/* Sign In Modal */}
                   <div
                     className="modal fade"
                     id="signin"
@@ -428,19 +427,17 @@ class LandingPage extends React.Component {
                                 ? this.state.password_error
                                 : null}
                             </label>
+                            <button
+                              name="signin"
+                              onClick={this.handleSubmit}
+                              className="login-button btn btn-primary"
+                            >
+                              Sign In
+                            </button>
                           </form>
                         </div>
-                        <button
-                          name="signin"
-                          onClick={this.handleSubmit}
-                          className="login-button btn btn-primary"
-                        >
-                          Sign In
-                        </button>
-                        <div
-                          className="google-button-signup"
-                          onClick={this.googleLogin}
-                        >
+
+                        <div className="google-button-signup" onClick={this.googleLogin}>
                           <img src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg" />
                           <span className="google-text">
                             {" "}
@@ -455,11 +452,9 @@ class LandingPage extends React.Component {
             </ul>
           </div>
         </nav>
-        <div
-          id="carouselExampleIndicators"
-          class="carousel slide"
-          data-ride="carousel"
-        >
+
+        {/* Carousel */}
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
           <ol class="carousel-indicators">
             <li
               data-target="#carouselExampleIndicators"
@@ -472,24 +467,20 @@ class LandingPage extends React.Component {
           <div class="carousel-inner">
             <div class="carousel-item active">
               <img
-                className="carousel-one d-block w-100"
+                className="carousel-design d-block w-100"
                 src="../img/back4.jpg"
                 alt="First slide"
               />
             </div>
             <div class="carousel-item">
               <img
-                class="carousel-one d-block w-100"
+                class="carousel-design d-block w-100"
                 src="../img/back4.jpg"
                 alt="Second slide"
               />
             </div>
             <div class="carousel-item">
-              <img
-                class="carousel-one d-block w-100"
-                src="../img/back4.jpg"
-                alt="Third slide"
-              />
+              <img class="carousel-design d-block w-100" src="../img/back4.jpg" alt="Third slide" />
             </div>
           </div>
           <a
@@ -511,6 +502,8 @@ class LandingPage extends React.Component {
             <span class="sr-only">Next</span>
           </a>
         </div>
+
+        {/* Main Text */}
         <div className="landingpage-main">
           <div className="main-text">
             <h1>Welcome to Bar Trivia</h1>

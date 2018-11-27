@@ -141,8 +141,9 @@ export const deleteGameReq = id => {
 //     "username": "user",
 //     "gameName": "game one",
 //     "created": 1542422323472,
-//     "description": "This is a game"
-//     "played": 1542422323472
+//     "description": "This is a game",
+//     "played": 1542422323472,
+//     "rounds": []
 // }
 
 export const updateGameReq = (id, game) => {
@@ -155,23 +156,34 @@ export const updateGameReq = (id, game) => {
     rounds: []
   };
 
-  return dispatch => {
-    dispatch({ type: UPDATING_GAME });
-    axios
-      .put(`${URL}/editgame/${id}`, newGame, {
-        headers: {
-          Authorization: `${sessionStorage.getItem("jwt")}`
-        }
-      })
-      .then(({ data }) => {
-        console.log(data);
-        dispatch({ type: UPDATED_GAME, payload: data });
-      })
-      .catch(err => {
-        console.log(err);
-        dispatch({ type: ERROR, payload: err });
-      });
-  };
+    return dispatch => {
+        dispatch({ type: UPDATING_GAME });
+        axios
+            .put(`${BE_URL}/editgame/${id}`, newGame, {
+                headers: {
+                    Authorization: `${sessionStorage.getItem("jwt")}`
+                }
+            })
+            .then(({ data }) => {
+                console.log(data);
+
+                // // format result
+                // const result = {
+                //     gameId: data[0]["id"],
+                //     gamename: data[0]["gamename"],
+                //     description: data[0]["description"],
+                //     dateCreated: data[0]["date_created"],
+                //     datePlayed: data[0]["date_played"]
+                // };
+
+                // dispatch({ type: UPDATED_GAME, payload: result });
+            })
+            .catch(err => {
+                console.log(err);
+                dispatch({ type: ERROR, payload: err });
+            });
+        // fetchGameReq(id);
+    };
 };
 
 export const fetchRoundsReq = id => {
@@ -193,6 +205,7 @@ export const fetchRoundsReq = id => {
         dispatch({ type: ERROR, payload: err });
       });
   };
+
 };
 
 export const saveRoundReq = (id, round) => {};
