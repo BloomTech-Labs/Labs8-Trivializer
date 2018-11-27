@@ -115,10 +115,10 @@ input:hover {
   font-size: 18px;
 }
 
-/* Phone Design */
-@media screen and (max-width: 480px) {
+/* Tablet Design */
+@media screen and (max-width: 780px) {
   .carousel-design {
-    height: 300px;
+    height: 350px;
   }
 
   .descriptions {
@@ -127,11 +127,22 @@ input:hover {
   }
 
   .description-text {
-    width: 80%;
+    width: 70%;
   }
 
   .main-button {
     text-align: center;
     margin: 0 auto;
+  }
+}
+
+/* Phone Design */
+@media screen and (max-width: 480px) {
+  .carousel-design {
+    height: 300px;
+  }
+
+  .description-text {
+    width: 80%;
   }
 }
