@@ -15,11 +15,13 @@ export const SAVING_ROUND = "SAVING_ROUNDS";
 export const SAVED_ROUND = "SAVED_ROUNDS";
 export const ERROR = "ERROR";
 
-// const URL = process.env.REACT_APP_API_URL;
-// const BE_URL = process.env.REACT_APP_BE_URL;
+const URL =
+  process.env.REACT_APP_API_URL || "https://testsdepl.herokuapp.com/users";
+const BE_URL =
+  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
 
 // const URL = "https://testsdepl.herokuapp.com/users";
-const URL = "http://localhost:3300/users";
+// const URL = "http://localhost:3300/users";
 
 // sample games fetch with params
 // {
@@ -156,34 +158,34 @@ export const updateGameReq = (id, game) => {
     rounds: []
   };
 
-    return dispatch => {
-        dispatch({ type: UPDATING_GAME });
-        axios
-            .put(`${BE_URL}/editgame/${id}`, newGame, {
-                headers: {
-                    Authorization: `${sessionStorage.getItem("jwt")}`
-                }
-            })
-            .then(({ data }) => {
-                console.log(data);
+  return dispatch => {
+    dispatch({ type: UPDATING_GAME });
+    axios
+      .put(`${BE_URL}/editgame/${id}`, newGame, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        console.log(data);
 
-                // // format result
-                // const result = {
-                //     gameId: data[0]["id"],
-                //     gamename: data[0]["gamename"],
-                //     description: data[0]["description"],
-                //     dateCreated: data[0]["date_created"],
-                //     datePlayed: data[0]["date_played"]
-                // };
+        // // format result
+        // const result = {
+        //     gameId: data[0]["id"],
+        //     gamename: data[0]["gamename"],
+        //     description: data[0]["description"],
+        //     dateCreated: data[0]["date_created"],
+        //     datePlayed: data[0]["date_played"]
+        // };
 
-                // dispatch({ type: UPDATED_GAME, payload: result });
-            })
-            .catch(err => {
-                console.log(err);
-                dispatch({ type: ERROR, payload: err });
-            });
-        // fetchGameReq(id);
-    };
+        // dispatch({ type: UPDATED_GAME, payload: result });
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch({ type: ERROR, payload: err });
+      });
+    // fetchGameReq(id);
+  };
 };
 
 export const fetchRoundsReq = id => {
@@ -205,7 +207,11 @@ export const fetchRoundsReq = id => {
         dispatch({ type: ERROR, payload: err });
       });
   };
-
 };
 
-export const saveRoundReq = (id, round) => {};
+export const saveRoundReq = (id, round) => {
+  return dispatch => {
+    dispatch({ type: SAVING_ROUND });
+    axios.get(`${URL}`);
+  };
+};
