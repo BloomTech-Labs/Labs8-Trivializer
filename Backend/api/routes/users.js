@@ -369,7 +369,7 @@ server.post("/round", utilities.protected, async (req, res) => {
       category: category,
       type: type,
       difficulty: difficulty,
-      number_of_questions: questions.length
+      number_of_questions: questions
     };
 
     // Returns an array of 1 item, pull that item out with [0]
