@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Navbar from "./Navbar";
-import Rounds from "./Rounds";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchGameReq } from "../actions";

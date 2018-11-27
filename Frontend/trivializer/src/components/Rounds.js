@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./Rounds.css";
+import { connect } from "react-redux";
+import { saveRoundReq } from "../actions";
 
-let typeOptions = {
+let categoryOptions = {
   any: "any",
   "General Knowledge": "9",
   "Entertainment: Books": "10",
@@ -30,60 +32,208 @@ let typeOptions = {
   "Entertainment: Cartoon & Animations": "32"
 };
 
+let difficultyOptions = {
+  any: "any",
+  easy: "easy",
+  medium: "medium",
+  hard: "hard"
+};
+
+let typeOptions = {
+  any: "any",
+  multiple: "Multiple choice",
+  boolean: "True / False"
+};
+
 class Rounds extends Component {
   constructor(props) {
     super(props);
     this.state = {
       round: this.props.round,
-      maxQuestions: 100
+      maxQuestions: 100,
+      roundName: this.props.round.roundName,
+      numQs: this.props.round.numQs,
+      category: this.props.round.category,
+      difficulty: this.props.round.difficulty,
+      type: this.props.round.type,
+      original_roundName: this.props.round.roundName,
+      original_numQs: this.props.round.numQs,
+      original_category: this.props.round.category,
+      original_difficulty: this.props.round.difficulty,
+      original_type: this.props.round.type,
+      changed: false
     };
   }
 
-  componentDidMount = () => {
-    if (this.props.new) {
+  componentDidMount() {
+    console.log("this.props.rounds: ", this.props.rounds);
+  }
+
+  handleChange = e => {
+    // Compare values to original values, if any of them are different,
+    // then we've made a change we can save, so set changed on state,
+    // This will render a save button in render()
+    if (e.target.value !== this.state[`original_${e.target.name}`]) {
+      this.setState({
+        changed: true,
+        [e.target.name]: e.target.value
+      });
+    }
+    if (
+      !this.state.changed &&
+      (this.state.roundName !== this.state.original_roundName ||
+        this.state.numQs !== this.state.original_numQs ||
+        this.state.category !== this.state.original_category ||
+        this.state.difficulty !== this.state.original_difficulty ||
+        this.state.type !== this.state.original_type)
+    ) {
+      this.setState({
+        changed: true,
+        [e.target.name]: e.target.value
+      });
+    }
+
+    // Conversely, if the current state is all the same as the original,
+    // remove the save button
+    else if (
+      this.state.changed &&
+      (this.state.roundName === this.state.original_roundName &&
+        this.state.numQs === this.state.original_numQs &&
+        this.state.category === this.state.original_category &&
+        this.state.difficulty === this.state.original_difficulty &&
+        this.state.type === this.state.original_type)
+    ) {
+      this.setState({ changed: false, [e.target.name]: e.target.value });
+    } else {
+      this.setState({ [e.target.name]: e.target.value });
     }
   };
+
+  saveRound = () => {};
+
   render() {
+    console.log("this.state.changed: ", this.state.changed);
     return (
       <div className="rounds">
         <input
           type="text"
-          value={this.state.round.roundName}
+          onChange={this.handleChange}
+          name="roundname"
+          value={this.state.roundName}
           className="roundsTitle"
         />
         {/* Number of Questions */}
         <div className="dropdown">
           <label htmlFor="numQs">Number of Questions</label>
-          <select id="numQs" className="select">
-            {[...Array(this.state.maxQuestions).keys()].map(number => {
+          <select
+            name="numQs"
+            value={this.state.numQs}
+            onChange={this.handleChange}
+            id="numQs"
+            className="select"
+          >
+            {[...Array(this.state.maxQuestions).keys()].map((number, i) => {
               number = number + 1;
-              let selected = number === this.state.round.numQs;
+
               return (
-                <option selected={selected} value={number}>
+                <option key={i} value={number}>
                   {number}
                 </option>
               );
             })}
           </select>
         </div>
-        {/* Category Select Box */}
+        {/* Categories */}
         <div className="dropdown">
-          <label htmlFor="category">Category</label>
-          <select id="category" className="select">
-            {Object.keys(typeOptions).map(option => {
-              let selected = option === this.state.round.category;
+          <label htmlFor="categories">Category</label>
+          <select
+            id="categories"
+            name="category"
+            value={this.state.category}
+            onChange={this.handleChange}
+            className="select"
+          >
+            {Object.keys(categoryOptions).map((option, i) => {
+              let selected = option === this.state.category;
               return (
-                <option selected={selected} value={typeOptions[option]}>
+                <option
+                  key={i}
+                  className="roundsOption"
+                  selected={selected}
+                  value={categoryOptions[option]}
+                >
                   {option}
                 </option>
               );
             })}
           </select>
         </div>
-        <button>Delete</button>
+        {/* Difficulty */}
+        <div className="dropdown">
+          <label htmlFor="difficulty">Difficulty</label>
+          <select
+            id="difficulty"
+            name="difficulty"
+            value={this.state.difficulty}
+            onChange={this.handleChange}
+            className="select"
+          >
+            {Object.keys(difficultyOptions).map((option, i) => {
+              let selected = option === this.state.difficulty;
+              return (
+                <option key={i} selected={selected} value={option}>
+                  {difficultyOptions[option]}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        {/* Type */}
+        <div className="dropdown">
+          <label htmlFor="type">Type</label>
+          <select
+            id="type"
+            name="type"
+            value={this.state.type}
+            onChange={this.handleChange}
+            className="select"
+          >
+            {Object.keys(typeOptions).map((option, i) => {
+              let selected = option === this.state.type;
+              return (
+                <option key={i} selected={selected} value={option}>
+                  {typeOptions[option]}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        <div className="roundsButtons">
+          <button
+            onClick={this.saveRound}
+            className={`roundsSave ${this.state.changed ? null : "hidden"}`}
+          >
+            Save
+          </button>
+          <button className="roundsDelete" onClick={this.props.delete}>
+            Delete
+          </button>
+        </div>
       </div>
     );
   }
 }
 
-export default Rounds;
+const mapStateToProps = ({ gamesList }) => {
+  return {
+    savingRound: gamesList.saving_round,
+    savedRound: gamesList.saved_round,
+    error: gamesList.error,
+    rounds: gamesList.rounds
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { saveRoundReq }
+)(Rounds);

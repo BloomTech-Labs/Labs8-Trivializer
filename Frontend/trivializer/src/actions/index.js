@@ -11,6 +11,8 @@ export const UPDATING_GAME = "UPDATING_GAME";
 export const UPDATED_GAME = "UPDATED_GAME";
 export const FETCHING_ROUNDS = "FETCHING_ROUNDS";
 export const FETCHED_ROUNDS = "FETCHED_ROUNDS";
+export const SAVING_ROUND = "SAVING_ROUNDS";
+export const SAVED_ROUND = "SAVED_ROUNDS";
 export const ERROR = "ERROR";
 
 // const URL = process.env.REACT_APP_API_URL;
@@ -192,3 +194,5 @@ export const fetchRoundsReq = id => {
       });
   };
 };
+
+export const saveRoundReq = (id, round) => {};

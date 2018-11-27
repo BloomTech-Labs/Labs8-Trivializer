@@ -11,6 +11,8 @@ import {
   DELETED_GAME,
   UPDATING_GAME,
   UPDATED_GAME,
+  SAVING_ROUND,
+  SAVED_ROUND,
   ERROR
 } from "../actions";
 import { combineReducers } from "redux";
@@ -32,6 +34,8 @@ const initialState = {
   fetched_rounds: false,
   saving_game: false,
   saved_game: false,
+  saving_round: false,
+  saved_round: false,
   updating_game: false,
   updated_game: false,
   deleting_game: false,
@@ -102,6 +106,18 @@ const gamesReducer = (state = initialState, action) => {
         deleting_game: false,
         deleted_game: true,
         games: action.payload
+      });
+    case SAVING_ROUND:
+      return Object.assign({}, state, {
+        saving_round: true,
+        saved_round: false
+      });
+    case SAVED_ROUND:
+      return Object.assign({}, state, {
+        saving_round: false,
+        saved_round: true,
+        rounds: state.rounds.push(action.payload),
+        round: action.payload
       });
     case ERROR:
       return Object.assign({}, state, {

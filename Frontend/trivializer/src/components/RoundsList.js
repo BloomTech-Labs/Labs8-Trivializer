@@ -31,7 +31,7 @@ class RoundsList extends Component {
       roundName: "Default Value",
       numQs: 0,
       category: "any",
-      difficulty: "all",
+      difficulty: "easy",
       type: "multiple"
     };
     this.setState({ newRounds: [...this.state.newRounds, round] });
@@ -45,24 +45,29 @@ class RoundsList extends Component {
         ) : (
           <div>
             <div className="roundsList">
-              {this.props.rounds.map((round, i) => (
-                <div>
-                  <Rounds key={round.roundId} index={i} round={round} />
-                </div>
-              ))}
+              {this.props.rounds.map((round, i) => {
+                console.log("round.roundId: ", round.roundId);
+                return (
+                  <div>
+                    <Rounds key={round.roundId} index={i} round={round} />
+                  </div>
+                );
+              })}
 
               {/* Loops throught the new rounds the user has created, not yet saved and thus not in Redux store */}
-              {this.state.newRounds.map((round, i) => (
-                <div>
-                  {/* New rounds should come after existing rounds */}
-                  <Rounds
-                    new
-                    key={this.props.rounds.length + i + 1}
-                    index={this.props.rounds.length + i + 1}
-                    round={round}
-                  />
-                </div>
-              ))}
+              {this.state.newRounds.map((round, i) => {
+                return (
+                  <div>
+                    {/* Should change date.now to something better later */}
+                    <Rounds
+                      new
+                      key={Date.now()}
+                      index={this.props.rounds.length + i + 1}
+                      round={round}
+                    />
+                  </div>
+                );
+              })}
               <div>
                 <div>New Round</div>
                 <button onClick={this.newRound}>+</button>

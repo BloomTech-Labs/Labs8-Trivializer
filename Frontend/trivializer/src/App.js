@@ -8,7 +8,6 @@ import Invoices from "./components/Invoices";
 import Game from "./components/Game";
 import { Route, withRouter } from "react-router-dom";
 import Round from "./components/Round";
-import Rounds from "./components/Rounds";
 import CreateGameView from "./components/CreateGameView";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
