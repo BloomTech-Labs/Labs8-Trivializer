@@ -371,6 +371,33 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
         res.status(500).json({ error: "Problem getting questions" });
     }
 });
+// Get all questions for a round id passed in
+server.get("/questions/:id", utilities.protected, async (req, res) => {
+    try {
+        // Game Id passed in request URL
+        const { id } = req.params;
+
+        // Gets all rounds from the Rounds table where the game id matches the passed in ID
+        let rounds = await db
+            // Choose which columns we want to select, and assign an alias
+            .select(
+                "q.id as questionId",
+                "q.category as category",
+                "q.difficulty as difficulty",
+                "q.type as type",
+                "q.question as question",
+                "q.correct_answer as correctAnswer",
+                "incorrect_answers as incorrectAnswers"
+            )
+            .from("Rounds as r")
+            .leftJoin("Questions as q", "q.rounds_id", "r.id")
+            .where("r.id", "=", id);
+
+        res.status(200).json(rounds);
+    } catch (err) {
+        res.status(500).json({ error: "Problem getting questions" });
+    }
+});
 
 // Delete a round based on round id
 server.delete("/round/:id", utilities.protected, async (req, res) => {
@@ -392,32 +419,33 @@ server.delete("/round/:id", utilities.protected, async (req, res) => {
 
 // Save a round
 server.post("/round", utilities.protected, async (req, res) => {
-    try {
-        // Get all pertinent info from req.body
-        const {
-            gameId,
-            roundname,
-            category,
-            difficulty,
-            type,
-            questions
-        } = req.body;
 
-        // Returns empty array if no game
-        let validGame = await db("Games").where({ id: gameId });
+  try {
+    // Get all pertinent info from req.body
+    const {
+      gameId,
+      roundname,
+      category,
+      difficulty,
+      type,
+      questions
+    } = req.body;
 
-        // Check to see if valid gameId
-        if (validGame.length < 1) throw new Error("no Game by that ID");
+    // Returns empty array if no game
+    let validGame = await db("Games").where({ id: gameId });
 
-        // Assemble round info to be entered in DB
-        let roundPackage = {
-            game_id: gameId,
-            name: roundname,
-            category: category,
-            type: type,
-            difficulty: difficulty,
-            number_of_questions: questions.length
-        };
+    // Check to see if valid gameId
+    if (validGame.length < 1) throw new Error("no Game by that ID");
+
+    // Assemble round info to be entered in DB
+    let roundPackage = {
+      game_id: gameId,
+      name: roundname,
+      category: category,
+      type: type,
+      difficulty: difficulty,
+      number_of_questions: questions
+    };
 
         // Returns an array of 1 item, pull that item out with [0]
         let roundId = (await db("Rounds").insert(roundPackage))[0];
