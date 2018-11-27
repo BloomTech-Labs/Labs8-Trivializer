@@ -402,6 +402,40 @@ server.post("/round", utilities.protected, async (req, res) => {
     }
 });
 
+// Update a round by round id
+server.put("/round/:id", utilities.protected, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const edit = { ...req.body };
+
+        // update round by id
+        let round = await db("Rounds")
+            .where("id", id)
+            .update({
+                name: edit.roundName,
+                number_of_questions: edit.numberOfQs,
+                category: edit.category,
+                difficulty: edit.difficulty,
+                type: edit.type
+            });
+
+        // get game by id
+        let newRound = await db("Rounds").where("id", id);
+
+        res.status(200).json({
+            roundId: newRound[0]["id"],
+            roundname: newRound[0]["name"],
+            numberOfQs: newRound[0]["number_of_questions"],
+            category: newRound[0]["category"],
+            difficulty: newRound[0]["difficulty"],
+            type: newRound[0]["type"]
+        });
+    } catch (err) {
+        console.log("err.message: ", err.message);
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // Delete Game
 
 // users -> games -> rounds -> questions -> answers
