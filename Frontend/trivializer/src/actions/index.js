@@ -16,7 +16,8 @@ export const ERROR = "ERROR";
 // const URL = process.env.REACT_APP_API_URL;
 // const BE_URL = process.env.REACT_APP_BE_URL;
 
-const URL = "https://testsdepl.herokuapp.com/users";
+// const URL = "https://testsdepl.herokuapp.com/users";
+const URL = "http://localhost:3300/users";
 
 // sample games fetch with params
 // {

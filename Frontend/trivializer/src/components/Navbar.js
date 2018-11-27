@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <ul class="vertical-navbar nav flex-column">
-      <div class="inner-nav">
-        <li class="nav-item">
-          <Link to="/gameslist" class="nav-link active">
+    <ul className="vertical-navbar nav flex-column">
+      <div className="inner-nav">
+        <li className="nav-item">
+          <Link to="/gameslist" className="nav-link active">
             Games
           </Link>
         </li>
