@@ -28,8 +28,8 @@ class Games extends Component {
                     Played:{" "}
                     {this.props.game.datePlayed === 0
                         ? null
-                        : `${played.getMonth() +
-                              1}-${played.getDate()}-${played.getFullYear()}`}
+                        : `${played.getMonth() + 1}-${played.getDate() +
+                              1}-${played.getFullYear()}`}
                 </div>
             </div>
         );

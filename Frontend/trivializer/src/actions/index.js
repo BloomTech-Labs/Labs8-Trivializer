@@ -134,19 +134,22 @@ export const deleteGameReq = id => {
 //     "username": "user",
 //     "gameName": "game one",
 //     "created": 1542422323472,
-//     "description": "This is a game"
-//     "played": 1542422323472
+//     "description": "This is a game",
+//     "played": 1542422323472,
+//     "rounds": []
 // }
 
 export const updateGameReq = (id, game) => {
     const newGame = {
         username: game.username,
-        gameName: game.gameName,
+        gameName: game.gameTitle,
         dateCreated: game.gameCreatedMS,
         description: game.gameDescription,
         datePlayed: game.gameScheduledMS,
         rounds: []
     };
+
+    // console.log(newGame);
 
     return dispatch => {
         dispatch({ type: UPDATING_GAME });
@@ -158,11 +161,22 @@ export const updateGameReq = (id, game) => {
             })
             .then(({ data }) => {
                 console.log(data);
-                dispatch({ type: UPDATED_GAME, payload: data });
+
+                // // format result
+                // const result = {
+                //     gameId: data[0]["id"],
+                //     gamename: data[0]["gamename"],
+                //     description: data[0]["description"],
+                //     dateCreated: data[0]["date_created"],
+                //     datePlayed: data[0]["date_played"]
+                // };
+
+                // dispatch({ type: UPDATED_GAME, payload: result });
             })
             .catch(err => {
                 console.log(err);
                 dispatch({ type: ERROR, payload: err });
             });
+        // fetchGameReq(id);
     };
 };
