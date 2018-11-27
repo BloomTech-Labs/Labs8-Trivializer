@@ -17,25 +17,25 @@ import HTML5Backend from "react-dnd-html5-backend";
  * - handles routes to specified component
  */
 class App extends Component {
-    constructor() {
-        super();
-        this.state = {};
-    }
+  constructor() {
+    super();
+    this.state = {};
+  }
 
-    render() {
-        return (
-            <div className="App">
-                <Route exact path="/" component={LandingPage} />
-                <Route path="/billing" component={Billing} />
-                <Route path="/gameslist" component={GamesList} />
-                <Route path="/creategame" component={CreateGameView} />
-                <Route path="/setting" component={Round} />
-                <Route path="/invoices" component={Invoices} />
-                <Route path="/game/:id" component={Game} />
-                <Route path="/game/:id/round/:id" component={Round} />
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className="App">
+        <Route exact path="/" component={LandingPage} />
+        <Route path="/billing" component={Billing} />
+        <Route path="/gameslist" component={GamesList} />
+        <Route path="/creategame" component={CreateGameView} />
+        <Route path="/setting" component={Setting} />
+        <Route path="/invoices" component={Invoices} />
+        <Route path="/game/:id" component={Game} />
+        <Route path="/game/:id/round/:id" component={Round} />
+      </div>
+    );
+  }
 }
 
 export default withRouter(DragDropContext(HTML5Backend)(App));

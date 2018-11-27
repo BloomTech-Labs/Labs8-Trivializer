@@ -1,54 +1,25 @@
-/* Navbar */
-.landing-page-navbar {
+/* Top Navbar */
+.landingpage-navbar-right {
   text-align: right;
   height: 60px;
   display: flex;
   align-items: center;
 }
-.nav-item {
-  height: 30px;
-  margin-right: 30px;
-}
-.nav-right {
+
+.navbar-right-list {
   margin-right: 25px;
+  margin-top: 5px;
 }
 
-.nav-signup,
-.nav-signin {
-  margin-top: 7px;
-}
-
-.nav-signup:hover,
-.nav-signin:hover {
+.navbar-right-list:hover {
   cursor: pointer;
+}
+
+.navbar-link:hover {
   color: red;
 }
 
-/* Signup & Signin Modal Customizations */
-.signup-title,
-.login-title {
-  margin-left: 160px;
-}
-
-.signup-body,
-.login-body {
-  padding-bottom: 5px;
-}
-
-.signup-body input,
-.login-body input {
-  height: 50px;
-  padding-left: 8px;
-  border-radius: 5px;
-  border: 1px solid rgb(179, 179, 179);
-  width: 85%;
-  margin: 0 auto;
-}
-
-input:hover {
-  border: 1px solid rgb(73, 73, 255);
-}
-
+/* Signup & Signin Modal*/
 .modal-content {
   height: 425px;
 }
@@ -57,12 +28,35 @@ input:hover {
   height: 350px;
 }
 
+.signup-title,
+.login-title {
+  margin-left: 160px;
+}
+
+.modal-body {
+  padding: 18px 0 0 0;
+}
+
+.signup-body input,
+.login-body input {
+  height: 50px;
+  padding-left: 8px;
+  border-radius: 5px;
+  border: 1px solid rgb(179, 179, 179);
+  width: 80%;
+  margin: 0 auto;
+}
+
+input:hover {
+  border: 1px solid rgb(73, 73, 255);
+}
+
 .validation-label {
   text-align: left;
   color: red;
   font-size: 13px;
   height: 19px;
-  margin-left: 37px;
+  margin-left: 53px;
 }
 
 .create-button,
@@ -70,6 +64,9 @@ input:hover {
   margin: 0 auto;
   width: 100%;
   height: 50px;
+}
+.login-button {
+  margin-top: 18px;
 }
 
 .google-button-signup {
@@ -89,29 +86,8 @@ input:hover {
   background-color: rgb(241, 241, 241);
 }
 
-/*.landing-page {
-  background-image: url("../img/background-wood.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100vh;
-  background-position: center;
-}*/
-
-/*.landing-page:before {
-  background-image: url("../img/back8.gif");
-  content: "";
-  background-size: cover;
-  position: fixed;
-  left: 0;
-  right: 0;
-  z-index: -1;
-
-  width: 100%;
-  height: 100vh;
-  filter: blur(2px);
-}*/
-
-.carousel-one {
+/* Carousel */
+.carousel-design {
   height: 450px;
 }
 
