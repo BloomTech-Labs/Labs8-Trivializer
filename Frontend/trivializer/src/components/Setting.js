@@ -1,13 +1,22 @@
 import React from "react";
 import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
+import "./Setting.css";
 
 class Setting extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      savedUser: ""
+    };
   }
+  componentDidMount() {
+    let savedUser = JSON.parse(localStorage.getItem("user"));
+    this.setState({ savedUser: savedUser });
+  }
+
   render() {
+    const savedUser = this.state.savedUser;
     return (
       <div className="setting-page">
         <div className="top-content">
@@ -32,21 +41,24 @@ class Setting extends React.Component {
           <Navbar />
           <div className="main-middle">
             <h1 className="main-middle">Setting Page</h1>
+            <div className="picture">
+              <img className="profile-picture" src={savedUser.photoURL} alt="profile-pic" />
+            </div>
             <div className="name">
               <p>Name: </p>
-              <input placeholder="Name" value="Mary's Awesome Trivia" />
+              <input placeholder="Name" value={savedUser.displayName} />
             </div>
             <div className="email">
               <p>Email: </p>
-              <input placeholder="Email" value="user@gmail.com" />
+              <input placeholder="Email" value={savedUser.email} />
             </div>
             <div className="oldpassword">
               <p>Old Password: </p>
-              <input placeholder="password" value="********" />
+              <input type="password" placeholder="password" value={savedUser.uid} />
             </div>
             <div className="newpassword">
               <p>New Password: </p>
-              <input placeholder="password" value="**********" />
+              <input placeholder="Enter new password" />
             </div>
           </div>
         </div>
