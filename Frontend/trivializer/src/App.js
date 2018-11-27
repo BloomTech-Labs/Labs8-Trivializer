@@ -31,8 +31,9 @@ class App extends Component {
         <Route path="/creategame" component={CreateGameView} />
         <Route path="/setting" component={Setting} />
         <Route path="/invoices" component={Invoices} />
-        <Route path="/game/:id" component={Game} />
-        <Route path="/game/:id/round/:id" component={Round} />
+        <Route exact path="/game/:id" component={Game} />
+        <Route exact path="/game/:id/round/:id" component={Round} />
+
       </div>
     );
   }

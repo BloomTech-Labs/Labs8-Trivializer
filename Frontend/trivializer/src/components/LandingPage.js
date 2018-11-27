@@ -226,7 +226,11 @@ class LandingPage extends React.Component {
               {/* Navbar Signup Link */}
               <li class="navbar-right-list">
                 <div className="signup">
-                  <div className="navbar-link" data-toggle="modal" data-target="#signup">
+                  <div
+                    className="nav-signup"
+                    data-toggle="modal"
+                    data-target="#signup"
+                  >
                     Sign Up
                   </div>
 
@@ -242,7 +246,10 @@ class LandingPage extends React.Component {
                     <div className="modal-dialog" role="document">
                       <div className="modal-content">
                         <div className="modal-header">
-                          <h5 className="signup-title modal-title" id="exampleModalLabel">
+                          <h5
+                            className="signup-title modal-title"
+                            id="exampleModalLabel"
+                          >
                             Sign Up Below
                           </h5>
 
@@ -275,7 +282,9 @@ class LandingPage extends React.Component {
                                   : { visibility: "hidden" }
                               }
                             >
-                              {this.state.username_error ? this.state.username_error : null}
+                              {this.state.username_error
+                                ? this.state.username_error
+                                : null}
                             </label>
                             <input
                               name="signup_email"
@@ -291,7 +300,9 @@ class LandingPage extends React.Component {
                                   : { visibility: "hidden" }
                               }
                             >
-                              {this.state.email_error ? this.state.email_error : null}
+                              {this.state.email_error
+                                ? this.state.email_error
+                                : null}
                             </label>
                             <input
                               type="password"
@@ -301,7 +312,9 @@ class LandingPage extends React.Component {
                               placeholder="Password"
                             />
                             <label className="validation-label">
-                              {this.state.password_error ? this.state.password_error : null}
+                              {this.state.password_error
+                                ? this.state.password_error
+                                : null}
                             </label>
                             <input
                               type="password"
@@ -329,7 +342,6 @@ class LandingPage extends React.Component {
                             </button>
                           </form>
                         </div>
-
                         <div className="google-button-signup" onClick={this.googleLogin}>
                           <img
                             src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
@@ -345,7 +357,11 @@ class LandingPage extends React.Component {
               {/* Navbar Sign In Link */}
               <li class="navbar-right-list">
                 <div className="signin">
-                  <div className="navbar-link" data-toggle="modal" data-target="#signin">
+                  <div
+                    className="nav-signin"
+                    data-toggle="modal"
+                    data-target="#signin"
+                  >
                     Sign In
                   </div>
 
@@ -361,7 +377,10 @@ class LandingPage extends React.Component {
                     <div className="modal-dialog" role="document">
                       <div className="login-modal modal-content">
                         <div className="modal-header">
-                          <h5 className="login-title modal-title" id="exampleModalLabel">
+                          <h5
+                            className="login-title modal-title"
+                            id="exampleModalLabel"
+                          >
                             Login Below
                           </h5>
                           <button
@@ -374,7 +393,11 @@ class LandingPage extends React.Component {
                           </button>
                         </div>
                         <div className="modal-body">
-                          <form name="signin" className="signup-body" onSubmit={this.handleSubmit}>
+                          <form
+                            name="signin"
+                            className="signup-body"
+                            onSubmit={this.handleSubmit}
+                          >
                             <input
                               name="signin_username"
                               onChange={this.handleInput}
@@ -382,7 +405,9 @@ class LandingPage extends React.Component {
                               placeholder="Username"
                             />
                             <label className="validation-label">
-                              {this.state.username_error ? this.state.username_error : null}
+                              {this.state.username_error
+                                ? this.state.username_error
+                                : null}
                             </label>
                             <input
                               type="password"
@@ -392,7 +417,9 @@ class LandingPage extends React.Component {
                               placeholder="Password"
                             />
                             <label className="validation-label">
-                              {this.state.password_error ? this.state.password_error : null}
+                              {this.state.password_error
+                                ? this.state.password_error
+                                : null}
                             </label>
                             <button
                               name="signin"
@@ -406,7 +433,10 @@ class LandingPage extends React.Component {
 
                         <div className="google-button-signup" onClick={this.googleLogin}>
                           <img src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg" />
-                          <span className="google-text"> Sign In With Google</span>
+                          <span className="google-text">
+                            {" "}
+                            Sign In With Google
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -420,7 +450,11 @@ class LandingPage extends React.Component {
         {/* Carousel */}
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
           <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active" />
+            <li
+              data-target="#carouselExampleIndicators"
+              data-slide-to="0"
+              class="active"
+            />
             <li data-target="#carouselExampleIndicators" data-slide-to="1" />
             <li data-target="#carouselExampleIndicators" data-slide-to="2" />
           </ol>
@@ -469,16 +503,18 @@ class LandingPage extends React.Component {
             <h1>Welcome to Bar Trivia</h1>
             <div className="descriptions">
               <p className="description-text">
-                Trivializer helps bar trivia hosts create their question sets and answer sheets by
-                pulling from a large and free API of trivia questions.
+                Trivializer helps bar trivia hosts create their question sets
+                and answer sheets by pulling from a large and free API of trivia
+                questions.
               </p>
               <p className="description-text">
-                Categories for trivia questions include Entertainment, Science, Art, History, and
-                much more. Questions can be filtered by 3 different difficulty settings.{" "}
+                Categories for trivia questions include Entertainment, Science,
+                Art, History, and much more. Questions can be filtered by 3
+                different difficulty settings.{" "}
               </p>
               <p className="description-text">
-                There are free and paid tiers of the app. Users who register get a welcome email and
-                can reset their password via email as well.
+                There are free and paid tiers of the app. Users who register get
+                a welcome email and can reset their password via email as well.
               </p>
             </div>
 
