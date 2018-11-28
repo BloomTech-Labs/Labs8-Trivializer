@@ -162,10 +162,11 @@ class LandingPage extends React.Component {
         email: credentials.email || ""
       })
       .then(res => {
-        const token = res.data;
+        const result = res.data;
 
-        sessionStorage.setItem("jwt", token);
+        sessionStorage.setItem("jwt", result.token);
         sessionStorage.setItem("user", credentials.username);
+        sessionStorage.setItem("userId", result.userId);
         this.redirect();
       })
       .catch(err => {

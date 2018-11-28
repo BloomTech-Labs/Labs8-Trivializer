@@ -85,7 +85,7 @@ server.post("/register", async (req, res) => {
 
     // Generate a new token and return it
     let token = utilities.generateToken(username);
-    res.status(201).json(token);
+    res.status(201).json({ token: token, userId: userId[0] });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -108,7 +108,7 @@ server.post("/login", utilities.getUser, async (req, res) => {
     if (decryptedPassword === password) {
       // Generate a new token and return it
       let token = utilities.generateToken(username);
-      res.status(201).json(token);
+      res.status(201).json({ token: token, userId: user.id });
     } else {
       res.status(401).json({ error: "Incorrect Credentials" });
     }
