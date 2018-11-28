@@ -2,7 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 
-const NavBar = () => {
+const NavBar = props => {
+  const logout = e => {
+    console.log("props is: ", props);
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location = "/";
+  };
   return (
     <div class="main-navigation">
       <nav class="hor-navbar navbar navbar-expand-lg navbar-light bg-light">
@@ -43,6 +50,13 @@ const NavBar = () => {
                 Setting
               </Link>
             </li>
+            {localStorage.getItem("user") || sessionStorage.getItem("jwt") ? (
+              <li class="nav-item">
+                <div onClick={logout} className="nav-logout nav-link active">
+                  Sign Out
+                </div>
+              </li>
+            ) : null}
           </ul>
         </div>
       </nav>
@@ -52,11 +66,6 @@ const NavBar = () => {
             <li class="nav-item">
               <Link to="/gameslist" class="nav-link active">
                 Games
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/invoices" className="nav-link">
-                Invoices
               </Link>
             </li>
             <li className="nav-item">
