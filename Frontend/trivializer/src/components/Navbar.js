@@ -55,11 +55,6 @@ const NavBar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/invoices" className="nav-link">
-                Invoices
-              </Link>
-            </li>
-            <li className="nav-item">
               <Link to="/billing" className="nav-link">
                 Billing
               </Link>

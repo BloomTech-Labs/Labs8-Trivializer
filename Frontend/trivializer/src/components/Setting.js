@@ -14,6 +14,12 @@ class Setting extends React.Component {
     let savedUser = JSON.parse(localStorage.getItem("user"));
     this.setState({ savedUser: savedUser });
   }
+  logout = e => {
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    this.props.history.push("/");
+  };
 
   render() {
     const savedUser = this.state.savedUser;
@@ -32,9 +38,9 @@ class Setting extends React.Component {
               </ol>
             </nav>
           </div>
-          <Link className="top-rightside" to="/">
+          <div onClick={this.logout} className="top-rightside">
             Sign Out
-          </Link>
+          </div>
         </div>
 
         <div className="main-content">
