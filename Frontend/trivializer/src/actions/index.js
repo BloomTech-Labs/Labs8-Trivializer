@@ -234,17 +234,17 @@ export const deleteRoundReq = roundId => {
   };
 };
 
-export const editRoundReq = roundId => {
+export const editRoundReq = (round, roundId) => {
   return dispatch => {
-    dispatch({ type: DELETING_ROUND });
+    dispatch({ type: EDITING_ROUND });
     axios
-      .delete(`${BE_URL}/round/${roundId}`, {
+      .put(`${BE_URL}/round/${roundId}`, round, {
         headers: {
           Authorization: `${sessionStorage.getItem("jwt")}`
         }
       })
       .then(({ data }) => {
-        dispatch({ type: DELETED_ROUND, payload: roundId });
+        dispatch({ type: EDITED_ROUND, payload: data });
       })
       .catch(err => {
         dispatch({ type: ERROR, payload: err });

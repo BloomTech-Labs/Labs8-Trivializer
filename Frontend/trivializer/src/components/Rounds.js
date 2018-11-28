@@ -126,7 +126,8 @@ class Rounds extends Component {
 
     // ****** If this is an already saved round ******
     else {
-      this.props.editRoundReq(formattedBackendRound);
+      // Alter round instead of saving a new one, take in above info and existing round ID
+      this.props.editRoundReq(formattedBackendRound, this.props.round.roundId);
     }
   };
 

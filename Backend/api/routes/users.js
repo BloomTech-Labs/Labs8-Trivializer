@@ -484,7 +484,11 @@ server.put("/round/:id", utilities.protected, async (req, res) => {
         number_of_questions: edit.questions
       });
 
-    // get game by id
+    if (!round) {
+      throw new Error("No Round with that ID");
+    }
+
+    // get round by id
     let newRound = await db("Rounds").where("id", id);
 
     res.status(200).json({
