@@ -18,6 +18,9 @@ export const ERROR = "ERROR";
 const URL = process.env.REACT_APP_API_URL || "https://testsdepl.herokuapp.com/users";
 const BE_URL = process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
 
+// const URL = "https://testsdepl.herokuapp.com/users";
+// const URL = "http://localhost:3300/users";
+
 // sample games fetch with params
 // {
 //     username: "username"
@@ -204,4 +207,9 @@ export const fetchRoundsReq = id => {
   };
 };
 
-export const saveRoundReq = (id, round) => {};
+export const saveRoundReq = (id, round) => {
+  return dispatch => {
+    dispatch({ type: SAVING_ROUND });
+    axios.get(`${URL}`);
+  };
+};
