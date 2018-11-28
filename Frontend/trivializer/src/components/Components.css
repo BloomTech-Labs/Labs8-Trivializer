@@ -19,6 +19,11 @@
 
 .top-rightside {
   margin-right: 20px;
+  text-decoration: underline;
+  color: blue;
+}
+.top-rightside:hover {
+  cursor: pointer;
 }
 
 .main-content {

@@ -2,9 +2,17 @@ import React from "react";
 import Navbar from "./Navbar";
 import Pay from "./Pay";
 import { Link } from "react-router-dom";
+import "./Components.css";
 
+const Billing = props => {
+  const logout = e => {
+    console.log("props is: ", props);
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    props.history.push("/");
+  };
 
-const Billing = () => {
   return (
     <div className="billing-page">
       <div className="top-content">
@@ -20,17 +28,19 @@ const Billing = () => {
             </ol>
           </nav>
         </div>
-        <Link className="top-rightside" to="/">
-          Sign Out
-        </Link>
+        {localStorage.getItem("user") || sessionStorage.getItem("jwt") ? (
+          <div onClick={logout} className="top-rightside">
+            Sign Out
+          </div>
+        ) : null}
       </div>
+
       <div className="main-content">
         <Navbar />
-        
+
         {/* <h1 className="main-middle">Billing Page</h1> */}
         <Pay />
       </div>
-      
     </div>
   );
 };
