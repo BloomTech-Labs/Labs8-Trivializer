@@ -6,6 +6,7 @@ import "./Components.css";
 
 const Billing = props => {
   const logout = e => {
+    console.log("props is: ", props);
     e.preventDefault();
     localStorage.clear();
     sessionStorage.clear();

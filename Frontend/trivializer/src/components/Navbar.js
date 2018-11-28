@@ -2,7 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 
-const NavBar = () => {
+const NavBar = props => {
+  const logout = e => {
+    console.log("props is: ", props);
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location = "/";
+  };
   return (
     <div class="main-navigation">
       <nav class="hor-navbar navbar navbar-expand-lg navbar-light bg-light">
@@ -42,6 +49,11 @@ const NavBar = () => {
               <Link to="/setting" className="nav-link active">
                 Setting
               </Link>
+            </li>
+            <li class="nav-item">
+              <div onClick={logout} className="nav-logout nav-link active">
+                Sign Out
+              </div>
             </li>
           </ul>
         </div>
