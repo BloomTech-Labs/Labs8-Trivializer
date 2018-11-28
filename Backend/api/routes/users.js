@@ -82,7 +82,8 @@ server.post("/register", async (req, res) => {
         email: email,
         name: name,
         phone: phone,
-        logo: logo
+        logo: logo,
+        paid: 0
     };
 
     try {
