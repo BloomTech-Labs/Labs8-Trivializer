@@ -162,10 +162,11 @@ class LandingPage extends React.Component {
         email: credentials.email || ""
       })
       .then(res => {
-        const token = res.data;
+        const result = res.data;
 
-        sessionStorage.setItem("jwt", token);
+        sessionStorage.setItem("jwt", result.token);
         sessionStorage.setItem("user", credentials.username);
+        sessionStorage.setItem("userId", result.userId);
         this.redirect();
       })
       .catch(err => {
@@ -180,13 +181,9 @@ class LandingPage extends React.Component {
     e.preventDefault();
     auth.signInWithPopup(provider).then(result => {
       const user = result.user;
-      localStorage.setItem("username", user.email);
-      localStorage.setItem("password", user.l);
       localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("photoURL", JSON.stringify(user.photoURL));
       window.location.reload();
       this.redirect();
-      //this.setState({ user });
     });
   };
 

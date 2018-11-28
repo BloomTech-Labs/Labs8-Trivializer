@@ -28,7 +28,7 @@ class Round extends Component {
       category: this.props.category || "",
       difficulty: this.props.difficulty || "easy",
       type: this.props.type || "multiple",
-      questions: this.props.questions || [],
+      questions: this.props.questions,
       baseURL: "https://opentdb.com/api.php?",
       replace: []
     };
@@ -37,27 +37,33 @@ class Round extends Component {
   componentDidMount = () => {
     console.log("this.state: ", this.state);
     // If questions are passed in, just collect the answers, don't make the API call
-    if (this.state.questions.length > 0) {
-      // questions will now have unique Id's and complete answers array
-      let questions = this.addIds(this.state.questions);
-
-      this.setState({ questions: questions });
-      return;
-    }
-
-    let concatenatedURL = this.buildApiCall();
-    //   Call axios with input parameters
-    axios.get(concatenatedURL).then(response => {
-      // questions will now have unique Id's and complete answers array
-      let questions = this.addIds(response.data.results);
-
-      this.setState({ questions: questions });
-    });
   };
 
+  componentDidUpdate = prevProps => {
+    if (prevProps.questions !== this.props.questions) {
+      console.log("ComponentDidUpdate state", this.state);
+      if (this.state.questions.length > 0) {
+        // questions will now have unique Id's and complete answers array
+        let questions = this.addIds(this.state.questions);
+
+        this.setState({ questions: questions });
+        return;
+      }
+
+      let concatenatedURL = this.buildApiCall();
+      console.log("concatenatedURL: ", concatenatedURL);
+      //   Call axios with input parameters
+      axios.get(concatenatedURL).then(response => {
+        // questions will now have unique Id's and complete answers array
+        let questions = this.addIds(response.data.results);
+
+        this.setState({ questions: questions });
+      });
+    }
+  };
   // Builds a call to the questions API based on which parameters in state are set
   buildApiCall = howManyQuestions => {
-    let amount = `&amount=${howManyQuestions ||
+    let amount = `amount=${howManyQuestions ||
       this.state.numberOfQuestions ||
       1}`;
 
@@ -206,13 +212,14 @@ class Round extends Component {
                 <div className="title-round">{`${this.state.gameName} - ${
                   this.state.roundName
                 }`}</div>
-
-                <div className="info-round">
-                  {`Difficulty: ${this.state.difficulty ||
-                    "All"} \xa0\xa0\xa0\xa0\xa0 Questions: ${
-                    this.state.questions.length
-                  }`}
-                </div>
+                {this.props.fetched_questions ? (
+                  <div className="info-round">
+                    {`Difficulty: ${this.state.difficulty ||
+                      "All"} \xa0\xa0\xa0\xa0\xa0 Questions: ${
+                      this.state.questions.length
+                    }`}
+                  </div>
+                ) : null}
               </div>
               <div className="col-2-round">
                 <ReactToPrint
@@ -307,6 +314,8 @@ class Round extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
+    fetching_questions: gamesList.fetching_questions,
+    fetched_questions: gamesList.fetched_questions,
     gameName: gamesList.gameName,
     gameId: gamesList.gameId,
     roundName: gamesList.roundName,
