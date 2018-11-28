@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import Rounds from "./Rounds";
 import { connect } from "react-redux";
 import { fetchRoundsReq } from "../actions";
@@ -54,11 +53,10 @@ class RoundsList extends Component {
               {/* Loops throught the new rounds the user has created, not yet saved and thus not in Redux store */}
               {this.state.newRounds.map((round, i) => {
                 return (
-                  <div>
+                  <div key={Date.now()}>
                     {/* Should change date.now to something better later */}
                     <Rounds
                       new
-                      key={Date.now()}
                       index={this.props.rounds.length + i + 1}
                       round={round}
                     />

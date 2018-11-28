@@ -31,9 +31,12 @@ class App extends Component {
         <Route path="/creategame" component={CreateGameView} />
         <Route path="/setting" component={Setting} />
         <Route path="/invoices" component={Invoices} />
-        <Route exact path="/game/:id" component={Game} />
-        <Route exact path="/game/:id/round/:id" component={Round} />
-
+        <Route exact path="/game/:id" render={props => <Game {...props} />} />
+        <Route
+          exact
+          path="/game/:id/round/:id"
+          render={props => <Round {...props} />}
+        />
       </div>
     );
   }

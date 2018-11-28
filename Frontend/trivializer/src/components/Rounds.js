@@ -1,8 +1,13 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import "./Rounds.css";
 import { connect } from "react-redux";
-import { saveRoundReq, deleteRoundReq, editRoundReq } from "../actions";
+import {
+  saveRoundReq,
+  deleteRoundReq,
+  editRoundReq,
+  getQuestionsReq
+} from "../actions";
 
 let categoryOptions = {
   any: "any",
@@ -74,6 +79,7 @@ class Rounds extends Component {
       // This will render a save button in render()
       if (
         !this.state.changed &&
+        this.state.roundName.length > 0 &&
         (this.state.roundName !== this.state.original_roundName ||
           this.state.numQs !== this.state.original_numQs ||
           this.state.category !== this.state.original_category ||
@@ -119,8 +125,7 @@ class Rounds extends Component {
     };
 
     // ****** If this is a new round ******
-    if (this.props.new || !this.props.roundId) {
-      // Add extra check to be sure we have the gameId before hitting API
+    if (this.props.new || !this.props.round.roundId) {
       this.props.saveRoundReq(formattedBackendRound);
     }
 
@@ -136,10 +141,40 @@ class Rounds extends Component {
   };
 
   enterRound = () => {
-    alert("Entered Round!");
+    // First, save the round
+    this.saveRound();
+
+    let formattedQuestionsRound = this.formatQuestionsCall();
+
     // ******If this is a new, unsaved round ******
-    if (this.props.new) {
-    }
+
+    this.props.getQuestionsReq(
+      formattedQuestionsRound,
+      this.props.round.roundId
+    );
+
+    this.props.history.push(
+      `${this.props.gameId}/round/${this.props.round.roundId}`
+    );
+  };
+
+  // Format our current state to be set to Redux store
+  // These values should be exactly what we send to the questions
+  // API, so all "any" values should be "", all category options
+  // Should be their numeric equivalent
+  formatQuestionsCall = () => {
+    let formattedQuestionsRound = {
+      gameName: this.props.gameName !== null ? this.props.gameName : "Game",
+      gameId: this.props.gameId,
+      roundName: this.state.roundName !== "" ? this.props.gameId : "New Round",
+      numberOfQuestions: this.state.numQs > 0 ? this.state.numQs : 1,
+      category: categoryOptions[this.state.category],
+      difficulty: this.state.difficulty !== "any" ? this.state.difficulty : "",
+      type: this.state.type !== "any" ? this.state.type : "",
+      questions: null
+    };
+
+    return formattedQuestionsRound;
   };
 
   render() {
@@ -249,6 +284,7 @@ class Rounds extends Component {
 const mapStateToProps = ({ gamesList }) => {
   return {
     gameId: gamesList.game_id,
+    gameName: gamesList.gameName,
     savingRound: gamesList.saving_round,
     savedRound: gamesList.saved_round,
     error: gamesList.error,
@@ -256,7 +292,9 @@ const mapStateToProps = ({ gamesList }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { saveRoundReq, deleteRoundReq, editRoundReq }
-)(Rounds);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { saveRoundReq, deleteRoundReq, editRoundReq, getQuestionsReq }
+  )(Rounds)
+);

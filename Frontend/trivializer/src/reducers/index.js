@@ -5,8 +5,8 @@ import {
   FETCHED_GAME,
   FETCHING_ROUNDS,
   FETCHED_ROUNDS,
-  FETCHING_NEW_QUESTIONS,
-  FETCHED_NEW_QUESTIONS,
+  FETCHING_QUESTIONS,
+  FETCHED_QUESTIONS,
   SAVING_GAME,
   SAVED_GAME,
   DELETING_GAME,
@@ -32,18 +32,21 @@ const initialState = {
   questions: [],
   question: [],
   invoiced: [],
-  gamename: null,
+  gameName: null,
   gameId: null,
   roundName: null,
   numberOfQuestions: null,
+  category: null,
+  difficulty: null,
+  type: null,
   fetching_games: false,
   fetched_games: false,
   fetching_game: false,
   fetched_game: false,
   fetching_rounds: false,
   fetched_rounds: false,
-  fetching_new_questions: false,
-  fetched_new_questions: false,
+  fetching_questions: false,
+  fetched_questions: false,
   saving_game: false,
   saved_game: false,
   saving_round: false,
@@ -76,11 +79,13 @@ const gamesReducer = (state = initialState, action) => {
         fetching_game: true
       });
     case FETCHED_GAME:
+      console.log("action.payload: ", action.payload);
       return Object.assign({}, state, {
         fetching_game: false,
         fetched_game: true,
         game: action.payload,
-        game_id: action.payload[0].gameId
+        game_id: action.payload[0].gameId,
+        gameName: action.payload[0].gamename
       });
     case FETCHING_ROUNDS:
       return Object.assign({}, state, {
@@ -159,7 +164,6 @@ const gamesReducer = (state = initialState, action) => {
         edited_round: false
       });
     case EDITED_ROUND:
-      console.log("action.payload", action.payload);
       let editedRounds = state.rounds.slice();
       editedRounds = editedRounds.map(round => {
         if (round.roundId === action.payload.roundId) {
@@ -173,6 +177,23 @@ const gamesReducer = (state = initialState, action) => {
         edited_round: true,
         rounds: editedRounds
       });
+    case FETCHING_QUESTIONS:
+      return Object.assign({}, state, {
+        fetching_questions: true,
+        fetched_questions: false
+      });
+    case FETCHED_QUESTIONS:
+      return Object.assign({}, state, {
+        fetching_questions: true,
+        fetched_questions: false,
+        roundName: action.payload.roundName,
+        numberOfQuestions: action.payload.numberOfQuestions,
+        category: action.payload.category,
+        difficulty: action.payload.difficulty,
+        type: action.payload.type,
+        questions: action.payload.questions
+      });
+
     case ERROR:
       return Object.assign({}, state, {
         error: action.payload

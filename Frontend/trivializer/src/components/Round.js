@@ -6,6 +6,7 @@ import axios from "axios";
 import "./Questions.css";
 import update from "react-addons-update";
 import ReactToPrint from "react-to-print";
+import { connect } from "react-redux";
 
 const createDOMPurify = require("dompurify"); // Prevents XSS attacks from incoming HTML
 
@@ -20,7 +21,7 @@ class Round extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gamename: this.props.gamename || "Wednesday Night Trivia",
+      gameName: this.props.gameName || "Wednesday Night Trivia",
       gameId: this.props.gameID || 1,
       roundName: this.props.roundName || "Round 1",
       numberOfQuestions: this.props.numberOfQuestions || 5,
@@ -34,6 +35,7 @@ class Round extends Component {
   }
 
   componentDidMount = () => {
+    console.log("this.state: ", this.state);
     // If questions are passed in, just collect the answers, don't make the API call
     if (this.state.questions.length > 0) {
       // questions will now have unique Id's and complete answers array
@@ -201,7 +203,7 @@ class Round extends Component {
           <div className="main-content-round">
             <div className="top-content-round">
               <div className="col-1-round">
-                <div className="title-round">{`${this.state.gamename} - ${
+                <div className="title-round">{`${this.state.gameName} - ${
                   this.state.roundName
                 }`}</div>
 
@@ -259,7 +261,7 @@ class Round extends Component {
               className="hiddenAnswers"
               ref={el => (this.answerSheetRef = el)}
             >
-              <div className="hiddenAnswers-info">{this.state.gamename}</div>
+              <div className="hiddenAnswers-info">{this.state.gameName}</div>
               <div className="hiddenAnswers-info">{this.state.roundName}</div>
               <div className="hiddenAnswers-info">
                 ***Please Circle the Correct Answer***
@@ -303,4 +305,20 @@ class Round extends Component {
   }
 }
 
-export default Round;
+const mapStateToProps = ({ gamesList }) => {
+  return {
+    gameName: gamesList.gameName,
+    gameId: gamesList.gameId,
+    roundName: gamesList.roundName,
+    numberOfQuestions: gamesList.numberOfQuestions,
+    category: gamesList.category,
+    difficulty: gamesList.difficulty,
+    type: gamesList.type,
+    questions: gamesList.questions
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Round);
