@@ -66,7 +66,7 @@ class Rounds extends Component {
   }
 
   componentDidMount() {
-    console.log("this.props.rounds: ", this.props.rounds);
+    console.log("this.props.gameId: ", this.props.gameId);
   }
 
   handleChange = e => {
@@ -110,17 +110,33 @@ class Rounds extends Component {
   };
 
   saveRound = () => {
-    let formattedRound = {};
+    // Configure category to be the correct number value for the questions API
+    // and users API, Users API must be a string, questions API needs a digit
+
+    let formattedBackendRound = {
+      gameId: this.props.gameId,
+      roundname: this.state.roundName,
+      category: this.state.category,
+      type: this.state.type,
+      difficulty: this.state.difficulty,
+      questions: this.state.numQs
+    };
+
+    // Add extra check to be sure we have the gameId before hitting API
+    if (this.props.gameId) {
+      this.props.saveRoundReq(formattedBackendRound);
+    } else {
+      console.log("No game ID!!");
+    }
   };
 
   render() {
-    console.log("this.state.changed: ", this.state.changed);
     return (
       <div className="rounds">
         <input
           type="text"
           onChange={this.handleChange}
-          name="roundname"
+          name="roundName"
           value={this.state.roundName}
           className="roundsTitle"
         />
@@ -158,12 +174,7 @@ class Rounds extends Component {
             {Object.keys(categoryOptions).map((option, i) => {
               let selected = option === this.state.category;
               return (
-                <option
-                  key={i}
-                  className="roundsOption"
-                  selected={selected}
-                  value={categoryOptions[option]}
-                >
+                <option key={i} className="roundsOption" selected={selected}>
                   {option}
                 </option>
               );
@@ -228,6 +239,7 @@ class Rounds extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
+    gameId: gamesList.game_id,
     savingRound: gamesList.saving_round,
     savedRound: gamesList.saved_round,
     error: gamesList.error,

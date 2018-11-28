@@ -16,8 +16,7 @@ export const SAVED_ROUND = "SAVED_ROUNDS";
 export const ERROR = "ERROR";
 
 const URL = process.env.REACT_APP_API_URL || "https://opentdb.com/api.php?";
-const BE_URL =
-  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
+const BE_URL = process.env.REACT_APP_BE_URL || "http://localhost:3300/users";
 
 // sample games fetch with params
 // {
@@ -25,6 +24,7 @@ const BE_URL =
 // }
 
 export const fetchGamesReq = () => {
+  console.log("process.env: ", process.env);
   const newGames = {
     username: `${sessionStorage.getItem("user")}`
   };
@@ -195,19 +195,29 @@ export const fetchRoundsReq = id => {
         }
       })
       .then(({ data }) => {
-        console.log("data: ", data);
         dispatch({ type: FETCHED_ROUNDS, payload: data });
       })
       .catch(err => {
-        console.log("err: ", err);
         dispatch({ type: ERROR, payload: err });
       });
   };
 };
 
-export const saveRoundReq = (id, round) => {
+export const saveRoundReq = round => {
   return dispatch => {
     dispatch({ type: SAVING_ROUND });
-    axios.post(`${BE_URL}/round`);
+    axios
+      .post(`${BE_URL}/round`, round, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        console.log("data: ", data);
+        dispatch({ type: SAVED_ROUND, payload: data });
+      })
+      .catch(err => {
+        dispatch({ type: ERROR, payload: err });
+      });
   };
 };
