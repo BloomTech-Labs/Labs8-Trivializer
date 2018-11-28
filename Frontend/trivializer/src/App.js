@@ -4,13 +4,13 @@ import LandingPage from "./components/LandingPage";
 import Billing from "./components/Billing";
 import GamesList from "./components/GamesList";
 import Setting from "./components/Setting";
-import Invoices from "./components/Invoices";
 import Game from "./components/Game";
 import { Route, withRouter } from "react-router-dom";
 import Round from "./components/Round";
 import CreateGameView from "./components/CreateGameView";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
+import "./components/Components.css";
 
 /**
  * App Component
@@ -30,10 +30,8 @@ class App extends Component {
         <Route path="/gameslist" component={GamesList} />
         <Route path="/creategame" component={CreateGameView} />
         <Route path="/setting" component={Setting} />
-        <Route path="/invoices" component={Invoices} />
         <Route exact path="/game/:id" component={Game} />
         <Route exact path="/game/:id/round/:id" component={Round} />
-
       </div>
     );
   }
