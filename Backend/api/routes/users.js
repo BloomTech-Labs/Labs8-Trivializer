@@ -356,9 +356,16 @@ server.delete("/round/:id", utilities.protected, async (req, res) => {
     // If response === 0 no round was deleted
     if (response === 0) throw new Error(`Error deleting round ${id}`);
 
+    let responseQuestions = await db("Questions")
+      .where({ rounds_id: id })
+      .del();
+
+    if (!responseQuestions) {
+      throw new Error("Error deleting question in Round");
+    }
     res.status(200).json(`Round ${response} deleted`);
   } catch (err) {
-    res.status(400).json({ error: `Error deleting round ${id}` });
+    res.status(400).json({ error: err.message });
   }
 });
 

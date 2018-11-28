@@ -11,13 +11,14 @@ export const UPDATING_GAME = "UPDATING_GAME";
 export const UPDATED_GAME = "UPDATED_GAME";
 export const FETCHING_ROUNDS = "FETCHING_ROUNDS";
 export const FETCHED_ROUNDS = "FETCHED_ROUNDS";
-export const SAVING_ROUND = "SAVING_ROUNDS";
-export const SAVED_ROUND = "SAVED_ROUNDS";
+export const SAVING_ROUND = "SAVING_ROUND";
+export const SAVED_ROUND = "SAVED_ROUND";
+export const DELETING_ROUND = "DELETING_ROUND";
+export const DELETED_ROUND = "DELETED_ROUND";
 export const ERROR = "ERROR";
 
 const URL = process.env.REACT_APP_API_URL || "https://opentdb.com/api.php?";
-const BE_URL =
-  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
+const BE_URL = process.env.REACT_APP_BE_URL || "http://localhost:3300/users";
 
 // sample games fetch with params
 // {
@@ -214,8 +215,22 @@ export const saveRoundReq = round => {
         }
       })
       .then(({ data }) => {
-        console.log("data: ", data);
         dispatch({ type: SAVED_ROUND, payload: data });
+      })
+      .catch(err => {
+        dispatch({ type: ERROR, payload: err });
+      });
+  };
+};
+
+export const deleteRoundReq = roundId => {
+  return dispatch => {
+    dispatch({ type: DELETING_ROUND });
+    axios
+      .delete(`${BE_URL}/round/${roundId}`)
+      .then(({ data }) => {
+        console.log("data: ", data);
+        dispatch({ type: DELETED_ROUND, payload: data });
       })
       .catch(err => {
         dispatch({ type: ERROR, payload: err });
