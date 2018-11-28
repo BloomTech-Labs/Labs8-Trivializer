@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./Rounds.css";
 import { connect } from "react-redux";
-import { saveRoundReq, deleteRoundReq } from "../actions";
+import { saveRoundReq, deleteRoundReq, editRoundReq } from "../actions";
 
 let categoryOptions = {
   any: "any",
@@ -101,35 +101,33 @@ class Rounds extends Component {
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-
-    // if (e.target.value !== this.state[`original_${e.target.name}`]) {
-    //   this.setState({
-    //     changed: true,
-    //     [e.target.name]: e.target.value
-    //   });
-    // } else {
-    //   this.setState({ [e.target.name]: e.target.value });
-    // }
   };
 
   saveRound = () => {
-    // Configure category to be the correct number value for the questions API
-    // and users API, Users API must be a string, questions API needs a digit
-
+    if (!this.props.gameId) {
+      console.log("No game ID!!");
+      return;
+    }
+    // Assemble backend info
     let formattedBackendRound = {
       gameId: this.props.gameId,
-      roundname: this.state.roundName,
+      roundName: this.state.roundName,
       category: this.state.category,
       type: this.state.type,
       difficulty: this.state.difficulty,
       questions: this.state.numQs
     };
 
-    // Add extra check to be sure we have the gameId before hitting API
-    if (this.props.gameId) {
+    // ****** If this is a new round ******
+    if (this.props.new) {
+      // Add extra check to be sure we have the gameId before hitting API
       this.props.saveRoundReq(formattedBackendRound);
-    } else {
-      console.log("No game ID!!");
+    }
+
+    // ****** If this is an already saved round ******
+    else {
+      // Alter round instead of saving a new one, take in above info and existing round ID
+      this.props.editRoundReq(formattedBackendRound, this.props.round.roundId);
     }
   };
 
@@ -253,5 +251,5 @@ const mapStateToProps = ({ gamesList }) => {
 
 export default connect(
   mapStateToProps,
-  { saveRoundReq, deleteRoundReq }
+  { saveRoundReq, deleteRoundReq, editRoundReq }
 )(Rounds);
