@@ -10,6 +10,7 @@ exports.up = function(knex, Promise) {
         table.string("category").notNullable();
         table.string("difficulty").notNullable();
         table.string("type").notNullable();
+        table.text("question").notNullable();
         table.string("correct_answer").notNullable();
         table.string("incorrect_answers").notNullable();
     });

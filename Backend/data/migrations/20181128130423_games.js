@@ -8,6 +8,7 @@ exports.up = function(knex, Promise) {
             .references("id")
             .inTable("Users");
         table.string("name").notNullable();
+        table.text("description");
         table.timestamp("date_created").defaultTo(knex.fn.now());
         table.timestamp("date_played").defaultTo(null);
     });
