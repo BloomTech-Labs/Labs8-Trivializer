@@ -15,6 +15,8 @@ export const SAVING_ROUND = "SAVING_ROUND";
 export const SAVED_ROUND = "SAVED_ROUND";
 export const DELETING_ROUND = "DELETING_ROUND";
 export const DELETED_ROUND = "DELETED_ROUND";
+export const EDITING_ROUND = "EDITING_ROUND";
+export const EDITED_ROUND = "EDITED_ROUND";
 export const ERROR = "ERROR";
 
 const URL = process.env.REACT_APP_API_URL || "https://opentdb.com/api.php?";
@@ -215,7 +217,24 @@ export const saveRoundReq = round => {
 // Takes in a round Id and returns that same Id to
 // delete the round from Redux store in Reducers, index.js
 export const deleteRoundReq = roundId => {
-  console.log("Complete URL: ", `${BE_URL}/round/${roundId}`);
+  return dispatch => {
+    dispatch({ type: DELETING_ROUND });
+    axios
+      .delete(`${BE_URL}/round/${roundId}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        dispatch({ type: DELETED_ROUND, payload: roundId });
+      })
+      .catch(err => {
+        dispatch({ type: ERROR, payload: err });
+      });
+  };
+};
+
+export const editRoundReq = roundId => {
   return dispatch => {
     dispatch({ type: DELETING_ROUND });
     axios
