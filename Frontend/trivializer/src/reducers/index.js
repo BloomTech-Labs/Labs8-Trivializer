@@ -116,12 +116,12 @@ const gamesReducer = (state = initialState, action) => {
         saved_round: false
       });
     case SAVED_ROUND:
-      console.log("state.rounds: ", state.rounds);
-      console.log("action.payload: ", action.payload);
+      let newRounds = state.rounds.slice();
+      newRounds.push(action.payload);
       return Object.assign({}, state, {
         saving_round: false,
         saved_round: true,
-        rounds: state.rounds.push(action.payload),
+        rounds: newRounds,
         round: action.payload
       });
     case ERROR:

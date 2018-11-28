@@ -396,10 +396,15 @@ server.post("/round", utilities.protected, async (req, res) => {
     let roundId = (await db("Rounds").insert(roundPackage))[0];
 
     let returnPackage = {
-      roundId: roundId
+      roundId: roundId,
+      roundName: roundname,
+      numQs: questions,
+      category: category,
+      difficulty: difficulty,
+      type: type
     };
     // Return new round ID
-    res.status(200).json(roundPackage);
+    res.status(200).json(returnPackage);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
