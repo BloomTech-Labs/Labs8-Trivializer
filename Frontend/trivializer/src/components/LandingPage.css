@@ -146,3 +146,7 @@ input:hover {
     width: 80%;
   }
 }
+
+#new-signup {
+  cursor: pointer;
+}
