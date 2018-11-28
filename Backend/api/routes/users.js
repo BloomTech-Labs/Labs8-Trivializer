@@ -536,6 +536,40 @@ server.put("/editq/:id", utilities.protected, async (req, res) =>{
         res.status(500).json({ error: err.message });
     }
 });
+
+server.put("/edituser/:id", utilities.protected, async (req, res) =>{
+    try{
+        const { id } = req.params;
+        const edit = { ...req.body };
+  
+        // update user by id
+        let question = await db("Users")
+            .where("id", id)
+            .update({
+                password: edit.password,
+                name: edit.paid,
+                email: edit.email,
+                phone: edit.phone,
+                logo: edit.logo,
+                paid: edit.paid
+            });
+            // get user by id
+        let newUser = await db("Users").where("id", id);
+  
+        res.status(200).json({
+            userId: newUser[0]["id"],
+            password: newUser[0]["password"],
+            name: newUser[0]["name"],
+            email: newUser[0]["email"],
+            phone: newUser[0]["phone"],
+            logo: newUser[0]["logo"],
+            paid: newUser[0]["paid"],
+        });
+    } catch (err) {
+        console.log("err.message: ", err.message);
+        res.status(500).json({ error: err.message });
+    }
+  });
 // Delete Game
 
 // users -> games -> rounds -> questions -> answers
