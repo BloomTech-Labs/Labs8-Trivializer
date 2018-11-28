@@ -24,6 +24,12 @@ class RoundsList extends Component {
     this.props.fetchRoundsReq(id);
   }
 
+  componentDidUpdate = prevProps => {
+    console.log("prevProps, this.props: ", prevProps, this.props);
+    if (prevProps.rounds !== this.props.rounds) {
+      this.setState();
+    }
+  };
   newRound = () => {
     console.log("New Round!!");
     let round = {

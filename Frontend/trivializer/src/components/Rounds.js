@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./Rounds.css";
 import { connect } from "react-redux";
-import { saveRoundReq } from "../actions";
+import { saveRoundReq, deleteRoundReq } from "../actions";
 
 let categoryOptions = {
   any: "any",
@@ -65,9 +65,7 @@ class Rounds extends Component {
     };
   }
 
-  componentDidMount() {
-    console.log("this.props.gameId: ", this.props.gameId);
-  }
+  componentDidMount() {}
 
   handleChange = e => {
     // Compare values to original values, if any of them are different,
@@ -128,6 +126,10 @@ class Rounds extends Component {
     } else {
       console.log("No game ID!!");
     }
+  };
+
+  delete = () => {
+    this.props.deleteRoundReq(this.props.round.roundId);
   };
 
   render() {
@@ -228,7 +230,7 @@ class Rounds extends Component {
           >
             Save
           </button>
-          <button className="roundsDelete" onClick={this.props.delete}>
+          <button className="roundsDelete" onClick={this.delete}>
             Delete
           </button>
         </div>
@@ -249,5 +251,5 @@ const mapStateToProps = ({ gamesList }) => {
 
 export default connect(
   mapStateToProps,
-  { saveRoundReq }
+  { saveRoundReq, deleteRoundReq }
 )(Rounds);

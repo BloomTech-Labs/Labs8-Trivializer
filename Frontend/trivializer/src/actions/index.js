@@ -223,14 +223,21 @@ export const saveRoundReq = round => {
   };
 };
 
+// Takes in a round Id and returns that same Id to
+// delete the round from Redux store in Reducers, index.js
 export const deleteRoundReq = roundId => {
+  console.log("Complete URL: ", `${BE_URL}/round/${roundId}`);
   return dispatch => {
     dispatch({ type: DELETING_ROUND });
     axios
-      .delete(`${BE_URL}/round/${roundId}`)
+      .delete(`${BE_URL}/round/${roundId}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
       .then(({ data }) => {
         console.log("data: ", data);
-        dispatch({ type: DELETED_ROUND, payload: data });
+        dispatch({ type: DELETED_ROUND, payload: roundId });
       })
       .catch(err => {
         dispatch({ type: ERROR, payload: err });
