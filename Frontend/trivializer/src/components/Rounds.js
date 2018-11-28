@@ -67,44 +67,50 @@ class Rounds extends Component {
 
   componentDidMount() {}
 
-  handleChange = e => {
-    // Compare values to original values, if any of them are different,
-    // then we've made a change we can save, so set changed on state,
-    // This will render a save button in render()
-    if (e.target.value !== this.state[`original_${e.target.name}`]) {
-      this.setState({
-        changed: true,
-        [e.target.name]: e.target.value
-      });
+  componentDidUpdate = prevState => {
+    if (prevState !== this.state) {
+      // Compare values to original values, if any of them are different,
+      // then we've made a change we can save, so set changed on state,
+      // This will render a save button in render()
+      if (
+        !this.state.changed &&
+        (this.state.roundName !== this.state.original_roundName ||
+          this.state.numQs !== this.state.original_numQs ||
+          this.state.category !== this.state.original_category ||
+          this.state.difficulty !== this.state.original_difficulty ||
+          this.state.type !== this.state.original_type)
+      ) {
+        this.setState({
+          changed: true
+        });
+      }
+      // Conversely, if the current state is all the same as the original,
+      // remove the save button
+      else if (
+        this.state.changed &&
+        (this.state.roundName === this.state.original_roundName &&
+          this.state.numQs === this.state.original_numQs &&
+          this.state.category === this.state.original_category &&
+          this.state.difficulty === this.state.original_difficulty &&
+          this.state.type === this.state.original_type)
+      ) {
+        this.setState({ changed: false });
+      }
     }
-    if (
-      !this.state.changed &&
-      (this.state.roundName !== this.state.original_roundName ||
-        this.state.numQs !== this.state.original_numQs ||
-        this.state.category !== this.state.original_category ||
-        this.state.difficulty !== this.state.original_difficulty ||
-        this.state.type !== this.state.original_type)
-    ) {
-      this.setState({
-        changed: true,
-        [e.target.name]: e.target.value
-      });
-    }
+  };
 
-    // Conversely, if the current state is all the same as the original,
-    // remove the save button
-    else if (
-      this.state.changed &&
-      (this.state.roundName === this.state.original_roundName &&
-        this.state.numQs === this.state.original_numQs &&
-        this.state.category === this.state.original_category &&
-        this.state.difficulty === this.state.original_difficulty &&
-        this.state.type === this.state.original_type)
-    ) {
-      this.setState({ changed: false, [e.target.name]: e.target.value });
-    } else {
-      this.setState({ [e.target.name]: e.target.value });
-    }
+  handleChange = e => {
+    console.log("this.state: ", this.state);
+    this.setState({ [e.target.name]: e.target.value });
+
+    // if (e.target.value !== this.state[`original_${e.target.name}`]) {
+    //   this.setState({
+    //     changed: true,
+    //     [e.target.name]: e.target.value
+    //   });
+    // } else {
+    //   this.setState({ [e.target.name]: e.target.value });
+    // }
   };
 
   saveRound = () => {
