@@ -11,8 +11,10 @@ export const UPDATING_GAME = "UPDATING_GAME";
 export const UPDATED_GAME = "UPDATED_GAME";
 export const FETCHING_ROUNDS = "FETCHING_ROUNDS";
 export const FETCHED_ROUNDS = "FETCHED_ROUNDS";
-export const SAVING_ROUND = "SAVING_ROUNDS";
-export const SAVED_ROUND = "SAVED_ROUNDS";
+export const SAVING_ROUND = "SAVING_ROUND";
+export const SAVED_ROUND = "SAVED_ROUND";
+export const DELETING_ROUND = "DELETING_ROUND";
+export const DELETED_ROUND = "DELETED_ROUND";
 export const ERROR = "ERROR";
 
 const URL = process.env.REACT_APP_API_URL || "https://opentdb.com/api.php?";
@@ -38,8 +40,6 @@ export const fetchGamesReq = () => {
         }
       })
       .then(({ data }) => {
-        console.log(data);
-
         // return if null properties
         if (!data[0]["gameId"]) {
           return;
@@ -67,11 +67,8 @@ export const fetchGameReq = id => {
         }
       })
       .then(({ data }) => {
-        console.log(data);
-
         // filter game by id
         const result = data.filter(item => item.gameId === id);
-        console.log(result);
 
         dispatch({ type: FETCHED_GAME, payload: result });
       })
@@ -108,7 +105,6 @@ export const submitGameReq = game => {
         }
       })
       .then(({ data }) => {
-        console.log(data);
         dispatch({ type: SAVED_GAME, payload: data });
       })
       .catch(err => {
@@ -124,7 +120,6 @@ export const deleteGameReq = id => {
     axios
       .get(`${BE_URL}/game/${id}`)
       .then(({ data }) => {
-        console.log(data);
         dispatch({ type: DELETED_GAME, payload: data });
       })
       .catch(err => {
@@ -163,8 +158,6 @@ export const updateGameReq = (id, game) => {
         }
       })
       .then(({ data }) => {
-        console.log(data);
-
         // // format result
         // const result = {
         //     gameId: data[0]["id"],
@@ -173,7 +166,6 @@ export const updateGameReq = (id, game) => {
         //     dateCreated: data[0]["date_created"],
         //     datePlayed: data[0]["date_played"]
         // };
-
         // dispatch({ type: UPDATED_GAME, payload: result });
       })
       .catch(err => {
@@ -185,7 +177,6 @@ export const updateGameReq = (id, game) => {
 };
 
 export const fetchRoundsReq = id => {
-  console.log("fetching Rounds!!!");
   return dispatch => {
     dispatch({ type: FETCHING_ROUNDS });
     axios
@@ -195,19 +186,49 @@ export const fetchRoundsReq = id => {
         }
       })
       .then(({ data }) => {
-        console.log("data: ", data);
         dispatch({ type: FETCHED_ROUNDS, payload: data });
       })
       .catch(err => {
-        console.log("err: ", err);
         dispatch({ type: ERROR, payload: err });
       });
   };
 };
 
-export const saveRoundReq = (id, round) => {
+export const saveRoundReq = round => {
   return dispatch => {
     dispatch({ type: SAVING_ROUND });
-    axios.get(`${BE_URL}`);
+    axios
+      .post(`${BE_URL}/round`, round, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        dispatch({ type: SAVED_ROUND, payload: data });
+      })
+      .catch(err => {
+        dispatch({ type: ERROR, payload: err });
+      });
+  };
+};
+
+// Takes in a round Id and returns that same Id to
+// delete the round from Redux store in Reducers, index.js
+export const deleteRoundReq = roundId => {
+  console.log("Complete URL: ", `${BE_URL}/round/${roundId}`);
+  return dispatch => {
+    dispatch({ type: DELETING_ROUND });
+    axios
+      .delete(`${BE_URL}/round/${roundId}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        dispatch({ type: DELETED_ROUND, payload: roundId });
+      })
+      .catch(err => {
+        dispatch({ type: ERROR, payload: err });
+      });
   };
 };

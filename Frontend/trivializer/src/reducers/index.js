@@ -13,6 +13,8 @@ import {
   UPDATED_GAME,
   SAVING_ROUND,
   SAVED_ROUND,
+  DELETING_ROUND,
+  DELETED_ROUND,
   ERROR
 } from "../actions";
 import { combineReducers } from "redux";
@@ -40,6 +42,8 @@ const initialState = {
   updated_game: false,
   deleting_game: false,
   deleted_game: false,
+  deleting_round: false,
+  deleted_round: false,
   error: null
 };
 
@@ -63,7 +67,8 @@ const gamesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         fetching_game: false,
         fetched_game: true,
-        game: action.payload
+        game: action.payload,
+        game_id: action.payload[0].gameId
       });
     case FETCHING_ROUNDS:
       return Object.assign({}, state, {
@@ -113,11 +118,28 @@ const gamesReducer = (state = initialState, action) => {
         saved_round: false
       });
     case SAVED_ROUND:
+      let newRounds = state.rounds.slice();
+      newRounds.push(action.payload);
       return Object.assign({}, state, {
         saving_round: false,
         saved_round: true,
-        rounds: state.rounds.push(action.payload),
+        rounds: newRounds,
         round: action.payload
+      });
+    case DELETING_ROUND:
+      return Object.assign({}, state, {
+        deleting_round: true,
+        deleted_round: false
+      });
+    case DELETED_ROUND:
+      let reducedRounds = state.rounds.slice();
+      reducedRounds = reducedRounds.filter(
+        round => round.roundId !== action.payload
+      );
+      return Object.assign({}, state, {
+        deleting_round: false,
+        deleted_round: true,
+        rounds: reducedRounds
       });
     case ERROR:
       return Object.assign({}, state, {

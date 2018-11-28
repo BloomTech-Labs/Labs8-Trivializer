@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./Rounds.css";
 import { connect } from "react-redux";
-import { saveRoundReq } from "../actions";
+import { saveRoundReq, deleteRoundReq } from "../actions";
 
 let categoryOptions = {
   any: "any",
@@ -65,60 +65,85 @@ class Rounds extends Component {
     };
   }
 
-  componentDidMount() {
-    console.log("this.props.rounds: ", this.props.rounds);
-  }
+  componentDidMount() {}
 
-  handleChange = e => {
-    // Compare values to original values, if any of them are different,
-    // then we've made a change we can save, so set changed on state,
-    // This will render a save button in render()
-    if (e.target.value !== this.state[`original_${e.target.name}`]) {
-      this.setState({
-        changed: true,
-        [e.target.name]: e.target.value
-      });
-    }
-    if (
-      !this.state.changed &&
-      (this.state.roundName !== this.state.original_roundName ||
-        this.state.numQs !== this.state.original_numQs ||
-        this.state.category !== this.state.original_category ||
-        this.state.difficulty !== this.state.original_difficulty ||
-        this.state.type !== this.state.original_type)
-    ) {
-      this.setState({
-        changed: true,
-        [e.target.name]: e.target.value
-      });
-    }
-
-    // Conversely, if the current state is all the same as the original,
-    // remove the save button
-    else if (
-      this.state.changed &&
-      (this.state.roundName === this.state.original_roundName &&
-        this.state.numQs === this.state.original_numQs &&
-        this.state.category === this.state.original_category &&
-        this.state.difficulty === this.state.original_difficulty &&
-        this.state.type === this.state.original_type)
-    ) {
-      this.setState({ changed: false, [e.target.name]: e.target.value });
-    } else {
-      this.setState({ [e.target.name]: e.target.value });
+  componentDidUpdate = prevState => {
+    if (prevState !== this.state) {
+      // Compare values to original values, if any of them are different,
+      // then we've made a change we can save, so set changed on state,
+      // This will render a save button in render()
+      if (
+        !this.state.changed &&
+        (this.state.roundName !== this.state.original_roundName ||
+          this.state.numQs !== this.state.original_numQs ||
+          this.state.category !== this.state.original_category ||
+          this.state.difficulty !== this.state.original_difficulty ||
+          this.state.type !== this.state.original_type)
+      ) {
+        this.setState({
+          changed: true
+        });
+      }
+      // Conversely, if the current state is all the same as the original,
+      // remove the save button
+      else if (
+        this.state.changed &&
+        (this.state.roundName === this.state.original_roundName &&
+          this.state.numQs === this.state.original_numQs &&
+          this.state.category === this.state.original_category &&
+          this.state.difficulty === this.state.original_difficulty &&
+          this.state.type === this.state.original_type)
+      ) {
+        this.setState({ changed: false });
+      }
     }
   };
 
-  saveRound = () => {};
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+
+    // if (e.target.value !== this.state[`original_${e.target.name}`]) {
+    //   this.setState({
+    //     changed: true,
+    //     [e.target.name]: e.target.value
+    //   });
+    // } else {
+    //   this.setState({ [e.target.name]: e.target.value });
+    // }
+  };
+
+  saveRound = () => {
+    // Configure category to be the correct number value for the questions API
+    // and users API, Users API must be a string, questions API needs a digit
+
+    let formattedBackendRound = {
+      gameId: this.props.gameId,
+      roundname: this.state.roundName,
+      category: this.state.category,
+      type: this.state.type,
+      difficulty: this.state.difficulty,
+      questions: this.state.numQs
+    };
+
+    // Add extra check to be sure we have the gameId before hitting API
+    if (this.props.gameId) {
+      this.props.saveRoundReq(formattedBackendRound);
+    } else {
+      console.log("No game ID!!");
+    }
+  };
+
+  delete = () => {
+    this.props.deleteRoundReq(this.props.round.roundId);
+  };
 
   render() {
-    console.log("this.state.changed: ", this.state.changed);
     return (
       <div className="rounds">
         <input
           type="text"
           onChange={this.handleChange}
-          name="roundname"
+          name="roundName"
           value={this.state.roundName}
           className="roundsTitle"
         />
@@ -154,14 +179,8 @@ class Rounds extends Component {
             className="select"
           >
             {Object.keys(categoryOptions).map((option, i) => {
-              let selected = option === this.state.category;
               return (
-                <option
-                  key={i}
-                  className="roundsOption"
-                  selected={selected}
-                  value={categoryOptions[option]}
-                >
+                <option key={i} className="roundsOption">
                   {option}
                 </option>
               );
@@ -179,9 +198,8 @@ class Rounds extends Component {
             className="select"
           >
             {Object.keys(difficultyOptions).map((option, i) => {
-              let selected = option === this.state.difficulty;
               return (
-                <option key={i} selected={selected} value={option}>
+                <option key={i} value={option}>
                   {difficultyOptions[option]}
                 </option>
               );
@@ -199,9 +217,8 @@ class Rounds extends Component {
             className="select"
           >
             {Object.keys(typeOptions).map((option, i) => {
-              let selected = option === this.state.type;
               return (
-                <option key={i} selected={selected} value={option}>
+                <option key={i} value={option}>
                   {typeOptions[option]}
                 </option>
               );
@@ -215,7 +232,7 @@ class Rounds extends Component {
           >
             Save
           </button>
-          <button className="roundsDelete" onClick={this.props.delete}>
+          <button className="roundsDelete" onClick={this.delete}>
             Delete
           </button>
         </div>
@@ -226,6 +243,7 @@ class Rounds extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
+    gameId: gamesList.game_id,
     savingRound: gamesList.saving_round,
     savedRound: gamesList.saved_round,
     error: gamesList.error,
@@ -235,5 +253,5 @@ const mapStateToProps = ({ gamesList }) => {
 
 export default connect(
   mapStateToProps,
-  { saveRoundReq }
+  { saveRoundReq, deleteRoundReq }
 )(Rounds);

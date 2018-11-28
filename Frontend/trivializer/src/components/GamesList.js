@@ -10,77 +10,70 @@ import { fetchGamesReq } from "../actions";
  * - renders a list of games for the logged in user
  */
 class GamesList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            games: []
-        };
+  constructor(props) {
+    super(props);
+    this.state = {
+      games: []
+    };
+  }
+
+  componentDidMount() {
+    this.props.fetchGamesReq();
+    // NOTE: setState after API request doesn't render state in time
+    // this.setState({ games: this.props.games });
+    // SOLUTION: render with props directly
+  }
+
+  render() {
+    if (!this.props.games) {
+      return <div>Loading...</div>;
     }
 
-    componentDidMount() {
-        this.props.fetchGamesReq();
-        // NOTE: setState after API request doesn't render state in time
-        // this.setState({ games: this.props.games });
-        // SOLUTION: render with props directly
-    }
+    return (
+      <div className="gameslist-page">
+        <div className="top-content">
+          <div className="top-leftside">
+            <nav aria-label="breadcrumb">
+              <ol className="breadcrumb">
+                <li className="breadcrumb-item">
+                  <Link to="/">Home</Link>
+                </li>
+                <li className="breadcrumb-item active" aria-current="page">
+                  Games
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <Link className="top-rightside" to="/">
+            Sign Out
+          </Link>
+        </div>
 
-    render() {
-        if (!this.props.games) {
-            return <div>Loading...</div>;
-        }
-
-        return (
-            <div className="gameslist-page">
-                <div className="top-content">
-                    <div className="top-leftside">
-                        <nav aria-label="breadcrumb">
-                            <ol className="breadcrumb">
-                                <li className="breadcrumb-item">
-                                    <Link to="/">Home</Link>
-                                </li>
-                                <li
-                                    className="breadcrumb-item active"
-                                    aria-current="page"
-                                >
-                                    Games
-                                </li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <Link className="top-rightside" to="/">
-                        Sign Out
-                    </Link>
-                </div>
-
-                <div className="main-content">
-                    <Navbar />
-                    {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
-                    {!this.props.games[0] ? (
-                        <div>
-                            <h3 className="main-middle">Add New Game</h3>
-                            <Link to={`/creategame`}>+</Link>
-                        </div>
-                    ) : (
-                        this.props.games.map((game, i) => (
-                            <Link to={`/game/${game["gameId"]}`}>
-                                <GameDetails
-                                    key={game["id"]}
-                                    index={i}
-                                    game={game}
-                                />
-                            </Link>
-                        ))
-                    )}
-                    {this.props.games.length > 0 ? (
-                        <div>
-                            <div>New Game</div>
-                            <Link to={`/creategame`}>+</Link>
-                        </div>
-                    ) : null}
-                </div>
+        <div className="main-content">
+          <Navbar />
+          {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
+          {!this.props.games[0] ? (
+            <div>
+              <h3 className="main-middle">Add New Game</h3>
+              <Link to={`/creategame`}>+</Link>
             </div>
-        );
-    }
+          ) : (
+            this.props.games.map((game, i) => (
+              <Link to={`/game/${game["gameId"]}`}>
+                <GameDetails key={game["id"]} index={i} game={game} />
+              </Link>
+            ))
+          )}
+          {this.props.games.length > 0 ? (
+            <div>
+              <div>New Game</div>
+              <Link to={`/creategame`}>+</Link>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    );
+  }
 }
 
 /**
@@ -88,21 +81,20 @@ class GamesList extends Component {
  * - helper function to render mapped properties for each game
  */
 function GameDetails({ game }) {
-    return (
-        <div>
-            <Games game={game} />
-        </div>
-    );
+  return (
+    <div>
+      <Games game={game} />
+    </div>
+  );
 }
 
 const mapStateToProps = ({ gamesList }) => {
-    console.log(gamesList);
-    return {
-        games: gamesList.games
-    };
+  return {
+    games: gamesList.games
+  };
 };
 
 export default connect(
-    mapStateToProps,
-    { fetchGamesReq }
+  mapStateToProps,
+  { fetchGamesReq }
 )(GamesList);

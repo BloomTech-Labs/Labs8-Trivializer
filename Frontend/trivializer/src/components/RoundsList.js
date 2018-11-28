@@ -19,13 +19,11 @@ class RoundsList extends Component {
 
   componentDidMount() {
     const id = Number(this.props.id);
-    console.log(id);
 
     this.props.fetchRoundsReq(id);
   }
 
   newRound = () => {
-    console.log("New Round!!");
     let round = {
       roundId: null,
       roundName: "Default Value",
@@ -46,7 +44,6 @@ class RoundsList extends Component {
           <div>
             <div className="roundsList">
               {this.props.rounds.map((round, i) => {
-                console.log("round.roundId: ", round.roundId);
                 return (
                   <div>
                     <Rounds key={round.roundId} index={i} round={round} />
