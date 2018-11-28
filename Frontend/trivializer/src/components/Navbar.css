@@ -1,0 +1,36 @@
+@media screen and (max-width: 780px) {
+  .vertical-navbar {
+    width: 120px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .vertical-navbar {
+    display: none;
+  }
+
+  .top-content {
+    display: none;
+  }
+
+  .main-content {
+    width: 100%;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .main-navigation {
+    margin-bottom: 20px;
+  }
+
+  .hor-navbar {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 450px) {
+  .hor-navbar {
+    display: none;
+  }
+}
