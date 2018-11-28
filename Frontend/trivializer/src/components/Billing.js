@@ -28,10 +28,13 @@ const Billing = props => {
             </ol>
           </nav>
         </div>
-        <div onClick={logout} className="top-rightside">
-          Sign Out
-        </div>
+        {localStorage.getItem("user") || sessionStorage.getItem("jwt") ? (
+          <div onClick={logout} className="top-rightside">
+            Sign Out
+          </div>
+        ) : null}
       </div>
+
       <div className="main-content">
         <Navbar />
 

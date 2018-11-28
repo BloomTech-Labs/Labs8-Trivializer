@@ -38,9 +38,11 @@ class Setting extends React.Component {
               </ol>
             </nav>
           </div>
-          <div onClick={this.logout} className="top-rightside">
-            Sign Out
-          </div>
+          {localStorage.getItem("user") || sessionStorage.getItem("jwt") ? (
+            <div onClick={this.logout} className="top-rightside">
+              Sign Out
+            </div>
+          ) : null}
         </div>
 
         <div className="main-content">

@@ -50,11 +50,13 @@ const NavBar = props => {
                 Setting
               </Link>
             </li>
-            <li class="nav-item">
-              <div onClick={logout} className="nav-logout nav-link active">
-                Sign Out
-              </div>
-            </li>
+            {localStorage.getItem("user") || sessionStorage.getItem("jwt") ? (
+              <li class="nav-item">
+                <div onClick={logout} className="nav-logout nav-link active">
+                  Sign Out
+                </div>
+              </li>
+            ) : null}
           </ul>
         </div>
       </nav>
