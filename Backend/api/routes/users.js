@@ -92,7 +92,7 @@ server.post("/register", async (req, res) => {
 
         // Generate a new token and return it
         let token = utilities.generateToken(username);
-        res.status(201).json({ token, userId: userId[0] });
+        res.status(201).json({ token: token, userId: userId[0] });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
