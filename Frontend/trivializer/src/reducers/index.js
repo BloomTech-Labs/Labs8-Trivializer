@@ -15,6 +15,8 @@ import {
   SAVED_ROUND,
   DELETING_ROUND,
   DELETED_ROUND,
+  EDITING_ROUND,
+  EDITED_ROUND,
   ERROR
 } from "../actions";
 import { combineReducers } from "redux";
@@ -44,6 +46,8 @@ const initialState = {
   deleted_game: false,
   deleting_round: false,
   deleted_round: false,
+  editing_round: false,
+  edited_round: false,
   error: null
 };
 
@@ -140,6 +144,26 @@ const gamesReducer = (state = initialState, action) => {
         deleting_round: false,
         deleted_round: true,
         rounds: reducedRounds
+      });
+    case EDITING_ROUND:
+      return Object.assign({}, state, {
+        editing_round: true,
+        edited_round: false
+      });
+    case EDITING_ROUND:
+      console.log("action.payload", action.payload);
+      let editedRounds = state.rounds.slice();
+      editedRounds = editedRounds.map(round => {
+        if (round.roundId === action.payload.roundId) {
+          return action.payload;
+        } else {
+          return round;
+        }
+      });
+      return Object.assign({}, state, {
+        editing_round: false,
+        edited_round: true,
+        rounds: editedRounds
       });
     case ERROR:
       return Object.assign({}, state, {

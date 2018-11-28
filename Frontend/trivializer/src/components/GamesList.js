@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchGamesReq } from "../actions";
+import "./Components.css";
 
 /**
  * GamesList Component
@@ -23,6 +24,12 @@ class GamesList extends Component {
     // this.setState({ games: this.props.games });
     // SOLUTION: render with props directly
   }
+  logout = e => {
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    this.props.history.push("/");
+  };
 
   render() {
     if (!this.props.games) {
@@ -44,9 +51,11 @@ class GamesList extends Component {
               </ol>
             </nav>
           </div>
-          <Link className="top-rightside" to="/">
-            Sign Out
-          </Link>
+          {localStorage.getItem("user") || sessionStorage.getItem("jwt") ? (
+            <div onClick={this.logout} className="top-rightside">
+              Sign Out
+            </div>
+          ) : null}
         </div>
 
         <div className="main-content">
@@ -59,8 +68,8 @@ class GamesList extends Component {
             </div>
           ) : (
             this.props.games.map((game, i) => (
-              <Link to={`/game/${game["gameId"]}`}>
-                <GameDetails key={game["id"]} index={i} game={game} />
+              <Link to={`/game/${game["gameId"]}`} key={game["id"]}>
+                <GameDetails index={i} game={game} />
               </Link>
             ))
           )}
