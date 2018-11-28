@@ -350,7 +350,13 @@ class LandingPage extends React.Component {
               {/* Navbar Sign In Link */}
               <li class="navbar-right-list">
                 <div className="signin">
-                  <div className="nav-signin" data-toggle="modal" data-target="#signin">
+                  <div
+                    id="new-signin"
+                    className="nav-signin"
+                    href="#"
+                    data-toggle="modal"
+                    data-target="#signin"
+                  >
                     Sign In
                   </div>
 
