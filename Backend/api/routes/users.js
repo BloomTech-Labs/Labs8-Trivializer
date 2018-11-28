@@ -8,57 +8,56 @@ var sc = simplecrypt({ password: process.env.SECRET });
 
 // Base endpoint (at users/)
 server.get("/", (req, res) => {
-  res.json("App is currently functioning");
+    res.json("App is currently functioning");
 });
 
 // Testing endpoints
 // Get all users table
 server.get("/users", (req, res) => {
-  db("Users")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-
+    db("Users")
+        .then(response => {
+            res.status(200).json(response);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
 });
 
 // Get all games table
 server.get("/games", (req, res) => {
-  db("Games")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
+    db("Games")
+        .then(response => {
+            res.status(200).json(response);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
 });
 
 // Get all Rounds table
 server.get("/rounds", (req, res) => {
-  db("Rounds")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
+    db("Rounds")
+        .then(response => {
+            res.status(200).json(response);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
 });
 
 // Get all Questions table
 server.get("/questions", (req, res) => {
-  db("Questions")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
+    db("Questions")
+        .then(response => {
+            res.status(200).json(response);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
 });
 
 // Add new user
@@ -93,7 +92,7 @@ server.post("/register", async (req, res) => {
 
         // Generate a new token and return it
         let token = utilities.generateToken(username);
-        res.status(201).json(token);
+        res.status(201).json({ token, userId: userId[0] });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -116,7 +115,7 @@ server.post("/login", utilities.getUser, async (req, res) => {
         if (decryptedPassword === password) {
             // Generate a new token and return it
             let token = utilities.generateToken(username);
-            res.status(201).json(token);
+            res.status(201).json({ token, userId: user.id });
         } else {
             res.status(401).json({ error: "Incorrect Credentials" });
         }
@@ -257,33 +256,33 @@ server.post("/save", utilities.protected, async (req, res) => {
 
 // Updates a game, takes in username, created, played, gameName and description (string)
 server.put("/editgame/:id", utilities.protected, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const edit = { ...req.body };
+    try {
+        const { id } = req.params;
+        const edit = { ...req.body };
 
-    // update game by id
-    let game = await db("Games")
-      .where("id", id)
-      .update({
-        name: edit.gameName,
-        description: edit.description,
-        date_played: edit.datePlayed
-      });
+        // update game by id
+        let game = await db("Games")
+            .where("id", id)
+            .update({
+                name: edit.gameName,
+                description: edit.description,
+                date_played: edit.datePlayed
+            });
 
-    // get game by id
-    let newGame = await db("Games").where("id", id);
+        // get game by id
+        let newGame = await db("Games").where("id", id);
 
-    res.status(200).json({
-      gameId: newGame[0]["id"],
-      gamename: newGame[0]["name"],
-      description: newGame[0]["description"],
-      dateCreated: newGame[0]["date_created"],
-      datePlayed: newGame[0]["date_played"]
-    });
-  } catch (err) {
-    console.log("err.message: ", err.message);
-    res.status(500).json({ error: err.message });
-  }
+        res.status(200).json({
+            gameId: newGame[0]["id"],
+            gamename: newGame[0]["name"],
+            description: newGame[0]["description"],
+            dateCreated: newGame[0]["date_created"],
+            datePlayed: newGame[0]["date_played"]
+        });
+    } catch (err) {
+        console.log("err.message: ", err.message);
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // Get all games for a username passed in. Nedds a username passed in req.body
@@ -397,113 +396,117 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
 
 // Delete a round based on round id
 server.delete("/round/:id", utilities.protected, async (req, res) => {
-  const { id } = req.params;
-  try {
-    // Returns the id of the deleted round
-    let response = await db("Rounds")
-      .where({ id })
-      .del();
+    const { id } = req.params;
+    try {
+        // Returns the id of the deleted round
+        let response = await db("Rounds")
+            .where({ id })
+            .del();
 
-    // If response === 0 no round was deleted
-    if (response === 0) throw new Error(`Error deleting round ${id}`);
+        // If response === 0 no round was deleted
+        if (response === 0) throw new Error(`Error deleting round ${id}`);
 
-    console.log("id: ", id);
+        console.log("id: ", id);
 
-    let responseQuestions = await db("Questions")
-      .where({ rounds_id: id })
-      .del();
+        let responseQuestions = await db("Questions")
+            .where({ rounds_id: id })
+            .del();
 
-    console.log("response, responseQuestions: ", response, responseQuestions);
+        console.log(
+            "response, responseQuestions: ",
+            response,
+            responseQuestions
+        );
 
-    res.status(200).json(`Round ${response} deleted`);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
+        res.status(200).json(`Round ${response} deleted`);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
 });
 
 // Save a round
 server.post("/round", utilities.protected, async (req, res) => {
-  try {
-    // Get all pertinent info from req.body
-    const {
-      gameId,
-      roundname,
-      category,
-      difficulty,
-      type,
-      questions
-    } = req.body;
+    try {
+        // Get all pertinent info from req.body
+        const {
+            gameId,
+            roundname,
+            category,
+            difficulty,
+            type,
+            questions
+        } = req.body;
 
-    // Returns empty array if no game
-    let validGame = await db("Games").where({ id: gameId });
+        // Returns empty array if no game
+        let validGame = await db("Games").where({ id: gameId });
 
-    // Check to see if valid gameId
-    if (validGame.length < 1) throw new Error("no Game by that ID");
+        // Check to see if valid gameId
+        if (validGame.length < 1) throw new Error("no Game by that ID");
 
-    // Assemble round info to be entered in DB
-    let roundPackage = {
-      game_id: gameId,
-      name: roundname,
-      category: category,
-      type: type,
-      difficulty: difficulty,
-      number_of_questions: questions
-    };
+        // Assemble round info to be entered in DB
+        let roundPackage = {
+            game_id: gameId,
+            name: roundname,
+            category: category,
+            type: type,
+            difficulty: difficulty,
+            number_of_questions: questions
+        };
 
         // Returns an array of 1 item, pull that item out with [0]
         let roundId = (await db("Rounds").insert(roundPackage))[0];
 
-    let returnPackage = {
-      roundId: roundId,
-      roundName: roundname,
-      numQs: questions,
-      category: category,
-      difficulty: difficulty,
-      type: type
-    };
-    // Return new round ID
-    res.status(200).json(returnPackage);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
+        let returnPackage = {
+            roundId: roundId,
+            roundName: roundname,
+            numQs: questions,
+            category: category,
+            difficulty: difficulty,
+            type: type
+        };
+        // Return new round ID
+        res.status(200).json(returnPackage);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
 });
 
 // Update a round by round id
 server.put("/round/:id", utilities.protected, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const edit = { ...req.body };
+    try {
+        const { id } = req.params;
+        const edit = { ...req.body };
 
-    // update round by id
-    let round = await db("Rounds")
-      .where("id", id)
-      .update({
-        name: edit.roundName,
-        number_of_questions: edit.numberOfQs,
-        category: edit.category,
-        difficulty: edit.difficulty,
-        type: edit.type
-      });
+        // update round by id
+        let round = await db("Rounds")
+            .where("id", id)
+            .update({
+                name: edit.roundName,
+                number_of_questions: edit.numberOfQs,
+                category: edit.category,
+                difficulty: edit.difficulty,
+                type: edit.type
+            });
 
-    // get game by id
-    let newRound = await db("Rounds").where("id", id);
+        // get game by id
+        let newRound = await db("Rounds").where("id", id);
 
-    res.status(200).json({
-      roundId: newRound[0]["id"],
-      roundname: newRound[0]["name"],
-      numberOfQs: newRound[0]["number_of_questions"],
-      category: newRound[0]["category"],
-      difficulty: newRound[0]["difficulty"],
-      type: newRound[0]["type"]
-    });
-  } catch (err) {
-    console.log("err.message: ", err.message);
-    res.status(500).json({ error: err.message });
-  }
+        res.status(200).json({
+            roundId: newRound[0]["id"],
+            roundname: newRound[0]["name"],
+            numberOfQs: newRound[0]["number_of_questions"],
+            category: newRound[0]["category"],
+            difficulty: newRound[0]["difficulty"],
+            type: newRound[0]["type"]
+        });
+    } catch (err) {
+        console.log("err.message: ", err.message);
+        res.status(500).json({ error: err.message });
+    }
 });
 
-server.put("/editq/:id", utilities.protected, async (req, res) =>{
-    try{
+server.put("/editq/:id", utilities.protected, async (req, res) => {
+    try {
         const { id } = req.params;
         const edit = { ...req.body };
 
@@ -518,7 +521,7 @@ server.put("/editq/:id", utilities.protected, async (req, res) =>{
                 correct_answer: edit.correctAnswer,
                 incorrect_answers: edit.incorrectAnswers
             });
-            // get question by id
+        // get question by id
         let newQs = await db("Questions").where("id", id);
 
         res.status(200).json({
@@ -543,28 +546,28 @@ module.exports = server;
 
 // Get all questions for a round id passed in
 server.get("/questions/:id", utilities.protected, async (req, res) => {
-  try {
-    // Game Id passed in request URL
-    const { id } = req.params;
+    try {
+        // Game Id passed in request URL
+        const { id } = req.params;
 
-    // Gets all rounds from the Rounds table where the game id matches the passed in ID
-    let rounds = await db
-      // Choose which columns we want to select, and assign an alias
-      .select(
-        "q.id as questionId",
-        "q.category as category",
-        "q.difficulty as difficulty",
-        "q.type as type",
-        "q.question as question",
-        "q.correct_answer as correctAnswer",
-        "incorrect_answers as incorrectAnswers"
-      )
-      .from("Rounds as r")
-      .leftJoin("Questions as q", "q.rounds_id", "r.id")
-      .where("r.id", "=", id);
+        // Gets all rounds from the Rounds table where the game id matches the passed in ID
+        let rounds = await db
+            // Choose which columns we want to select, and assign an alias
+            .select(
+                "q.id as questionId",
+                "q.category as category",
+                "q.difficulty as difficulty",
+                "q.type as type",
+                "q.question as question",
+                "q.correct_answer as correctAnswer",
+                "incorrect_answers as incorrectAnswers"
+            )
+            .from("Rounds as r")
+            .leftJoin("Questions as q", "q.rounds_id", "r.id")
+            .where("r.id", "=", id);
 
-    res.status(200).json(rounds);
-  } catch (err) {
-    res.status(500).json({ error: "Problem getting questions" });
-  }
+        res.status(200).json(rounds);
+    } catch (err) {
+        res.status(500).json({ error: "Problem getting questions" });
+    }
 });
