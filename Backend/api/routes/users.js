@@ -8,7 +8,6 @@ var sc = simplecrypt({ password: process.env.SECRET });
 
 // Base endpoint (at users/)
 server.get("/", (req, res) => {
-  //   console.log(process.env);
   res.json("App is currently functioning");
 });
 
@@ -17,7 +16,6 @@ server.get("/", (req, res) => {
 server.get("/users", (req, res) => {
   db("Users")
     .then(response => {
-      console.log(response);
       res.status(200).json(response);
     })
     .catch(err => {
@@ -30,7 +28,6 @@ server.get("/users", (req, res) => {
 server.get("/games", (req, res) => {
   db("Games")
     .then(response => {
-      console.log(response);
       res.status(200).json(response);
     })
     .catch(err => {
@@ -43,7 +40,6 @@ server.get("/games", (req, res) => {
 server.get("/rounds", (req, res) => {
   db("Rounds")
     .then(response => {
-      console.log(response);
       res.status(200).json(response);
     })
     .catch(err => {
@@ -56,7 +52,6 @@ server.get("/rounds", (req, res) => {
 server.get("/questions", (req, res) => {
   db("Questions")
     .then(response => {
-      console.log(response);
       res.status(200).json(response);
     })
     .catch(err => {

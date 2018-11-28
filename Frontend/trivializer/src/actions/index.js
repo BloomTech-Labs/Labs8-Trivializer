@@ -18,7 +18,8 @@ export const DELETED_ROUND = "DELETED_ROUND";
 export const ERROR = "ERROR";
 
 const URL = process.env.REACT_APP_API_URL || "https://opentdb.com/api.php?";
-const BE_URL = process.env.REACT_APP_BE_URL || "http://localhost:3300/users";
+const BE_URL =
+  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
 
 // sample games fetch with params
 // {
@@ -26,7 +27,6 @@ const BE_URL = process.env.REACT_APP_BE_URL || "http://localhost:3300/users";
 // }
 
 export const fetchGamesReq = () => {
-  console.log("process.env: ", process.env);
   const newGames = {
     username: `${sessionStorage.getItem("user")}`
   };
@@ -40,8 +40,6 @@ export const fetchGamesReq = () => {
         }
       })
       .then(({ data }) => {
-        console.log(data);
-
         // return if null properties
         if (!data[0]["gameId"]) {
           return;
@@ -69,11 +67,8 @@ export const fetchGameReq = id => {
         }
       })
       .then(({ data }) => {
-        console.log(data);
-
         // filter game by id
         const result = data.filter(item => item.gameId === id);
-        console.log(result);
 
         dispatch({ type: FETCHED_GAME, payload: result });
       })
@@ -110,7 +105,6 @@ export const submitGameReq = game => {
         }
       })
       .then(({ data }) => {
-        console.log(data);
         dispatch({ type: SAVED_GAME, payload: data });
       })
       .catch(err => {
@@ -126,7 +120,6 @@ export const deleteGameReq = id => {
     axios
       .get(`${BE_URL}/game/${id}`)
       .then(({ data }) => {
-        console.log(data);
         dispatch({ type: DELETED_GAME, payload: data });
       })
       .catch(err => {
@@ -165,8 +158,6 @@ export const updateGameReq = (id, game) => {
         }
       })
       .then(({ data }) => {
-        console.log(data);
-
         // // format result
         // const result = {
         //     gameId: data[0]["id"],
@@ -175,7 +166,6 @@ export const updateGameReq = (id, game) => {
         //     dateCreated: data[0]["date_created"],
         //     datePlayed: data[0]["date_played"]
         // };
-
         // dispatch({ type: UPDATED_GAME, payload: result });
       })
       .catch(err => {
@@ -187,7 +177,6 @@ export const updateGameReq = (id, game) => {
 };
 
 export const fetchRoundsReq = id => {
-  console.log("fetching Rounds!!!");
   return dispatch => {
     dispatch({ type: FETCHING_ROUNDS });
     axios
@@ -236,7 +225,6 @@ export const deleteRoundReq = roundId => {
         }
       })
       .then(({ data }) => {
-        console.log("data: ", data);
         dispatch({ type: DELETED_ROUND, payload: roundId });
       })
       .catch(err => {

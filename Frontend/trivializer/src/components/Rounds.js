@@ -100,7 +100,6 @@ class Rounds extends Component {
   };
 
   handleChange = e => {
-    console.log("this.state: ", this.state);
     this.setState({ [e.target.name]: e.target.value });
 
     // if (e.target.value !== this.state[`original_${e.target.name}`]) {
@@ -180,9 +179,8 @@ class Rounds extends Component {
             className="select"
           >
             {Object.keys(categoryOptions).map((option, i) => {
-              let selected = option === this.state.category;
               return (
-                <option key={i} className="roundsOption" selected={selected}>
+                <option key={i} className="roundsOption">
                   {option}
                 </option>
               );
@@ -200,9 +198,8 @@ class Rounds extends Component {
             className="select"
           >
             {Object.keys(difficultyOptions).map((option, i) => {
-              let selected = option === this.state.difficulty;
               return (
-                <option key={i} selected={selected} value={option}>
+                <option key={i} value={option}>
                   {difficultyOptions[option]}
                 </option>
               );
@@ -220,9 +217,8 @@ class Rounds extends Component {
             className="select"
           >
             {Object.keys(typeOptions).map((option, i) => {
-              let selected = option === this.state.type;
               return (
-                <option key={i} selected={selected} value={option}>
+                <option key={i} value={option}>
                   {typeOptions[option]}
                 </option>
               );

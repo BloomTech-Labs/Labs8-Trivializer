@@ -70,7 +70,6 @@ class Game extends Component {
 }
 
 const mapStateToProps = ({ gamesList }) => {
-  console.log(gamesList.game[0]);
   return {
     game: gamesList.game[0]
     // rounds: gamesList.game.rounds
