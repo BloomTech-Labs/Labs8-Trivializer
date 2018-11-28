@@ -152,11 +152,11 @@ class Rounds extends Component {
       this.props.round.roundId
     );
 
-
-    this.props.history.push(
-      `${this.props.gameId}/round/${this.props.round.roundId}`
-    );
-    
+    setTimeout(() => {
+      this.props.history.push(
+        `${this.props.gameId}/round/${this.props.round.roundId}`
+      );
+    }, 1000);
   };
 
   // Format our current state to be set to Redux store
@@ -168,7 +168,7 @@ class Rounds extends Component {
       gameName: this.props.gameName !== null ? this.props.gameName : "Game",
       gameId: this.props.gameId,
       roundName:
-        this.state.roundName !== "" ? this.props.roundName : "New Round",
+        this.state.roundName !== "" ? this.state.roundName : "New Round",
       numberOfQuestions: this.state.numQs > 0 ? this.state.numQs : 1,
       category: categoryOptions[this.state.category],
       difficulty: this.state.difficulty !== "any" ? this.state.difficulty : "",
