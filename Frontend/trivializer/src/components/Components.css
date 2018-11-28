@@ -28,7 +28,7 @@
 }
 
 .vertical-navbar {
-  width: 10%;
+  width: 120px;
   border: 2px solid black;
   height: 75vh;
   margin-left: 20px;
@@ -43,7 +43,6 @@
 }
 .pay-main {
   margin-left: 10px;
-
 }
 .pay-input {
   margin: 0 auto;

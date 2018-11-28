@@ -1,7 +1,6 @@
 /* Top Navbar */
 .landingpage-navbar-right {
   text-align: right;
-  height: 60px;
   display: flex;
   align-items: center;
 }
@@ -114,4 +113,40 @@ input:hover {
   margin-top: 10px;
   height: 45px;
   font-size: 18px;
+}
+
+/* Tablet Design */
+@media screen and (max-width: 780px) {
+  .carousel-design {
+    height: 350px;
+  }
+
+  .descriptions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .description-text {
+    width: 70%;
+  }
+
+  .main-button {
+    text-align: center;
+    margin: 0 auto;
+  }
+}
+
+/* Phone Design */
+@media screen and (max-width: 480px) {
+  .carousel-design {
+    height: 300px;
+  }
+
+  .description-text {
+    width: 80%;
+  }
+}
+
+#new-signup {
+  cursor: pointer;
 }

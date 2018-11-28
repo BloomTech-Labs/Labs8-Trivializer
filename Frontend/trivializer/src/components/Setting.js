@@ -41,20 +41,27 @@ class Setting extends React.Component {
           <Navbar />
           <div className="main-middle">
             <h1 className="main-middle">Setting Page</h1>
-            <div className="picture">
-              <img className="profile-picture" src={savedUser.photoURL} alt="profile-pic" />
-            </div>
+            {savedUser ? (
+              <div className="picture">
+                <img className="profile-picture" src={savedUser.photoURL} alt="profile-pic" />
+              </div>
+            ) : null}
+
             <div className="name">
               <p>Name: </p>
-              <input placeholder="Name" value={savedUser.displayName} />
+              <input placeholder="Name" value={savedUser ? savedUser.displayName : null} />
             </div>
             <div className="email">
               <p>Email: </p>
-              <input placeholder="Email" value={savedUser.email} />
+              <input placeholder="Email" value={savedUser ? savedUser.email : null} />
             </div>
             <div className="oldpassword">
               <p>Old Password: </p>
-              <input type="password" placeholder="password" value={savedUser.uid} />
+              <input
+                type="password"
+                placeholder="password"
+                value={savedUser ? savedUser.uid : null}
+              />
             </div>
             <div className="newpassword">
               <p>New Password: </p>
