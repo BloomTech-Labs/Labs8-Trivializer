@@ -51,16 +51,16 @@ class Rounds extends Component {
     this.state = {
       round: this.props.round,
       maxQuestions: 100,
-      roundName: this.props.round.roundName,
-      numQs: this.props.round.numQs,
-      category: this.props.round.category,
-      difficulty: this.props.round.difficulty,
-      type: this.props.round.type,
-      original_roundName: this.props.round.roundName,
-      original_numQs: this.props.round.numQs,
-      original_category: this.props.round.category,
-      original_difficulty: this.props.round.difficulty,
-      original_type: this.props.round.type,
+      roundName: this.props.round.roundName || "New Round",
+      numQs: this.props.round.numQs || 1,
+      category: this.props.round.category || "any",
+      difficulty: this.props.round.difficulty || "any",
+      type: this.props.round.type || "any",
+      original_roundName: this.props.round.roundName || "New Round",
+      original_numQs: this.props.round.numQs || 1,
+      original_category: this.props.round.category || "any",
+      original_difficulty: this.props.round.difficulty || "any",
+      original_type: this.props.round.type || "any",
       changed: false
     };
   }
@@ -119,7 +119,7 @@ class Rounds extends Component {
     };
 
     // ****** If this is a new round ******
-    if (this.props.new) {
+    if (this.props.new || !this.props.roundId) {
       // Add extra check to be sure we have the gameId before hitting API
       this.props.saveRoundReq(formattedBackendRound);
     }
@@ -135,9 +135,16 @@ class Rounds extends Component {
     this.props.deleteRoundReq(this.props.round.roundId);
   };
 
+  enterRound = () => {
+    alert("Entered Round!");
+    // ******If this is a new, unsaved round ******
+    if (this.props.new) {
+    }
+  };
+
   render() {
     return (
-      <div className="rounds">
+      <div className="rounds" onDoubleClick={this.enterRound}>
         <input
           type="text"
           onChange={this.handleChange}

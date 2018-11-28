@@ -5,6 +5,8 @@ import {
   FETCHED_GAME,
   FETCHING_ROUNDS,
   FETCHED_ROUNDS,
+  FETCHING_NEW_QUESTIONS,
+  FETCHED_NEW_QUESTIONS,
   SAVING_GAME,
   SAVED_GAME,
   DELETING_GAME,
@@ -30,12 +32,18 @@ const initialState = {
   questions: [],
   question: [],
   invoiced: [],
+  gamename: null,
+  gameId: null,
+  roundName: null,
+  numberOfQuestions: null,
   fetching_games: false,
   fetched_games: false,
   fetching_game: false,
   fetched_game: false,
   fetching_rounds: false,
   fetched_rounds: false,
+  fetching_new_questions: false,
+  fetched_new_questions: false,
   saving_game: false,
   saved_game: false,
   saving_round: false,
@@ -150,7 +158,7 @@ const gamesReducer = (state = initialState, action) => {
         editing_round: true,
         edited_round: false
       });
-    case EDITING_ROUND:
+    case EDITED_ROUND:
       console.log("action.payload", action.payload);
       let editedRounds = state.rounds.slice();
       editedRounds = editedRounds.map(round => {

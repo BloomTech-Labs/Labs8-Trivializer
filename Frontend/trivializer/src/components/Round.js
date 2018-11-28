@@ -22,7 +22,7 @@ class Round extends Component {
     this.state = {
       gamename: this.props.gamename || "Wednesday Night Trivia",
       gameId: this.props.gameID || 1,
-      roundname: this.props.roundname || "Round 1",
+      roundName: this.props.roundName || "Round 1",
       numberOfQuestions: this.props.numberOfQuestions || 5,
       category: this.props.category || "",
       difficulty: this.props.difficulty || "easy",
@@ -69,10 +69,10 @@ class Round extends Component {
 
     let type = `${this.state.category ? `&type=${this.state.type}` : ""}`;
 
-        let concatenatedURL = `${
-            this.state.baseURL
-        }${amount}${category}${difficulty}${type}`;
-    
+    let concatenatedURL = `${
+      this.state.baseURL
+    }${amount}${category}${difficulty}${type}`;
+
     return concatenatedURL;
   };
 
@@ -202,7 +202,7 @@ class Round extends Component {
             <div className="top-content-round">
               <div className="col-1-round">
                 <div className="title-round">{`${this.state.gamename} - ${
-                  this.state.roundname
+                  this.state.roundName
                 }`}</div>
 
                 <div className="info-round">
@@ -230,9 +230,9 @@ class Round extends Component {
                   content={() => this.answerKeyRef}
                 />
                 <div>
-                    <button type="button" className="btn btn-primary save" >
-                      Save Round
-                    </button>
+                  <button type="button" className="btn btn-primary save">
+                    Save Round
+                  </button>
                 </div>
               </div>
             </div>
@@ -260,7 +260,7 @@ class Round extends Component {
               ref={el => (this.answerSheetRef = el)}
             >
               <div className="hiddenAnswers-info">{this.state.gamename}</div>
-              <div className="hiddenAnswers-info">{this.state.roundname}</div>
+              <div className="hiddenAnswers-info">{this.state.roundName}</div>
               <div className="hiddenAnswers-info">
                 ***Please Circle the Correct Answer***
               </div>

@@ -17,6 +17,8 @@ export const DELETING_ROUND = "DELETING_ROUND";
 export const DELETED_ROUND = "DELETED_ROUND";
 export const EDITING_ROUND = "EDITING_ROUND";
 export const EDITED_ROUND = "EDITED_ROUND";
+export const FETCHING_NEW_QUESTIONS = "FETCHING_NEW_QUESTIONS";
+export const FETCHED_NEW_QUESTIONS = "FETCHED_NEW_QUESTIONS";
 export const ERROR = "ERROR";
 
 const URL = process.env.REACT_APP_API_URL || "https://opentdb.com/api.php?";
@@ -197,6 +199,7 @@ export const fetchRoundsReq = id => {
 };
 
 export const saveRoundReq = round => {
+  console.log(round);
   return dispatch => {
     dispatch({ type: SAVING_ROUND });
     axios
@@ -249,5 +252,11 @@ export const editRoundReq = (round, roundId) => {
       .catch(err => {
         dispatch({ type: ERROR, payload: err });
       });
+  };
+};
+
+export const getNewQuestionsReq = () => {
+  return dispatch => {
+    dispatch({ type: FETCHING_NEW_QUESTIONS });
   };
 };
