@@ -17,6 +17,9 @@ export const DELETING_ROUND = "DELETING_ROUND";
 export const DELETED_ROUND = "DELETED_ROUND";
 export const EDITING_ROUND = "EDITING_ROUND";
 export const EDITED_ROUND = "EDITED_ROUND";
+export const FETCHING_QUESTIONS = "FETCHING_QUESTIONS";
+export const FETCHED_QUESTIONS = "FETCHED_QUESTIONS";
+export const RESET = "RESET";
 export const ERROR = "ERROR";
 
 const URL = process.env.REACT_APP_API_URL || "https://opentdb.com/api.php?";
@@ -197,6 +200,7 @@ export const fetchRoundsReq = id => {
 };
 
 export const saveRoundReq = round => {
+  console.log(round);
   return dispatch => {
     dispatch({ type: SAVING_ROUND });
     axios
@@ -249,5 +253,36 @@ export const editRoundReq = (round, roundId) => {
       .catch(err => {
         dispatch({ type: ERROR, payload: err });
       });
+  };
+};
+
+export const getQuestionsReq = (info, roundId) => {
+  console.log("info: ", info);
+
+  return dispatch => {
+    dispatch({ type: FETCHING_QUESTIONS });
+    axios
+      .get(`${BE_URL}/questions/${roundId}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        console.log("data: ", data);
+        if (data[0].questionId !== null) {
+          info.questions = data;
+        }
+        dispatch({ type: FETCHED_QUESTIONS, payload: info });
+      })
+      .catch(err => {
+        dispatch({ type: ERROR, payload: err });
+      });
+  };
+};
+
+export const resetRoundStateReq = () => {
+  return dispatch => {
+    console.log("ABOUT TO DISPATCH!!!!!!");
+    dispatch({ type: RESET });
   };
 };
