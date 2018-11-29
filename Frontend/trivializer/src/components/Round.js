@@ -6,6 +6,7 @@ import axios from "axios";
 import "./Questions.css";
 import update from "react-addons-update";
 import ReactToPrint from "react-to-print";
+import { connect } from "react-redux";
 
 const createDOMPurify = require("dompurify"); // Prevents XSS attacks from incoming HTML
 
@@ -20,20 +21,22 @@ class Round extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gamename: this.props.gamename || "Wednesday Night Trivia",
-      gameId: this.props.gameID || 1,
-      roundname: this.props.roundname || "Round 1",
-      numberOfQuestions: this.props.numberOfQuestions || 5,
-      category: this.props.category || "",
-      difficulty: this.props.difficulty || "easy",
-      type: this.props.type || "multiple",
-      questions: this.props.questions || [],
+      gameName: this.props.gameName,
+      gameId: this.props.gameId,
+      roundName: this.props.roundName,
+      numberOfQuestions: this.props.numberOfQuestions,
+      category: this.props.category,
+      difficulty: this.props.difficulty,
+      type: this.props.type,
+      questions: [],
       baseURL: "https://opentdb.com/api.php?",
-      replace: []
+      replace: [],
+      noResults: false
     };
   }
 
   componentDidMount = () => {
+    console.log("this.state componentDidMount: ", this.state);
     // If questions are passed in, just collect the answers, don't make the API call
     if (this.state.questions.length > 0) {
       // questions will now have unique Id's and complete answers array
@@ -44,8 +47,12 @@ class Round extends Component {
     }
 
     let concatenatedURL = this.buildApiCall();
+    console.log("concatenatedURL: ", concatenatedURL);
     //   Call axios with input parameters
     axios.get(concatenatedURL).then(response => {
+      if (response.data.response_code !== 0) {
+        this.setState({ noResults: true });
+      }
       // questions will now have unique Id's and complete answers array
       let questions = this.addIds(response.data.results);
 
@@ -55,7 +62,7 @@ class Round extends Component {
 
   // Builds a call to the questions API based on which parameters in state are set
   buildApiCall = howManyQuestions => {
-    let amount = `&amount=${howManyQuestions ||
+    let amount = `amount=${howManyQuestions ||
       this.state.numberOfQuestions ||
       1}`;
 
@@ -69,10 +76,10 @@ class Round extends Component {
 
     let type = `${this.state.category ? `&type=${this.state.type}` : ""}`;
 
-        let concatenatedURL = `${
-            this.state.baseURL
-        }${amount}${category}${difficulty}${type}`;
-    
+    let concatenatedURL = `${
+      this.state.baseURL
+    }${amount}${category}${difficulty}${type}`;
+
     return concatenatedURL;
   };
 
@@ -201,10 +208,9 @@ class Round extends Component {
           <div className="main-content-round">
             <div className="top-content-round">
               <div className="col-1-round">
-                <div className="title-round">{`${this.state.gamename} - ${
-                  this.state.roundname
+                <div className="title-round">{`${this.state.gameName} - ${
+                  this.state.roundName
                 }`}</div>
-
                 <div className="info-round">
                   {`Difficulty: ${this.state.difficulty ||
                     "All"} \xa0\xa0\xa0\xa0\xa0 Questions: ${
@@ -230,13 +236,17 @@ class Round extends Component {
                   content={() => this.answerKeyRef}
                 />
                 <div>
-                    <button type="button" className="btn btn-primary save" >
-                      Save Round
-                    </button>
+                  <button type="button" className="btn btn-primary save">
+                    Save Round
+                  </button>
                 </div>
               </div>
             </div>
-
+            {this.state.noResults ? (
+              <div>
+                No Results from Questions API!
+              </div>
+            ) : null}
             <div ref={el => (this.answerKeyRef = el)}>
               {questions.map((question, index) => {
                 return (
@@ -259,8 +269,8 @@ class Round extends Component {
               className="hiddenAnswers"
               ref={el => (this.answerSheetRef = el)}
             >
-              <div className="hiddenAnswers-info">{this.state.gamename}</div>
-              <div className="hiddenAnswers-info">{this.state.roundname}</div>
+              <div className="hiddenAnswers-info">{this.state.gameName}</div>
+              <div className="hiddenAnswers-info">{this.state.roundName}</div>
               <div className="hiddenAnswers-info">
                 ***Please Circle the Correct Answer***
               </div>
@@ -303,4 +313,22 @@ class Round extends Component {
   }
 }
 
-export default Round;
+const mapStateToProps = ({ gamesList }) => {
+  return {
+    fetching_questions: gamesList.fetching_questions,
+    fetched_questions: gamesList.fetched_questions,
+    gameName: gamesList.gameName,
+    gameId: gamesList.game_id,
+    roundName: gamesList.roundName,
+    numberOfQuestions: gamesList.numberOfQuestions,
+    category: gamesList.category,
+    difficulty: gamesList.difficulty,
+    type: gamesList.type,
+    questions: gamesList.questions
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Round);

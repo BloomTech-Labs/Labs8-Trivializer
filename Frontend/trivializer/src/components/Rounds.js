@@ -1,8 +1,14 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import "./Rounds.css";
 import { connect } from "react-redux";
-import { saveRoundReq, deleteRoundReq, editRoundReq } from "../actions";
+import {
+  saveRoundReq,
+  deleteRoundReq,
+  editRoundReq,
+  getQuestionsReq,
+  resetRoundStateReq
+} from "../actions";
 
 let categoryOptions = {
   any: "any",
@@ -51,50 +57,40 @@ class Rounds extends Component {
     this.state = {
       round: this.props.round,
       maxQuestions: 100,
-      roundName: this.props.round.roundName,
-      numQs: this.props.round.numQs,
-      category: this.props.round.category,
-      difficulty: this.props.round.difficulty,
-      type: this.props.round.type,
-      original_roundName: this.props.round.roundName,
-      original_numQs: this.props.round.numQs,
-      original_category: this.props.round.category,
-      original_difficulty: this.props.round.difficulty,
-      original_type: this.props.round.type,
-      changed: false
+      roundName: this.props.round.roundName || "New Round",
+      numQs: this.props.round.numQs || 1,
+      category: this.props.round.category || "any",
+      difficulty: this.props.round.difficulty || "any",
+      type: this.props.round.type || "any",
+      original_roundName: this.props.round.roundName || "New Round",
+      original_numQs: this.props.round.numQs || 1,
+      original_category: this.props.round.category || "any",
+      original_difficulty: this.props.round.difficulty || "any",
+      original_type: this.props.round.type || "any",
+      changed: true
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.resetRoundStateReq();
+  }
 
-  componentDidUpdate = prevState => {
-    if (prevState !== this.state) {
-      // Compare values to original values, if any of them are different,
-      // then we've made a change we can save, so set changed on state,
-      // This will render a save button in render()
-      if (
-        !this.state.changed &&
-        (this.state.roundName !== this.state.original_roundName ||
-          this.state.numQs !== this.state.original_numQs ||
-          this.state.category !== this.state.original_category ||
-          this.state.difficulty !== this.state.original_difficulty ||
-          this.state.type !== this.state.original_type)
-      ) {
-        this.setState({
-          changed: true
-        });
-      }
-      // Conversely, if the current state is all the same as the original,
-      // remove the save button
-      else if (
-        this.state.changed &&
-        (this.state.roundName === this.state.original_roundName &&
-          this.state.numQs === this.state.original_numQs &&
-          this.state.category === this.state.original_category &&
-          this.state.difficulty === this.state.original_difficulty &&
-          this.state.type === this.state.original_type)
-      ) {
-        this.setState({ changed: false });
+  componentDidUpdate = (prevProps, prevState) => {
+    console.log("prevProps.roundName: ", prevProps.roundName);
+    console.log("this.props.roundName: ", this.props.roundName);
+    console.log(
+      "prevProps.roundName !== this.props.roundName: ",
+      prevProps.roundName !== this.props.roundName
+    );
+    console.log("this.props.fetched_questions: ", this.props.fetched_questions);
+    if (prevProps.roundName !== this.props.roundName) {
+      // if (this.props.fetched_questions) {
+      this.props.history.push(
+        `${this.props.gameId}/round/${this.props.round.roundId}`
+      );
+      // }
+      if (prevProps.roundName === null) {
+        console.log("IT'S NULL!!!");
       }
     }
   };
@@ -119,8 +115,9 @@ class Rounds extends Component {
     };
 
     // ****** If this is a new round ******
-    if (this.props.new) {
-      // Add extra check to be sure we have the gameId before hitting API
+    if (this.props.new || !this.props.round.roundId) {
+      console.log("NEW ROUND!!");
+
       this.props.saveRoundReq(formattedBackendRound);
     }
 
@@ -135,9 +132,45 @@ class Rounds extends Component {
     this.props.deleteRoundReq(this.props.round.roundId);
   };
 
+  enterRound = () => {
+    // First, save the round
+    this.saveRound();
+
+    // Get all of our info in the right format to call the questions API
+    let formattedQuestionsRound = this.formatQuestionsCall();
+
+    this.props.getQuestionsReq(
+      formattedQuestionsRound,
+      this.props.round.roundId
+    );
+  };
+
+  // Format our current state to be set to Redux store
+  // These values should be exactly what we send to the questions
+  // API, so all "any" values should be "", all category options
+  // Should be their numeric equivalent
+  formatQuestionsCall = () => {
+    let formattedQuestionsRound = {
+      gameName: this.props.gameName !== null ? this.props.gameName : "Game",
+      gameId: this.props.gameId,
+      roundName:
+        this.state.roundName !== "" ? this.state.roundName : "New Round",
+      numberOfQuestions: this.state.numQs > 0 ? this.state.numQs : 1,
+      category:
+        categoryOptions[this.state.category] !== "any"
+          ? categoryOptions[this.state.category]
+          : "",
+      difficulty: this.state.difficulty !== "any" ? this.state.difficulty : "",
+      type: this.state.type !== "any" ? this.state.type : "",
+      questions: []
+    };
+
+    return formattedQuestionsRound;
+  };
+
   render() {
     return (
-      <div className="rounds">
+      <div className="rounds" onDoubleClick={this.enterRound}>
         <input
           type="text"
           onChange={this.handleChange}
@@ -241,15 +274,32 @@ class Rounds extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
+    fetched_questions: gamesList.fetched_questions,
+    fetched_questions: gamesList.fetched_questions,
     gameId: gamesList.game_id,
+    gameName: gamesList.gameName,
     savingRound: gamesList.saving_round,
     savedRound: gamesList.saved_round,
     error: gamesList.error,
-    rounds: gamesList.rounds
+    rounds: gamesList.rounds,
+    roundName: gamesList.roundName,
+    numberOfQuestions: gamesList.numberOfQuestions,
+    category: gamesList.category,
+    difficulty: gamesList.difficulty,
+    type: gamesList.type,
+    questions: gamesList.questions
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { saveRoundReq, deleteRoundReq, editRoundReq }
-)(Rounds);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {
+      saveRoundReq,
+      deleteRoundReq,
+      editRoundReq,
+      getQuestionsReq,
+      resetRoundStateReq
+    }
+  )(Rounds)
+);
