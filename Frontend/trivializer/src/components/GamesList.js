@@ -24,6 +24,15 @@ class GamesList extends Component {
     // this.setState({ games: this.props.games });
     // SOLUTION: render with props directly
   }
+
+  componentDidUpdate = prevProps => {
+    if (prevProps.games !== this.props.games) {
+      console.log("prevProps.games: ", prevProps.games);
+      console.log("this.props.games: ", this.props.games);
+      this.setState();
+    }
+  };
+
   logout = e => {
     e.preventDefault();
     localStorage.clear();

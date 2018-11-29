@@ -29,7 +29,8 @@ class Round extends Component {
       difficulty: this.props.difficulty,
       type: this.props.type,
       questions: [],
-      baseURL: "https://opentdb.com/api.php?",
+      questionsURL: "https://opentdb.com/api.php?",
+      usersAPI: "http://localhost:3300/users",
       replace: [],
       noResults: false
     };
@@ -42,7 +43,7 @@ class Round extends Component {
       // questions will now have unique Id's and complete answers array
       let questions = this.addIds(this.state.questions);
 
-      this.setState({ questions: questions });
+      this.setState({ questions: questions, noResults: false });
       return;
     }
 
@@ -53,6 +54,7 @@ class Round extends Component {
       if (response.data.response_code !== 0) {
         this.setState({ noResults: true });
       }
+      console.log("response.data.results: ", response.data.results);
       // questions will now have unique Id's and complete answers array
       let questions = this.addIds(response.data.results);
 
@@ -77,7 +79,7 @@ class Round extends Component {
     let type = `${this.state.category ? `&type=${this.state.type}` : ""}`;
 
     let concatenatedURL = `${
-      this.state.baseURL
+      this.state.questionsURL
     }${amount}${category}${difficulty}${type}`;
 
     return concatenatedURL;
@@ -177,6 +179,36 @@ class Round extends Component {
     });
   };
 
+  saveQuestions = () => {
+    console.log(this.props.roundId);
+    // Package all questions with rounds_id
+    console.log("this.state.questions: ", this.state.questions);
+    let questionsPackage = this.state.questions.map(question => {
+      return {
+        rounds_id: this.props.roundId,
+        category: question.category,
+        difficulty: question.difficulty,
+        type: question.type,
+        question: question.question,
+        correct_answer: question.correct_answer,
+        incorrect_answers: question.incorrect_answers.join("--")
+      };
+    });
+    console.log("questionsPackage: ", questionsPackage);
+
+    axios.post(`${this.state.usersAPI}/questions`, questionsPackage, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("jwt")}`
+      }
+    })
+    .then(response => {
+      console.log(response)
+    })
+    .catch(err => {
+      console.log("err.message: ", err.message);
+    })
+  };
+
   render() {
     // Get questions from State
     const { questions } = this.state;
@@ -236,16 +268,18 @@ class Round extends Component {
                   content={() => this.answerKeyRef}
                 />
                 <div>
-                  <button type="button" className="btn btn-primary save">
+                  <button
+                    onClick={this.saveQuestions}
+                    type="button"
+                    className="btn btn-primary save"
+                  >
                     Save Round
                   </button>
                 </div>
               </div>
             </div>
             {this.state.noResults ? (
-              <div>
-                No Results from Questions API!
-              </div>
+              <div>No Results from Questions API!</div>
             ) : null}
             <div ref={el => (this.answerKeyRef = el)}>
               {questions.map((question, index) => {
@@ -315,6 +349,7 @@ class Round extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
+    roundId: gamesList.roundId,
     fetching_questions: gamesList.fetching_questions,
     fetched_questions: gamesList.fetched_questions,
     gameName: gamesList.gameName,

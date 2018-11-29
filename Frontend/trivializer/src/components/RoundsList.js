@@ -35,6 +35,7 @@ class RoundsList extends Component {
   };
 
   render() {
+    console.log("this.props.rounds!!!!!!: ", this.props.rounds);
     return (
       <div>
         {this.props.fetchingRounds === true ? (

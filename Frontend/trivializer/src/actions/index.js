@@ -23,8 +23,7 @@ export const RESET = "RESET";
 export const ERROR = "ERROR";
 
 const URL = process.env.REACT_APP_API_URL || "https://opentdb.com/api.php?";
-const BE_URL =
-  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
+const BE_URL = process.env.REACT_APP_BE_URL || "http://localhost:3300/users";
 
 // sample games fetch with params
 // {
@@ -191,6 +190,9 @@ export const fetchRoundsReq = id => {
         }
       })
       .then(({ data }) => {
+        if (!data[0]["roundId"]) {
+          data = [];
+        }
         dispatch({ type: FETCHED_ROUNDS, payload: data });
       })
       .catch(err => {
@@ -282,7 +284,6 @@ export const getQuestionsReq = (info, roundId) => {
 
 export const resetRoundStateReq = () => {
   return dispatch => {
-    console.log("ABOUT TO DISPATCH!!!!!!");
     dispatch({ type: RESET });
   };
 };

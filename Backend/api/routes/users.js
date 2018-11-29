@@ -65,17 +65,17 @@ server.post("/register", async (req, res) => {
   // This table also includes credit card info, will handle in billing
   const { username, password, name, email, phone, logo } = req.body;
 
-    // Encrypt password and add to package to be stored in Users table
-    const hash = sc.encrypt(password);
-    const credentials = {
-        username: username,
-        password: hash,
-        email: email,
-        name: name,
-        phone: phone,
-        logo: logo,
-        paid: 0
-    };
+  // Encrypt password and add to package to be stored in Users table
+  const hash = sc.encrypt(password);
+  const credentials = {
+    username: username,
+    password: hash,
+    email: email,
+    name: name,
+    phone: phone,
+    logo: logo,
+    paid: 0
+  };
 
   try {
     // Try to insert the user
@@ -359,33 +359,6 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
     res.status(500).json({ error: "Problem getting questions" });
   }
 });
-// Get all questions for a round id passed in
-server.get("/questions/:id", utilities.protected, async (req, res) => {
-  try {
-    // Game Id passed in request URL
-    const { id } = req.params;
-
-    // Gets all rounds from the Rounds table where the game id matches the passed in ID
-    let rounds = await db
-      // Choose which columns we want to select, and assign an alias
-      .select(
-        "q.id as questionId",
-        "q.category as category",
-        "q.difficulty as difficulty",
-        "q.type as type",
-        "q.question as question",
-        "q.correct_answer as correctAnswer",
-        "incorrect_answers as incorrectAnswers"
-      )
-      .from("Rounds as r")
-      .leftJoin("Questions as q", "q.rounds_id", "r.id")
-      .where("r.id", "=", id);
-
-    res.status(200).json(rounds);
-  } catch (err) {
-    res.status(500).json({ error: "Problem getting questions" });
-  }
-});
 
 // Delete a round based on round id
 server.delete("/round/:id", utilities.protected, async (req, res) => {
@@ -499,6 +472,7 @@ server.put("/round/:id", utilities.protected, async (req, res) => {
   }
 });
 
+// edit a question by question ID
 server.put("/editq/:id", utilities.protected, async (req, res) => {
   try {
     const { id } = req.params;
@@ -533,44 +507,40 @@ server.put("/editq/:id", utilities.protected, async (req, res) => {
   }
 });
 
-server.put("/edituser/:id", utilities.protected, async (req, res) =>{
-    try{
-        const { id } = req.params;
-        const edit = { ...req.body };
-  
-        // update user by id
-        let question = await db("Users")
-            .where("id", id)
-            .update({
-                password: edit.password,
-                name: edit.paid,
-                email: edit.email,
-                phone: edit.phone,
-                logo: edit.logo,
-                paid: edit.paid
-            });
-            // get user by id
-        let newUser = await db("Users").where("id", id);
-  
-        res.status(200).json({
-            userId: newUser[0]["id"],
-            password: newUser[0]["password"],
-            name: newUser[0]["name"],
-            email: newUser[0]["email"],
-            phone: newUser[0]["phone"],
-            logo: newUser[0]["logo"],
-            paid: newUser[0]["paid"],
-        });
-    } catch (err) {
-        console.log("err.message: ", err.message);
-        res.status(500).json({ error: err.message });
-    }
-  });
-// Delete Game
+// edit a user by userID
+server.put("/edituser/:id", utilities.protected, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const edit = { ...req.body };
 
-// users -> games -> rounds -> questions -> answers
+    // update user by id
+    let question = await db("Users")
+      .where("id", id)
+      .update({
+        password: edit.password,
+        name: edit.paid,
+        email: edit.email,
+        phone: edit.phone,
+        logo: edit.logo,
+        paid: edit.paid
+      });
+    // get user by id
+    let newUser = await db("Users").where("id", id);
 
-module.exports = server;
+    res.status(200).json({
+      userId: newUser[0]["id"],
+      password: newUser[0]["password"],
+      name: newUser[0]["name"],
+      email: newUser[0]["email"],
+      phone: newUser[0]["phone"],
+      logo: newUser[0]["logo"],
+      paid: newUser[0]["paid"]
+    });
+  } catch (err) {
+    console.log("err.message: ", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Get all questions for a round id passed in
 server.get("/questions/:id", utilities.protected, async (req, res) => {
@@ -599,3 +569,73 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
     res.status(500).json({ error: "Problem getting questions" });
   }
 });
+
+// Save all questions for a round ID
+server.post("/questions", utilities.protected, async (req, res) => {
+  try {
+    // Get the questions passed in, round ID should be packaged in questions
+    const { questions } = req.body;
+
+    // Check for valid Round Id
+    let validRound = await db("Rounds").where({ id: req.body[0].rounds_id });
+
+    if (validRound.length < 1) {
+      throw new Error({ error: "Not a valid round ID" });
+    }
+
+    let successfulInsert = await db("Questions").insert(req.body);
+
+    console.log("successfulInsert: ", successfulInsert);
+  } catch (err) {
+    res.status(500).json({ error: "Problem saving questions" });
+  }
+});
+
+// Save a round
+server.post("/round", utilities.protected, async (req, res) => {
+  try {
+    // Get all pertinent info from req.body
+    const {
+      gameId,
+      roundName,
+      category,
+      difficulty,
+      type,
+      questions
+    } = req.body;
+
+    // Returns empty array if no game
+    let validGame = await db("Games").where({ id: gameId });
+
+    // Check to see if valid gameId
+    if (validGame.length < 1) throw new Error("no Game by that ID");
+
+    // Assemble round info to be entered in DB
+    let roundPackage = {
+      game_id: gameId,
+      name: roundName,
+      category: category,
+      type: type,
+      difficulty: difficulty,
+      number_of_questions: questions
+    };
+
+    // Returns an array of 1 item, pull that item out with [0]
+    let roundId = (await db("Rounds").insert(roundPackage))[0];
+
+    let returnPackage = {
+      roundId: roundId,
+      roundName: roundName,
+      numQs: questions,
+      category: category,
+      difficulty: difficulty,
+      type: type
+    };
+    // Return new round ID
+    res.status(200).json(returnPackage);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+module.exports = server;
