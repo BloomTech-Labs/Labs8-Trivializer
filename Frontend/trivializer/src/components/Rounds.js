@@ -78,13 +78,17 @@ class Rounds extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     console.log("prevProps.roundName: ", prevProps.roundName);
     console.log("this.props.roundName: ", this.props.roundName);
+    console.log(
+      "prevProps.roundName !== this.props.roundName: ",
+      prevProps.roundName !== this.props.roundName
+    );
     console.log("this.props.fetched_questions: ", this.props.fetched_questions);
     if (prevProps.roundName !== this.props.roundName) {
-      if (this.props.fetched_questions) {
-        this.props.history.push(
-          `${this.props.gameId}/round/${this.props.round.roundId}`
-        );
-      }
+      // if (this.props.fetched_questions) {
+      this.props.history.push(
+        `${this.props.gameId}/round/${this.props.round.roundId}`
+      );
+      // }
       if (prevProps.roundName === null) {
         console.log("IT'S NULL!!!");
       }
@@ -95,7 +99,7 @@ class Rounds extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  saveRound = () => {
+  saveRound = (dontReplicate = false) => {
     if (!this.props.gameId) {
       console.log("No game ID!!");
       return;
@@ -111,7 +115,10 @@ class Rounds extends Component {
     };
 
     // ****** If this is a new round ******
-    if (this.props.new || !this.props.round.roundId) {
+    if (
+      (this.props.new || !this.props.round.roundId) &&
+      dontReplicate === false
+    ) {
       console.log("NEW ROUND!!");
 
       this.props.saveRoundReq(formattedBackendRound);
@@ -130,8 +137,8 @@ class Rounds extends Component {
 
   enterRound = () => {
     // First, save the round
-
-    this.saveRound();
+    let dontReplicate = true;
+    this.saveRound(dontReplicate);
 
     // Get all of our info in the right format to call the questions API
     let formattedQuestionsRound = this.formatQuestionsCall();
@@ -140,22 +147,6 @@ class Rounds extends Component {
       formattedQuestionsRound,
       this.props.round.roundId
     );
-    // this.props.history.push(
-    //   `${this.props.gameId}/round/${this.props.round.roundId}`
-    // );
-    // let x = 0;
-    // while (this.props.fetched_questions === false || x < 10) {
-    //   if (this.props.roundName === formattedQuestionsRound.roundName) {
-    //     console.log("It matches!!");
-    //     break;
-    //   }
-    //   console.log("this.props", this.props);
-    //   console.log("formattedQuestionsRound", formattedQuestionsRound);
-    //   x++;
-    // }
-    // this.props.history.push(
-    //   `${this.props.gameId}/round/${this.props.round.roundId}`
-    // );
   };
 
   // Format our current state to be set to Redux store
