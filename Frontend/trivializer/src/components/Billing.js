@@ -15,7 +15,7 @@ const Billing = props => {
 
   return (
     <div className="billing-page">
-      <div className="top-content">
+<div className="top-content">
         <div className="top-leftside">
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
