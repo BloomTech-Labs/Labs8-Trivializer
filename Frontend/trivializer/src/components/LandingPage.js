@@ -102,8 +102,6 @@ class LandingPage extends React.Component {
     }
 
     // Now that we've done all the checks, we can return the 0 or 1 message.
-    console.log("validation is: ", validation);
-    console.log("validation type is: ", typeof validation);
     return validation;
   };
 
@@ -179,12 +177,79 @@ class LandingPage extends React.Component {
 
   googleLogin = e => {
     e.preventDefault();
-    auth.signInWithPopup(provider).then(result => {
-      const user = result.user;
-      localStorage.setItem("user", JSON.stringify(user));
-      window.location.reload();
-      this.redirect();
-    });
+    auth
+      .signInWithPopup(provider)
+      .then(result => {
+        const user = result.user;
+        axios
+          .post("https://testsdepl.herokuapp.com/users/register", {
+            username: user.displayName,
+            password: user.uid,
+            email: user.email
+          })
+          .then(res => {
+            localStorage.setItem("res", JSON.stringify(res));
+          })
+          .catch(err => {
+            axios
+              .post("https://testsdepl.herokuapp.com/users/login", {
+                username: user.displayName,
+                password: user.uid
+              })
+              .then(res => {
+                const userId = JSON.stringi;
+                sessionStorage.setItem(
+                  "jwt",
+                  JSON.stringify(res.data.token)
+                    .split("")
+                    .slice(1, -1)
+                    .join("")
+                );
+                sessionStorage.setItem(
+                  "userId",
+                  JSON.stringify(res.data.userId)
+                    .split("")
+                    .slice(1, -1)
+                    .join("")
+                );
+                window.location.reload();
+                this.redirect();
+              });
+          });
+        localStorage.setItem("user", JSON.stringify(user));
+        sessionStorage.setItem(
+          "user",
+          JSON.stringify(user.displayName)
+            .split("")
+            .slice(1, -1)
+            .join("")
+        );
+      })
+      .then(res => {
+        axios
+          .post("https://testsdepl.herokuapp.com/users/login", {
+            username: JSON.parse(localStorage.getItem("user").displayName),
+            password: JSON.parse(localStorage.getItem("user").uid)
+          })
+          .then(res => {
+            sessionStorage.setItem("userId", JSON.stringify(res.data.userId));
+            sessionStorage.setItem(
+              "jwt",
+              JSON.stringify(res.data.token)
+                .split("")
+                .slice(1, -1)
+                .join("")
+            );
+            window.location.reload();
+            this.redirect();
+          })
+          .catch(error => {
+            localStorage.setItem("error", error);
+          });
+      })
+      .catch(err => {
+        localStorage.setItem("err", err);
+      });
   };
 
   render() {
