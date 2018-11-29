@@ -6,7 +6,8 @@ import {
   saveRoundReq,
   deleteRoundReq,
   editRoundReq,
-  getQuestionsReq
+  getQuestionsReq,
+  resetRoundStateReq
 } from "../actions";
 
 let categoryOptions = {
@@ -70,21 +71,22 @@ class Rounds extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    console.log("HELLOO!!!");
+    resetRoundStateReq();
+    console.log("this.props.roundName: ", this.props.roundName);
+  }
 
   componentDidUpdate = (prevProps, prevState) => {
     console.log("prevProps.roundName: ", prevProps.roundName);
     console.log("this.props.roundName: ", this.props.roundName);
-
-    if (
-      prevProps.roundName !== this.props.roundName ||
-      this.props.fetched_questions
-    ) {
-      // if (this.props.fetched_questions) {
-      this.props.history.push(
-        `${this.props.gameId}/round/${this.props.round.roundId}`
-      );
-      // }
+    console.log("this.props.fetched_questions: ", this.props.fetched_questions);
+    if (prevProps.roundName !== this.props.roundName) {
+      if (this.props.fetched_questions) {
+        this.props.history.push(
+          `${this.props.gameId}/round/${this.props.round.roundId}`
+        );
+      }
     }
   };
 
@@ -92,7 +94,7 @@ class Rounds extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  saveRound = (dontDuplicate=false) => {
+  saveRound = () => {
     if (!this.props.gameId) {
       console.log("No game ID!!");
       return;
@@ -108,7 +110,7 @@ class Rounds extends Component {
     };
 
     // ****** If this is a new round ******
-    if ((this.props.new || !this.props.round.roundId) && ) {
+    if (this.props.new || !this.props.round.roundId) {
       console.log("NEW ROUND!!");
 
       this.props.saveRoundReq(formattedBackendRound);
@@ -127,7 +129,8 @@ class Rounds extends Component {
 
   enterRound = () => {
     // First, save the round
-    this.saveRound(dontDuplicate=true);
+
+    this.saveRound();
 
     // Get all of our info in the right format to call the questions API
     let formattedQuestionsRound = this.formatQuestionsCall();
@@ -303,6 +306,12 @@ const mapStateToProps = ({ gamesList }) => {
 export default withRouter(
   connect(
     mapStateToProps,
-    { saveRoundReq, deleteRoundReq, editRoundReq, getQuestionsReq }
+    {
+      saveRoundReq,
+      deleteRoundReq,
+      editRoundReq,
+      getQuestionsReq,
+      resetRoundStateReq
+    }
   )(Rounds)
 );

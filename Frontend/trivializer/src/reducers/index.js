@@ -19,6 +19,7 @@ import {
   DELETED_ROUND,
   EDITING_ROUND,
   EDITED_ROUND,
+  RESET,
   ERROR
 } from "../actions";
 import { combineReducers } from "redux";
@@ -193,7 +194,12 @@ const gamesReducer = (state = initialState, action) => {
         type: action.payload.type,
         questions: action.payload.questions
       });
-
+    case RESET:
+      console.log("In RESET!!!");
+      return Object.assign({}, state, {
+        fetched_questions: false,
+        roundName: null
+      });
     case ERROR:
       return Object.assign({}, state, {
         error: action.payload

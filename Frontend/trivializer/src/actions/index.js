@@ -19,6 +19,7 @@ export const EDITING_ROUND = "EDITING_ROUND";
 export const EDITED_ROUND = "EDITED_ROUND";
 export const FETCHING_QUESTIONS = "FETCHING_QUESTIONS";
 export const FETCHED_QUESTIONS = "FETCHED_QUESTIONS";
+export const RESET = "RESET";
 export const ERROR = "ERROR";
 
 const URL = process.env.REACT_APP_API_URL || "https://opentdb.com/api.php?";
@@ -276,5 +277,12 @@ export const getQuestionsReq = (info, roundId) => {
       .catch(err => {
         dispatch({ type: ERROR, payload: err });
       });
+  };
+};
+
+export const resetRoundStateReq = () => {
+  console.log("In AcTIONS!!!");
+  return dispatch => {
+    dispatch({ type: RESET });
   };
 };
