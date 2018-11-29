@@ -23,7 +23,8 @@ export const RESET = "RESET";
 export const ERROR = "ERROR";
 
 const URL = process.env.REACT_APP_API_URL || "https://opentdb.com/api.php?";
-const BE_URL = process.env.REACT_APP_BE_URL || "http://localhost:3300/users";
+const BE_URL =
+  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
 
 // sample games fetch with params
 // {
