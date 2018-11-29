@@ -99,7 +99,7 @@ class Rounds extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  saveRound = (dontReplicate = false) => {
+  saveRound = () => {
     if (!this.props.gameId) {
       console.log("No game ID!!");
       return;
@@ -115,10 +115,7 @@ class Rounds extends Component {
     };
 
     // ****** If this is a new round ******
-    if (
-      (this.props.new || !this.props.round.roundId) &&
-      dontReplicate === false
-    ) {
+    if (this.props.new || !this.props.round.roundId) {
       console.log("NEW ROUND!!");
 
       this.props.saveRoundReq(formattedBackendRound);
@@ -137,8 +134,7 @@ class Rounds extends Component {
 
   enterRound = () => {
     // First, save the round
-    let dontReplicate = true;
-    this.saveRound(dontReplicate);
+    this.saveRound();
 
     // Get all of our info in the right format to call the questions API
     let formattedQuestionsRound = this.formatQuestionsCall();
