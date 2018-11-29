@@ -189,6 +189,7 @@ class LandingPage extends React.Component {
           email: user.email
         })
         .then(res => {
+          localStorage.setItem("user", JSON.stringify(user));
           sessionStorage.setItem(
             "user",
             JSON.stringify(user.displayName)
@@ -234,6 +235,13 @@ class LandingPage extends React.Component {
               localStorage.setItem("user", JSON.stringify(user));
             });
         });
+      sessionStorage.setItem(
+        "user",
+        JSON.stringify(user.displayName)
+          .split("")
+          .slice(1, -1)
+          .join("")
+      );
     });
     /*
     .then(res => {
