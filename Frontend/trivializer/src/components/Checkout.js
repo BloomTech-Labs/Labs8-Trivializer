@@ -12,13 +12,31 @@ const fromEuroToCent = amount => amount * 100;
 let savedUser = JSON.parse(sessionStorage.getItem("userId"));
 console.log(savedUser)
 
+
 const successPayment = data => {
-  console.log(savedUser)
+  const url = "https://testsdepl.herokuapp.com/users/edituser"
+
+  const paid = { paid: 1}
+  axios
+  .put(`${url}/${savedUser}`, paid, {
+    headers: {
+      Authorization: `${sessionStorage.getItem("jwt")}`
+    }
+  }
+  )
+  .then(res  => {
+    // return if null properties
+    return JSON.res
+    })
+    .catch(err => {
+      console.log("err.response: ", err.response);
+      
+    });
   alert('Payment Successful');
 };
 
 const errorPayment = data => {
-  console.log(savedUser)
+  
   alert('Payment Error');
 };
 
