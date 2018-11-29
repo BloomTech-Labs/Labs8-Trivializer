@@ -9,11 +9,16 @@ const CURRENCY = 'USD';
 
 const fromEuroToCent = amount => amount * 100;
 
+let savedUser = JSON.parse(sessionStorage.getItem("userId"));
+console.log(savedUser)
+
 const successPayment = data => {
+  console.log(savedUser)
   alert('Payment Successful');
 };
 
 const errorPayment = data => {
+  console.log(savedUser)
   alert('Payment Error');
 };
 
