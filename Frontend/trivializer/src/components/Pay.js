@@ -24,6 +24,7 @@ class Pay extends Component {
             name={'Trivializer'}
             description={'Premium'}
             amount={9.99}
+            
           />
             </div>
         
