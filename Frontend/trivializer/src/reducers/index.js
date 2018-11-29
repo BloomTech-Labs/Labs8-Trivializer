@@ -198,7 +198,7 @@ const gamesReducer = (state = initialState, action) => {
       console.log("In RESET!!!");
       return Object.assign({}, state, {
         fetched_questions: false,
-        roundName: null
+        roundName: "Nothing"
       });
     case ERROR:
       return Object.assign({}, state, {

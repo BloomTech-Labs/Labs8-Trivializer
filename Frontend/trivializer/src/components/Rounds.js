@@ -72,9 +72,7 @@ class Rounds extends Component {
   }
 
   componentDidMount() {
-    console.log("HELLOO!!!");
-    resetRoundStateReq();
-    console.log("this.props.roundName: ", this.props.roundName);
+    this.props.resetRoundStateReq();
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -86,6 +84,9 @@ class Rounds extends Component {
         this.props.history.push(
           `${this.props.gameId}/round/${this.props.round.roundId}`
         );
+      }
+      if (prevProps.roundName === null) {
+        console.log("IT'S NULL!!!");
       }
     }
   };

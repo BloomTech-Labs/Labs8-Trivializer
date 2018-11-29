@@ -281,8 +281,8 @@ export const getQuestionsReq = (info, roundId) => {
 };
 
 export const resetRoundStateReq = () => {
-  console.log("In AcTIONS!!!");
   return dispatch => {
+    console.log("ABOUT TO DISPATCH!!!!!!");
     dispatch({ type: RESET });
   };
 };
