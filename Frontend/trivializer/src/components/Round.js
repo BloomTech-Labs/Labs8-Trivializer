@@ -37,7 +37,7 @@ class Round extends Component {
   }
 
   componentDidMount = () => {
-    console.log("this.state componentDidMount: ", this.state);
+    console.log("this.props componentDidMount: ", this.props);
     // If questions are passed in, just collect the answers, don't make the API call
     if (this.state.questions.length > 0) {
       // questions will now have unique Id's and complete answers array
@@ -196,17 +196,18 @@ class Round extends Component {
     });
     console.log("questionsPackage: ", questionsPackage);
 
-    axios.post(`${this.state.usersAPI}/questions`, questionsPackage, {
-      headers: {
-        Authorization: `${sessionStorage.getItem("jwt")}`
-      }
-    })
-    .then(response => {
-      console.log(response)
-    })
-    .catch(err => {
-      console.log("err.message: ", err.message);
-    })
+    axios
+      .post(`${this.state.usersAPI}/questions`, questionsPackage, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log("err.message: ", err.message);
+      });
   };
 
   render() {
