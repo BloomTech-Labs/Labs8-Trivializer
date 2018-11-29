@@ -39,9 +39,9 @@ class Round extends Component {
   componentDidMount = () => {
     console.log("this.props componentDidMount: ", this.props);
     // If questions are passed in, just collect the answers, don't make the API call
-    if (this.state.questions.length > 0) {
+    if (this.props.questions.length > 0) {
       // questions will now have unique Id's and complete answers array
-      let questions = this.addIds(this.state.questions);
+      let questions = this.addIds(this.props.questions);
 
       this.setState({ questions: questions, noResults: false });
       return;
@@ -179,7 +179,7 @@ class Round extends Component {
     });
   };
 
-  saveQuestions = () => {
+  saveQuestions = async () => {
     console.log(this.props.roundId);
     // Package all questions with rounds_id
     console.log("this.state.questions: ", this.state.questions);
@@ -196,6 +196,21 @@ class Round extends Component {
     });
     console.log("questionsPackage: ", questionsPackage);
 
+    // First, delete all existing questions in our round
+    await axios
+      .delete(`${this.state.usersAPI}/questions/${this.props.roundId}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log("err.message: ", err.message);
+      });
+
+    // Then, replace them with the current questions
     axios
       .post(`${this.state.usersAPI}/questions`, questionsPackage, {
         headers: {

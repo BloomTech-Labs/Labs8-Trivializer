@@ -262,6 +262,7 @@ export const getQuestionsReq = (info, roundId) => {
   console.log("info: ", info);
 
   return dispatch => {
+    console.log("IN dispatch, getQuestionsReq");
     dispatch({ type: FETCHING_QUESTIONS });
     axios
       .get(`${BE_URL}/questions/${roundId}`, {
@@ -272,13 +273,14 @@ export const getQuestionsReq = (info, roundId) => {
       .then(({ data }) => {
         console.log("data: ", data);
         // If we have results from the USers API, assign questions to our info packet
-        if (data[0].questionId !== null) {
+        if (data[0] && data[0].questionId !== null) {
           info.questions = data;
         }
         // Send info packet, either with new questions or original (should be empty array)
         dispatch({ type: FETCHED_QUESTIONS, payload: info });
       })
       .catch(err => {
+        console.log("err.message getQuestionsReq: ", err.message);
         dispatch({ type: ERROR, payload: err });
       });
   };

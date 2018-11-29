@@ -347,6 +347,7 @@ server.delete("/round/:id", utilities.protected, async (req, res) => {
 
     console.log("id: ", id);
 
+    // delete all questions based on that round
     let responseQuestions = await db("Questions")
       .where({ rounds_id: id })
       .del();
@@ -522,7 +523,7 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
     const { id } = req.params;
 
     // Gets all rounds from the Rounds table where the game id matches the passed in ID
-    let rounds = await db
+    let questions = await db
       // Choose which columns we want to select, and assign an alias
       .select(
         "q.id as questionId",
@@ -531,14 +532,21 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
         "q.difficulty as difficulty",
         "q.type as type",
         "q.question as question",
-        "q.correct_answer as correctAnswer",
-        "incorrect_answers as incorrectAnswers"
+        "q.correct_answer as correct_answer",
+        "incorrect_answers as incorrect_answers"
       )
       .from("Rounds as r")
       .leftJoin("Questions as q", "q.rounds_id", "r.id")
       .where("q.rounds_id", "=", id);
 
-    res.status(200).json(rounds);
+    console.log("questions: ", questions);
+    if (questions) {
+      questions = questions.map(question => {
+        question.incorrect_answers = question.incorrect_answers.split("--");
+        return question;
+      });
+    }
+    res.status(200).json(questions);
   } catch (err) {
     console.log("err.message: ", err.message);
     res.status(500).json({ error: "Problem getting questions" });
@@ -566,49 +574,21 @@ server.post("/questions", utilities.protected, async (req, res) => {
   }
 });
 
-// Save a round
-server.post("/round", utilities.protected, async (req, res) => {
+// Delete all questions for a round based on round ID
+server.delete("/questions/:id", utilities.protected, async (req, res) => {
+  const { id } = req.params;
+
   try {
-    // Get all pertinent info from req.body
-    const {
-      gameId,
-      roundName,
-      category,
-      difficulty,
-      type,
-      questions
-    } = req.body;
+    // Delete all rounds
+    let responseQuestions = await db("Questions")
+      .where({ rounds_id: id })
+      .del();
 
-    // Returns empty array if no game
-    let validGame = await db("Games").where({ id: gameId });
+    console.log("responseQuestions: ", responseQuestions);
 
-    // Check to see if valid gameId
-    if (validGame.length < 1) throw new Error("no Game by that ID");
-
-    // Assemble round info to be entered in DB
-    let roundPackage = {
-      game_id: gameId,
-      name: roundName,
-      category: category,
-      type: type,
-      difficulty: difficulty,
-      number_of_questions: questions
-    };
-
-    // Returns an array of 1 item, pull that item out with [0]
-    let roundId = (await db("Rounds").insert(roundPackage))[0];
-
-    let returnPackage = {
-      roundId: roundId,
-      roundName: roundName,
-      numQs: questions,
-      category: category,
-      difficulty: difficulty,
-      type: type
-    };
-    // Return new round ID
-    res.status(200).json(returnPackage);
+    res.status(200).json(`Questions deleted`);
   } catch (err) {
+    console.log("err.message: ", err.message);
     res.status(400).json({ error: err.message });
   }
 });
