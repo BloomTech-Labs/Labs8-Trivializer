@@ -65,23 +65,17 @@ server.post("/register", async (req, res) => {
   // This table also includes credit card info, will handle in billing
   const { username, password, name, email, phone, logo } = req.body;
 
-  // Check to see if we have a username, password and email
-  if (!username || !password || !email) {
-    res.status(400).json({
-      error: "Please include a valid User Name, password and email address"
-    });
-  }
-
-  // Encrypt password and add to package to be stored in Users table
-  const hash = sc.encrypt(password);
-  const credentials = {
-    username: username,
-    password: hash,
-    email: email,
-    name: name,
-    phone: phone,
-    logo: logo
-  };
+    // Encrypt password and add to package to be stored in Users table
+    const hash = sc.encrypt(password);
+    const credentials = {
+        username: username,
+        password: hash,
+        email: email,
+        name: name,
+        phone: phone,
+        logo: logo,
+        paid: 0
+    };
 
   try {
     // Try to insert the user
@@ -91,7 +85,7 @@ server.post("/register", async (req, res) => {
 
     // Generate a new token and return it
     let token = utilities.generateToken(username);
-    res.status(201).json(token);
+    res.status(201).json({ token: token, userId: userId[0] });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -114,7 +108,7 @@ server.post("/login", utilities.getUser, async (req, res) => {
     if (decryptedPassword === password) {
       // Generate a new token and return it
       let token = utilities.generateToken(username);
-      res.status(201).json(token);
+      res.status(201).json({ token: token, userId: user.id });
     } else {
       res.status(401).json({ error: "Incorrect Credentials" });
     }
@@ -538,6 +532,40 @@ server.put("/editq/:id", utilities.protected, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+server.put("/edituser/:id", utilities.protected, async (req, res) =>{
+    try{
+        const { id } = req.params;
+        const edit = { ...req.body };
+  
+        // update user by id
+        let question = await db("Users")
+            .where("id", id)
+            .update({
+                password: edit.password,
+                name: edit.paid,
+                email: edit.email,
+                phone: edit.phone,
+                logo: edit.logo,
+                paid: edit.paid
+            });
+            // get user by id
+        let newUser = await db("Users").where("id", id);
+  
+        res.status(200).json({
+            userId: newUser[0]["id"],
+            password: newUser[0]["password"],
+            name: newUser[0]["name"],
+            email: newUser[0]["email"],
+            phone: newUser[0]["phone"],
+            logo: newUser[0]["logo"],
+            paid: newUser[0]["paid"],
+        });
+    } catch (err) {
+        console.log("err.message: ", err.message);
+        res.status(500).json({ error: err.message });
+    }
+  });
 // Delete Game
 
 // users -> games -> rounds -> questions -> answers
