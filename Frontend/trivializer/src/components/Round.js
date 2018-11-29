@@ -30,7 +30,7 @@ class Round extends Component {
       type: this.props.type,
       questions: [],
       questionsURL: "https://opentdb.com/api.php?",
-      usersAPI: "http://localhost:3300/users",
+      usersAPI: "https://testsdepl.herokuapp.com/users",
       replace: [],
       noResults: false
     };
