@@ -1,49 +1,45 @@
-import React from 'react'
-import axios from 'axios';
-import StripeCheckout from 'react-stripe-checkout';
+import React from "react";
+import axios from "axios";
+import StripeCheckout from "react-stripe-checkout";
 
-import STRIPE_PUBLISHABLE from '../constants/stripe';
-import PAYMENT_SERVER_URL from '../constants/server';
+import STRIPE_PUBLISHABLE from "../constants/stripe";
+import PAYMENT_SERVER_URL from "../constants/server";
 
-const CURRENCY = 'USD';
+const CURRENCY = "USD";
 
 const fromEuroToCent = amount => amount * 100;
 
 let savedUser = JSON.parse(sessionStorage.getItem("userId"));
-console.log(savedUser)
-
+console.log(savedUser);
 
 const successPayment = data => {
-  const url = "https://testsdepl.herokuapp.com/users/edituser"
+  const url = "https://testsdepl.herokuapp.com/users/edituser";
 
-  const paid = { paid: 1}
+  const paid = { paid: 1 };
   axios
-  .put(`${url}/${savedUser}`, paid, {
-    headers: {
-      Authorization: `${sessionStorage.getItem("jwt")}`
-    }
-  }
-  )
-  .then(res  => {
-    // return if null properties
-    return JSON.res
+    .put(`${url}/${savedUser}`, paid, {
+      headers: {
+        Authorization: `${sessionStorage.getItem("jwt")}`
+      }
+    })
+    .then(res => {
+      // return if null properties
+      return JSON.res;
     })
     .catch(err => {
       console.log("err.response: ", err.response);
-      
     });
-  alert('Payment Successful');
+  alert("Payment Successful");
 };
 
 const errorPayment = data => {
-  
-  alert('Payment Error');
+  alert("Payment Error");
 };
 
-const onToken = (amount, description) => token =>{
-console.log(description, token.id, CURRENCY, fromEuroToCent(amount))
-  axios.post(PAYMENT_SERVER_URL,
-    {
+const onToken = (amount, description) => token => {
+  console.log(description, token.id, CURRENCY, fromEuroToCent(amount));
+  axios
+    .post(PAYMENT_SERVER_URL, {
       description,
       source: token.id,
       currency: CURRENCY,
@@ -51,8 +47,8 @@ console.log(description, token.id, CURRENCY, fromEuroToCent(amount))
     })
     .then(successPayment)
     .catch(errorPayment);
-  }
-const Checkout = ({ name, description, amount }) =>
+};
+const Checkout = ({ name, description, amount }) => (
   <StripeCheckout
     name={name}
     description={description}
@@ -61,5 +57,6 @@ const Checkout = ({ name, description, amount }) =>
     currency={CURRENCY}
     stripeKey={STRIPE_PUBLISHABLE}
   />
+);
 
 export default Checkout;
