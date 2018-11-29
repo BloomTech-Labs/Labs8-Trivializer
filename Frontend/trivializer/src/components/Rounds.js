@@ -76,21 +76,17 @@ class Rounds extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    console.log("prevProps.roundName: ", prevProps.roundName);
-    console.log("this.props.roundName: ", this.props.roundName);
+    console.log("this.props.fetched_questions: ", this.props.fetched_questions);
     console.log(
       "prevProps.roundName !== this.props.roundName: ",
       prevProps.roundName !== this.props.roundName
     );
-    console.log("this.props.fetched_questions: ", this.props.fetched_questions);
+
     if (prevProps.roundName !== this.props.roundName) {
-      // if (this.props.fetched_questions) {
-      this.props.history.push(
-        `${this.props.gameId}/round/${this.props.round.roundId}`
-      );
-      // }
-      if (prevProps.roundName === null) {
-        console.log("IT'S NULL!!!");
+      if (this.props.fetched_questions) {
+        this.props.history.push(
+          `${this.props.gameId}/round/${this.props.round.roundId}`
+        );
       }
     }
   };
@@ -153,6 +149,7 @@ class Rounds extends Component {
     let formattedQuestionsRound = {
       gameName: this.props.gameName !== null ? this.props.gameName : "Game",
       gameId: this.props.gameId,
+      roundId: this.props.round.roundId,
       roundName:
         this.state.roundName !== "" ? this.state.roundName : "New Round",
       numberOfQuestions: this.state.numQs > 0 ? this.state.numQs : 1,
@@ -282,6 +279,7 @@ const mapStateToProps = ({ gamesList }) => {
     savedRound: gamesList.saved_round,
     error: gamesList.error,
     rounds: gamesList.rounds,
+    roundId: gamesList.roundId,
     roundName: gamesList.roundName,
     numberOfQuestions: gamesList.numberOfQuestions,
     category: gamesList.category,

@@ -35,6 +35,7 @@ const initialState = {
   invoiced: [],
   gameName: null,
   gameId: null,
+  roundId: null,
   roundName: null,
   numberOfQuestions: null,
   category: null,
@@ -187,6 +188,7 @@ const gamesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         fetching_questions: false,
         fetched_questions: true,
+        roundId: action.payload.roundId,
         roundName: action.payload.roundName,
         numberOfQuestions: action.payload.numberOfQuestions,
         category: action.payload.category,
@@ -198,7 +200,8 @@ const gamesReducer = (state = initialState, action) => {
       console.log("In RESET!!!");
       return Object.assign({}, state, {
         fetched_questions: false,
-        roundName: NaN
+        roundName: NaN,
+        roundId: null
       });
     case ERROR:
       return Object.assign({}, state, {
