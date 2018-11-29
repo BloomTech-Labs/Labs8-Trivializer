@@ -271,9 +271,11 @@ export const getQuestionsReq = (info, roundId) => {
       })
       .then(({ data }) => {
         console.log("data: ", data);
+        // If we have results from the USers API, assign questions to our info packet
         if (data[0].questionId !== null) {
           info.questions = data;
         }
+        // Send info packet, either with new questions or original (should be empty array)
         dispatch({ type: FETCHED_QUESTIONS, payload: info });
       })
       .catch(err => {
