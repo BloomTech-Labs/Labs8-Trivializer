@@ -72,7 +72,8 @@ class Rounds extends Component {
 
   componentDidMount() {}
 
-  componentDidUpdate = prevState => {
+  componentDidUpdate = (prevProps, prevState) => {
+    console.log("prevProps: ", prevProps);
     if (prevState !== this.state) {
       // Compare values to original values, if any of them are different,
       // then we've made a change we can save, so set changed on state,
@@ -151,12 +152,24 @@ class Rounds extends Component {
       formattedQuestionsRound,
       this.props.round.roundId
     );
-
-    setTimeout(() => {
+    this.props.history.push(
+      `${this.props.gameId}/round/${this.props.round.roundId}`
+    );
+      let x = 0;
+      while (this.props.fetched_questions === false || x < 100) {
+        if (
+          this.props.roundName === formattedQuestionsRound.roundName
+        ) {
+          console.log("It matches!!");
+          break;
+        }
+        console.log("this.props", this.props);
+        console.log("formattedQuestionsRound", formattedQuestionsRound);
+        x++;
+      }
       this.props.history.push(
         `${this.props.gameId}/round/${this.props.round.roundId}`
       );
-    }, 1000);
   };
 
   // Format our current state to be set to Redux store
@@ -170,7 +183,10 @@ class Rounds extends Component {
       roundName:
         this.state.roundName !== "" ? this.state.roundName : "New Round",
       numberOfQuestions: this.state.numQs > 0 ? this.state.numQs : 1,
-      category: categoryOptions[this.state.category],
+      category:
+        categoryOptions[this.state.category] !== "any"
+          ? categoryOptions[this.state.category]
+          : "",
       difficulty: this.state.difficulty !== "any" ? this.state.difficulty : "",
       type: this.state.type !== "any" ? this.state.type : "",
       questions: []
@@ -286,12 +302,19 @@ class Rounds extends Component {
 const mapStateToProps = ({ gamesList }) => {
   return {
     fetched_questions: gamesList.fetched_questions,
+    fetched_questions: gamesList.fetched_questions,
     gameId: gamesList.game_id,
     gameName: gamesList.gameName,
     savingRound: gamesList.saving_round,
     savedRound: gamesList.saved_round,
     error: gamesList.error,
-    rounds: gamesList.rounds
+    rounds: gamesList.rounds,
+    roundName: gamesList.roundName,
+    numberOfQuestions: gamesList.numberOfQuestions,
+    category: gamesList.category,
+    difficulty: gamesList.difficulty,
+    type: gamesList.type,
+    questions: gamesList.questions
   };
 };
 

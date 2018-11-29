@@ -21,14 +21,14 @@ class Round extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gameName: this.props.gameName || "Wednesday Night Trivia",
-      gameId: this.props.gameID || 1,
-      roundName: this.props.roundName || "Round 1",
-      numberOfQuestions: this.props.numberOfQuestions || 5,
-      category: this.props.category || "",
-      difficulty: this.props.difficulty || "easy",
-      type: this.props.type || "multiple",
-      questions: this.props.questions,
+      gameName: this.props.gameName,
+      gameId: this.props.gameID,
+      roundName: this.props.roundName,
+      numberOfQuestions: this.props.numberOfQuestions,
+      category: this.props.category,
+      difficulty: this.props.difficulty,
+      type: this.props.type,
+      questions: [],
       baseURL: "https://opentdb.com/api.php?",
       replace: []
     };
@@ -36,12 +36,11 @@ class Round extends Component {
 
   componentDidMount = () => {
     console.log("this.state: ", this.state);
-    // If questions are passed in, just collect the answers, don't make the API call
   };
 
-  componentDidUpdate = prevProps => {
+  componentDidUpdate = (prevProps, prevState) => {
     if (prevProps.questions !== this.props.questions) {
-      console.log("ComponentDidUpdate state", this.state);
+      // If questions are passed in, just collect the answers, don't make the API call
       if (this.state.questions.length > 0) {
         // questions will now have unique Id's and complete answers array
         let questions = this.addIds(this.state.questions);
