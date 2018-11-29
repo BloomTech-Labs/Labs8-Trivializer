@@ -66,43 +66,25 @@ class Rounds extends Component {
       original_category: this.props.round.category || "any",
       original_difficulty: this.props.round.difficulty || "any",
       original_type: this.props.round.type || "any",
-      changed: false
+      changed: true
     };
   }
 
   componentDidMount() {}
 
   componentDidUpdate = (prevProps, prevState) => {
-    console.log("prevProps: ", prevProps);
-    if (prevState !== this.state) {
-      // Compare values to original values, if any of them are different,
-      // then we've made a change we can save, so set changed on state,
-      // This will render a save button in render()
-      if (
-        !this.state.changed &&
-        this.state.roundName.length > 0 &&
-        (this.state.roundName !== this.state.original_roundName ||
-          this.state.numQs !== this.state.original_numQs ||
-          this.state.category !== this.state.original_category ||
-          this.state.difficulty !== this.state.original_difficulty ||
-          this.state.type !== this.state.original_type)
-      ) {
-        this.setState({
-          changed: true
-        });
-      }
-      // Conversely, if the current state is all the same as the original,
-      // remove the save button
-      else if (
-        this.state.changed &&
-        (this.state.roundName === this.state.original_roundName &&
-          this.state.numQs === this.state.original_numQs &&
-          this.state.category === this.state.original_category &&
-          this.state.difficulty === this.state.original_difficulty &&
-          this.state.type === this.state.original_type)
-      ) {
-        this.setState({ changed: false });
-      }
+    console.log("prevProps.roundName: ", prevProps.roundName);
+    console.log("this.props.roundName: ", this.props.roundName);
+
+    if (
+      prevProps.roundName !== this.props.roundName ||
+      this.props.fetched_questions
+    ) {
+      // if (this.props.fetched_questions) {
+      this.props.history.push(
+        `${this.props.gameId}/round/${this.props.round.roundId}`
+      );
+      // }
     }
   };
 
@@ -110,7 +92,7 @@ class Rounds extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  saveRound = () => {
+  saveRound = (dontDuplicate=false) => {
     if (!this.props.gameId) {
       console.log("No game ID!!");
       return;
@@ -126,7 +108,9 @@ class Rounds extends Component {
     };
 
     // ****** If this is a new round ******
-    if (this.props.new || !this.props.round.roundId) {
+    if ((this.props.new || !this.props.round.roundId) && ) {
+      console.log("NEW ROUND!!");
+
       this.props.saveRoundReq(formattedBackendRound);
     }
 
@@ -143,7 +127,7 @@ class Rounds extends Component {
 
   enterRound = () => {
     // First, save the round
-    this.saveRound();
+    this.saveRound(dontDuplicate=true);
 
     // Get all of our info in the right format to call the questions API
     let formattedQuestionsRound = this.formatQuestionsCall();
@@ -152,24 +136,22 @@ class Rounds extends Component {
       formattedQuestionsRound,
       this.props.round.roundId
     );
-    this.props.history.push(
-      `${this.props.gameId}/round/${this.props.round.roundId}`
-    );
-      let x = 0;
-      while (this.props.fetched_questions === false || x < 100) {
-        if (
-          this.props.roundName === formattedQuestionsRound.roundName
-        ) {
-          console.log("It matches!!");
-          break;
-        }
-        console.log("this.props", this.props);
-        console.log("formattedQuestionsRound", formattedQuestionsRound);
-        x++;
-      }
-      this.props.history.push(
-        `${this.props.gameId}/round/${this.props.round.roundId}`
-      );
+    // this.props.history.push(
+    //   `${this.props.gameId}/round/${this.props.round.roundId}`
+    // );
+    // let x = 0;
+    // while (this.props.fetched_questions === false || x < 10) {
+    //   if (this.props.roundName === formattedQuestionsRound.roundName) {
+    //     console.log("It matches!!");
+    //     break;
+    //   }
+    //   console.log("this.props", this.props);
+    //   console.log("formattedQuestionsRound", formattedQuestionsRound);
+    //   x++;
+    // }
+    // this.props.history.push(
+    //   `${this.props.gameId}/round/${this.props.round.roundId}`
+    // );
   };
 
   // Format our current state to be set to Redux store

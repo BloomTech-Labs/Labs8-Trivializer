@@ -22,7 +22,7 @@ class Round extends Component {
     super(props);
     this.state = {
       gameName: this.props.gameName,
-      gameId: this.props.gameID,
+      gameId: this.props.gameId,
       roundName: this.props.roundName,
       numberOfQuestions: this.props.numberOfQuestions,
       category: this.props.category,
@@ -30,36 +30,36 @@ class Round extends Component {
       type: this.props.type,
       questions: [],
       baseURL: "https://opentdb.com/api.php?",
-      replace: []
+      replace: [],
+      noResults: false
     };
   }
 
   componentDidMount = () => {
-    console.log("this.state: ", this.state);
-  };
+    console.log("this.state componentDidMount: ", this.state);
+    // If questions are passed in, just collect the answers, don't make the API call
+    if (this.state.questions.length > 0) {
+      // questions will now have unique Id's and complete answers array
+      let questions = this.addIds(this.state.questions);
 
-  componentDidUpdate = (prevProps, prevState) => {
-    if (prevProps.questions !== this.props.questions) {
-      // If questions are passed in, just collect the answers, don't make the API call
-      if (this.state.questions.length > 0) {
-        // questions will now have unique Id's and complete answers array
-        let questions = this.addIds(this.state.questions);
-
-        this.setState({ questions: questions });
-        return;
-      }
-
-      let concatenatedURL = this.buildApiCall();
-      console.log("concatenatedURL: ", concatenatedURL);
-      //   Call axios with input parameters
-      axios.get(concatenatedURL).then(response => {
-        // questions will now have unique Id's and complete answers array
-        let questions = this.addIds(response.data.results);
-
-        this.setState({ questions: questions });
-      });
+      this.setState({ questions: questions });
+      return;
     }
+
+    let concatenatedURL = this.buildApiCall();
+    console.log("concatenatedURL: ", concatenatedURL);
+    //   Call axios with input parameters
+    axios.get(concatenatedURL).then(response => {
+      if (response.data.response_code !== 0) {
+        this.setState({ noResults: true });
+      }
+      // questions will now have unique Id's and complete answers array
+      let questions = this.addIds(response.data.results);
+
+      this.setState({ questions: questions });
+    });
   };
+
   // Builds a call to the questions API based on which parameters in state are set
   buildApiCall = howManyQuestions => {
     let amount = `amount=${howManyQuestions ||
@@ -211,14 +211,12 @@ class Round extends Component {
                 <div className="title-round">{`${this.state.gameName} - ${
                   this.state.roundName
                 }`}</div>
-                {this.props.fetched_questions ? (
-                  <div className="info-round">
-                    {`Difficulty: ${this.state.difficulty ||
-                      "All"} \xa0\xa0\xa0\xa0\xa0 Questions: ${
-                      this.state.questions.length
-                    }`}
-                  </div>
-                ) : null}
+                <div className="info-round">
+                  {`Difficulty: ${this.state.difficulty ||
+                    "All"} \xa0\xa0\xa0\xa0\xa0 Questions: ${
+                    this.state.questions.length
+                  }`}
+                </div>
               </div>
               <div className="col-2-round">
                 <ReactToPrint
@@ -244,7 +242,11 @@ class Round extends Component {
                 </div>
               </div>
             </div>
-
+            {this.state.noResults ? (
+              <div>
+                No Results from Questions API!
+              </div>
+            ) : null}
             <div ref={el => (this.answerKeyRef = el)}>
               {questions.map((question, index) => {
                 return (
@@ -316,7 +318,7 @@ const mapStateToProps = ({ gamesList }) => {
     fetching_questions: gamesList.fetching_questions,
     fetched_questions: gamesList.fetched_questions,
     gameName: gamesList.gameName,
-    gameId: gamesList.gameId,
+    gameId: gamesList.game_id,
     roundName: gamesList.roundName,
     numberOfQuestions: gamesList.numberOfQuestions,
     category: gamesList.category,
