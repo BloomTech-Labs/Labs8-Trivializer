@@ -552,6 +552,37 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
     res.status(500).json({ error: "Problem getting questions" });
   }
 });
+// Get User user info by user id
+server.get("/users/:id",  utilities.protected, async (req, res) => {
+    try {
+      // User Id passed in request URL
+      const { id } = req.params;
+  
+      // Gets all info from the Users table where the user id matches the passed in ID
+      let users = await db
+        // Choose which columns we want to select, and assign an alias
+        .select(
+          "u.id as userId",
+          "u.username as userName",
+          "u.password as password",
+          "u.name as name",
+          "u.email as email",
+          "u.phone as phone",
+          "u.logo as logo",
+          "u.credit_card as creditCard",
+          "u.paid as paid"
+        )
+        .from("Users as u")
+        .where("u.id", "=", id);
+  
+    //   console.log("questions: ", questions);
+      
+      res.status(200).json(users);
+    } catch (err) {
+      console.log("err.message: ", err.message);
+      res.status(500).json({ error: "Problem getting user" });
+    }
+  });
 
 // Save all questions for a round ID
 server.post("/questions", utilities.protected, async (req, res) => {
