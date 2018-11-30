@@ -31,7 +31,7 @@ class CreateGameView extends Component {
                 1}-${d.getDate()}-${d.getFullYear()}`,
             gameCreatedMS: Date.now(),
             gameScheduled: "",
-            gameScheduledMS: ""
+            gameScheduledMS: 0
         });
     }
 
