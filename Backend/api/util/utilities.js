@@ -4,7 +4,7 @@ const db = require("../../data/db");
 let secret = process.env.SECRET; // Gets the secret stored in the .env file
 
 module.exports = {
-  getUser: function (req, res, next) {
+  getUser: function(req, res, next) {
     let { username } = req.body;
     try {
       db("Users")
@@ -25,7 +25,7 @@ module.exports = {
     }
   },
 
-  generateToken: function (username) {
+  generateToken: function(username) {
     const payload = {
       username: username
     };
@@ -38,7 +38,7 @@ module.exports = {
     return jwt.sign(payload, secret, options);
   },
 
-  protected: function (req, res, next) {
+  protected: function(req, res, next) {
     const token = req.headers.authorization;
 
     if (token) {

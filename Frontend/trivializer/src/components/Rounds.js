@@ -72,16 +72,11 @@ class Rounds extends Component {
   }
 
   componentDidMount() {
+    console.log("this.props Rounds.js: ", this.props);
     this.props.resetRoundStateReq();
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    console.log("this.props.fetched_questions: ", this.props.fetched_questions);
-    console.log(
-      "prevProps.roundName !== this.props.roundName: ",
-      prevProps.roundName !== this.props.roundName
-    );
-
     if (prevProps.roundName !== this.props.roundName) {
       if (this.props.fetched_questions) {
         this.props.history.push(
@@ -110,18 +105,8 @@ class Rounds extends Component {
       questions: this.state.numQs
     };
 
-    // ****** If this is a new round ******
-    if (this.props.new || !this.props.round.roundId) {
-      console.log("NEW ROUND!!");
-
-      this.props.saveRoundReq(formattedBackendRound);
-    }
-
-    // ****** If this is an already saved round ******
-    else {
-      // Alter round instead of saving a new one, take in above info and existing round ID
-      this.props.editRoundReq(formattedBackendRound, this.props.round.roundId);
-    }
+    // Modify the existing round in the database
+    this.props.editRoundReq(formattedBackendRound, this.props.round.roundId);
   };
 
   delete = () => {
@@ -271,9 +256,9 @@ class Rounds extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
+    fetching_questions: gamesList.fetching_questions,
     fetched_questions: gamesList.fetched_questions,
-    fetched_questions: gamesList.fetched_questions,
-    gameId: gamesList.game_id,
+    gameId: gamesList.gameId,
     gameName: gamesList.gameName,
     savingRound: gamesList.saving_round,
     savedRound: gamesList.saved_round,
