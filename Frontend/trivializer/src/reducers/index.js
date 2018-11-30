@@ -27,7 +27,6 @@ import { combineReducers } from "redux";
 const initialState = {
   games: [],
   game: [],
-  game_id: null,
   rounds: [],
   round: [],
   questions: [],
@@ -81,11 +80,12 @@ const gamesReducer = (state = initialState, action) => {
         fetching_game: true
       });
     case FETCHED_GAME:
+      console.log("action.payload[0]: ", action.payload[0]);
       return Object.assign({}, state, {
         fetching_game: false,
         fetched_game: true,
         game: action.payload,
-        game_id: action.payload[0].gameId,
+        gameId: action.payload[0].gameId,
         gameName: action.payload[0].gamename
       });
     case FETCHING_ROUNDS:
@@ -108,7 +108,7 @@ const gamesReducer = (state = initialState, action) => {
         saving_game: false,
         saved_game: true,
         // games: action.payload
-        game_id: action.payload
+        gameId: action.payload
       });
     case UPDATING_GAME:
       return Object.assign({}, state, {
@@ -166,6 +166,7 @@ const gamesReducer = (state = initialState, action) => {
       });
     case EDITED_ROUND:
       let editedRounds = state.rounds.slice();
+      // Replaces the old Round in Redux store with new, modified round from database
       editedRounds = editedRounds.map(round => {
         if (round.roundId === action.payload.roundId) {
           return action.payload;
@@ -197,7 +198,6 @@ const gamesReducer = (state = initialState, action) => {
         questions: action.payload.questions
       });
     case RESET:
-      console.log("In RESET!!!");
       return Object.assign({}, state, {
         fetched_questions: false,
         roundName: NaN,

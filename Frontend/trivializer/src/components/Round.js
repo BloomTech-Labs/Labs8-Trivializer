@@ -369,7 +369,7 @@ const mapStateToProps = ({ gamesList }) => {
     fetching_questions: gamesList.fetching_questions,
     fetched_questions: gamesList.fetched_questions,
     gameName: gamesList.gameName,
-    gameId: gamesList.game_id,
+    gameId: gamesList.gameId,
     roundName: gamesList.roundName,
     numberOfQuestions: gamesList.numberOfQuestions,
     category: gamesList.category,

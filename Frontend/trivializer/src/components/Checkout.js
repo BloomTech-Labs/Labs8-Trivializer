@@ -8,10 +8,9 @@ import PAYMENT_SERVER_URL from "../constants/server";
 const CURRENCY = "USD";
 
 const fromEuroToCent = amount => amount * 100;
-let savedUser;
-if (sessionStorage.getItem("userId")) {
-  savedUser = JSON.parse(sessionStorage.getItem("userId"));
-}
+
+let savedUser = JSON.parse(sessionStorage.getItem("userId"));
+console.log(savedUser);
 
 const successPayment = data => {
   const url = "https://testsdepl.herokuapp.com/users/edituser";

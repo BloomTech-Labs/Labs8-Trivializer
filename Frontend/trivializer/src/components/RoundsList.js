@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Rounds from "./Rounds";
 import { connect } from "react-redux";
-import { fetchRoundsReq } from "../actions";
+import { fetchRoundsReq, saveRoundReq } from "../actions";
 import "./Rounds.css";
 
 /**
@@ -24,14 +24,16 @@ class RoundsList extends Component {
 
   newRound = () => {
     let round = {
-      roundId: null,
+      gameId: this.props.gameId,
       roundName: "Default Value",
-      numQs: 0,
       category: "any",
+      type: "multiple",
       difficulty: "easy",
-      type: "multiple"
+      questions: 1
     };
-    this.setState({ newRounds: [...this.state.newRounds, round] });
+    console.log("round: ", round);
+    // Save the Round to the database with default values
+    this.props.saveRoundReq(round);
   };
 
   render() {
@@ -52,6 +54,7 @@ class RoundsList extends Component {
               })}
 
               {/* Loops throught the new rounds the user has created, not yet saved and thus not in Redux store */}
+              {/* These are "fake rounds", as they are not yet in the database and only exist locally */}
               {this.state.newRounds.map((round, i) => {
                 return (
                   <div key={Date.now()}>
@@ -78,6 +81,7 @@ class RoundsList extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
+    gameId: gamesList.gameId,
     fetchingRounds: gamesList.fetching_rounds,
     fetchedRounds: gamesList.fetched_rounds,
     error: gamesList.error,
@@ -87,5 +91,5 @@ const mapStateToProps = ({ gamesList }) => {
 
 export default connect(
   mapStateToProps,
-  { fetchRoundsReq }
+  { fetchRoundsReq, saveRoundReq }
 )(RoundsList);
