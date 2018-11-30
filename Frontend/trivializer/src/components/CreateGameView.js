@@ -31,7 +31,7 @@ class CreateGameView extends Component {
                 1}-${d.getDate()}-${d.getFullYear()}`,
             gameCreatedMS: Date.now(),
             gameScheduled: "",
-            gameScheduledMS: 0
+            gameScheduledMS: ""
         });
     }
 
@@ -50,7 +50,7 @@ class CreateGameView extends Component {
             gameTitle: this.state.gameTitle,
             gameDescription: this.state.gameDescription,
             gameCreatedMS: this.state.gameCreatedMS,
-            gameScheduledMS: ms
+            gameScheduledMS: ms || 0
         };
 
         this.props.submitGameReq(game);
