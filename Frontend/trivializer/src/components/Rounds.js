@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import "./Rounds.css";
 import { connect } from "react-redux";
 import {
-  saveRoundReq,
   deleteRoundReq,
   editRoundReq,
   getQuestionsReq,
@@ -278,7 +277,6 @@ export default withRouter(
   connect(
     mapStateToProps,
     {
-      saveRoundReq,
       deleteRoundReq,
       editRoundReq,
       getQuestionsReq,
