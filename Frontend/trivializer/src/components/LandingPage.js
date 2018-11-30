@@ -244,6 +244,12 @@ class LandingPage extends React.Component {
       );
     });
   };
+  signOut = e => {
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.reload();
+  };
 
   render() {
     return (
@@ -278,207 +284,224 @@ class LandingPage extends React.Component {
               <li class="navbar-right-list active">
                 <div className="navbar-link">About Us</div>
               </li>
+              {sessionStorage.getItem("userId") ? (
+                <li class="navbar-right-list active">
+                  <div href="#" onClick={this.signOut} className="navbar-link">
+                    Sign Out
+                  </div>
+                </li>
+              ) : null}
+
               {/* Navbar Signup Link */}
-              <li class="navbar-right-list">
-                <div className="signup">
-                  <div
-                    id="new-signup"
-                    href="#"
-                    className="nav-signup"
-                    data-toggle="modal"
-                    data-target="#signup"
-                  >
-                    Sign Up
-                  </div>
+              {sessionStorage.getItem("userId") ? null : (
+                <li class="navbar-right-list">
+                  <div className="signup">
+                    <div
+                      id="new-signup"
+                      href="#"
+                      className="nav-signup"
+                      data-toggle="modal"
+                      data-target="#signup"
+                    >
+                      Sign Up
+                    </div>
 
-                  {/* Sign Up Modal */}
-                  <div
-                    className="modal fade"
-                    id="signup"
-                    tabIndex="-1"
-                    role="dialog"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div className="modal-dialog" role="document">
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <h5 className="signup-title modal-title" id="exampleModalLabel">
-                            Sign Up Below
-                          </h5>
+                    {/* Sign Up Modal */}
+                    <div
+                      className="modal fade"
+                      id="signup"
+                      tabIndex="-1"
+                      role="dialog"
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5 className="signup-title modal-title" id="exampleModalLabel">
+                              Sign Up Below
+                            </h5>
 
-                          <button
-                            type="button"
-                            className="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div className="signup-body modal-body">
-                          <form
-                            name="register"
-                            className="signup-body"
-                            onSubmit={this.handleSubmit}
-                          >
-                            <input
-                              name="signup_username"
-                              onChange={this.handleInput}
-                              value={this.state.signup_username}
-                              placeholder="Username"
-                            />
-                            <label
-                              className="validation-label"
-                              style={
-                                this.state.username_error
-                                  ? { visibility: "visible" }
-                                  : { visibility: "hidden" }
-                              }
-                            >
-                              {this.state.username_error ? this.state.username_error : null}
-                            </label>
-                            <input
-                              name="signup_email"
-                              onChange={this.handleInput}
-                              value={this.state.signup_email}
-                              placeholder="Email"
-                            />
-                            <label
-                              className="validation-label"
-                              style={
-                                this.state.email_error
-                                  ? { visibility: "visible" }
-                                  : { visibility: "hidden" }
-                              }
-                            >
-                              {this.state.email_error ? this.state.email_error : null}
-                            </label>
-                            <input
-                              type="password"
-                              name="signup_password"
-                              onChange={this.handleInput}
-                              value={this.state.signup_password}
-                              placeholder="Password"
-                            />
-                            <label className="validation-label">
-                              {this.state.password_error ? this.state.password_error : null}
-                            </label>
-                            <input
-                              type="password"
-                              name="signup_password2"
-                              onChange={this.handleInput}
-                              value={this.state.signup_password2}
-                              placeholder="Confirm Password"
-                            />
-                            <label
-                              className="validation-label"
-                              style={
-                                this.state.confirm_error
-                                  ? { visibility: "visible" }
-                                  : { visibility: "hidden" }
-                              }
-                            >
-                              {this.state.confirm_error}
-                            </label>
                             <button
+                              type="button"
+                              className="close"
+                              data-dismiss="modal"
+                              aria-label="Close"
+                            >
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div className="signup-body modal-body">
+                            <form
                               name="register"
-                              onClick={this.handleSubmit}
-                              className="create-button btn btn-primary"
+                              className="signup-body"
+                              onSubmit={this.handleSubmit}
                             >
-                              Create My Account
-                            </button>
-                          </form>
-                        </div>
-                        <div className="google-button-signup" onClick={this.googleLogin}>
-                          <img
-                            src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
-                            onClick={this.googleLogin}
-                          />
-                          <span className="google-text"> Sign In With Google</span>
+                              <input
+                                name="signup_username"
+                                onChange={this.handleInput}
+                                value={this.state.signup_username}
+                                placeholder="Username"
+                              />
+                              <label
+                                className="validation-label"
+                                style={
+                                  this.state.username_error
+                                    ? { visibility: "visible" }
+                                    : { visibility: "hidden" }
+                                }
+                              >
+                                {this.state.username_error ? this.state.username_error : null}
+                              </label>
+                              <input
+                                name="signup_email"
+                                onChange={this.handleInput}
+                                value={this.state.signup_email}
+                                placeholder="Email"
+                              />
+                              <label
+                                className="validation-label"
+                                style={
+                                  this.state.email_error
+                                    ? { visibility: "visible" }
+                                    : { visibility: "hidden" }
+                                }
+                              >
+                                {this.state.email_error ? this.state.email_error : null}
+                              </label>
+                              <input
+                                type="password"
+                                name="signup_password"
+                                onChange={this.handleInput}
+                                value={this.state.signup_password}
+                                placeholder="Password"
+                              />
+                              <label className="validation-label">
+                                {this.state.password_error ? this.state.password_error : null}
+                              </label>
+                              <input
+                                type="password"
+                                name="signup_password2"
+                                onChange={this.handleInput}
+                                value={this.state.signup_password2}
+                                placeholder="Confirm Password"
+                              />
+                              <label
+                                className="validation-label"
+                                style={
+                                  this.state.confirm_error
+                                    ? { visibility: "visible" }
+                                    : { visibility: "hidden" }
+                                }
+                              >
+                                {this.state.confirm_error}
+                              </label>
+                              <button
+                                name="register"
+                                onClick={this.handleSubmit}
+                                className="create-button btn btn-primary"
+                              >
+                                Create My Account
+                              </button>
+                            </form>
+                          </div>
+                          <div className="google-button-signup" onClick={this.googleLogin}>
+                            <img
+                              src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
+                              onClick={this.googleLogin}
+                            />
+                            <span className="google-text"> Sign In With Google</span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </li>
+                </li>
+              )}
+
               {/* Navbar Sign In Link */}
-              <li class="navbar-right-list">
-                <div className="signin">
-                  <div
-                    id="new-signin"
-                    className="nav-signin"
-                    href="#"
-                    data-toggle="modal"
-                    data-target="#signin"
-                  >
-                    Sign In
-                  </div>
+              {sessionStorage.getItem("userId") ? null : (
+                <li class="navbar-right-list">
+                  <div className="signin">
+                    <div
+                      id="new-signin"
+                      className="nav-signin"
+                      href="#"
+                      data-toggle="modal"
+                      data-target="#signin"
+                    >
+                      Sign In
+                    </div>
 
-                  {/* Sign In Modal */}
-                  <div
-                    className="modal fade"
-                    id="signin"
-                    tabIndex="-1"
-                    role="dialog"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div className="modal-dialog" role="document">
-                      <div className="login-modal modal-content">
-                        <div className="modal-header">
-                          <h5 className="login-title modal-title" id="exampleModalLabel">
-                            Login Below
-                          </h5>
-                          <button
-                            type="button"
-                            className="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div className="modal-body">
-                          <form name="signin" className="signup-body" onSubmit={this.handleSubmit}>
-                            <input
-                              name="signin_username"
-                              onChange={this.handleInput}
-                              value={this.state.signin_username}
-                              placeholder="Username"
-                            />
-                            <label className="validation-label">
-                              {this.state.username_error ? this.state.username_error : null}
-                            </label>
-                            <input
-                              type="password"
-                              name="signin_password"
-                              onChange={this.handleInput}
-                              value={this.state.signin_password}
-                              placeholder="Password"
-                            />
-                            <label className="validation-label">
-                              {this.state.password_error ? this.state.password_error : null}
-                            </label>
+                    {/* Sign In Modal */}
+                    <div
+                      className="modal fade"
+                      id="signin"
+                      tabIndex="-1"
+                      role="dialog"
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div className="modal-dialog" role="document">
+                        <div className="login-modal modal-content">
+                          <div className="modal-header">
+                            <h5 className="login-title modal-title" id="exampleModalLabel">
+                              Login Below
+                            </h5>
                             <button
-                              name="signin"
-                              onClick={this.handleSubmit}
-                              className="login-button btn btn-primary"
+                              type="button"
+                              className="close"
+                              data-dismiss="modal"
+                              aria-label="Close"
                             >
-                              Sign In
+                              <span aria-hidden="true">&times;</span>
                             </button>
-                          </form>
-                        </div>
+                          </div>
+                          <div className="modal-body">
+                            <form
+                              name="signin"
+                              className="signup-body"
+                              onSubmit={this.handleSubmit}
+                            >
+                              <input
+                                name="signin_username"
+                                onChange={this.handleInput}
+                                value={this.state.signin_username}
+                                placeholder="Username"
+                              />
+                              <label className="validation-label">
+                                {this.state.username_error ? this.state.username_error : null}
+                              </label>
+                              <input
+                                type="password"
+                                name="signin_password"
+                                onChange={this.handleInput}
+                                value={this.state.signin_password}
+                                placeholder="Password"
+                              />
+                              <label className="validation-label">
+                                {this.state.password_error ? this.state.password_error : null}
+                              </label>
+                              <button
+                                name="signin"
+                                onClick={this.handleSubmit}
+                                className="login-button btn btn-primary"
+                              >
+                                Sign In
+                              </button>
+                            </form>
+                          </div>
 
-                        <div className="google-button-signup" onClick={this.googleLogin}>
-                          <img src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg" />
-                          <span className="google-text"> Sign In With Google</span>
+                          <div className="google-button-signup" onClick={this.googleLogin}>
+                            <img src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg" />
+                            <span className="google-text"> Sign In With Google</span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </li>
+                </li>
+              )}
             </ul>
           </div>
         </nav>
@@ -548,7 +571,7 @@ class LandingPage extends React.Component {
               </p>
             </div>
 
-            <Link to="/billing" className="main-button btn btn-success">
+            <Link to="/gameslist" className="main-button btn btn-success">
               Play Without Logging In
             </Link>
           </div>
