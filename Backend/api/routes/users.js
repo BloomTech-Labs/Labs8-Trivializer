@@ -553,7 +553,7 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
   }
 });
 // Get User user info by user id
-server.get("/users/:id",  async (req, res) => {
+server.get("/users/:id",  utilities.protected, async (req, res) => {
     try {
       // User Id passed in request URL
       const { id } = req.params;
@@ -573,9 +573,9 @@ server.get("/users/:id",  async (req, res) => {
           "u.paid as paid"
         )
         .from("Users as u")
-        
+        .where("u.id", "=", id);
   
-    
+    //   console.log("questions: ", questions);
       
       res.status(200).json(users);
     } catch (err) {
