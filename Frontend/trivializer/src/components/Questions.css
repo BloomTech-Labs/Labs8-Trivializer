@@ -5,7 +5,6 @@
   flex-flow: row;
   justify-content: space-between;
   border: 2px solid black;
-  border-radius: 2%;
   margin: 2%;
   text-align: left;
   padding: 1%;
@@ -59,7 +58,7 @@
 }
 .btn-primary.save {
   margin: 2%;
-  background:#74CC21;
+  background: #74cc21;
 }
 
 .modal-content.modal-background {
@@ -73,7 +72,15 @@
 }
 
 .hiddenAnswers-info {
-  margin: 3%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+.instructions-round {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 @media print {
   .hiddenAnswers {

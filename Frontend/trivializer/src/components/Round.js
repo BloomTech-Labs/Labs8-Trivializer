@@ -259,8 +259,15 @@ class Round extends Component {
             className="main-content-round"
             ref={el => (this.answerKeyRef = el)}
           >
-            <div className="top-content-round">
-              <div className="col-1-round">
+            <div className="topContent-round">
+              <div>
+                <img
+                  className="logo-rounds"
+                  src={require("../img/trivializer_cropped.png")}
+                  alt="trivializer logo"
+                />
+              </div>
+              <div className="col1-round">
                 <div className="title-round">{`${this.state.gameName} - ${
                   this.state.roundName
                 }`}</div>
@@ -271,7 +278,7 @@ class Round extends Component {
                   }`}
                 </div>
               </div>
-              <div className="col-2-round">
+              <div className="col2-round">
                 <ReactToPrint
                   trigger={() => (
                     <button type="button" className="btn btn-primary round">
@@ -299,14 +306,11 @@ class Round extends Component {
                 </div>
               </div>
             </div>
-            {this.state.noResults ? (
-              <div>No Results from Questions API!</div>
-            ) : null}
-            <img
-              src={require("../img/trivializer.png")}
-              alt="trivializer logo"
-            />
-            <div>
+
+            <div className="bottomContent-round">
+              {this.state.noResults ? (
+                <div>No Results from Questions API!</div>
+              ) : null}
               {questions.map((question, index) => {
                 return (
                   <Questions
@@ -324,47 +328,54 @@ class Round extends Component {
                 );
               })}
             </div>
-            <div
-              className="hiddenAnswers"
-              ref={el => (this.answerSheetRef = el)}
-            >
-              <div className="hiddenAnswers-info">{this.state.gameName}</div>
-              <div className="hiddenAnswers-info">{this.state.roundName}</div>
-              <div className="hiddenAnswers-info">
-                ***Please Circle the Correct Answer***
+          </div>
+          {/* Hidden Answer sheets without highlighted answers. Shows on print */}
+          <div className="hiddenAnswers" ref={el => (this.answerSheetRef = el)}>
+            <div className="hiddenAnswers-info">
+              <div>{this.state.gameName}</div>
+              <div>{this.state.roundName}</div>
+              <div>
+                <img
+                  className="logo-rounds"
+                  src={require("../img/trivializer_cropped.png")}
+                  alt="trivializer logo"
+                />
               </div>
-              {this.state.questions.map((question, index) => {
-                return (
-                  <div key={index} className="question">
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          `${index + 1}) ` +
-                          DOMPurify.sanitize(question.question) // See line 5 for DOMPurify description
-                      }}
-                    />
-                    <div>
-                      <ul className="questions">
-                        {question.answers.map((answer, index) => {
-                          return (
-                            <li
-                              key={index}
-                              className="answer"
-                              dangerouslySetInnerHTML={{
-                                // 0x41 is ASCII for 'A'
-                                __html:
-                                  `${String.fromCharCode(0x41 + index)}) ` +
-                                  DOMPurify.sanitize(answer) // Purify incoming HTML while still displaying HTML entities
-                              }}
-                            />
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  </div>
-                );
-              })}
             </div>
+
+            <div className="instructions-round">
+              ***Please Circle the Correct Answer***
+            </div>
+            {this.state.questions.map((question, index) => {
+              return (
+                <div key={index} className="question">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        `${index + 1}) ` + DOMPurify.sanitize(question.question) // See line 5 for DOMPurify description
+                    }}
+                  />
+                  <div>
+                    <ul className="questions">
+                      {question.answers.map((answer, index) => {
+                        return (
+                          <li
+                            key={index}
+                            className="answer"
+                            dangerouslySetInnerHTML={{
+                              // 0x41 is ASCII for 'A'
+                              __html:
+                                `${String.fromCharCode(0x41 + index)}) ` +
+                                DOMPurify.sanitize(answer) // Purify incoming HTML while still displaying HTML entities
+                            }}
+                          />
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
