@@ -84,6 +84,11 @@ const NavBar = props => {
                 Setting
               </Link>
             </li>
+            <li className="nav-item">
+              <Link to="#" className="nav-link">
+                FAQ's
+              </Link>
+            </li>
           </div>
         </ul>
       </div>
