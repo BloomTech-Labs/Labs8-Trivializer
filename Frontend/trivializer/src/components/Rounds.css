@@ -55,3 +55,12 @@
 .hidden {
   visibility: hidden;
 }
+
+@media print {
+  .btn-primary {
+    display: none;
+  }
+  .col-1-round {
+    text-align: left;
+  }
+}

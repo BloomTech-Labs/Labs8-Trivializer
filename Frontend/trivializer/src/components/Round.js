@@ -181,7 +181,7 @@ class Round extends Component {
 
   saveQuestions = async () => {
     console.log(this.props.roundId);
-    // Package all questions with rounds_id
+    // Package all questions with   _id
     console.log("this.state.questions: ", this.state.questions);
     let questionsPackage = this.state.questions.map(question => {
       return {
@@ -253,7 +253,12 @@ class Round extends Component {
         {/* ********************  Main Content  *************** */}
         <div className="main-content">
           <Navbar />
-          <div className="main-content-round">
+          {/* This is where the questions are displayed, since the answer key
+            will look just like this, set a reference to this div as the answerKey for PDF printing */}
+          <div
+            className="main-content-round"
+            ref={el => (this.answerKeyRef = el)}
+          >
             <div className="top-content-round">
               <div className="col-1-round">
                 <div className="title-round">{`${this.state.gameName} - ${
@@ -261,7 +266,7 @@ class Round extends Component {
                 }`}</div>
                 <div className="info-round">
                   {`Difficulty: ${this.state.difficulty ||
-                    "All"} \xa0\xa0\xa0\xa0\xa0 Questions: ${
+                    "Any"} \xa0\xa0\xa0\xa0\xa0 Questions: ${
                     this.state.questions.length
                   }`}
                 </div>
@@ -297,7 +302,11 @@ class Round extends Component {
             {this.state.noResults ? (
               <div>No Results from Questions API!</div>
             ) : null}
-            <div ref={el => (this.answerKeyRef = el)}>
+            <img
+              src={require("../img/trivializer.png")}
+              alt="trivializer logo"
+            />
+            <div>
               {questions.map((question, index) => {
                 return (
                   <Questions
