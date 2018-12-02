@@ -80,7 +80,6 @@ const gamesReducer = (state = initialState, action) => {
         fetching_game: true
       });
     case FETCHED_GAME:
-      console.log("action.payload[0]: ", action.payload[0]);
       return Object.assign({}, state, {
         fetching_game: false,
         fetched_game: true,

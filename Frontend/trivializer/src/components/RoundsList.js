@@ -12,7 +12,9 @@ class RoundsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newRounds: []
+      newRoundOuterHeight: null,
+      newRoundWidth: null,
+      newRoundHeight: null
     };
   }
 
@@ -20,6 +22,11 @@ class RoundsList extends Component {
     const id = Number(this.props.id);
 
     this.props.fetchRoundsReq(id);
+
+    if (this.lastRoundRef) {
+      console.log("lastRoundRef!!");
+      this.setState({ newRoundOuterHeight: this.lastRoundRef.clientHeight });
+    }
   }
 
   newRound = () => {
@@ -36,8 +43,14 @@ class RoundsList extends Component {
     this.props.saveRoundReq(round);
   };
 
+  // Receives the width/height of the last Rounds component
+  // To set newRounds buttonn width/height
+  getWidthHeight = (width, height) => {
+    console.log("width, height", width, height);
+    this.setState({ newRoundWidth: width, newRoundHeight: height });
+  };
+
   render() {
-    console.log("this.props.rounds!!!!!!: ", this.props.rounds);
     return (
       <div>
         {this.props.fetchingRounds === true ? (
@@ -45,31 +58,41 @@ class RoundsList extends Component {
         ) : (
           <div>
             <div className="roundsList">
-              {this.props.rounds.map((round, i) => {
+              {this.props.rounds.map((round, i, array) => {
                 return (
-                  <div key={round.roundId}>
-                    <Rounds index={i} round={round} />
-                  </div>
-                );
-              })}
-
-              {/* Loops throught the new rounds the user has created, not yet saved and thus not in Redux store */}
-              {/* These are "fake rounds", as they are not yet in the database and only exist locally */}
-              {this.state.newRounds.map((round, i) => {
-                return (
-                  <div key={Date.now()}>
-                    {/* Should change date.now to something better later */}
+                  // lastRound and setRef are both for getting a ref to the last round, in order to match it's width and height for newRound buttons
+                  <div
+                    key={round.roundId}
+                    ref={
+                      i === array.length - 1
+                        ? el => (this.lastRoundRef = el)
+                        : null
+                    }
+                  >
                     <Rounds
-                      new
-                      index={this.props.rounds.length + i + 1}
+                      index={i}
                       round={round}
+                      lastRound={i === array.length - 1 ? true : false}
+                      getWidthHeight={
+                        i === array.length - 1 ? this.getWidthHeight : null
+                      }
                     />
                   </div>
                 );
               })}
-              <div>
-                <div>New Round</div>
-                <button onClick={this.newRound}>+</button>
+              <div
+                id="newRound"
+                style={{
+                  width: this.state.newRoundWidth,
+                  height: this.state.newRoundOuterHeight
+                }}
+              >
+                <div className="newRound-inner">
+                  <div>New Round</div>
+                  <button className="btn btn-primary" onClick={this.newRound}>
+                    +
+                  </button>
+                </div>
               </div>
             </div>
           </div>

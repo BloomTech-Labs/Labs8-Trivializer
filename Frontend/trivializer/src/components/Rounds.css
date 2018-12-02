@@ -20,15 +20,9 @@
   display: flex;
   flex-flow: column;
 }
-
 .rounds:hover {
-  box-shadow: 3px 5px;
+  box-shadow: 1px 1px;
 }
-
-.rounds:active {
-  transform: translateY(2px) translateX(2px);
-}
-
 .roundsTitle {
   align-self: center;
   max-width: 75%;
@@ -41,6 +35,11 @@
   justify-content: space-between;
   margin: 2% 4% 2% 4%;
 }
+
+.select:hover {
+  box-shadow: 2px 2px;
+}
+
 .select {
   max-width: 50%;
   font-size: 10px;
@@ -50,16 +49,20 @@
   display: flex;
   flex-flow: row;
   justify-content: space-between;
+  margin: 1% 4% 2% 4%;
 }
-.roundsDelete {
-  margin: 2%;
-  justify-self: self-end;
-  border-radius: 10%;
+
+.roundsButton {
+  border-radius: 5%;
 }
-.roundsSave {
-  margin: 2%;
-  align-self: flex-start;
-  border-radius: 10%;
+
+.roundsButton:hover {
+  box-shadow: 2px 2px;
+  background: lightcyan;
+}
+
+.roundsButton:active {
+  transform: translateY(2px);
 }
 
 .hidden {
@@ -68,6 +71,26 @@
 
 .logo-rounds {
   max-width: 200px;
+}
+
+#newRound {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
+}
+
+.newRound-inner {
+  min-width: ;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid black;
+  height: 100%;
+  width: 100%;
+  margin: 4%;
 }
 
 @media print {
