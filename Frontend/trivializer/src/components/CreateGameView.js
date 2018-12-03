@@ -50,7 +50,7 @@ class CreateGameView extends Component {
             gameTitle: this.state.gameTitle,
             gameDescription: this.state.gameDescription,
             gameCreatedMS: this.state.gameCreatedMS,
-            gameScheduledMS: ms
+            gameScheduledMS: ms || 0
         };
 
         this.props.submitGameReq(game);
