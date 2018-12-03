@@ -1,5 +1,15 @@
 /* Styles RoundsList.js and Rounds.js */
 
+.topContent-round {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  border: 2px solid black;
+  margin: 2%;
+  padding: 2%;
+  align-items: center;
+}
+
 .roundsList {
   display: flex;
   flex-flow: row wrap;
@@ -54,4 +64,30 @@
 
 .hidden {
   visibility: hidden;
+}
+
+.logo-rounds {
+  max-width: 200px;
+}
+
+@media print {
+  .btn-primary {
+    display: none;
+  }
+  .col1-round {
+    text-align: left;
+    flex-flow: column nowrap;
+  }
+}
+
+/* Phone Design */
+@media screen and (max-width: 480px) {
+  .roundsList {
+    flex-flow: column nowrap;
+  }
+  .topContent-round {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+  }
 }
