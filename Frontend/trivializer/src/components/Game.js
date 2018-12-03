@@ -6,6 +6,7 @@ import { fetchGameReq } from "../actions";
 import EditGameView from "./EditGameView";
 import RoundsList from "./RoundsList";
 import "./Game.css";
+import ReactToPrint from "react-to-print";
 
 /**
  * Game Component
@@ -17,16 +18,7 @@ class Game extends Component {
     this.state = {
       game: null,
       roundId: 0,
-      rounds: [
-        // {
-        //     id: 0,
-        //     title: "Round One",
-        //     numberOfQs: 10,
-        //     category: "",
-        //     difficulty: "",
-        //     type: ""
-        // }
-      ]
+      rounds: []
     };
   }
 
@@ -34,6 +26,8 @@ class Game extends Component {
     const id = Number(this.props.match.params.id);
     this.props.fetchGameReq(id);
   }
+
+  printAll = () => {};
 
   render() {
     // if (!this.props.game) return <div>Loading...</div>;
@@ -65,7 +59,7 @@ class Game extends Component {
               <EditGameView game={this.props.game} />
 
               <div className="game-buttons">
-                <button>Print Answer Sheets</button>
+                <button onClick={this.printAll}>Print Answer Sheets</button>
                 <button>Print Answer Key</button>
               </div>
             </div>

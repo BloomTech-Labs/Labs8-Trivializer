@@ -72,18 +72,6 @@ class Rounds extends Component {
 
   componentDidMount() {
     this.props.resetRoundStateReq();
-
-    if (this.lastRoundRef) {
-      console.log(
-        "this.lastRoundRef.clientWidth,this.lastRoundRef.clientHeight",
-        this.lastRoundRef.clientWidth,
-        this.lastRoundRef.clientHeight
-      );
-      this.props.getWidthHeight(
-        this.lastRoundRef.clientWidth,
-        this.lastRoundRef.clientHeight
-      );
-    }
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -162,11 +150,7 @@ class Rounds extends Component {
 
   render() {
     return (
-      <div
-        id={this.props.lastRound ? "lastRound" : null}
-        ref={this.props.lastRound ? el => (this.lastRoundRef = el) : null}
-        className="rounds"
-      >
+      <div className="rounds">
         <input
           type="text"
           onChange={this.handleChange}
