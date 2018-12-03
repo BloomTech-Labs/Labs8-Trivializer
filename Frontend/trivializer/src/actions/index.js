@@ -147,7 +147,7 @@ export const deleteGameReq = id => {
 export const updateGameReq = (id, game) => {
   const newGame = {
     username: game.username,
-    gameName: game.gameName,
+    gameName: game.gameTitle,
     dateCreated: game.gameCreatedMS,
     description: game.gameDescription,
     datePlayed: game.gameScheduledMS,

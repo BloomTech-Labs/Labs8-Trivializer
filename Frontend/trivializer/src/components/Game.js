@@ -34,6 +34,14 @@ class Game extends Component {
     this.props.fetchGameReq(id);
   }
 
+  componentDidUpdate = prevProps => {
+    if (prevProps.game !== this.props.game) {
+      console.log("prevProps.game: ", prevProps.game);
+      console.log("this.props.game: ", this.props.game);
+      this.setState({ game: this.props.game });
+    }
+  };
+
   render() {
     // if (!this.props.game) return <div>Loading...</div>;
 
