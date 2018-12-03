@@ -22,11 +22,6 @@ class RoundsList extends Component {
     const id = Number(this.props.id);
 
     this.props.fetchRoundsReq(id);
-
-    if (this.lastRoundRef) {
-      console.log("lastRoundRef!!");
-      this.setState({ newRoundOuterHeight: this.lastRoundRef.clientHeight });
-    }
   }
 
   newRound = () => {
@@ -43,13 +38,6 @@ class RoundsList extends Component {
     this.props.saveRoundReq(round);
   };
 
-  // Receives the width/height of the last Rounds component
-  // To set newRounds buttonn width/height
-  getWidthHeight = (width, height) => {
-    console.log("width, height", width, height);
-    this.setState({ newRoundWidth: width, newRoundHeight: height });
-  };
-
   render() {
     return (
       <div>
@@ -60,33 +48,12 @@ class RoundsList extends Component {
             <div className="roundsList">
               {this.props.rounds.map((round, i, array) => {
                 return (
-                  // lastRound and setRef are both for getting a ref to the last round, in order to match it's width and height for newRound buttons
-                  <div
-                    key={round.roundId}
-                    ref={
-                      i === array.length - 1
-                        ? el => (this.lastRoundRef = el)
-                        : null
-                    }
-                  >
-                    <Rounds
-                      index={i}
-                      round={round}
-                      lastRound={i === array.length - 1 ? true : false}
-                      getWidthHeight={
-                        i === array.length - 1 ? this.getWidthHeight : null
-                      }
-                    />
+                  <div key={round.roundId}>
+                    <Rounds index={i} round={round} />
                   </div>
                 );
               })}
-              <div
-                id="newRound"
-                style={{
-                  width: this.state.newRoundWidth,
-                  height: this.state.newRoundOuterHeight
-                }}
-              >
+              <div id="newRound">
                 <div className="newRound-inner">
                   <div>New Round</div>
                   <button className="btn btn-primary" onClick={this.newRound}>

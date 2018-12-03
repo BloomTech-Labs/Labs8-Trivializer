@@ -54,6 +54,8 @@
 
 .roundsButton {
   border-radius: 5%;
+  margin: 1%;
+  font-size: 12px;
 }
 
 .roundsButton:hover {
@@ -78,19 +80,26 @@
   flex-flow: column;
   justify-content: center;
   align-items: center;
-  opacity: 0.5;
+  width: 25%;
+  margin-left: 1%;
+  min-height: 240px;
 }
 
 .newRound-inner {
-  min-width: ;
+  min-width: 25%;
+  min-height: 25%;
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-items: center;
-  border: 2px solid black;
   height: 100%;
   width: 100%;
   margin: 4%;
+  opacity: 0.5;
+}
+
+.newRound-inner:hover {
+  opacity: 1;
 }
 
 @media print {
