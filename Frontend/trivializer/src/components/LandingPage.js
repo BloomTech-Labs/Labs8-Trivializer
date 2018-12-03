@@ -21,7 +21,7 @@ class LandingPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      registerURL: "https://testsdepl.herokuapp.com/users/register",
+      registerURL: "http://localhost:3300/users/register",
       signinURL: "https://testsdepl.herokuapp.com/users/login",
       signup_username: "",
       signup_email: "",
@@ -152,7 +152,7 @@ class LandingPage extends React.Component {
     } else {
       return;
     }
-
+    console.log("url is: ", url);
     axios
       .post(url, {
         username: credentials.username,
