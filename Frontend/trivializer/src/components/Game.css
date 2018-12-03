@@ -1,0 +1,24 @@
+/* Styles Game.js */
+
+.editAndRounds {
+  width: 100%;
+}
+
+.game-top {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.game-buttons {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
+.game-buttons button {
+  margin: 10%;
+  width: 100%;
+}

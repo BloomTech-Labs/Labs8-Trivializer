@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { fetchGameReq } from "../actions";
 import EditGameView from "./EditGameView";
 import RoundsList from "./RoundsList";
+import "./Game.css";
 
 /**
  * Game Component
@@ -59,8 +60,16 @@ class Game extends Component {
 
         <div className="main-content">
           <Navbar />
-          <div>
-            <EditGameView game={this.props.game} />
+          <div className="editAndRounds">
+            <div className="game-top">
+              <EditGameView game={this.props.game} />
+
+              <div className="game-buttons">
+                <button>Print Answer Sheets</button>
+                <button>Print Answer Key</button>
+              </div>
+            </div>
+
             <RoundsList id={this.props.match.params.id} />
           </div>
         </div>
