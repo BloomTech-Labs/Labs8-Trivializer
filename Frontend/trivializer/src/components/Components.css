@@ -1,8 +1,3 @@
-.signup-body {
-  display: flex;
-  flex-direction: column;
-}
-
 /* Page Layout goes: [page-name]-page, top-content (top-rightside, top-leftside), main-content (Navbar, main-middle)*/
 .gameslist-page,
 .billing-page,
@@ -33,31 +28,6 @@
   width: 90%;
 }
 
-.vertical-navbar {
-  width: 150px;
-  height: 75vh;
-  background-color: #f04e39;
-  height: 95vh;
-}
-
-.vertical-navbar li {
-  margin-top: 10px;
-  line-height: 15px;
-  text-align: left;
-}
-
-.vertical-navbar:hover {
-  color: black;
-}
-
-.nav-link {
-  color: white;
-  font-size: 18px;
-}
-
-.nav-link:hover {
-  color: black;
-}
 .main-middle {
   margin: 0 auto;
 }
