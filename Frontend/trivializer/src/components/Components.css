@@ -41,9 +41,15 @@
 }
 
 .vertical-navbar li {
+  margin-top: 10px;
   line-height: 15px;
+  text-align: left;
 }
 
+.nav-link {
+  color: rgb(53, 52, 52);
+  font-size: 18px;
+}
 .main-middle {
   margin: 0 auto;
 }
