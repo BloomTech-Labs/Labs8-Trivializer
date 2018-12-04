@@ -180,6 +180,7 @@ class LandingPage extends React.Component {
     e.preventDefault();
     auth.signInWithPopup(provider).then(result => {
       const user = result.user;
+      localStorage.setItem("user", JSON.stringify(user));
       googleUsername = user.displayName;
       googleUID = user.uid;
       axios
