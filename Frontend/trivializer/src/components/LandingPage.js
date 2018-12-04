@@ -189,6 +189,7 @@ class LandingPage extends React.Component {
           email: user.email
         })
         .then(res => {
+          localStorage.setItem("register", "yes");
           localStorage.setItem("user", JSON.stringify(user));
           sessionStorage.setItem(
             "user",
@@ -223,6 +224,7 @@ class LandingPage extends React.Component {
               password: user.uid
             })
             .then(res => {
+              localStorage.setItem("thenerror", "then");
               sessionStorage.setItem(
                 "jwt",
                 JSON.stringify(res.data.token)
@@ -244,6 +246,7 @@ class LandingPage extends React.Component {
           .slice(1, -1)
           .join("")
       );
+      localStorage.setItem("error", "errrrr");
     });
   };
   signOut = e => {
