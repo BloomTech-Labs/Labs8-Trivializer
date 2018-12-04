@@ -461,7 +461,8 @@ server.put("/editq/:id", utilities.protected, async (req, res) => {
         type: edit.type,
         question: edit.question,
         correct_answer: edit.correctAnswer,
-        incorrect_answers: edit.incorrectAnswers
+        incorrect_answers: edit.incorrectAnswers,
+        answers: edit.answers
       });
     // get question by id
     let newQs = await db("Questions").where("id", id);
@@ -533,6 +534,7 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
         "q.type as type",
         "q.question as question",
         "q.correct_answer as correct_answer",
+        "q.answers as answers",
         "incorrect_answers as incorrect_answers"
       )
       .from("Rounds as r")
@@ -543,6 +545,7 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
     if (questions) {
       questions = questions.map(question => {
         question.incorrect_answers = question.incorrect_answers.split("--");
+        question.answers = question.answers.split("--");
         return question;
       });
     }
@@ -553,54 +556,57 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
   }
 });
 // Get User user info by user id
-server.get("/users/:id",  utilities.protected, async (req, res) => {
-    try {
-      // User Id passed in request URL
-      const { id } = req.params;
-  
-      // Gets all info from the Users table where the user id matches the passed in ID
-      let users = await db
-        // Choose which columns we want to select, and assign an alias
-        .select(
-          "u.id as userId",
-          "u.username as userName",
-          "u.password as password",
-          "u.name as name",
-          "u.email as email",
-          "u.phone as phone",
-          "u.logo as logo",
-          "u.credit_card as creditCard",
-          "u.paid as paid"
-        )
-        .from("Users as u")
-        .where("u.id", "=", id);
-  
+server.get("/users/:id", utilities.protected, async (req, res) => {
+  try {
+    // User Id passed in request URL
+    const { id } = req.params;
+
+    // Gets all info from the Users table where the user id matches the passed in ID
+    let users = await db
+      // Choose which columns we want to select, and assign an alias
+      .select(
+        "u.id as userId",
+        "u.username as userName",
+        "u.password as password",
+        "u.name as name",
+        "u.email as email",
+        "u.phone as phone",
+        "u.logo as logo",
+        "u.credit_card as creditCard",
+        "u.paid as paid"
+      )
+      .from("Users as u")
+      .where("u.id", "=", id);
+
     //   console.log("questions: ", questions);
-      
-      res.status(200).json(users);
-    } catch (err) {
-      console.log("err.message: ", err.message);
-      res.status(500).json({ error: "Problem getting user" });
-    }
-  });
+
+    res.status(200).json(users);
+  } catch (err) {
+    console.log("err.message: ", err.message);
+    res.status(500).json({ error: "Problem getting user" });
+  }
+});
 
 // Save all questions for a round ID
 server.post("/questions", utilities.protected, async (req, res) => {
   try {
-    // Get the questions passed in, round ID should be packaged in questions
-    const { questions } = req.body;
-
+    console.log("req.body!!!: ", req.body);
+    console.log("req.body[0].rounds_id!!!: ", req.body[0].rounds_id);
     // Check for valid Round Id
     let validRound = await db("Rounds").where({ id: req.body[0].rounds_id });
 
+    console.log("validRound: ", validRound);
     if (validRound.length < 1) {
       throw new Error({ error: "Not a valid round ID" });
     }
 
     let successfulInsert = await db("Questions").insert(req.body);
+    res.status(200).json({ successfulInsert });
 
     console.log("successfulInsert: ", successfulInsert);
   } catch (err) {
+    console.log("err.message", err.message);
+    console.log("err: ", err);
     res.status(500).json({ error: "Problem saving questions" });
   }
 });

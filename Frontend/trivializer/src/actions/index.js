@@ -30,7 +30,8 @@ export const RESET_NEW_QUESTIONS = "RESET_NEW_QUESTIONS";
 export const ERROR = "ERROR";
 
 const questionsApiURL = "https://opentdb.com/api.php?";
-const BE_URL = process.env.REACT_APP_BE_URL || "http://localhost:3300/users";
+const BE_URL =
+  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
 
 // sample games fetch with params
 // {

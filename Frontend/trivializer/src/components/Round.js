@@ -65,31 +65,37 @@ class Round extends Component {
   };
 
   // Builds a call to the questions API based on which parameters in state are set
-  // buildApiCall = () => {
-  //   let amount = `amount=${this.state.numberOfQuestions || 1}`;
+  buildApiCall = howManyQuestions => {
+    let amount = `amount=${howManyQuestions ||
+      this.state.numberOfQuestions ||
+      1}`;
 
-  //   let category = `${
-  //     this.state.category ? `&category=${this.state.category}` : ""
-  //   }`;
+    let category = `${
+      this.state.category ? `&category=${this.state.category}` : ""
+    }`;
 
-  //   let difficulty = `${
-  //     this.state.difficulty ? `&difficulty=${this.state.difficulty}` : ""
-  //   }`;
+    let difficulty = `${
+      this.state.difficulty ? `&difficulty=${this.state.difficulty}` : ""
+    }`;
 
-  //   let type = `${this.state.category ? `&type=${this.state.type}` : ""}`;
+    let type = `${this.state.category ? `&type=${this.state.type}` : ""}`;
 
-  //   let concatenatedURL = `${
-  //     this.state.questionsURL
-  //   }${amount}${category}${difficulty}${type}`;
+    let concatenatedURL = `${
+      this.state.questionsURL
+    }${amount}${category}${difficulty}${type}`;
 
-  //   return concatenatedURL;
-  // };
+    return concatenatedURL;
+  };
 
   // This functions adds id's to the incoming
   // questions (necessary for drag and drop)
   addIds = questionsIn => {
     let questions = questionsIn.map((question, i) => {
       question.id = i;
+      question.answers = this.assembleAnswers(
+        question.correct_answer,
+        question.incorrect_answers
+      );
       return question;
     });
 
@@ -97,15 +103,15 @@ class Round extends Component {
   };
 
   // Assembles all answers into one array
-  // assembleAnswers = (correct_answer, incorrect_answers) => {
-  //   // Get a random number, this will be where we insert
-  //   // the correct answer into the incorrect answers
-  //   let index = Math.floor(Math.random() * (incorrect_answers.length + 1));
-  //   let answers = incorrect_answers.slice();
-  //   answers.splice(index, 0, correct_answer);
+  assembleAnswers = (correct_answer, incorrect_answers) => {
+    // Get a random number, this will be where we insert
+    // the correct answer into the incorrect answers
+    let index = Math.floor(Math.random() * (incorrect_answers.length + 1));
+    let answers = incorrect_answers.slice();
+    answers.splice(index, 0, correct_answer);
 
-  //   return answers;
-  // };
+    return answers;
+  };
 
   // Called from Questions.js, Reassigns the order of the questions array in state
   moveQuestion = (dragIndex, hoverIndex) => {
@@ -201,7 +207,7 @@ class Round extends Component {
         }
       })
       .then(response => {
-        console.log(response);
+        console.log("response: ", response);
       })
       .catch(err => {
         console.log("err.message: ", err.message);
