@@ -23,6 +23,8 @@ import {
   EDITED_ROUND,
   SAVING_QUESTIONS,
   SAVED_QUESTIONS,
+  DELETING_QUESTIONS,
+  DELETED_QUESTIONS,
   RESET,
   ERROR
 } from "../actions";
@@ -55,6 +57,8 @@ const initialState = {
   fetched_saved_questions: false,
   fetching_new_questions: false,
   fetched_new_questions: false,
+  deleting_questions: false,
+  deleting_questions: false,
   saving_game: false,
   saved_game: false,
   saving_round: false,

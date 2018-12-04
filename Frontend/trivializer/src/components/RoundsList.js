@@ -64,9 +64,9 @@ class RoundsList extends Component {
         }
       }
     }
+    // If the following two are true, we have received questions from the QuestionsAPI,
+    // Save them to the Users Database
     if (prevProps.new_questions !== this.props.new_questions) {
-      // If the following two are true, we have received questions from the QuestionsAPI,
-      // Save them to the Users Database
       if (this.props.fetched_new_questions) {
         let round_id = this.props.round.roundId;
         let questionsPackage = this.props.new_questions.slice();

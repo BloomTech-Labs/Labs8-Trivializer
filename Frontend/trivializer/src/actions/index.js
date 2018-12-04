@@ -23,6 +23,8 @@ export const FETCHING_NEW_QUESTIONS = "FETCHING_NEW_QUESTIONS";
 export const FETCHED_NEW_QUESTIONS = "FETCHED_NEW_QUESTIONS";
 export const SAVING_QUESTIONS = "SAVING_QUESTIONS";
 export const SAVED_QUESTIONS = "SAVED_QUESTIONS";
+export const DELETING_QUESTIONS = "DELETING_QUESTIONS";
+export const DELETED_QUESTIONS = "DELETED_QUESTIONS";
 export const RESET = "RESET";
 export const ERROR = "ERROR";
 
@@ -314,9 +316,24 @@ export const saveQuestionsReq = questionsPackage => {
 
   console.log("questionsPackage: ", questionsPackage);
 
-  return dispatch => {
+  return async dispatch => {
     console.log("IN dispatch, saveQuestionsReq");
     dispatch({ type: SAVING_QUESTIONS });
+
+    // First, delete all existing questions in our round
+    // Get the roundId from the first question
+    await axios
+      .delete(`${BE_URL}/questions/${questionsPackage[0].rounds_id}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log("err.message: ", err.message);
+      });
 
     axios
       .post(`${BE_URL}/questions`, questionsPackage, {
