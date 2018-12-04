@@ -202,7 +202,6 @@ const gamesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         fetching_new_questions: false,
         fetched_new_questions: true,
-        saved_round: false,
         new_questions: action.payload.results
       });
     case FETCHING_SAVED_QUESTIONS:
@@ -213,8 +212,8 @@ const gamesReducer = (state = initialState, action) => {
     case FETCHED_SAVED_QUESTIONS:
       console.log("action.payload", action.payload);
       return Object.assign({}, state, {
-        fetching_questions: false,
-        fetched_questions: true,
+        fetching_saved_questions: false,
+        fetched_saved_questions: true,
         roundId: action.payload.roundId,
         roundName: action.payload.roundName,
         numberOfQuestions: action.payload.numberOfQuestions,
@@ -235,8 +234,9 @@ const gamesReducer = (state = initialState, action) => {
         fetched_new_questions: false
       });
     case RESET:
+      console.log("RESET CALLED!!");
       return Object.assign({}, state, {
-        fetched_questions: false,
+        fetched_saved_questions: false,
         roundName: NaN,
         roundId: null
       });

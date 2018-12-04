@@ -66,7 +66,8 @@ class Rounds extends Component {
       original_category: this.props.round.category || "any",
       original_difficulty: this.props.round.difficulty || "any",
       original_type: this.props.round.type || "any",
-      changed: true
+      changed: true,
+      pushed_flag: false
     };
   }
 
@@ -75,12 +76,32 @@ class Rounds extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
+    for (let item in prevProps) {
+      if (prevProps[item] !== this.props[item]) {
+        console.log("DIFFERENCE FOUND!!!");
+        console.log("item, prevProps[item]: ", item, prevProps[item]);
+        console.log("item, this.props[item]: ", item, this.props[item]);
+      }
+    }
     if (prevProps.roundName !== this.props.roundName) {
-      if (this.props.fetched_questions) {
-        console.log(this.props.fetched_questions);
-        this.props.history.push(
-          `${this.props.gameId}/round/${this.props.round.roundId}`
-        );
+      if (this.props.fetched_saved_questions) {
+        if (!this.state.pushed_flag) {
+          console.log("CONDITIONS MET TO PUSH TO HISTORY!!");
+          console.log(
+            "this.props.fetched_saved_questions: ",
+            this.props.fetched_saved_questions
+          );
+          console.log(
+            "prevProps.roundName, this.props.roundName: ",
+            prevProps.roundName,
+            this.props.roundName
+          );
+          console.log("this.props.history: ", this.props.history);
+          this.props.history.push(
+            `${this.props.gameId}/round/${this.props.round.roundId}`
+          );
+          this.setState({ pushed_flag: true });
+        }
       }
     }
   };
@@ -119,7 +140,7 @@ class Rounds extends Component {
 
   enterRound = () => {
     // First, save the round
-    this.saveRound();
+    // this.saveRound();
 
     // Get all of our info in the right format to call the questions API
     let formattedQuestionsRound = this.formatQuestionsCall();
@@ -260,12 +281,12 @@ class Rounds extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
-    fetching_questions: gamesList.fetching_questions,
-    fetched_questions: gamesList.fetched_questions,
+    fetched_saved_questions: gamesList.fetched_saved_questions,
     gameId: gamesList.gameId,
     gameName: gamesList.gameName,
     savingRound: gamesList.saving_round,
     savedRound: gamesList.saved_round,
+    editedRound: gamesList.edited_round,
     error: gamesList.error,
     rounds: gamesList.rounds,
     roundId: gamesList.roundId,

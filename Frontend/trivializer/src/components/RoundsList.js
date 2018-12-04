@@ -41,6 +41,8 @@ class RoundsList extends Component {
       this.props.roundId !== null
     ) {
       if (this.props.savedRound) {
+        // Checks to see that current roundId is not in the prevProps rounds, this means
+        // That we have a new round
         if (
           !prevProps.rounds
             .map(round => {
