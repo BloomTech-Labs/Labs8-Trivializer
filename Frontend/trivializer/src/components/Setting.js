@@ -21,6 +21,7 @@ class Setting extends React.Component {
     if (sessionStorage.getItem("google")) {
       let savedUser = JSON.parse(localStorage.getItem("user"));
       this.setState({ savedUser: savedUser });
+      // If not google login, there won't be a sessionStorage item to get
     } else {
       axios
         .get("https://testsdepl.herokuapp.com/users/users/1", auth)
@@ -41,7 +42,6 @@ class Setting extends React.Component {
 
   render() {
     const savedUser = this.state.savedUser;
-    console.log("savedUser is: ", savedUser);
     return (
       <div className="setting-page">
         <div className="top-content">
