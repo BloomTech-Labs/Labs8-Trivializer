@@ -224,6 +224,7 @@ class LandingPage extends React.Component {
               password: user.uid
             })
             .then(res => {
+              localStorage.removeItem("register");
               localStorage.setItem("thenerror", "then");
               sessionStorage.setItem(
                 "jwt",
