@@ -27,8 +27,7 @@ export const RESET = "RESET";
 export const ERROR = "ERROR";
 
 const questionsApiURL = "https://opentdb.com/api.php?";
-const BE_URL =
-  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
+const BE_URL = process.env.REACT_APP_BE_URL || "http://localhost:3300/users";
 
 // sample games fetch with params
 // {
@@ -217,6 +216,7 @@ export const saveRoundReq = round => {
         }
       })
       .then(({ data }) => {
+        console.log("Saved Round data: ", data);
         dispatch({ type: SAVED_ROUND, payload: data });
       })
       .catch(err => {
@@ -299,7 +299,21 @@ export const resetRoundStateReq = () => {
 
 // questionsPackage needs rounds_id, category, difficulty, type, question, correct_answer, incorrect_answers
 export const saveQuestionsReq = questionsPackage => {
+  questionsPackage = questionsPackage.map(question => {
+    return {
+      rounds_id: question.rounds_id,
+      category: question.category,
+      difficulty: question.difficulty,
+      type: question.type,
+      question: question.question,
+      correct_answer: question.correct_answer,
+      incorrect_answers: question.incorrect_answers.join("--"),
+      answers: question.answers.join("--")
+    };
+  });
+
   console.log("questionsPackage: ", questionsPackage);
+
   return dispatch => {
     console.log("IN dispatch, saveQuestionsReq");
     dispatch({ type: SAVING_QUESTIONS });
@@ -312,33 +326,19 @@ export const saveQuestionsReq = questionsPackage => {
       })
       .then(({ data }) => {
         console.log("data from Save questions: ", data);
-        // questions API returns 0 on success, check for errors from API
-        if (data.response_code !== 0) {
-          dispatch({ type: ERROR });
-        }
-        if (data && data.length > 0) {
-          data = data.map(question => {
-            question.answers = assembleAnswers(
-              question.correct_answer,
-              question.incorrect_answers
-            );
-            return question;
-          });
-        }
+
         // Send info packet, either with new questions or original (should be empty array)
-        dispatch({ type: FETCHED_NEW_QUESTIONS, payload: data });
+        dispatch({ type: SAVED_QUESTIONS, payload: data });
       })
       .catch(err => {
-        console.log("err.message getQuestionsReq: ", err.message);
+        console.log("err.message saveQuestionsReq: ", err.message);
         dispatch({ type: ERROR, payload: err });
       });
   };
 };
 
-// getNewQuestionsReq requires all the parameters of the questions API
-// takes in gameName, gameId, roundName, numberOfQuestions, category, difficulty
-// and type as a questionsPackage
 export const getNewQuestionsReq = questionsPackage => {
+  console.log("questionsPackage: ", questionsPackage);
   return dispatch => {
     console.log("IN dispatch, getQuestionsReq");
     dispatch({ type: FETCHING_NEW_QUESTIONS });
@@ -352,8 +352,8 @@ export const getNewQuestionsReq = questionsPackage => {
         if (data.response_code !== 0) {
           dispatch({ type: ERROR });
         }
-        if (data && data.length > 0) {
-          data = data.map(question => {
+        if (data && data.results.length > 0) {
+          data.results = data.results.map(question => {
             question.answers = assembleAnswers(
               question.correct_answer,
               question.incorrect_answers
@@ -400,3 +400,5 @@ const assembleAnswers = (correct_answer, incorrect_answers) => {
 
   return answers;
 };
+
+const formatSaveQuestionsPackage = () => {};

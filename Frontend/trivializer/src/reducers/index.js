@@ -151,7 +151,8 @@ const gamesReducer = (state = initialState, action) => {
         saving_round: false,
         saved_round: true,
         rounds: newRounds,
-        round: action.payload
+        round: action.payload,
+        roundId: action.payload.roundId
       });
     case DELETING_ROUND:
       return Object.assign({}, state, {

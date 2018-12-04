@@ -33,8 +33,7 @@ class Game extends Component {
 
   render() {
     if (!this.props.game) return <div>Loading...</div>;
-    console.log("This.props.rounds: ", this.props.rounds);
-    console.log("this.props GAME: ", this.props);
+
     return (
       <div className="game-page">
         <div className="top-content">
