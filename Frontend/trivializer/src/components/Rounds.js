@@ -66,8 +66,7 @@ class Rounds extends Component {
       original_category: this.props.round.category || "any",
       original_difficulty: this.props.round.difficulty || "any",
       original_type: this.props.round.type || "any",
-      changed: true,
-      pushed_flag: false
+      changed: true
     };
   }
 
@@ -85,7 +84,9 @@ class Rounds extends Component {
     }
     if (prevProps.roundName !== this.props.roundName) {
       if (this.props.fetched_saved_questions) {
-        if (!this.state.pushed_flag) {
+        if (
+          !this.props.history.location.pathname.split("/").includes("round")
+        ) {
           console.log("CONDITIONS MET TO PUSH TO HISTORY!!");
           console.log(
             "this.props.fetched_saved_questions: ",
@@ -100,7 +101,6 @@ class Rounds extends Component {
           this.props.history.push(
             `${this.props.gameId}/round/${this.props.round.roundId}`
           );
-          this.setState({ pushed_flag: true });
         }
       }
     }
