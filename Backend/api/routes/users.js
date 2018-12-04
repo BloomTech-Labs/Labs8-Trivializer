@@ -6,6 +6,10 @@ var simplecrypt = require("simplecrypt");
 
 var sc = simplecrypt({ password: process.env.SECRET });
 
+const api_key = process.env.MAILGUN_API_KEY;
+const domain = process.env.DOMAIN_NAME;
+const mailgun = require("mailgun-js")({ apiKey: api_key, domain: domain });
+
 // Base endpoint (at users/)
 server.get("/", (req, res) => {
   res.json("App is currently functioning");
@@ -83,6 +87,17 @@ server.post("/register", async (req, res) => {
 
     if (!userId) throw new Error("Unable to add that user");
 
+    //mailgun api request
+    const data = {
+      from: "<trivializer@trivializer.com>",
+      to: credentials.email,
+      subject: "Welcome",
+      text: "Welcome to Bar Trivia. Thank you for registering!"
+    };
+    mailgun.messages().send(data, function(error, body) {
+      console.log(body);
+    });
+
     // Generate a new token and return it
     let token = utilities.generateToken(username);
     res.status(201).json({ token: token, userId: userId[0] });
@@ -156,14 +171,7 @@ server.post("/creategame", utilities.protected, async (req, res) => {
 server.post("/save", utilities.protected, async (req, res) => {
   // Transactions allow us to perform multiple database calls, and if one of them doesn't work,
   // roll back all other calls. Maintains data consistency
-  const {
-    username,
-    description,
-    gamename,
-    dateCreated,
-    datePlayed,
-    rounds
-  } = req.body;
+  const { username, description, gamename, dateCreated, datePlayed, rounds } = req.body;
 
   try {
     // Get user
@@ -279,32 +287,27 @@ server.put("/editgame/:id", utilities.protected, async (req, res) => {
 });
 
 // Get all games for a username passed in. Nedds a username passed in req.body
-server.post(
-  "/games",
-  utilities.getUser,
-  utilities.protected,
-  async (req, res) => {
-    try {
-      const id = req.userIn.id; // This is set in utilities.getUser
+server.post("/games", utilities.getUser, utilities.protected, async (req, res) => {
+  try {
+    const id = req.userIn.id; // This is set in utilities.getUser
 
-      let games = await db
-        .select(
-          "g.id as gameId",
-          "g.name as gamename",
-          "g.description as description",
-          "g.date_created as dateCreated",
-          "g.date_played as datePlayed"
-        )
-        .from("Users as u")
-        .leftJoin("Games as g", "g.user_id", "u.id")
-        .where("u.id", "=", id);
+    let games = await db
+      .select(
+        "g.id as gameId",
+        "g.name as gamename",
+        "g.description as description",
+        "g.date_created as dateCreated",
+        "g.date_played as datePlayed"
+      )
+      .from("Users as u")
+      .leftJoin("Games as g", "g.user_id", "u.id")
+      .where("u.id", "=", id);
 
-      res.status(200).json(games);
-    } catch (err) {
-      res.status(500).json({ error: "Problem getting games" });
-    }
+    res.status(200).json(games);
+  } catch (err) {
+    res.status(500).json({ error: "Problem getting games" });
   }
-);
+});
 
 // Get all rounds for a game id passed in
 server.get("/rounds/:id", utilities.protected, async (req, res) => {
@@ -385,14 +388,7 @@ server.delete("/game/:id", utilities.protected, async (req, res) => {
 server.post("/round", utilities.protected, async (req, res) => {
   try {
     // Get all pertinent info from req.body
-    const {
-      gameId,
-      roundName,
-      category,
-      difficulty,
-      type,
-      questions
-    } = req.body;
+    const { gameId, roundName, category, difficulty, type, questions } = req.body;
 
     // Returns empty array if no game
     let validGame = await db("Games").where({ id: gameId });
@@ -574,36 +570,36 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
   }
 });
 // Get User user info by user id
-server.get("/users/:id",  utilities.protected, async (req, res) => {
-    try {
-      // User Id passed in request URL
-      const { id } = req.params;
-  
-      // Gets all info from the Users table where the user id matches the passed in ID
-      let users = await db
-        // Choose which columns we want to select, and assign an alias
-        .select(
-          "u.id as userId",
-          "u.username as userName",
-          "u.password as password",
-          "u.name as name",
-          "u.email as email",
-          "u.phone as phone",
-          "u.logo as logo",
-          "u.credit_card as creditCard",
-          "u.paid as paid"
-        )
-        .from("Users as u")
-        .where("u.id", "=", id);
-  
+server.get("/users/:id", utilities.protected, async (req, res) => {
+  try {
+    // User Id passed in request URL
+    const { id } = req.params;
+
+    // Gets all info from the Users table where the user id matches the passed in ID
+    let users = await db
+      // Choose which columns we want to select, and assign an alias
+      .select(
+        "u.id as userId",
+        "u.username as userName",
+        "u.password as password",
+        "u.name as name",
+        "u.email as email",
+        "u.phone as phone",
+        "u.logo as logo",
+        "u.credit_card as creditCard",
+        "u.paid as paid"
+      )
+      .from("Users as u")
+      .where("u.id", "=", id);
+
     //   console.log("questions: ", questions);
-      
-      res.status(200).json(users);
-    } catch (err) {
-      console.log("err.message: ", err.message);
-      res.status(500).json({ error: "Problem getting user" });
-    }
-  });
+
+    res.status(200).json(users);
+  } catch (err) {
+    console.log("err.message: ", err.message);
+    res.status(500).json({ error: "Problem getting user" });
+  }
+});
 
 // Save all questions for a round ID
 server.post("/questions", utilities.protected, async (req, res) => {

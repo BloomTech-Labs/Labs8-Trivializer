@@ -1,4 +1,8 @@
 /* Top Navbar */
+.bg-light {
+  background-color: white !important;
+}
+
 .landingpage-navbar-right {
   text-align: right;
   display: flex;

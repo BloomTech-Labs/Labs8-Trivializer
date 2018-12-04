@@ -151,7 +151,7 @@ export const deleteGameReq = id => {
 export const updateGameReq = (id, game) => {
   const newGame = {
     username: game.username,
-    gameName: game.gameName,
+    gameName: game.gameTitle,
     dateCreated: game.gameCreatedMS,
     description: game.gameDescription,
     datePlayed: game.gameScheduledMS,
@@ -167,13 +167,14 @@ export const updateGameReq = (id, game) => {
         }
       })
       .then(({ data }) => {
-        // // format result
+        // console.log(data);
+        // format result
         // const result = {
-        //     gameId: data[0]["id"],
-        //     gamename: data[0]["gamename"],
-        //     description: data[0]["description"],
-        //     dateCreated: data[0]["date_created"],
-        //     datePlayed: data[0]["date_played"]
+        //   gameId: data.gameId,
+        //   gamename: data.gamename,
+        //   description: data.description,
+        //   dateCreated: data.dateCreated,
+        //   datePlayed: data.datePlayed
         // };
         // dispatch({ type: UPDATED_GAME, payload: result });
       })

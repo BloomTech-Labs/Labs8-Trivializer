@@ -28,14 +28,6 @@ class GamesList extends Component {
     // SOLUTION: render with props directly
   }
 
-  componentDidUpdate = prevProps => {
-    if (prevProps.games !== this.props.games) {
-      console.log("prevProps.games: ", prevProps.games);
-      console.log("this.props.games: ", this.props.games);
-      this.setState();
-    }
-  };
-
   logout = e => {
     e.preventDefault();
     localStorage.clear();
@@ -85,6 +77,7 @@ class GamesList extends Component {
             </div>
           ) : (
               this.props.games.map((game, i) => (
+
                 <div>
                   <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
                     <GameDetails index={i} game={game} />
@@ -93,6 +86,7 @@ class GamesList extends Component {
                     Delete
             </button>
                 </div>
+
               ))
             )}
           {this.props.games.length > 0 ? (

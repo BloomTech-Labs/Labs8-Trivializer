@@ -12,7 +12,9 @@ class RoundsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newRounds: []
+      newRoundOuterHeight: null,
+      newRoundWidth: null,
+      newRoundHeight: null
     };
   }
 
@@ -37,7 +39,6 @@ class RoundsList extends Component {
   };
 
   render() {
-    console.log("this.props.rounds!!!!!!: ", this.props.rounds);
     return (
       <div>
         {this.props.fetchingRounds === true ? (
@@ -45,31 +46,20 @@ class RoundsList extends Component {
         ) : (
           <div>
             <div className="roundsList">
-              {this.props.rounds.map((round, i) => {
+              {this.props.rounds.map((round, i, array) => {
                 return (
                   <div key={round.roundId}>
                     <Rounds index={i} round={round} />
                   </div>
                 );
               })}
-
-              {/* Loops throught the new rounds the user has created, not yet saved and thus not in Redux store */}
-              {/* These are "fake rounds", as they are not yet in the database and only exist locally */}
-              {this.state.newRounds.map((round, i) => {
-                return (
-                  <div key={Date.now()}>
-                    {/* Should change date.now to something better later */}
-                    <Rounds
-                      new
-                      index={this.props.rounds.length + i + 1}
-                      round={round}
-                    />
-                  </div>
-                );
-              })}
-              <div>
-                <div>New Round</div>
-                <button onClick={this.newRound}>+</button>
+              <div id="newRound">
+                <div className="newRound-inner">
+                  <div>New Round</div>
+                  <button className="btn btn-primary" onClick={this.newRound}>
+                    +
+                  </button>
+                </div>
               </div>
             </div>
           </div>

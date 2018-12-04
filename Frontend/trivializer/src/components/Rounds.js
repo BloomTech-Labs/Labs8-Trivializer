@@ -71,8 +71,19 @@ class Rounds extends Component {
   }
 
   componentDidMount() {
-    console.log("this.props Rounds.js: ", this.props);
     this.props.resetRoundStateReq();
+
+    if (this.lastRoundRef) {
+      console.log(
+        "this.lastRoundRef.clientWidth,this.lastRoundRef.clientHeight",
+        this.lastRoundRef.clientWidth,
+        this.lastRoundRef.clientHeight
+      );
+      this.props.getWidthHeight(
+        this.lastRoundRef.clientWidth,
+        this.lastRoundRef.clientHeight
+      );
+    }
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -151,7 +162,11 @@ class Rounds extends Component {
 
   render() {
     return (
-      <div className="rounds" onDoubleClick={this.enterRound}>
+      <div
+        id={this.props.lastRound ? "lastRound" : null}
+        ref={this.props.lastRound ? el => (this.lastRoundRef = el) : null}
+        className="rounds"
+      >
         <input
           type="text"
           onChange={this.handleChange}
@@ -238,13 +253,13 @@ class Rounds extends Component {
           </select>
         </div>
         <div className="roundsButtons">
-          <button
-            onClick={this.saveRound}
-            className={`roundsSave ${this.state.changed ? null : "hidden"}`}
-          >
+          <button onClick={this.saveRound} className="roundsButton">
             Save
           </button>
-          <button className="roundsDelete" onClick={this.delete}>
+          <button className="roundsButton" onClick={this.enterRound}>
+            See Questions
+          </button>
+          <button className="roundsButton" onClick={this.delete}>
             Delete
           </button>
         </div>
