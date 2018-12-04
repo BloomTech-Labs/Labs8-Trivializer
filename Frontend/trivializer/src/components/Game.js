@@ -61,7 +61,7 @@ class Game extends Component {
               <EditGameView game={this.props.game} />
 
               <div className="game-buttons">
-                <button onClick={this.printAll}>Print Answer Sheets</button>
+                <button>Print Answer Sheets</button>
                 <button>Print Answer Key</button>
               </div>
             </div>
