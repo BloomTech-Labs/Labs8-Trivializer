@@ -192,7 +192,8 @@ const gamesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         editing_round: false,
         edited_round: true,
-        rounds: editedRounds
+        rounds: editedRounds,
+        round: action.payload
       });
     case FETCHING_NEW_QUESTIONS:
       return Object.assign({}, state, {

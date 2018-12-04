@@ -124,7 +124,7 @@ class RoundsList extends Component {
         ) : (
           <div>
             <div className="roundsList">
-              {this.props.rounds.map((round, i, array) => {
+              {this.props.rounds.map((round, i) => {
                 return (
                   <div key={round.roundId}>
                     <Rounds index={i} round={round} />

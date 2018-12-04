@@ -6,7 +6,8 @@ import {
   deleteRoundReq,
   editRoundReq,
   getQuestionsReq,
-  resetRoundStateReq
+  resetRoundStateReq,
+  getNewQuestionsReq
 } from "../actions";
 
 let categoryOptions = {
@@ -132,6 +133,10 @@ class Rounds extends Component {
 
     // Modify the existing round in the database
     this.props.editRoundReq(formattedBackendRound, this.props.round.roundId);
+    // Get the updated questions from the questionsAPI
+
+    let formattedQuestionsAPICall = this.formatQuestionsCall();
+    this.props.getNewQuestionsReq(formattedQuestionsAPICall);
   };
 
   delete = () => {
@@ -306,7 +311,8 @@ export default withRouter(
       deleteRoundReq,
       editRoundReq,
       getQuestionsReq,
-      resetRoundStateReq
+      resetRoundStateReq,
+      getNewQuestionsReq
     }
   )(Rounds)
 );
