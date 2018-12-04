@@ -213,9 +213,9 @@ class LandingPage extends React.Component {
                   .join("")
               );
               sessionStorage.setItem("google", "yes");
+              window.location.reload();
+              this.redirect();
             });
-          window.location.reload();
-          this.redirect();
         })
         .catch(err => {
           axios
