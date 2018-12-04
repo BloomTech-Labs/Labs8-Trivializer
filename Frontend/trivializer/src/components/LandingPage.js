@@ -155,7 +155,7 @@ class LandingPage extends React.Component {
     } else {
       return;
     }
-
+    console.log("url is: ", url);
     axios
       .post(url, {
         username: credentials.username,
@@ -214,6 +214,7 @@ class LandingPage extends React.Component {
                   .slice(1, -1)
                   .join("")
               );
+              sessionStorage.setItem("google", "yes");
             });
           window.location.reload();
           this.redirect();
@@ -236,6 +237,7 @@ class LandingPage extends React.Component {
               window.location.reload();
               this.redirect();
               localStorage.setItem("user", JSON.stringify(user));
+              sessionStorage.setItem("google", "yes");
             });
         });
       sessionStorage.setItem(
@@ -258,11 +260,15 @@ class LandingPage extends React.Component {
     return (
       <div className="landing-page">
         {/* Top Navbar */}
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav id="navbar-color" class="navbar navbar-expand-lg navbar-light bg-light">
           {/* Navbar Left Side */}
-          <a class="navbar-brand" href="#">
-            Bar Trivializer
-          </a>
+          <img
+            id="logo-img"
+            src="../img/trivializer_cropped.png"
+            alt="logo"
+            width="240px"
+            height="85px"
+          />
           <button
             class="navbar-toggler"
             type="button"
