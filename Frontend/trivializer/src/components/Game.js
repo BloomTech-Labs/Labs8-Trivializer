@@ -15,6 +15,7 @@ class Game extends Component {
     super(props);
     this.state = {
       game: null,
+      gameId: null,
       roundId: 0,
       rounds: [
         // {
@@ -32,10 +33,11 @@ class Game extends Component {
   componentDidMount() {
     const id = Number(this.props.match.params.id);
     this.props.fetchGameReq(id);
+    this.setState({ game: this.props.game, gameId: id });
   }
 
   render() {
-    // if (!this.props.game) return <div>Loading...</div>;
+    if (!this.props.game) return <div>Loading...</div>;
 
     return (
       <div className="game-page">

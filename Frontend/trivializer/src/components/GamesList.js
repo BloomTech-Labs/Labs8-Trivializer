@@ -25,14 +25,6 @@ class GamesList extends Component {
     // SOLUTION: render with props directly
   }
 
-  componentDidUpdate = prevProps => {
-    if (prevProps.games !== this.props.games) {
-      console.log("prevProps.games: ", prevProps.games);
-      console.log("this.props.games: ", this.props.games);
-      this.setState();
-    }
-  };
-
   logout = e => {
     e.preventDefault();
     localStorage.clear();
@@ -76,12 +68,12 @@ class GamesList extends Component {
               <Link to={`/creategame`}>+</Link>
             </div>
           ) : (
-            this.props.games.map((game, i) => (
-              <Link to={`/game/${game["gameId"]}`} key={game["id"]}>
-                <GameDetails index={i} game={game} />
-              </Link>
-            ))
-          )}
+              this.props.games.map((game, i) => (
+                <Link to={`/game/${game["gameId"]}`} key={game["id"]}>
+                  <GameDetails index={i} game={game} />
+                </Link>
+              ))
+            )}
           {this.props.games.length > 0 ? (
             <div>
               <div>New Game</div>
