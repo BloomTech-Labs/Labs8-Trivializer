@@ -36,7 +36,7 @@
 .vertical-navbar {
   width: 150px;
   height: 75vh;
-  background-color: #c7c8ca;
+  background-color: #f04e39;
   height: 95vh;
 }
 
@@ -46,9 +46,17 @@
   text-align: left;
 }
 
+.vertical-navbar:hover {
+  color: black;
+}
+
 .nav-link {
-  color: rgb(53, 52, 52);
+  color: white;
   font-size: 18px;
+}
+
+.nav-link:hover {
+  color: black;
 }
 .main-middle {
   margin: 0 auto;
