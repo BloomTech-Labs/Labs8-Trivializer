@@ -27,11 +27,14 @@ class Game extends Component {
     this.props.fetchGameReq(id);
   }
 
-  printAll = () => {};
+  printAll = () => {
+    this.props.rounds.map();
+  };
 
   render() {
-    // if (!this.props.game) return <div>Loading...</div>;
-
+    if (!this.props.game) return <div>Loading...</div>;
+    console.log("This.props.rounds: ", this.props.rounds);
+    console.log("this.props GAME: ", this.props);
     return (
       <div className="game-page">
         <div className="top-content">
@@ -67,6 +70,10 @@ class Game extends Component {
             <RoundsList id={this.props.match.params.id} />
           </div>
         </div>
+
+        <div className="hidden">
+          {/* Check if we have rounds on props (retrieved in RoundsList.js), and if so, prepare our printout without answers */}
+        </div>
       </div>
     );
   }
@@ -74,8 +81,8 @@ class Game extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
-    game: gamesList.game[0]
-    // rounds: gamesList.game.rounds
+    game: gamesList.game[0],
+    rounds: gamesList.rounds
   };
 };
 

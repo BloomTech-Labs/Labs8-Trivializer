@@ -5,8 +5,10 @@ import {
   FETCHED_GAME,
   FETCHING_ROUNDS,
   FETCHED_ROUNDS,
-  FETCHING_QUESTIONS,
-  FETCHED_QUESTIONS,
+  FETCHING_SAVED_QUESTIONS,
+  FETCHED_SAVED_QUESTIONS,
+  FETCHING_NEW_QUESTIONS,
+  FETCHED_NEW_QUESTIONS,
   SAVING_GAME,
   SAVED_GAME,
   DELETING_GAME,
@@ -19,6 +21,8 @@ import {
   DELETED_ROUND,
   EDITING_ROUND,
   EDITED_ROUND,
+  SAVING_QUESTIONS,
+  SAVED_QUESTIONS,
   RESET,
   ERROR
 } from "../actions";
@@ -28,8 +32,9 @@ const initialState = {
   games: [],
   game: [],
   rounds: [],
-  round: [],
+  round: null,
   questions: [],
+  new_questions: [],
   question: [],
   invoiced: [],
   gameName: null,
@@ -46,12 +51,16 @@ const initialState = {
   fetched_game: false,
   fetching_rounds: false,
   fetched_rounds: false,
-  fetching_questions: false,
-  fetched_questions: false,
+  fetching_saved_questions: false,
+  fetched_saved_questions: false,
+  fetching_new_questions: false,
+  fetched_new_questions: false,
   saving_game: false,
   saved_game: false,
   saving_round: false,
   saved_round: false,
+  saving_questions: false,
+  saved_questions: false,
   updating_game: false,
   updated_game: false,
   deleting_game: false,
@@ -135,6 +144,7 @@ const gamesReducer = (state = initialState, action) => {
         saved_round: false
       });
     case SAVED_ROUND:
+      console.log("action.payload!!", action.payload);
       let newRounds = state.rounds.slice();
       newRounds.push(action.payload);
       return Object.assign({}, state, {
@@ -178,12 +188,23 @@ const gamesReducer = (state = initialState, action) => {
         edited_round: true,
         rounds: editedRounds
       });
-    case FETCHING_QUESTIONS:
+    case FETCHING_NEW_QUESTIONS:
       return Object.assign({}, state, {
-        fetching_questions: true,
-        fetched_questions: false
+        fetching_new_questions: true,
+        fetched_new_questions: false
       });
-    case FETCHED_QUESTIONS:
+    case FETCHED_NEW_QUESTIONS:
+      return Object.assign({}, state, {
+        fetching_new_questions: false,
+        fetched_new_questions: true,
+        new_questions: action.payload.results
+      });
+    case FETCHING_SAVED_QUESTIONS:
+      return Object.assign({}, state, {
+        fetching_saved_questions: true,
+        fetched_saved_questions: false
+      });
+    case FETCHED_SAVED_QUESTIONS:
       console.log("action.payload", action.payload);
       return Object.assign({}, state, {
         fetching_questions: false,
@@ -195,6 +216,16 @@ const gamesReducer = (state = initialState, action) => {
         difficulty: action.payload.difficulty,
         type: action.payload.type,
         questions: action.payload.questions
+      });
+    case SAVING_QUESTIONS:
+      return Object.assign({}, state, {
+        saving_questions: true,
+        saved_questions: false
+      });
+    case SAVED_QUESTIONS:
+      return Object.assign({}, state, {
+        saving_questions: false,
+        saved_questions: true
       });
     case RESET:
       return Object.assign({}, state, {

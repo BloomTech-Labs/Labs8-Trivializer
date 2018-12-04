@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Rounds from "./Rounds";
 import { connect } from "react-redux";
-import { fetchRoundsReq, saveRoundReq } from "../actions";
+import { fetchRoundsReq, saveRoundReq, getNewQuestionsReq } from "../actions";
 import "./Rounds.css";
 
 /**
@@ -22,9 +22,10 @@ class RoundsList extends Component {
     const id = Number(this.props.id);
 
     this.props.fetchRoundsReq(id);
+    console.log("this.props RoundsList 1: ", this.props.new_questions);
   }
 
-  newRound = () => {
+  newRound = async () => {
     let round = {
       gameId: this.props.gameId,
       roundName: "Default Value",
@@ -33,9 +34,20 @@ class RoundsList extends Component {
       difficulty: "easy",
       questions: 1
     };
+
+    let formattedRound = {
+      gameId: this.props.gameId,
+      roundName: "Default Value",
+      category: "",
+      type: "multiple",
+      difficulty: "easy",
+      questions: 1
+    };
     console.log("round: ", round);
     // Save the Round to the database with default values
     this.props.saveRoundReq(round);
+    this.props.getNewQuestionsReq(formattedRound);
+    console.log("this.props RoundsList: ", this.props.new_questions);
   };
 
   render() {
@@ -75,11 +87,13 @@ const mapStateToProps = ({ gamesList }) => {
     fetchingRounds: gamesList.fetching_rounds,
     fetchedRounds: gamesList.fetched_rounds,
     error: gamesList.error,
-    rounds: gamesList.rounds
+    rounds: gamesList.rounds,
+    round: gamesList.round,
+    new_questions: gamesList.new_questions
   };
 };
 
 export default connect(
   mapStateToProps,
-  { fetchRoundsReq, saveRoundReq }
+  { fetchRoundsReq, saveRoundReq, getNewQuestionsReq }
 )(RoundsList);
