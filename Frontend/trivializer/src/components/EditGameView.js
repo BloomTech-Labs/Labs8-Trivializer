@@ -50,7 +50,7 @@ class EditGameView extends Component {
       gameTitle: this.state.gameTitle,
       gameCreatedMS: this.props.game.dateCreated,
       gameDescription: this.state.gameDescription,
-      gameScheduledMS: ms
+      gameScheduledMS: ms || 0
     };
 
     console.log(game);
@@ -97,7 +97,7 @@ class EditGameView extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
-    game: gamesList.game[0]
+    // game: gamesList.game[0],
     // rounds: gamesList.game.rounds
   };
 };

@@ -91,7 +91,8 @@ const gamesReducer = (state = initialState, action) => {
       });
     case FETCHING_GAME:
       return Object.assign({}, state, {
-        fetching_game: true
+        fetching_game: true,
+        game: []
       });
     case FETCHED_GAME:
       return Object.assign({}, state, {
@@ -125,7 +126,8 @@ const gamesReducer = (state = initialState, action) => {
       });
     case UPDATING_GAME:
       return Object.assign({}, state, {
-        updating_game: true
+        updating_game: true,
+        // game: []
       });
     case UPDATED_GAME:
       return Object.assign({}, state, {
