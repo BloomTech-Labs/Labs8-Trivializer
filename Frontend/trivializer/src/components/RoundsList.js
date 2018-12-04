@@ -35,8 +35,11 @@ class RoundsList extends Component {
     // ***** Users database, so if a user creates a new round, then prints all
     // ***** rounds, the new rounds question will show
 
-    // IF the following two are true, we've saved a new Round and need to get it's questions
-    if (prevProps.roundId !== this.props.roundId) {
+    // If the following two are true, we've saved a new Round and need to get it's questions
+    if (
+      prevProps.roundId !== this.props.roundId &&
+      this.props.roundId !== null
+    ) {
       if (this.props.savedRound) {
         if (
           !prevProps.rounds
@@ -45,11 +48,19 @@ class RoundsList extends Component {
             })
             .includes(this.props.roundId)
         ) {
+          console.log("CONDITION MET TO GET QUESTIONS!!!!");
           console.log(
-            "prevProps.rounds.map(round => {return roundId}): ",
-            prevProps.rounds.map(round => {
-              return round.roundId;
-            })
+            "prevProps.roundId, this.props.roundId: ",
+            prevProps.roundId,
+            this.props.roundId
+          );
+          console.log(
+            "!prevProps.rounds.map(round => {return roundId}).includes(this.props.roundId): ",
+            !prevProps.rounds
+              .map(round => {
+                return round.roundId;
+              })
+              .includes(this.props.roundId)
           );
           let formattedRound = {
             gameId: this.props.gameId,
@@ -68,6 +79,7 @@ class RoundsList extends Component {
     // Save them to the Users Database
     if (prevProps.new_questions !== this.props.new_questions) {
       if (this.props.fetched_new_questions) {
+        console.log("CONDITION MET TO SAVE QUESTIONS!!!!");
         let round_id = this.props.round.roundId;
         let questionsPackage = this.props.new_questions.slice();
         questionsPackage = questionsPackage.map(question => {

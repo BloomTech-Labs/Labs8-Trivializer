@@ -77,6 +77,7 @@ class Rounds extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     if (prevProps.roundName !== this.props.roundName) {
       if (this.props.fetched_questions) {
+        console.log(this.props.fetched_questions);
         this.props.history.push(
           `${this.props.gameId}/round/${this.props.round.roundId}`
         );

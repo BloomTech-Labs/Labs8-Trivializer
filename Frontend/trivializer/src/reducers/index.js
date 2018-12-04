@@ -202,6 +202,7 @@ const gamesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         fetching_new_questions: false,
         fetched_new_questions: true,
+        saved_round: false,
         new_questions: action.payload.results
       });
     case FETCHING_SAVED_QUESTIONS:
@@ -230,7 +231,8 @@ const gamesReducer = (state = initialState, action) => {
     case SAVED_QUESTIONS:
       return Object.assign({}, state, {
         saving_questions: false,
-        saved_questions: true
+        saved_questions: true,
+        fetched_new_questions: false
       });
     case RESET:
       return Object.assign({}, state, {
