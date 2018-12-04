@@ -123,7 +123,11 @@ export const deleteGameReq = id => {
   return dispatch => {
     dispatch({ type: DELETING_GAME });
     axios
-      .get(`${BE_URL}/game/${id}`)
+      .delete(`${BE_URL}/game/${id}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
       .then(({ data }) => {
         dispatch({ type: DELETED_GAME, payload: data });
       })

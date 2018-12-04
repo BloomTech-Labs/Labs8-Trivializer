@@ -42,9 +42,10 @@ class GamesList extends Component {
     sessionStorage.clear();
     this.props.history.push("/");
   };
-  
-  delete = () => {
-    this.props.deleteGameReq(this.props.game.gameId);
+
+  delete = (id) => {
+    this.props.deleteGameReq(id);
+    window.location.reload();
   };
 
   render() {
@@ -83,17 +84,17 @@ class GamesList extends Component {
               <Link to={`/creategame`}>+</Link>
             </div>
           ) : (
-            this.props.games.map((game, i) => (
-              <div>
-              <Link to={`/game/${game["gameId"]}`} key={game["id"]}>
-                <GameDetails index={i} game={game} />
-              </Link>
-              <button className="gameDelete" onClick={this.delete}>
-              Delete
+              this.props.games.map((game, i) => (
+                <div>
+                  <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
+                    <GameDetails index={i} game={game} />
+                  </Link>
+                  <button className="gameDelete" onClick={() => this.delete(game["gameId"])}>
+                    Delete
             </button>
-            </div>
-            ))
-          )}
+                </div>
+              ))
+            )}
           {this.props.games.length > 0 ? (
             <div>
               <div>New Game</div>
