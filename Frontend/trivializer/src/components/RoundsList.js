@@ -5,7 +5,8 @@ import {
   fetchRoundsReq,
   saveRoundReq,
   getNewQuestionsReq,
-  saveQuestionsReq
+  saveQuestionsReq,
+  resetFetchedNewQuestions
 } from "../actions";
 import "./Rounds.css";
 
@@ -91,6 +92,7 @@ class RoundsList extends Component {
         });
         console.log("questionsPackage: ", questionsPackage);
         this.props.saveQuestionsReq(this.props.new_questions);
+        this.props.resetFetchedNewQuestions();
       }
     }
   };
@@ -162,5 +164,11 @@ const mapStateToProps = ({ gamesList }) => {
 
 export default connect(
   mapStateToProps,
-  { fetchRoundsReq, saveRoundReq, getNewQuestionsReq, saveQuestionsReq }
+  {
+    fetchRoundsReq,
+    saveRoundReq,
+    getNewQuestionsReq,
+    saveQuestionsReq,
+    resetFetchedNewQuestions
+  }
 )(RoundsList);

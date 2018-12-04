@@ -26,6 +26,7 @@ export const SAVED_QUESTIONS = "SAVED_QUESTIONS";
 export const DELETING_QUESTIONS = "DELETING_QUESTIONS";
 export const DELETED_QUESTIONS = "DELETED_QUESTIONS";
 export const RESET = "RESET";
+export const RESET_NEW_QUESTIONS = "RESET_NEW_QUESTIONS";
 export const ERROR = "ERROR";
 
 const questionsApiURL = "https://opentdb.com/api.php?";
@@ -299,8 +300,15 @@ export const resetRoundStateReq = () => {
   };
 };
 
+export const resetFetchedNewQuestions = () => {
+  return dispatch => {
+    dispatch({ type: RESET_NEW_QUESTIONS });
+  };
+};
+
 // questionsPackage needs rounds_id, category, difficulty, type, question, correct_answer, incorrect_answers
 export const saveQuestionsReq = questionsPackage => {
+  console.log("SAVE QUESTIONS REQ CALLED!!!!!");
   questionsPackage = questionsPackage.map(question => {
     return {
       rounds_id: question.rounds_id,
@@ -316,24 +324,25 @@ export const saveQuestionsReq = questionsPackage => {
 
   console.log("questionsPackage: ", questionsPackage);
 
-  return async dispatch => {
+  return dispatch => {
     console.log("IN dispatch, saveQuestionsReq");
     dispatch({ type: SAVING_QUESTIONS });
 
     // First, delete all existing questions in our round
     // Get the roundId from the first question
-    await axios
+    axios
       .delete(`${BE_URL}/questions/${questionsPackage[0].rounds_id}`, {
         headers: {
           Authorization: `${sessionStorage.getItem("jwt")}`
         }
       })
       .then(response => {
-        console.log(response);
+        console.log("response: ", response);
       })
       .catch(err => {
         console.log("err.message: ", err.message);
       });
+    console.log("ABOUT TO CALL POST TO QUESTIONS!!!");
 
     axios
       .post(`${BE_URL}/questions`, questionsPackage, {
@@ -351,6 +360,8 @@ export const saveQuestionsReq = questionsPackage => {
         console.log("err.message saveQuestionsReq: ", err.message);
         dispatch({ type: ERROR, payload: err });
       });
+
+    console.log("DONE WITH POST TO /QUESTIONS!!!");
   };
 };
 
@@ -388,6 +399,7 @@ export const getNewQuestionsReq = questionsPackage => {
   };
 };
 
+// *********************   Accessory helper functions ******************//
 // Builds a call to the questions API based on which parameters in state are set
 const buildApiCall = callPackage => {
   let amount = `amount=${callPackage.numberOfQuestions || 1}`;

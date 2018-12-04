@@ -26,6 +26,7 @@ import {
   DELETING_QUESTIONS,
   DELETED_QUESTIONS,
   RESET,
+  RESET_NEW_QUESTIONS,
   ERROR
 } from "../actions";
 import { combineReducers } from "redux";
@@ -233,12 +234,19 @@ const gamesReducer = (state = initialState, action) => {
         saved_questions: true,
         fetched_new_questions: false
       });
+    // This resets the state in Rounds.js to avoid
+    // triggering a push in componentDidUpdate when not necessary
     case RESET:
       console.log("RESET CALLED!!");
       return Object.assign({}, state, {
         fetched_saved_questions: false,
         roundName: NaN,
         roundId: null
+      });
+    case RESET_NEW_QUESTIONS:
+      console.log("RESET New  Questions CALLED!!");
+      return Object.assign({}, state, {
+        fetched_new_questions: false
       });
     case ERROR:
       return Object.assign({}, state, {

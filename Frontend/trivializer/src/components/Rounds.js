@@ -75,29 +75,29 @@ class Rounds extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    for (let item in prevProps) {
-      if (prevProps[item] !== this.props[item]) {
-        console.log("DIFFERENCE FOUND!!!");
-        console.log("item, prevProps[item]: ", item, prevProps[item]);
-        console.log("item, this.props[item]: ", item, this.props[item]);
-      }
-    }
+    // for (let item in prevProps) {
+    //   if (prevProps[item] !== this.props[item]) {
+    //     console.log("DIFFERENCE FOUND!!!");
+    //     console.log("item, prevProps[item]: ", item, prevProps[item]);
+    //     console.log("item, this.props[item]: ", item, this.props[item]);
+    //   }
+    // }
     if (prevProps.roundName !== this.props.roundName) {
       if (this.props.fetched_saved_questions) {
         if (
           !this.props.history.location.pathname.split("/").includes("round")
         ) {
-          console.log("CONDITIONS MET TO PUSH TO HISTORY!!");
-          console.log(
-            "this.props.fetched_saved_questions: ",
-            this.props.fetched_saved_questions
-          );
-          console.log(
-            "prevProps.roundName, this.props.roundName: ",
-            prevProps.roundName,
-            this.props.roundName
-          );
-          console.log("this.props.history: ", this.props.history);
+          // console.log("CONDITIONS MET TO PUSH TO HISTORY!!");
+          // console.log(
+          //   "this.props.fetched_saved_questions: ",
+          //   this.props.fetched_saved_questions
+          // );
+          // console.log(
+          //   "prevProps.roundName, this.props.roundName: ",
+          //   prevProps.roundName,
+          //   this.props.roundName
+          // );
+          // console.log("this.props.history: ", this.props.history);
           this.props.history.push(
             `${this.props.gameId}/round/${this.props.round.roundId}`
           );
