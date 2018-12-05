@@ -7,8 +7,7 @@ import EditGameView from "./EditGameView";
 import RoundsList from "./RoundsList";
 import "./Game.css";
 import ReactToPrint from "react-to-print";
-import RoundAnswers from "./RoundAnswers";
-import PrintAllAnswers from "./PrintAllAnswers";
+import PrintAll from "./PrintAll";
 
 /**
  * Game Component
@@ -32,8 +31,6 @@ class Game extends Component {
   }
 
   render() {
-    if (!this.props.game) return <div>Loading...</div>;
-
     return (
       <div className="game-page">
         <div className="top-content">
@@ -56,32 +53,55 @@ class Game extends Component {
 
         <div className="main-content">
           <Navbar />
-          <div className="editAndRounds">
-            <div className="game-top">
-              <EditGameView game={this.props.game} />
+          {!this.props.game ? (
+            <div>Loading...</div>
+          ) : (
+            <div className="editAndRounds">
+              <div className="game-top">
+                <EditGameView game={this.props.game} />
 
-              <div className="game-buttons">
-                <ReactToPrint
-                  trigger={() => (
-                    <button type="button" className="btn btn-primary round">
-                      Print Answer Sheets
-                    </button>
+                <div className="game-buttons">
+                  {this.props.fetching_all_questions ? (
+                    <div>"Loading"</div>
+                  ) : (
+                    <ReactToPrint
+                      trigger={() => (
+                        <button type="button" className="btn btn-primary round">
+                          Print Answer Key
+                        </button>
+                      )}
+                      content={() => this.answerKeyRef}
+                    />
                   )}
-                  content={() => this.answerSheetRef}
-                />
-
-                <button>Print Answer Key</button>
+                  {this.props.fetching_all_questions ? (
+                    <div>"Loading"</div>
+                  ) : (
+                    <ReactToPrint
+                      trigger={() => (
+                        <button type="button" className="btn btn-primary round">
+                          Print Answer Sheet
+                        </button>
+                      )}
+                      content={() => this.userSheetRef}
+                    />
+                  )}
+                </div>
               </div>
+
+              <RoundsList id={this.props.match.params.id} />
             </div>
-
-            <RoundsList id={this.props.match.params.id} />
-          </div>
+          )}
         </div>
-
         <div className="hidden">
-          <PrintAllAnswers
+          <PrintAll
+            userSheets={false}
             game={this.props.game}
-            ref={el => (this.answerSheetRef = el)}
+            ref={el => (this.answerKeyRef = el)}
+          />
+          <PrintAll
+            userSheets={true}
+            game={this.props.game}
+            ref={el => (this.userSheetRef = el)}
           />
         </div>
       </div>
@@ -92,7 +112,8 @@ class Game extends Component {
 const mapStateToProps = ({ gamesList }) => {
   return {
     game: gamesList.game[0],
-    rounds: gamesList.rounds
+    rounds: gamesList.rounds,
+    fetching_all_questions: gamesList.fetching_all_questions
   };
 };
 

@@ -21,8 +21,12 @@ class LandingPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      registerURL: process.env.REACT_APP_BE_REGISTER_URL || "http://localhost:3300/users/register",
-      signinURL: process.env.REACT_APP_BE_LOGIN_URL || "http://localhost:3300/users/login",
+      registerURL:
+        process.env.REACT_APP_BE_REGISTER_URL ||
+        "https://testsdepl.herokuapp.com/users/register",
+      signinURL:
+        process.env.REACT_APP_BE_LOGIN_URL ||
+        "https://testsdepl.herokuapp.com/users/login",
       signup_username: "",
       signup_email: "",
       signup_password: "",
@@ -265,7 +269,10 @@ class LandingPage extends React.Component {
     return (
       <div className="landing-page">
         {/* Top Navbar */}
-        <nav id="navbar-color" class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav
+          id="navbar-color"
+          class="navbar navbar-expand-lg navbar-light bg-light"
+        >
           {/* Navbar Left Side */}
           <img
             id="logo-img"
@@ -574,7 +581,11 @@ class LandingPage extends React.Component {
               />
             </div>
             <div class="carousel-item">
-              <img class="carousel-design d-block w-100" src="../img/neon.jpg" alt="Second slide" />
+              <img
+                class="carousel-design d-block w-100"
+                src="../img/neon.jpg"
+                alt="Second slide"
+              />
             </div>
             <div class="carousel-item">
               <img

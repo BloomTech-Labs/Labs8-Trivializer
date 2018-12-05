@@ -1,27 +1,28 @@
 import React, { Component } from "react";
-import Questions from "./Questions";
 import RoundAnswers from "./RoundAnswers";
 import { connect } from "react-redux";
-import "./PrintAllAnswers.css";
+import "./PrintAll.css";
 import {
   getAllRoundsReq,
   getAllQuestionsReq,
   resetAllRoundsAllQuestionsReq
 } from "../actions";
 
-class PrintAllAnswers extends Component {
+class PrintAllAnswerKey extends Component {
   constructor(props) {
     super(props);
     this.state = {
       answers: true,
       rounds: [],
-      questions: []
+      questions: [],
+      userSheets: this.props.userSheets
     };
   }
+
   componentDidMount = () => {
     this.props.getAllRoundsReq();
     this.props.getAllQuestionsReq();
-    console.log("this.props.game: ", this.props.game);
+    console.log("this.props PrintAll: ", this.props);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -33,7 +34,8 @@ class PrintAllAnswers extends Component {
     ) {
       this.setState({
         rounds: this.props.all_rounds,
-        questions: this.props.all_questions
+        questions: this.props.all_questions,
+        userSheets: this.props.userSheets
       });
     }
     // If The Redux store indicates that we have saved a new round
@@ -70,7 +72,9 @@ class PrintAllAnswers extends Component {
             <div>
               {index !== 0 ? <div className="page-break" /> : null}
               <div className="hiddenAnswers-info">
-                <div>{this.props.game.gamename}</div>
+                <div>
+                  {this.props.game ? this.props.game.gamename : "No Game Name"}
+                </div>
                 <div>{round.name}</div>
                 <div>
                   <img
@@ -85,7 +89,10 @@ class PrintAllAnswers extends Component {
                 ***Please Circle the Correct Answer***
               </div>
 
-              <RoundAnswers questions={questions} />
+              <RoundAnswers
+                questions={questions}
+                userSheets={this.props.userSheets}
+              />
             </div>
           );
         })}
@@ -107,4 +114,4 @@ const mapStateToProps = ({ gamesList }) => {
 export default connect(
   mapStateToProps,
   { getAllRoundsReq, getAllQuestionsReq, resetAllRoundsAllQuestionsReq }
-)(PrintAllAnswers);
+)(PrintAllAnswerKey);

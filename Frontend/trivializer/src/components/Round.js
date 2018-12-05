@@ -7,7 +7,6 @@ import "./Questions.css";
 import update from "react-addons-update";
 import ReactToPrint from "react-to-print";
 import { connect } from "react-redux";
-import RoundUserSheet from "./RoundUserSheet";
 
 const createDOMPurify = require("dompurify"); // Prevents XSS attacks from incoming HTML
 
@@ -31,7 +30,7 @@ class Round extends Component {
       type: this.props.type,
       questions: [],
       questionsURL: "https://opentdb.com/api.php?",
-      usersAPI: "http://localhost:3300/users",
+      usersAPI: "https://testsdepl.herokuapp.com/users",
       replace: [],
       noResults: false
     };
@@ -319,10 +318,6 @@ class Round extends Component {
             </div>
           </div>
           {/* Hidden Answer sheets without highlighted answers. Shows on print */}
-          {/* <RoundUserSheet
-            className="hiddenAnswers"
-            ref={el => (this.answerSheetRef = el)}
-          /> */}
           <div className="hiddenAnswers" ref={el => (this.answerSheetRef = el)}>
             <div className="hiddenAnswers-info">
               <div>{this.state.gameName}</div>
@@ -335,7 +330,6 @@ class Round extends Component {
                 />
               </div>
             </div>
-
             <div className="instructions-round">
               ***Please Circle the Correct Answer***
             </div>

@@ -21,7 +21,11 @@ class RoundAnswers extends Component {
           return (
             <div key={question.id}>
               {(index + 1) % 6 === 0 ? <div className="page-break" /> : null}
-              <Questions index={index} question={question} />
+              <Questions
+                index={index}
+                question={question}
+                userSheets={this.props.userSheets}
+              />
             </div>
           );
         })}
