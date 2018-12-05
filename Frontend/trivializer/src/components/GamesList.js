@@ -8,8 +8,6 @@ import "./Components.css";
 import axios from "axios";
 import "./GamesList.css";
 
-
-
 /**
  * GamesList Component
  * - renders a list of games for the logged in user
@@ -20,7 +18,6 @@ class GamesList extends Component {
     this.state = {
       games: [],
       game: this.props.game
-
     };
   }
 
@@ -47,6 +44,7 @@ class GamesList extends Component {
               .join("")
           );
           sessionStorage.setItem("google", "yes");
+          localStorage.removeItem("register");
         });
     }
   }
@@ -59,7 +57,6 @@ class GamesList extends Component {
     }
   };
 
-
   logout = e => {
     e.preventDefault();
     localStorage.clear();
@@ -67,9 +64,9 @@ class GamesList extends Component {
     this.props.history.push("/");
   };
 
-  delete = (id) => {
+  delete = id => {
+    console.log("delete hitting");
     this.props.deleteGameReq(id);
-    window.location.reload();
   };
 
   render() {
@@ -108,19 +105,17 @@ class GamesList extends Component {
               <Link to={`/creategame`}>+</Link>
             </div>
           ) : (
-              this.props.games.map((game, i) => (
-
-                <div>
-                  <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
-                    <GameDetails index={i} game={game} />
-                  </Link>
-                  <button className="gameDelete" onClick={() => this.delete(game["gameId"])}>
-                    Delete
-            </button>
-                </div>
-
-              ))
-            )}
+            this.props.games.map((game, i) => (
+              <div>
+                <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
+                  <GameDetails index={i} game={game} />
+                </Link>
+                <button className="gameDelete" onClick={() => this.delete(game["gameId"])}>
+                  Delete
+                </button>
+              </div>
+            ))
+          )}
           {this.props.games.length > 0 ? (
             <div>
               <div>New Game</div>
@@ -149,7 +144,7 @@ const mapStateToProps = ({ gamesList }) => {
   return {
     games: gamesList.games,
     game: gamesList.game,
-    gameId: gamesList.gameId,
+    gameId: gamesList.gameId
   };
 };
 
