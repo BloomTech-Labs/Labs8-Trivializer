@@ -14,7 +14,8 @@ class Questions extends Component {
     super(props);
     this.state = {
       question: this.props.question.question,
-      answers: this.props.question.answers
+      answers: this.props.question.answers,
+      userSheet: this.props.userSheets
     };
   }
 
@@ -48,7 +49,8 @@ class Questions extends Component {
                       <li
                         key={index}
                         style={
-                          answer === question.correct_answer
+                          answer === question.correct_answer &&
+                          !this.state.userSheet
                             ? { fontWeight: "bold" }
                             : { fontWeight: "normal" }
                         }

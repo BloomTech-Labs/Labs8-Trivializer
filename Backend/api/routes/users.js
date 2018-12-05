@@ -40,7 +40,7 @@ server.get("/games", (req, res) => {
     });
 });
 
-// Get all Rounds table
+// Get all Rounds table UNPROTECTED!!
 server.get("/rounds", (req, res) => {
   db("Rounds")
     .then(response => {
@@ -52,8 +52,32 @@ server.get("/rounds", (req, res) => {
     });
 });
 
-// Get all Questions table
+// Get all Questions table UNPROTECTED
 server.get("/questions", (req, res) => {
+  db("Questions")
+    .then(response => {
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+// Get all Rounds table
+server.get("/rounds", utilities.protected, (req, res) => {
+  db("Rounds")
+    .then(response => {
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+// Get all Questions table
+server.get("/questions", utilities.protected, (req, res) => {
   db("Questions")
     .then(response => {
       res.status(200).json(response);
@@ -171,7 +195,14 @@ server.post("/creategame", utilities.protected, async (req, res) => {
 server.post("/save", utilities.protected, async (req, res) => {
   // Transactions allow us to perform multiple database calls, and if one of them doesn't work,
   // roll back all other calls. Maintains data consistency
-  const { username, description, gamename, dateCreated, datePlayed, rounds } = req.body;
+  const {
+    username,
+    description,
+    gamename,
+    dateCreated,
+    datePlayed,
+    rounds
+  } = req.body;
 
   try {
     // Get user
@@ -287,27 +318,32 @@ server.put("/editgame/:id", utilities.protected, async (req, res) => {
 });
 
 // Get all games for a username passed in. Nedds a username passed in req.body
-server.post("/games", utilities.getUser, utilities.protected, async (req, res) => {
-  try {
-    const id = req.userIn.id; // This is set in utilities.getUser
+server.post(
+  "/games",
+  utilities.getUser,
+  utilities.protected,
+  async (req, res) => {
+    try {
+      const id = req.userIn.id; // This is set in utilities.getUser
 
-    let games = await db
-      .select(
-        "g.id as gameId",
-        "g.name as gamename",
-        "g.description as description",
-        "g.date_created as dateCreated",
-        "g.date_played as datePlayed"
-      )
-      .from("Users as u")
-      .leftJoin("Games as g", "g.user_id", "u.id")
-      .where("u.id", "=", id);
+      let games = await db
+        .select(
+          "g.id as gameId",
+          "g.name as gamename",
+          "g.description as description",
+          "g.date_created as dateCreated",
+          "g.date_played as datePlayed"
+        )
+        .from("Users as u")
+        .leftJoin("Games as g", "g.user_id", "u.id")
+        .where("u.id", "=", id);
 
-    res.status(200).json(games);
-  } catch (err) {
-    res.status(500).json({ error: "Problem getting games" });
+      res.status(200).json(games);
+    } catch (err) {
+      res.status(500).json({ error: "Problem getting games" });
+    }
   }
-});
+);
 
 // Get all rounds for a game id passed in
 server.get("/rounds/:id", utilities.protected, async (req, res) => {
@@ -365,30 +401,36 @@ server.delete("/round/:id", utilities.protected, async (req, res) => {
 
 // Delete a game based on game id
 server.delete("/game/:id", utilities.protected, async (req, res) => {
-    const { id } = req.params;
-    try {
-      // Returns the id of the deleted game
-      let response = await db("Games")
-        .where({ id })
-        .del();
-  
-      // If response === 0 no game was deleted
-      if (response === 0) throw new Error(`Error deleting game ${id}`);
-  
-      console.log("id: ", id);
-  
-  
-      res.status(200).json(`Round ${response} deleted`);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  });
+  const { id } = req.params;
+  try {
+    // Returns the id of the deleted game
+    let response = await db("Games")
+      .where({ id })
+      .del();
+
+    // If response === 0 no game was deleted
+    if (response === 0) throw new Error(`Error deleting game ${id}`);
+
+    console.log("id: ", id);
+
+    res.status(200).json(`Round ${response} deleted`);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
 
 // Save a round
 server.post("/round", utilities.protected, async (req, res) => {
   try {
     // Get all pertinent info from req.body
-    const { gameId, roundName, category, difficulty, type, questions } = req.body;
+    const {
+      gameId,
+      roundName,
+      category,
+      difficulty,
+      type,
+      questions
+    } = req.body;
 
     // Returns empty array if no game
     let validGame = await db("Games").where({ id: gameId });
@@ -624,7 +666,7 @@ server.post("/questions", utilities.protected, async (req, res) => {
   } catch (err) {
     console.log("err.message", err.message);
     console.log("err: ", err);
-    res.status(500).json({ error: "Problem saving questions" });
+    res.status(500).json(err);
   }
 });
 
