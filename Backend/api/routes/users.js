@@ -365,24 +365,23 @@ server.delete("/round/:id", utilities.protected, async (req, res) => {
 
 // Delete a game based on game id
 server.delete("/game/:id", utilities.protected, async (req, res) => {
-    const { id } = req.params;
-    try {
-      // Returns the id of the deleted game
-      let response = await db("Games")
-        .where({ id })
-        .del();
-  
-      // If response === 0 no game was deleted
-      if (response === 0) throw new Error(`Error deleting game ${id}`);
-  
-      console.log("id: ", id);
-  
-  
-      res.status(200).json(`Round ${response} deleted`);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  });
+  const { id } = req.params;
+  try {
+    // Returns the id of the deleted game
+    let response = await db("Games")
+      .where({ id })
+      .del();
+
+    // If response === 0 no game was deleted
+    if (response === 0) throw new Error(`Error deleting game ${id}`);
+
+    console.log("id: ", id);
+
+    res.status(200).json(`Round ${response} deleted`);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
 
 // Save a round
 server.post("/round", utilities.protected, async (req, res) => {
@@ -510,11 +509,12 @@ server.put("/edituser/:id", utilities.protected, async (req, res) => {
       .where("id", id)
       .update({
         password: edit.password,
-        name: edit.paid,
+        name: edit.name,
         email: edit.email,
         phone: edit.phone,
         logo: edit.logo,
-        paid: edit.paid
+        paid: edit.paid,
+        userName: edit.userName
       });
     // get user by id
     let newUser = await db("Users").where("id", id);
@@ -522,6 +522,7 @@ server.put("/edituser/:id", utilities.protected, async (req, res) => {
     res.status(200).json({
       userId: newUser[0]["id"],
       password: newUser[0]["password"],
+      userName: newUser[0]["userName"],
       name: newUser[0]["name"],
       email: newUser[0]["email"],
       phone: newUser[0]["phone"],
@@ -659,7 +660,6 @@ server.delete("/game/:id", utilities.protected, async (req, res) => {
     if (response === 0) throw new Error(`Error deleting game ${id}`);
 
     console.log("id: ", id);
-
 
     res.status(200).json(`Game ${response} deleted`);
   } catch (err) {
