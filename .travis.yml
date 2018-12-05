@@ -1,4 +1,4 @@
 language: node_js
 node_js:
-  - "stable"
-before_install: cd Frontend/trivializer
+  - "8.11.1"
+before_install: cd/Frontend/trivializer
