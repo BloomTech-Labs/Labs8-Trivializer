@@ -46,13 +46,18 @@ const Faqs = () => {
           </div>
           <div className="questions">
             <p>How do I add games?</p>
-            <p>You can add games by </p>
+            <p>
+              You can add games by clicking on the "Games" Tab and hitting +, and type in a game
+              name to get started. The calendar is to give you a sense of when you want to play.{" "}
+            </p>
           </div>
           <div className="questions">
             <p>Why do my games go away? </p>
+            <p>If you are not logged in, the games don't save to an account.</p>
           </div>
           <div className="questions">
             <p>Can I change the ordering of the questions?</p>
+            <p>If you would like the ordering of questions to be different</p>
           </div>
           <div className="questions">
             <p>How do I change just 1 question if it's one I don't like?</p>
