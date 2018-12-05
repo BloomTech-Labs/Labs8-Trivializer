@@ -3,9 +3,10 @@ import Games from "./Games";
 import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { fetchGamesReq } from "../actions";
+import { fetchGamesReq, deleteGameReq } from "../actions";
 import "./Components.css";
 import axios from "axios";
+
 
 /**
  * GamesList Component
@@ -15,7 +16,9 @@ class GamesList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      games: []
+      games: [],
+      game: this.props.game
+
     };
   }
 
@@ -46,19 +49,16 @@ class GamesList extends Component {
     }
   }
 
-  componentDidUpdate = prevProps => {
-    if (prevProps.games !== this.props.games) {
-      console.log("prevProps.games: ", prevProps.games);
-      console.log("this.props.games: ", this.props.games);
-      this.setState();
-    }
-  };
-
   logout = e => {
     e.preventDefault();
     localStorage.clear();
     sessionStorage.clear();
     this.props.history.push("/");
+  };
+
+  delete = (id) => {
+    this.props.deleteGameReq(id);
+    window.location.reload();
   };
 
   render() {
@@ -97,12 +97,19 @@ class GamesList extends Component {
               <Link to={`/creategame`}>+</Link>
             </div>
           ) : (
-            this.props.games.map((game, i) => (
-              <Link to={`/game/${game["gameId"]}`} key={game["id"]}>
-                <GameDetails index={i} game={game} />
-              </Link>
-            ))
-          )}
+              this.props.games.map((game, i) => (
+
+                <div>
+                  <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
+                    <GameDetails index={i} game={game} />
+                  </Link>
+                  <button className="gameDelete" onClick={() => this.delete(game["gameId"])}>
+                    Delete
+            </button>
+                </div>
+
+              ))
+            )}
           {this.props.games.length > 0 ? (
             <div>
               <div>New Game</div>
@@ -129,11 +136,13 @@ function GameDetails({ game }) {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
-    games: gamesList.games
+    games: gamesList.games,
+    game: gamesList.game,
+    gameId: gamesList.gameId,
   };
 };
 
 export default connect(
   mapStateToProps,
-  { fetchGamesReq }
+  { fetchGamesReq, deleteGameReq }
 )(GamesList);

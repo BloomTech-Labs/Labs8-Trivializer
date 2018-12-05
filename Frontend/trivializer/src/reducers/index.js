@@ -77,10 +77,10 @@ const gamesReducer = (state = initialState, action) => {
       });
     case FETCHING_GAME:
       return Object.assign({}, state, {
-        fetching_game: true
+        fetching_game: true,
+        game: []
       });
     case FETCHED_GAME:
-      console.log("action.payload[0]: ", action.payload[0]);
       return Object.assign({}, state, {
         fetching_game: false,
         fetched_game: true,
@@ -112,7 +112,8 @@ const gamesReducer = (state = initialState, action) => {
       });
     case UPDATING_GAME:
       return Object.assign({}, state, {
-        updating_game: true
+        updating_game: true,
+        // game: []
       });
     case UPDATED_GAME:
       return Object.assign({}, state, {
