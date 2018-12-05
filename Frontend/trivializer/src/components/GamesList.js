@@ -5,7 +5,9 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchGamesReq, deleteGameReq } from "../actions";
 import "./Components.css";
+import axios from "axios";
 import "./GamesList.css";
+
 
 
 /**
@@ -27,6 +29,26 @@ class GamesList extends Component {
     // NOTE: setState after API request doesn't render state in time
     // this.setState({ games: this.props.games });
     // SOLUTION: render with props directly
+    if (localStorage.getItem("register")) {
+      let googleUsername = localStorage.getItem("user").displayName;
+      let googleUID = localStorage.getItem("user").uid;
+      axios
+        .post("https://testsdepl.herokuapp.com/users/login", {
+          username: googleUsername,
+          password: googleUID
+        })
+        .then(res => {
+          sessionStorage.setItem("userId", JSON.stringify(res.data.userId));
+          sessionStorage.setItem(
+            "jwt",
+            JSON.stringify(res.data.token)
+              .split("")
+              .slice(1, -1)
+              .join("")
+          );
+          sessionStorage.setItem("google", "yes");
+        });
+    }
   }
 
   componentDidUpdate = prevProps => {

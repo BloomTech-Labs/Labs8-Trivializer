@@ -1,6 +1,6 @@
 /* Top Navbar */
 .bg-light {
-  background-color: white !important;
+  background-color: white !important; /*Note: important is put here because by default, our white is not white enough to match our logo white. */
 }
 
 .landingpage-navbar-right {
@@ -38,6 +38,11 @@
 
 .modal-body {
   padding: 18px 0 0 0;
+}
+
+.signup-body {
+  display: flex;
+  flex-direction: column;
 }
 
 .signup-body input,
@@ -87,6 +92,11 @@ input:hover {
 .google-button-signup:hover {
   cursor: pointer;
   background-color: rgb(241, 241, 241);
+}
+
+#new-signup,
+#new-signin {
+  cursor: pointer;
 }
 
 /* Carousel */
@@ -149,9 +159,4 @@ input:hover {
   .description-text {
     width: 80%;
   }
-}
-
-#new-signup,
-#new-signin {
-  cursor: pointer;
 }

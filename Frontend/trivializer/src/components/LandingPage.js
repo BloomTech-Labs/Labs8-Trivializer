@@ -183,6 +183,7 @@ class LandingPage extends React.Component {
     e.preventDefault();
     auth.signInWithPopup(provider).then(result => {
       const user = result.user;
+      localStorage.setItem("user", JSON.stringify(user));
       googleUsername = user.displayName;
       googleUID = user.uid;
       axios
@@ -192,6 +193,7 @@ class LandingPage extends React.Component {
           email: user.email
         })
         .then(res => {
+          localStorage.setItem("register", "yes");
           localStorage.setItem("user", JSON.stringify(user));
           sessionStorage.setItem(
             "user",
@@ -215,9 +217,9 @@ class LandingPage extends React.Component {
                   .join("")
               );
               sessionStorage.setItem("google", "yes");
+              window.location.reload();
+              this.redirect();
             });
-          window.location.reload();
-          this.redirect();
         })
         .catch(err => {
           axios
@@ -226,6 +228,8 @@ class LandingPage extends React.Component {
               password: user.uid
             })
             .then(res => {
+              localStorage.removeItem("register");
+              localStorage.setItem("thenerror", "then");
               sessionStorage.setItem(
                 "jwt",
                 JSON.stringify(res.data.token)
@@ -247,6 +251,7 @@ class LandingPage extends React.Component {
           .slice(1, -1)
           .join("")
       );
+      localStorage.setItem("error", "errrrr");
     });
   };
   signOut = e => {
@@ -557,6 +562,8 @@ class LandingPage extends React.Component {
             />
             <li data-target="#carouselExampleIndicators" data-slide-to="1" />
             <li data-target="#carouselExampleIndicators" data-slide-to="2" />
+            <li data-target="#carouselExampleIndicators" data-slide-to="3" />
+            <li data-target="#carouselExampleIndicators" data-slide-to="4" />
           </ol>
           <div class="carousel-inner">
             <div class="carousel-item active">
@@ -567,16 +574,26 @@ class LandingPage extends React.Component {
               />
             </div>
             <div class="carousel-item">
+              <img class="carousel-design d-block w-100" src="../img/neon.jpg" alt="Second slide" />
+            </div>
+            <div class="carousel-item">
               <img
                 class="carousel-design d-block w-100"
-                src="../img/back4.jpg"
-                alt="Second slide"
+                src="../img/questionmark2.jpg"
+                alt="Third slide"
               />
             </div>
             <div class="carousel-item">
               <img
                 class="carousel-design d-block w-100"
-                src="../img/back4.jpg"
+                src="../img/trivia.jpg"
+                alt="Third slide"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                class="carousel-design d-block w-100"
+                src="../img/trivia2.jpg"
                 alt="Third slide"
               />
             </div>

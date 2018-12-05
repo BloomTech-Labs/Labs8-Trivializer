@@ -1,9 +1,38 @@
+/* Vertical Navbar */
+.vertical-navbar {
+  width: 150px;
+  height: 75vh;
+  background-color: #f04e39;
+  height: 95vh;
+}
+
+.vertical-navbar li {
+  margin-top: 10px;
+  line-height: 15px;
+  text-align: left;
+}
+
+.nav-link {
+  color: white;
+  font-size: 18px;
+}
+
+.nav-link:hover {
+  color: black;
+}
+
+.nav-logout {
+  cursor: pointer;
+}
+
+/* Navbar for Tablet View */
 @media screen and (max-width: 780px) {
   .vertical-navbar {
     width: 120px;
   }
 }
 
+/* Phone View, killing off vertical navbar */
 @media screen and (max-width: 400px) {
   .vertical-navbar {
     display: none;
@@ -29,12 +58,9 @@
   }
 }
 
+/* Normal desktop view to kill off horizontal navbar when it gets too big */
 @media screen and (min-width: 450px) {
   .hor-navbar {
     display: none;
   }
-}
-
-.nav-logout {
-  cursor: pointer;
 }
