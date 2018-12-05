@@ -37,7 +37,6 @@ class Round extends Component {
   }
 
   componentDidMount = () => {
-    console.log("this.props componentDidMount: ", this.props);
     // If questions are passed in, just collect the answers, don't make the API call
     if (this.props.questions.length > 0) {
       // questions will now have unique Id's and complete answers array
@@ -48,20 +47,6 @@ class Round extends Component {
     } else {
       this.setState({ noResults: true });
     }
-
-    //   let concatenatedURL = this.buildApiCall();
-    //   console.log("concatenatedURL: ", concatenatedURL);
-    //   //   Call axios with input parameters
-    //   axios.get(concatenatedURL).then(response => {
-    //     if (response.data.response_code !== 0) {
-    //       this.setState({ noResults: true });
-    //     }
-    //     console.log("response.data.results: ", response.data.results);
-    //     // questions will now have unique Id's and complete answers array
-    //     let questions = this.addIds(response.data.results);
-
-    //     this.setState({ questions: questions });
-    //   });
   };
 
   // Builds a call to the questions API based on which parameters in state are set

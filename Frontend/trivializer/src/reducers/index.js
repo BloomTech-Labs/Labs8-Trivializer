@@ -9,6 +9,10 @@ import {
   FETCHED_SAVED_QUESTIONS,
   FETCHING_NEW_QUESTIONS,
   FETCHED_NEW_QUESTIONS,
+  FETCHING_ALL_QUESTIONS,
+  FETCHED_ALL_QUESTIONS,
+  FETCHING_ALL_ROUNDS,
+  FETCHED_ALL_ROUNDS,
   SAVING_GAME,
   SAVED_GAME,
   DELETING_GAME,
@@ -32,6 +36,8 @@ import {
 import { combineReducers } from "redux";
 
 const initialState = {
+  all_rounds: [],
+  all_questions: [],
   games: [],
   game: [],
   rounds: [],
@@ -58,6 +64,10 @@ const initialState = {
   fetched_saved_questions: false,
   fetching_new_questions: false,
   fetched_new_questions: false,
+  fetching_all_rounds: false,
+  fetched_all_rounds: false,
+  fetching_all_questions: false,
+  fetched_all_questions: false,
   deleting_questions: false,
   deleting_questions: false,
   saving_game: false,
@@ -126,7 +136,7 @@ const gamesReducer = (state = initialState, action) => {
       });
     case UPDATING_GAME:
       return Object.assign({}, state, {
-        updating_game: true,
+        updating_game: true
         // game: []
       });
     case UPDATED_GAME:
@@ -236,6 +246,28 @@ const gamesReducer = (state = initialState, action) => {
         saving_questions: false,
         saved_questions: true,
         fetched_new_questions: false
+      });
+    case FETCHING_ALL_ROUNDS:
+      return Object.assign({}, state, {
+        fetching_all_rounds: true,
+        fetched_all_rounds: false
+      });
+    case FETCHED_ALL_ROUNDS:
+      return Object.assign({}, state, {
+        fetching_all_rounds: false,
+        fetched_all_rounds: true,
+        all_rounds: action.payload
+      });
+    case FETCHING_ALL_QUESTIONS:
+      return Object.assign({}, state, {
+        fetching_all_questions: true,
+        fetched_all_questions: false
+      });
+    case FETCHED_ALL_QUESTIONS:
+      return Object.assign({}, state, {
+        fetching_all_questions: false,
+        fetched_all_questions: true,
+        all_questions: action.payload
       });
     // This resets the state in Rounds.js to avoid
     // triggering a push in componentDidUpdate when not necessary

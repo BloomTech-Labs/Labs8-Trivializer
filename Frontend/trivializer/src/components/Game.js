@@ -7,6 +7,7 @@ import EditGameView from "./EditGameView";
 import RoundsList from "./RoundsList";
 import "./Game.css";
 import ReactToPrint from "react-to-print";
+import RoundAnswers from "./RoundAnswers";
 
 /**
  * Game Component
@@ -30,7 +31,9 @@ class Game extends Component {
   }
 
   printAll = () => {
-    this.props.rounds.map();
+    this.props.rounds.map(round => {
+      console.log(round);
+    });
   };
 
   render() {
@@ -63,7 +66,7 @@ class Game extends Component {
               <EditGameView game={this.props.game} />
 
               <div className="game-buttons">
-                <button>Print Answer Sheets</button>
+                <button onClick={this.printAll}>Print Answer Sheets</button>
                 <button>Print Answer Key</button>
               </div>
             </div>

@@ -11,6 +11,8 @@ export const UPDATING_GAME = "UPDATING_GAME";
 export const UPDATED_GAME = "UPDATED_GAME";
 export const FETCHING_ROUNDS = "FETCHING_ROUNDS";
 export const FETCHED_ROUNDS = "FETCHED_ROUNDS";
+export const FETCHING_ALL_ROUNDS = "FETCHING_ALL_ROUNDS";
+export const FETCHED_ALL_ROUNDS = "FETCHED_ALL_ROUNDS";
 export const SAVING_ROUND = "SAVING_ROUND";
 export const SAVED_ROUND = "SAVED_ROUND";
 export const DELETING_ROUND = "DELETING_ROUND";
@@ -21,6 +23,8 @@ export const FETCHING_SAVED_QUESTIONS = "FETCHING_SAVED_QUESTIONS";
 export const FETCHED_SAVED_QUESTIONS = "FETCHED_SAVED_QUESTIONS";
 export const FETCHING_NEW_QUESTIONS = "FETCHING_NEW_QUESTIONS";
 export const FETCHED_NEW_QUESTIONS = "FETCHED_NEW_QUESTIONS";
+export const FETCHING_ALL_QUESTIONS = "FETCHING_ALL_QUESTIONS";
+export const FETCHED_ALL_QUESTIONS = "FETCHED_ALL_QUESTIONS";
 export const SAVING_QUESTIONS = "SAVING_QUESTIONS";
 export const SAVED_QUESTIONS = "SAVED_QUESTIONS";
 export const DELETING_QUESTIONS = "DELETING_QUESTIONS";
@@ -405,6 +409,47 @@ export const getNewQuestionsReq = questionsPackage => {
   };
 };
 
+export const getAllRoundsReq = () => {
+  return dispatch => {
+    dispatch({ type: FETCHING_ALL_ROUNDS });
+    axios
+      .get(`${BE_URL}/rounds`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        console.log("data: ", data);
+
+        dispatch({ type: FETCHED_ALL_ROUNDS, payload: data });
+      })
+      .catch(err => {
+        console.log("err.message getQuestionsReq: ", err.message);
+        dispatch({ type: ERROR, payload: err });
+      });
+  };
+};
+
+export const getAllQuestionsReq = () => {
+  return dispatch => {
+    dispatch({ type: FETCHING_ALL_QUESTIONS });
+    axios
+      .get(`${BE_URL}/questions`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        console.log("data: ", data);
+
+        dispatch({ type: FETCHED_ALL_QUESTIONS, payload: data });
+      })
+      .catch(err => {
+        console.log("err.message getQuestionsReq: ", err.message);
+        dispatch({ type: ERROR, payload: err });
+      });
+  };
+};
 // *********************   Accessory helper functions ******************//
 // Builds a call to the questions API based on which parameters in state are set
 const buildApiCall = callPackage => {
