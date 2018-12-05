@@ -25,8 +25,10 @@ class Setting extends React.Component {
       this.setState({ savedUser: savedUser });
       // If not google login, there won't be a sessionStorage item to get
     } else {
+      console.log("hello");
+      let normalUserId = JSON.parse(sessionStorage.getItem("userId"));
       axios
-        .get("https://testsdepl.herokuapp.com/users/users/1", auth)
+        .get(`https://testsdepl.herokuapp.com/users/users/${normalUserId}`, auth)
         .then(response => {
           this.setState({ savedUser: response.data });
         })
@@ -121,18 +123,19 @@ class Setting extends React.Component {
                     <input placeholder="Email" value={savedUser ? savedUser[0].email : null} />
                   </div>,
                   <div className="oldpassword">
-                    <p>Old Password: </p>
-                    <input
-                      type="password"
-                      placeholder="password"
-                      value={savedUser ? savedUser[0].password : null}
-                    />
+                    <p>Update Password: </p>
+                    <input type="password" placeholder="password" value="Enter a new Password" />
                   </div>
                 ]}
 
             <div className="newpassword">
               <p>New Password: </p>
               <input placeholder="Enter new password" />
+            </div>
+            <div>
+              {savedUser ? (
+                <div>Account Status: {savedUser[0].paid === 0 ? "Free" : "Premium"}</div>
+              ) : null}
             </div>
             <button onClick={this.uploadHandler}>Save Changes</button>
           </div>
