@@ -147,6 +147,7 @@ input:hover {
   .main-button {
     text-align: center;
     margin: 0 auto;
+    margin-bottom: 30px;
   }
 }
 
@@ -158,5 +159,8 @@ input:hover {
 
   .description-text {
     width: 80%;
+  }
+  #navbar-color img {
+    margin-left: -20px;
   }
 }
