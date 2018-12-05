@@ -69,7 +69,7 @@ class RoundsList extends Component {
     if (prevProps.new_questions !== this.props.new_questions) {
       if (this.props.fetched_new_questions) {
         console.log("CONDITION MET TO SAVE QUESTIONS!!!!");
-        let round_id = this.props.round.roundId;
+        let round_id = this.props.roundId;
         let questionsPackage = this.props.new_questions.slice();
         questionsPackage = questionsPackage.map(question => {
           question.rounds_id = round_id;

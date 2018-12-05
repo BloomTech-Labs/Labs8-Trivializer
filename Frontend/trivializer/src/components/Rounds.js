@@ -67,7 +67,8 @@ class Rounds extends Component {
       original_category: this.props.round.category || "any",
       original_difficulty: this.props.round.difficulty || "any",
       original_type: this.props.round.type || "any",
-      changed: true
+      changed: true,
+      savingRound: false
     };
   }
 
@@ -87,6 +88,14 @@ class Rounds extends Component {
         }
       }
     }
+
+    if (
+      prevProps.saving_questions !== this.props.saving_questions &&
+      this.state.savingRound === true
+    ) {
+      console.log("STATE IS DIFFERENT!!");
+      this.setState({ savingRound: false });
+    }
   };
 
   handleChange = e => {
@@ -98,6 +107,9 @@ class Rounds extends Component {
       console.log("No game ID!!");
       return;
     }
+    // For our button animation when saving round
+    this.setState({ savingRound: true });
+
     // Assemble backend info
     let formattedBackendRound = {
       gameId: this.props.gameId,
@@ -116,7 +128,6 @@ class Rounds extends Component {
     // Modify the existing round in the database
     this.props.editRoundReq(formattedBackendRound, this.props.round.roundId);
     // Get the updated questions from the questionsAPI
-
     let formattedQuestionsAPICall = this.formatQuestionsCall();
     this.props.getNewQuestionsReq(formattedQuestionsAPICall);
   };
@@ -254,9 +265,14 @@ class Rounds extends Component {
           <button onClick={this.saveRound} className="roundsButton">
             Save
           </button>
-          <button className="roundsButton" onClick={this.enterRound}>
-            See Questions
-          </button>
+          {this.state.savingRound ? (
+            <div>Saving Questions</div>
+          ) : (
+            <button className="roundsButton" onClick={this.enterRound}>
+              See Questions
+            </button>
+          )}
+
           <button className="roundsButton" onClick={this.delete}>
             Delete
           </button>
@@ -268,6 +284,7 @@ class Rounds extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
+    saving_questions: gamesList.saving_questions,
     fetched_saved_questions: gamesList.fetched_saved_questions,
     gameId: gamesList.gameId,
     gameName: gamesList.gameName,

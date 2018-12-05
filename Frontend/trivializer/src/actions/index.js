@@ -266,9 +266,11 @@ export const editRoundReq = (round, roundId) => {
         }
       })
       .then(({ data }) => {
+        console.log("data: ", data);
         dispatch({ type: EDITED_ROUND, payload: data });
       })
       .catch(err => {
+        console.log("err.message: ", err.message);
         dispatch({ type: ERROR, payload: err });
       });
   };
