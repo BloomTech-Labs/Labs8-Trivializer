@@ -17,6 +17,9 @@
 .navbar-right-list:hover {
   cursor: pointer;
 }
+.navbar-link {
+  color: black;
+}
 
 .navbar-link:hover {
   color: red;
