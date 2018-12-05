@@ -61,6 +61,16 @@
   background: #74cc21;
 }
 
+.undo-replace {
+  background-color: #f04e39;
+  border: 1px solid #f04e39;
+}
+
+.undo-replace:hover {
+  background-color: #c5402f;
+  border: 1px solid #c5402f;
+}
+
 .modal-content.modal-background {
   height: auto;
   border: 2px solid black;
