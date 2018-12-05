@@ -6,10 +6,12 @@ import App from "./App";
 it("renders without crashing", () => {
   const div = document.createElement("div");
   ReactDOM.render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
-    div
+    <Provider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+      , div
+    </Provider>
   );
   ReactDOM.unmountComponentAtNode(div);
 });
