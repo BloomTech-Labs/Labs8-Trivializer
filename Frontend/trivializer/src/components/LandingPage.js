@@ -138,7 +138,6 @@ class LandingPage extends React.Component {
 
     let credentials;
     let url;
-    let guest = {};
 
     if (e.target.name === "guest") {
       credentials = {
