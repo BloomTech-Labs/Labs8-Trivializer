@@ -4,6 +4,12 @@ import Navbar from "./Navbar";
 import "./Components.css";
 
 const Faqs = () => {
+  const logout = e => {
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    this.props.history.push("/");
+  };
   return (
     <div className="faqs-page">
       <div className="top-content">
@@ -19,6 +25,11 @@ const Faqs = () => {
             </ol>
           </nav>
         </div>
+        {localStorage.getItem("user") && sessionStorage.getItem("jwt") ? (
+          <div onClick={logout} className="top-rightside">
+            Sign Out
+          </div>
+        ) : null}
       </div>
 
       <div className="main-content">
