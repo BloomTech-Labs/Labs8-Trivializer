@@ -31,12 +31,6 @@ class Game extends Component {
     this.setState({ game: this.props.game, gameId: id });
   }
 
-  printAll = () => {
-    this.props.rounds.map(round => {
-      console.log(round);
-    });
-  };
-
   render() {
     if (!this.props.game) return <div>Loading...</div>;
 
@@ -85,7 +79,10 @@ class Game extends Component {
         </div>
 
         <div className="hidden">
-          <PrintAllAnswers ref={el => (this.answerSheetRef = el)} />
+          <PrintAllAnswers
+            game={this.props.game}
+            ref={el => (this.answerSheetRef = el)}
+          />
         </div>
       </div>
     );

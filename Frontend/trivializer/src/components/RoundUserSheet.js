@@ -10,9 +10,13 @@ class RoundUserSheet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      questions: this.props.questions
+      questions: []
     };
   }
+
+  componentDidMount = () => {
+    this.setState({ questions: this.props.questions });
+  };
 
   render() {
     const questions = this.props.questions;

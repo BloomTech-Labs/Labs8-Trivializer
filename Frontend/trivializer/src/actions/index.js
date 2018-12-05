@@ -33,8 +33,7 @@ export const RESET_ALL_QUESTIONS_ALL_ROUNDS = "RESET_ALL_QUESTIONS_ALL_ROUNDS";
 export const ERROR = "ERROR";
 
 const questionsApiURL = "https://opentdb.com/api.php?";
-const BE_URL =
-  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
+const BE_URL = process.env.REACT_APP_BE_URL || "http://localhost:3300/users";
 
 // sample games fetch with params
 // {
@@ -445,14 +444,12 @@ export const getAllQuestionsReq = () => {
         }
       })
       .then(({ data }) => {
-        console.log("data: ", data);
         // Convert all arrays (stored as strings) back into arrays
         data = data.map(question => {
           question.incorrect_answers = question.incorrect_answers.split("--");
           question.answers = question.answers.split("--");
           return question;
         });
-        console.log("data after split: ", data);
 
         dispatch({ type: FETCHED_ALL_QUESTIONS, payload: data });
       })

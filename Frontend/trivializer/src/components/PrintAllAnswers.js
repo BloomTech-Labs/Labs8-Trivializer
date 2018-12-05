@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Questions from "./Questions";
 import RoundAnswers from "./RoundAnswers";
 import { connect } from "react-redux";
+import "./PrintAllAnswers.css";
 import {
   getAllRoundsReq,
   getAllQuestionsReq,
@@ -20,6 +21,7 @@ class PrintAllAnswers extends Component {
   componentDidMount = () => {
     this.props.getAllRoundsReq();
     this.props.getAllQuestionsReq();
+    console.log("this.props.game: ", this.props.game);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -47,8 +49,16 @@ class PrintAllAnswers extends Component {
       this.props.getAllQuestionsReq();
       this.props.resetAllRoundsAllQuestionsReq();
     }
+
+    // If we deleted a round, get all questions and rounds
+    if (this.props.deleted_round) {
+      this.props.getAllRoundsReq();
+      this.props.getAllQuestionsReq();
+      this.props.resetAllRoundsAllQuestionsReq();
+    }
   };
   render() {
+    console.log("this.state: ", this.state);
     return (
       <div>
         {/* Map over questions and display questions with highlighted correct answer*/}
@@ -56,8 +66,27 @@ class PrintAllAnswers extends Component {
           let questions = this.state.questions.filter(
             question => question.rounds_id === round.id
           );
-          console.log("questions: ", questions);
-          return <RoundAnswers questions={questions} />;
+          return (
+            <div>
+              <div className="hiddenAnswers-info">
+                <div>{this.props.game.gamename}</div>
+                <div>{round.name}</div>
+                <div>
+                  <img
+                    className="logo-rounds"
+                    src={require("../img/trivializer_cropped.png")}
+                    alt="trivializer logo"
+                  />
+                </div>
+              </div>
+
+              <div className="instructions-round">
+                ***Please Circle the Correct Answer***
+              </div>
+
+              <RoundAnswers questions={questions} />
+            </div>
+          );
         })}
       </div>
     );
@@ -69,7 +98,8 @@ const mapStateToProps = ({ gamesList }) => {
     all_rounds: gamesList.all_rounds,
     all_questions: gamesList.all_questions,
     saved_round: gamesList.saved_round,
-    saved_questions: gamesList.saved_questions
+    saved_questions: gamesList.saved_questions,
+    deleted_round: gamesList.deleted_round
   };
 };
 

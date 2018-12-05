@@ -288,7 +288,8 @@ const gamesReducer = (state = initialState, action) => {
         fetched_all_rounds: false,
         fetched_all_questions: false,
         saved_round: false,
-        saved_questions: false
+        saved_questions: false,
+        deleted_round: false
       });
     case ERROR:
       return Object.assign({}, state, {

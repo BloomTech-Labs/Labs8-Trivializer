@@ -31,7 +31,7 @@ class Round extends Component {
       type: this.props.type,
       questions: [],
       questionsURL: "https://opentdb.com/api.php?",
-      usersAPI: "https://testsdepl.herokuapp.com/users",
+      usersAPI: "http://localhost:3300/users",
       replace: [],
       noResults: false
     };
@@ -319,11 +319,11 @@ class Round extends Component {
             </div>
           </div>
           {/* Hidden Answer sheets without highlighted answers. Shows on print */}
-          <RoundUserSheet
+          {/* <RoundUserSheet
             className="hiddenAnswers"
             ref={el => (this.answerSheetRef = el)}
-          />
-          {/* <div className="hiddenAnswers" ref={el => (this.answerSheetRef = el)}>
+          /> */}
+          <div className="hiddenAnswers" ref={el => (this.answerSheetRef = el)}>
             <div className="hiddenAnswers-info">
               <div>{this.state.gameName}</div>
               <div>{this.state.roundName}</div>
@@ -369,7 +369,7 @@ class Round extends Component {
                 </div>
               );
             })}
-          </div> */}
+          </div>
         </div>
       </div>
     );
