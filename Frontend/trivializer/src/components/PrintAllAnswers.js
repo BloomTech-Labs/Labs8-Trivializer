@@ -68,6 +68,7 @@ class PrintAllAnswers extends Component {
           );
           return (
             <div>
+              {index !== 0 ? <div className="page-break" /> : null}
               <div className="hiddenAnswers-info">
                 <div>{this.props.game.gamename}</div>
                 <div>{round.name}</div>

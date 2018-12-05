@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Questions from "./Questions";
+import "./RoundAnswers.css";
 
 class RoundAnswers extends Component {
   constructor(props) {
@@ -18,7 +19,10 @@ class RoundAnswers extends Component {
         {/* Map over questions and display questions with highlighted correct answer*/}
         {questions.map((question, index) => {
           return (
-            <Questions key={question.id} index={index} question={question} />
+            <div key={question.id}>
+              {(index + 1) % 6 === 0 ? <div className="page-break" /> : null}
+              <Questions index={index} question={question} />
+            </div>
           );
         })}
       </div>

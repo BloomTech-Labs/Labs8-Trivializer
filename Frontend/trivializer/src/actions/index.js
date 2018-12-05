@@ -373,7 +373,7 @@ export const saveQuestionsReq = questionsPackage => {
         dispatch({ type: SAVED_QUESTIONS, payload: data });
       })
       .catch(err => {
-        console.log("err.message saveQuestionsReq: ", err.message);
+        console.log("err.message saveQuestionsReq: ", err.response);
         dispatch({ type: ERROR, payload: err });
       });
 

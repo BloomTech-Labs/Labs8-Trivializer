@@ -64,6 +64,7 @@ class RoundsList extends Component {
         }
       }
     }
+
     // If the following two are true, we have received questions from the QuestionsAPI,
     // Save them to the Users Database
     if (prevProps.new_questions !== this.props.new_questions) {
@@ -80,6 +81,11 @@ class RoundsList extends Component {
         this.props.resetFetchedNewQuestions();
       }
     }
+    console.log(
+      "prevProps.roundId, this.props.roundId: ",
+      prevProps.roundId,
+      this.props.roundId
+    );
   };
 
   newRound = () => {

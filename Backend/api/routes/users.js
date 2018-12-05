@@ -642,7 +642,7 @@ server.post("/questions", utilities.protected, async (req, res) => {
   } catch (err) {
     console.log("err.message", err.message);
     console.log("err: ", err);
-    res.status(500).json({ error: "Problem saving questions" });
+    res.status(500).json(err);
   }
 });
 
