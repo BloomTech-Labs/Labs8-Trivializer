@@ -40,11 +40,14 @@ const NavBar = props => {
                 Games
               </Link>
             </li>
-            <li class="nav-item">
-              <Link to="/billing" className="nav-link active">
-                Billing
-              </Link>
-            </li>
+            {sessionStorage.getItem("userId") ? (
+              <li class="nav-item">
+                <Link to="/billing" className="nav-link active">
+                  Billing
+                </Link>
+              </li>
+            ) : null}
+
             <li class="nav-item">
               <Link to="/setting" className="nav-link active">
                 Setting
@@ -68,14 +71,22 @@ const NavBar = props => {
                 Games
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to="/billing" className="nav-link">
-                Billing
-              </Link>
-            </li>
+            {sessionStorage.getItem("userId") ? (
+              <li className="nav-item">
+                <Link to="/billing" className="nav-link">
+                  Billing
+                </Link>
+              </li>
+            ) : null}
+
             <li className="nav-item">
               <Link to="/setting" className="nav-link">
                 Setting
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="#" className="nav-link">
+                FAQ's
               </Link>
             </li>
           </div>
