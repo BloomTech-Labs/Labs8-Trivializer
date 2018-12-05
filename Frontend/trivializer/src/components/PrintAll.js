@@ -34,8 +34,7 @@ class PrintAllAnswerKey extends Component {
     ) {
       this.setState({
         rounds: this.props.all_rounds,
-        questions: this.props.all_questions,
-        userSheets: this.props.userSheets
+        questions: this.props.all_questions
       });
     }
     // If The Redux store indicates that we have saved a new round
