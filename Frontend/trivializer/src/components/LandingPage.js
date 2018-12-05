@@ -138,8 +138,16 @@ class LandingPage extends React.Component {
 
     let credentials;
     let url;
+    let guest = {};
 
-    if (e.target.name === "register" && this.validateRegister()) {
+    if (e.target.name === "guest") {
+      credentials = {
+        username: `guest${Date.now()}`,
+        password: `guest${Date.now()}`,
+        email: `guest${Date.now()}@gmail.com`
+      };
+      url = this.state.registerURL;
+    } else if ((e.target.name === "register" || e.target.name === "guest") && this.validateRegister()) {
       credentials = {
         username: this.state.signup_username,
         password: this.state.signup_password,
@@ -260,6 +268,17 @@ class LandingPage extends React.Component {
     sessionStorage.clear();
     window.location.reload();
   };
+
+  handleGuest = () => {
+    this.setState({
+      signup_username: `guest${Date.now()}`,
+      signup_email: `guest${Date.now()}@gmail.com`,
+      signup_password: `guest${Date.now()}`,
+      signup_password2: `guest${Date.now()}`,
+      isGuest: true
+    });
+    this.handleSubmit();
+  }
 
   render() {
     return (
@@ -639,12 +658,12 @@ class LandingPage extends React.Component {
               </p>
             </div>
 
-            <Link to="/gameslist" className="main-button btn btn-success">
+            <button name="guest" className="main-button btn btn-success" onClick={this.handleSubmit}>
               Play Without Logging In
-            </Link>
+            </button>
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }
