@@ -36,6 +36,7 @@ class GamesList extends Component {
         })
         .then(res => {
           sessionStorage.setItem("userId", JSON.stringify(res.data.userId));
+          sessionStorage.setItem("paid", JSON.stringify(res.data.paid));
           sessionStorage.setItem(
             "jwt",
             JSON.stringify(res.data.token)
