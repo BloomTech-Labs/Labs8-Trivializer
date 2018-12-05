@@ -1,44 +1,46 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Trivializer
 
-## Available Scripts
+### Intro
 
-In the project directory, you can run:
+Trivializer helps bar trivia hosts create their question sets and answer sheets by pulling from a large and free API of trivia questions. There are free and paid tiers of the app. Users who register get a welcomeemail and can reset their password via email as well.
+<br><br>
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-### `npm start`
+# Table of Contents
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- [Team](#team)
+- [Front End](#front-end)
+- [Back End](#back-end)
+- [Endpoints](#endpoints)
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+### Team
 
-### `npm test`
+- [Alex McEvoy](https://github.com/TangledTessellations)
+- [Nicky Chen](https://github.com/nchen0)
+- [Sagie Gelbhauer](https://github.com/Sgoal2)
+- [Chheany Mok](https://github.com/cmok4290)
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Front End:
 
-### `npm run build`
+Deployed: [Site Here](https://trivializer.netlify.com/)
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- React
+- Redux
+- Axios
+- Firebase
+- React Router
+- Stripe
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### Back End:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Node.js
+- Express
+- Knex
+- Sqlite3
+- Postgres
+- Simplecrypt
+- Mailgun
 
-### `npm run eject`
+Deployed: [Site Here](https://testsdepl.herokuapp.com/)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Endpoints:
