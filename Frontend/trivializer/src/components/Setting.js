@@ -8,7 +8,9 @@ class Setting extends React.Component {
   constructor() {
     super();
     this.state = {
-      savedUser: ""
+      savedUser: "",
+      file: "",
+      imagePreviewUrl: ""
     };
   }
   componentDidMount() {
@@ -38,6 +40,21 @@ class Setting extends React.Component {
     localStorage.clear();
     sessionStorage.clear();
     this.props.history.push("/");
+  };
+  fileChangedHandler = e => {
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    reader.onloadend = () => {
+      this.setState({
+        file: file,
+        imagePreviewUrl: reader.result
+      });
+    };
+
+    reader.readAsDataURL(file);
+  };
+  uploadHandler = () => {
+    console.log(this.state.selectedFile);
   };
 
   render() {
@@ -86,7 +103,16 @@ class Setting extends React.Component {
                   </div>
                 ]
               : [
+                  <input type="file" onChange={this.fileChangedHandler} />,
+
                   <div className="name">
+                    {this.state.imagePreviewUrl ? (
+                      <img
+                        className="uploaded-picture"
+                        width="200px"
+                        src={this.state.imagePreviewUrl}
+                      />
+                    ) : null}
                     <p>Username: </p>
                     <input placeholder="Name" value={savedUser ? savedUser[0].userName : null} />
                   </div>,
@@ -108,6 +134,7 @@ class Setting extends React.Component {
               <p>New Password: </p>
               <input placeholder="Enter new password" />
             </div>
+            <button onClick={this.uploadHandler}>Save Changes</button>
           </div>
         </div>
       </div>
