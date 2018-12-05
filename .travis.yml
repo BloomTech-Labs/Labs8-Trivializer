@@ -1,4 +1,4 @@
 language: node_js
 node_js:
   - "stable"
-before_script: cd Frontend/trivializer
+before_install: cd Frontend/trivializer

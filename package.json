@@ -2,11 +2,5 @@
   "dependencies": {
     "knex": "^0.15.2",
     "sqlite3": "^4.0.2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && cp build/index.html build/404.html",
-    "test": "npm test",
-    "eject": "react-scripts eject"
   }
 }
