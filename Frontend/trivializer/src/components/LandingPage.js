@@ -524,39 +524,31 @@ class LandingPage extends React.Component {
             <li data-target="#carouselExampleIndicators" data-slide-to="1" />
             <li data-target="#carouselExampleIndicators" data-slide-to="2" />
             <li data-target="#carouselExampleIndicators" data-slide-to="3" />
-            <li data-target="#carouselExampleIndicators" data-slide-to="4" />
           </ol>
           <div class="carousel-inner">
             <div class="carousel-item active">
               <img
                 className="carousel-design d-block w-100"
-                src="../img/back4.jpg"
+                src="../img/neon.jpg"
                 alt="First slide"
               />
             </div>
             <div class="carousel-item">
-              <img class="carousel-design d-block w-100" src="../img/neon.jpg" alt="Second slide" />
-            </div>
-            <div class="carousel-item">
               <img
                 class="carousel-design d-block w-100"
-                src="../img/questionmark2.jpg"
-                alt="Third slide"
+                src="../img/barscore.jpg"
+                alt="Second slide"
               />
             </div>
             <div class="carousel-item">
               <img
                 class="carousel-design d-block w-100"
-                src="../img/trivia.jpg"
+                src="../img/retroarcade.jpg"
                 alt="Third slide"
               />
             </div>
             <div class="carousel-item">
-              <img
-                class="carousel-design d-block w-100"
-                src="../img/trivia2.jpg"
-                alt="Third slide"
-              />
+              <img class="carousel-design d-block w-100" src="../img/open.jpg" alt="Third slide" />
             </div>
           </div>
           <a
