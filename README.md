@@ -3,6 +3,8 @@
 ### Intro
 
 Trivializer helps bar trivia hosts create their question sets and answer sheets by pulling from a large and free API of trivia questions. There are free and paid tiers of the app. Users who register get a welcomeemail and can reset their password via email as well.
+<br>
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 # Table of Contents
 
