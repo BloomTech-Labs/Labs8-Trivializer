@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { fetchGameReq } from "../actions";
 import EditGameView from "./EditGameView";
 import RoundsList from "./RoundsList";
+import "./Game.css";
+import ReactToPrint from "react-to-print";
 
 /**
  * Game Component
@@ -17,16 +19,7 @@ class Game extends Component {
       game: null,
       gameId: null,
       roundId: 0,
-      rounds: [
-        // {
-        //     id: 0,
-        //     title: "Round One",
-        //     numberOfQs: 10,
-        //     category: "",
-        //     difficulty: "",
-        //     type: ""
-        // }
-      ]
+      rounds: []
     };
   }
 
@@ -35,6 +28,10 @@ class Game extends Component {
     this.props.fetchGameReq(id);
     this.setState({ game: this.props.game, gameId: id });
   }
+
+  printAll = () => {
+    this.props.rounds.map();
+  };
 
   render() {
     if (!this.props.game) return <div>Loading...</div>;
@@ -61,10 +58,22 @@ class Game extends Component {
 
         <div className="main-content">
           <Navbar />
-          <div>
-            <EditGameView game={this.props.game} />
+          <div className="editAndRounds">
+            <div className="game-top">
+              <EditGameView game={this.props.game} />
+
+              <div className="game-buttons">
+                <button>Print Answer Sheets</button>
+                <button>Print Answer Key</button>
+              </div>
+            </div>
+
             <RoundsList id={this.props.match.params.id} />
           </div>
+        </div>
+
+        <div className="hidden">
+          {/* Check if we have rounds on props (retrieved in RoundsList.js), and if so, prepare our printout without answers */}
         </div>
       </div>
     );
@@ -73,8 +82,8 @@ class Game extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
-    game: gamesList.game[0]
-    // rounds: gamesList.game.rounds
+    game: gamesList.game[0],
+    rounds: gamesList.rounds
   };
 };
 

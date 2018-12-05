@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import { fetchGamesReq, deleteGameReq } from "../actions";
 import "./Components.css";
 import axios from "axios";
+import "./GamesList.css";
+
 
 
 /**
@@ -48,6 +50,15 @@ class GamesList extends Component {
         });
     }
   }
+
+  componentDidUpdate = prevProps => {
+    if (prevProps.games !== this.props.games) {
+      console.log("prevProps.games: ", prevProps.games);
+      console.log("this.props.games: ", this.props.games);
+      this.setState({ games: this.props.games });
+    }
+  };
+
 
   logout = e => {
     e.preventDefault();

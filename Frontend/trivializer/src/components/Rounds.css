@@ -81,13 +81,10 @@
   justify-content: center;
   align-items: center;
   width: 25%;
-  margin-left: 1%;
   min-height: 240px;
 }
 
 .newRound-inner {
-  min-width: 25%;
-  min-height: 25%;
   display: flex;
   flex-flow: column;
   justify-content: center;

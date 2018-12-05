@@ -45,21 +45,23 @@ class Round extends Component {
 
       this.setState({ questions: questions, noResults: false });
       return;
+    } else {
+      this.setState({ noResults: true });
     }
 
-    let concatenatedURL = this.buildApiCall();
-    console.log("concatenatedURL: ", concatenatedURL);
-    //   Call axios with input parameters
-    axios.get(concatenatedURL).then(response => {
-      if (response.data.response_code !== 0) {
-        this.setState({ noResults: true });
-      }
-      console.log("response.data.results: ", response.data.results);
-      // questions will now have unique Id's and complete answers array
-      let questions = this.addIds(response.data.results);
+    //   let concatenatedURL = this.buildApiCall();
+    //   console.log("concatenatedURL: ", concatenatedURL);
+    //   //   Call axios with input parameters
+    //   axios.get(concatenatedURL).then(response => {
+    //     if (response.data.response_code !== 0) {
+    //       this.setState({ noResults: true });
+    //     }
+    //     console.log("response.data.results: ", response.data.results);
+    //     // questions will now have unique Id's and complete answers array
+    //     let questions = this.addIds(response.data.results);
 
-      this.setState({ questions: questions });
-    });
+    //     this.setState({ questions: questions });
+    //   });
   };
 
   // Builds a call to the questions API based on which parameters in state are set
@@ -85,8 +87,8 @@ class Round extends Component {
     return concatenatedURL;
   };
 
-  // This functions both adds id's to the incoming
-  // questions (necessary for drag and drop) and complete answers
+  // This functions adds id's to the incoming
+  // questions (necessary for drag and drop)
   addIds = questionsIn => {
     let questions = questionsIn.map((question, i) => {
       question.id = i;
@@ -191,7 +193,8 @@ class Round extends Component {
         type: question.type,
         question: question.question,
         correct_answer: question.correct_answer,
-        incorrect_answers: question.incorrect_answers.join("--")
+        incorrect_answers: question.incorrect_answers.join("--"),
+        answers: question.answers.join("--")
       };
     });
     console.log("questionsPackage: ", questionsPackage);
@@ -204,7 +207,7 @@ class Round extends Component {
         }
       })
       .then(response => {
-        console.log(response);
+        console.log("response: ", response);
       })
       .catch(err => {
         console.log("err.message: ", err.message);
