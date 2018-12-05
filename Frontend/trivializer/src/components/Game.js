@@ -61,7 +61,10 @@ class Game extends Component {
                 <EditGameView game={this.props.game} />
 
                 <div className="game-buttons">
-                  {this.props.fetching_all_questions ? (
+                  {this.props.fetched_all_rounds === false &&
+                  this.props.fetched_all_questions === false &&
+                  this.props.saved_round === false &&
+                  this.props.saved_round === false ? (
                     <div>"Loading"</div>
                   ) : (
                     <ReactToPrint
@@ -73,7 +76,10 @@ class Game extends Component {
                       content={() => this.answerKeyRef}
                     />
                   )}
-                  {this.props.fetching_all_questions ? (
+                  {this.props.fetched_all_rounds === false &&
+                  this.props.fetched_all_questions === false &&
+                  this.props.saved_round === false &&
+                  this.props.saved_round === false ? (
                     <div>"Loading"</div>
                   ) : (
                     <ReactToPrint
@@ -113,7 +119,10 @@ const mapStateToProps = ({ gamesList }) => {
   return {
     game: gamesList.game[0],
     rounds: gamesList.rounds,
-    fetching_all_questions: gamesList.fetching_all_questions
+    fetched_all_questions: gamesList.fetched_all_questions,
+    fetched_all_rounds: gamesList.fetched_all_rounds,
+    saved_round: gamesList.saved_round,
+    saved_questions: gamesList.saved_questions
   };
 };
 

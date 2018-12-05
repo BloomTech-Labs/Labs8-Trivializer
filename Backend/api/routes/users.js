@@ -40,6 +40,30 @@ server.get("/games", (req, res) => {
     });
 });
 
+// Get all Rounds table UNPROTECTED!!
+server.get("/rounds", (req, res) => {
+  db("Rounds")
+    .then(response => {
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+// Get all Questions table UNPROTECTED
+server.get("/questions", (req, res) => {
+  db("Questions")
+    .then(response => {
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
 // Get all Rounds table
 server.get("/rounds", utilities.protected, (req, res) => {
   db("Rounds")
