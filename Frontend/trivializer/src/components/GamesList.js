@@ -107,7 +107,7 @@ class GamesList extends Component {
           ) : (
             this.props.games.map((game, i) => (
               <div className="game">
-                <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
+                <Link className="gameInfo" to={`/game/${game["gameId"]}`} key={game["gameId"]}>
                   <GameDetails index={i} game={game} />
                 </Link>
                 <button className="deleteButton" onClick={() => this.delete(game["gameId"])}>

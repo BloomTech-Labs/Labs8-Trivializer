@@ -1,7 +1,7 @@
 /* Styles GamesList.css */
 .game {
     border: 2px solid red;
-    margin: 4%;
+    margin: 3%;
     padding: 1%;
     display: flex;
     flex-flow: column;
@@ -17,3 +17,8 @@
     background: #EE4432;
     color: white;
   }
+  .gameInfo
+{
+    border: 2px solid blue; 
+    padding: 2%;
+}
