@@ -46,17 +46,17 @@ class CreateGameView extends Component {
     const ms = d.getTime();
 
     const game = {
-        username: sessionStorage.getItem("user"),
-        gameTitle: this.state.gameTitle,
-        gameDescription: this.state.gameDescription,
-        gameCreatedMS: this.state.gameCreatedMS,
-        gameScheduledMS: ms || 0
+      username: sessionStorage.getItem("user"),
+      gameTitle: this.state.gameTitle,
+      gameDescription: this.state.gameDescription,
+      gameCreatedMS: this.state.gameCreatedMS,
+      gameScheduledMS: ms || 0
     };
 
 
 
     this.props.submitGameReq(game);
-    this.props.history.push("/gameslist");
+    setTimeout(() => this.props.history.push("/gameslist"), 1000);
   };
 
   render() {
@@ -91,6 +91,7 @@ class CreateGameView extends Component {
               onChange={this.handleChange}
             />
             <input
+              type="text"
               name="gameDescription"
               placeholder="Game Description"
               value={this.state.gameDescription}

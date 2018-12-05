@@ -378,7 +378,7 @@ server.delete("/game/:id", utilities.protected, async (req, res) => {
       console.log("id: ", id);
   
   
-      res.status(200).json(`Round ${response} deleted`);
+      res.status(200).json(`Game ${response} deleted`);
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
