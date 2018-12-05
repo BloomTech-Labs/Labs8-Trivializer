@@ -17,6 +17,9 @@
 .navbar-right-list:hover {
   cursor: pointer;
 }
+.navbar-link {
+  color: black;
+}
 
 .navbar-link:hover {
   color: red;
@@ -127,6 +130,7 @@ input:hover {
   margin-top: 10px;
   height: 45px;
   font-size: 18px;
+  margin-bottom: 30px;
 }
 
 /* Tablet Design */
@@ -147,6 +151,7 @@ input:hover {
   .main-button {
     text-align: center;
     margin: 0 auto;
+    margin-bottom: 30px;
   }
 }
 
@@ -158,5 +163,8 @@ input:hover {
 
   .description-text {
     width: 80%;
+  }
+  #navbar-color img {
+    margin-left: -20px;
   }
 }

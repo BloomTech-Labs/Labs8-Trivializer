@@ -300,7 +300,9 @@ class LandingPage extends React.Component {
                 <div className="navbar-link">How To Play</div>
               </li>
               <li class="navbar-right-list active">
-                <div className="navbar-link">FAQ</div>
+                <Link to="/faqs" className="navbar-link">
+                  FAQ's
+                </Link>
               </li>
               <li class="navbar-right-list active">
                 <div className="navbar-link">About Us</div>

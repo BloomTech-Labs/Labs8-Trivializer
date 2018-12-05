@@ -12,6 +12,7 @@ import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import "./components/Components.css";
 import Invoices from "./components/Invoices";
+import Faqs from "./components/Faqs";
 
 /**
  * App Component
@@ -32,12 +33,9 @@ class App extends Component {
         <Route path="/creategame" component={CreateGameView} />
         <Route path="/setting" component={Setting} />
         <Route path="/invoices" component={Invoices} />
+        <Route path="/faqs" component={Faqs} />
         <Route exact path="/game/:id" render={props => <Game {...props} />} />
-        <Route
-          exact
-          path="/game/:id/round/:id"
-          render={props => <Round {...props} />}
-        />
+        <Route exact path="/game/:id/round/:id" render={props => <Round {...props} />} />
       </div>
     );
   }
