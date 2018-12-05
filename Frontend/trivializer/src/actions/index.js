@@ -28,6 +28,7 @@ export const DELETED_QUESTIONS = "DELETED_QUESTIONS";
 export const RESET = "RESET";
 export const RESET_NEW_QUESTIONS = "RESET_NEW_QUESTIONS";
 export const ERROR = "ERROR";
+export const SET_USER_STATUS = "SET_USER_STATUS";
 
 const questionsApiURL = "https://opentdb.com/api.php?";
 const BE_URL =
@@ -405,6 +406,12 @@ export const getNewQuestionsReq = questionsPackage => {
   };
 };
 
+export const setUserStatus = status => {
+  return dispatch => {
+    dispatch({ type: SET_USER_STATUS, payload: status });
+  };
+};
+
 // *********************   Accessory helper functions ******************//
 // Builds a call to the questions API based on which parameters in state are set
 const buildApiCall = callPackage => {
@@ -412,11 +419,11 @@ const buildApiCall = callPackage => {
 
   let category = `${
     callPackage.category ? `&category=${callPackage.category}` : ""
-  }`;
+    }`;
 
   let difficulty = `${
     callPackage.difficulty ? `&difficulty=${callPackage.difficulty}` : ""
-  }`;
+    }`;
 
   let type = `${callPackage.category ? `&type=${callPackage.type}` : ""}`;
 
@@ -436,4 +443,4 @@ const assembleAnswers = (correct_answer, incorrect_answers) => {
   return answers;
 };
 
-const formatSaveQuestionsPackage = () => {};
+const formatSaveQuestionsPackage = () => { };

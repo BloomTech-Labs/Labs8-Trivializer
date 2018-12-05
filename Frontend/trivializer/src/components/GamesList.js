@@ -19,8 +19,8 @@ class GamesList extends Component {
     super(props);
     this.state = {
       games: [],
-      game: this.props.game
-
+      game: this.props.game,
+      gameLimit: 3
     };
   }
 
@@ -48,6 +48,10 @@ class GamesList extends Component {
           );
           sessionStorage.setItem("google", "yes");
         });
+    }
+
+    if (sessionStorage.getItem("status") == 1) {
+      this.setState({ gameLimit: 10 });
     }
   }
 
@@ -103,7 +107,7 @@ class GamesList extends Component {
           <Navbar />
           {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
           {!this.props.games[0] ? (
-            <div>
+            <div className="game-container">
               <h3 className="main-middle">Add New Game</h3>
               <Link to={`/creategame`}>+</Link>
             </div>
@@ -121,7 +125,7 @@ class GamesList extends Component {
 
               ))
             )}
-          {this.props.games.length > 0 ? (
+          {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
             <div>
               <div>New Game</div>
               <Link to={`/creategame`}>+</Link>

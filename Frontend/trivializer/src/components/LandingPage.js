@@ -174,6 +174,7 @@ class LandingPage extends React.Component {
         sessionStorage.setItem("jwt", result.token);
         sessionStorage.setItem("user", credentials.username);
         sessionStorage.setItem("userId", result.userId);
+        sessionStorage.setItem("status", result.status);
         this.redirect();
       })
       .catch(err => {
