@@ -2,7 +2,8 @@
 .gameslist-page,
 .billing-page,
 .invoices-page,
-.setting-page {
+.setting-page,
+.faqs-page {
   display: flex;
   flex-direction: column;
 }
@@ -49,4 +50,9 @@
 .buy {
   width: 275px;
   height: 75px;
+}
+
+/* FAQs Page */
+.questions {
+  font-weight: bold;
 }
