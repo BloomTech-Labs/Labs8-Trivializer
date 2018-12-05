@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchGamesReq, deleteGameReq } from "../actions";
 import "./Components.css";
+import "./GamesList.css";
 
 
 /**
@@ -27,6 +28,15 @@ class GamesList extends Component {
     // this.setState({ games: this.props.games });
     // SOLUTION: render with props directly
   }
+
+  componentDidUpdate = prevProps => {
+    if (prevProps.games !== this.props.games) {
+      console.log("prevProps.games: ", prevProps.games);
+      console.log("this.props.games: ", this.props.games);
+      this.setState({ games: this.props.games });
+    }
+  };
+
 
   logout = e => {
     e.preventDefault();

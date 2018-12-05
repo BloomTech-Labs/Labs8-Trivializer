@@ -17,12 +17,19 @@ export const DELETING_ROUND = "DELETING_ROUND";
 export const DELETED_ROUND = "DELETED_ROUND";
 export const EDITING_ROUND = "EDITING_ROUND";
 export const EDITED_ROUND = "EDITED_ROUND";
-export const FETCHING_QUESTIONS = "FETCHING_QUESTIONS";
-export const FETCHED_QUESTIONS = "FETCHED_QUESTIONS";
+export const FETCHING_SAVED_QUESTIONS = "FETCHING_SAVED_QUESTIONS";
+export const FETCHED_SAVED_QUESTIONS = "FETCHED_SAVED_QUESTIONS";
+export const FETCHING_NEW_QUESTIONS = "FETCHING_NEW_QUESTIONS";
+export const FETCHED_NEW_QUESTIONS = "FETCHED_NEW_QUESTIONS";
+export const SAVING_QUESTIONS = "SAVING_QUESTIONS";
+export const SAVED_QUESTIONS = "SAVED_QUESTIONS";
+export const DELETING_QUESTIONS = "DELETING_QUESTIONS";
+export const DELETED_QUESTIONS = "DELETED_QUESTIONS";
 export const RESET = "RESET";
+export const RESET_NEW_QUESTIONS = "RESET_NEW_QUESTIONS";
 export const ERROR = "ERROR";
 
-const URL = process.env.REACT_APP_API_URL || "https://opentdb.com/api.php?";
+const questionsApiURL = "https://opentdb.com/api.php?";
 const BE_URL =
   process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
 
@@ -218,6 +225,7 @@ export const saveRoundReq = round => {
         }
       })
       .then(({ data }) => {
+        console.log("Saved Round data: ", data);
         dispatch({ type: SAVED_ROUND, payload: data });
       })
       .catch(err => {
@@ -227,7 +235,7 @@ export const saveRoundReq = round => {
 };
 
 // Takes in a round Id and returns that same Id to
-// delete the round from Redux store in Reducers, index.js
+// delete the round from Redux store in Reducers/index.js
 export const deleteRoundReq = roundId => {
   return dispatch => {
     dispatch({ type: DELETING_ROUND });
@@ -269,7 +277,7 @@ export const getQuestionsReq = (info, roundId) => {
 
   return dispatch => {
     console.log("IN dispatch, getQuestionsReq");
-    dispatch({ type: FETCHING_QUESTIONS });
+    dispatch({ type: FETCHING_SAVED_QUESTIONS });
     axios
       .get(`${BE_URL}/questions/${roundId}`, {
         headers: {
@@ -278,12 +286,12 @@ export const getQuestionsReq = (info, roundId) => {
       })
       .then(({ data }) => {
         console.log("data: ", data);
-        // If we have results from the USers API, assign questions to our info packet
+        // If we have results from the Users API, assign questions to our info packet
         if (data[0] && data[0].questionId !== null) {
           info.questions = data;
         }
         // Send info packet, either with new questions or original (should be empty array)
-        dispatch({ type: FETCHED_QUESTIONS, payload: info });
+        dispatch({ type: FETCHED_SAVED_QUESTIONS, payload: info });
       })
       .catch(err => {
         console.log("err.message getQuestionsReq: ", err.message);
@@ -297,3 +305,135 @@ export const resetRoundStateReq = () => {
     dispatch({ type: RESET });
   };
 };
+
+export const resetFetchedNewQuestions = () => {
+  return dispatch => {
+    dispatch({ type: RESET_NEW_QUESTIONS });
+  };
+};
+
+// questionsPackage needs rounds_id, category, difficulty, type, question, correct_answer, incorrect_answers
+export const saveQuestionsReq = questionsPackage => {
+  console.log("SAVE QUESTIONS REQ CALLED!!!!!");
+  questionsPackage = questionsPackage.map(question => {
+    return {
+      rounds_id: question.rounds_id,
+      category: question.category,
+      difficulty: question.difficulty,
+      type: question.type,
+      question: question.question,
+      correct_answer: question.correct_answer,
+      incorrect_answers: question.incorrect_answers.join("--"),
+      answers: question.answers.join("--")
+    };
+  });
+
+  console.log("questionsPackage: ", questionsPackage);
+
+  return dispatch => {
+    console.log("IN dispatch, saveQuestionsReq");
+    dispatch({ type: SAVING_QUESTIONS });
+
+    // First, delete all existing questions in our round
+    // Get the roundId from the first question
+    axios
+      .delete(`${BE_URL}/questions/${questionsPackage[0].rounds_id}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(response => {
+        console.log("response: ", response);
+      })
+      .catch(err => {
+        console.log("err.message: ", err.message);
+      });
+    console.log("ABOUT TO CALL POST TO QUESTIONS!!!");
+
+    axios
+      .post(`${BE_URL}/questions`, questionsPackage, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        console.log("data from Save questions: ", data);
+
+        // Send info packet, either with new questions or original (should be empty array)
+        dispatch({ type: SAVED_QUESTIONS, payload: data });
+      })
+      .catch(err => {
+        console.log("err.message saveQuestionsReq: ", err.message);
+        dispatch({ type: ERROR, payload: err });
+      });
+
+    console.log("DONE WITH POST TO /QUESTIONS!!!");
+  };
+};
+
+export const getNewQuestionsReq = questionsPackage => {
+  console.log("questionsPackage: ", questionsPackage);
+  return dispatch => {
+    console.log("IN dispatch, getQuestionsReq");
+    dispatch({ type: FETCHING_NEW_QUESTIONS });
+    let concatenatedURL = buildApiCall(questionsPackage);
+    console.log("concatenatedURL: ", concatenatedURL);
+    axios
+      .get(`${concatenatedURL}`)
+      .then(({ data }) => {
+        console.log("data NEW Questions: ", data);
+        // questions API returns 0 on success, check for errors from API
+        if (data.response_code !== 0) {
+          dispatch({ type: ERROR });
+        }
+        if (data && data.results.length > 0) {
+          data.results = data.results.map(question => {
+            question.answers = assembleAnswers(
+              question.correct_answer,
+              question.incorrect_answers
+            );
+            return question;
+          });
+        }
+        // Send info packet, either with new questions or original (should be empty array)
+        dispatch({ type: FETCHED_NEW_QUESTIONS, payload: data });
+      })
+      .catch(err => {
+        console.log("err.message getQuestionsReq: ", err.message);
+        dispatch({ type: ERROR, payload: err });
+      });
+  };
+};
+
+// *********************   Accessory helper functions ******************//
+// Builds a call to the questions API based on which parameters in state are set
+const buildApiCall = callPackage => {
+  let amount = `amount=${callPackage.numberOfQuestions || 1}`;
+
+  let category = `${
+    callPackage.category ? `&category=${callPackage.category}` : ""
+  }`;
+
+  let difficulty = `${
+    callPackage.difficulty ? `&difficulty=${callPackage.difficulty}` : ""
+  }`;
+
+  let type = `${callPackage.category ? `&type=${callPackage.type}` : ""}`;
+
+  let concatenatedURL = `${questionsApiURL}${amount}${category}${difficulty}${type}`;
+
+  return concatenatedURL;
+};
+
+// Assembles all answers into one array, then joins it into a string to save to the DB.
+const assembleAnswers = (correct_answer, incorrect_answers) => {
+  // Get a random number, this will be where we insert
+  // the correct answer into the incorrect answers
+  let index = Math.floor(Math.random() * (incorrect_answers.length + 1));
+  let answers = incorrect_answers.slice();
+  answers.splice(index, 0, correct_answer);
+
+  return answers;
+};
+
+const formatSaveQuestionsPackage = () => {};

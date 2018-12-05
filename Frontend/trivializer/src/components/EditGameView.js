@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchGameReq, updateGameReq } from "../actions";
+import "./EditGameView.css";
 
 /**
  * EditGameView
@@ -19,6 +20,7 @@ class EditGameView extends Component {
   }
 
   componentDidMount() {
+    console.log("This.props, ", this.props);
     if (this.props.game) {
       const d = new Date(this.props.game.datePlayed);
       const day =
@@ -58,8 +60,16 @@ class EditGameView extends Component {
 
   render() {
     return (
-      <div>
-        <div>Logo</div>
+      <div className="editGameView">
+        <div className="editGameView-top">
+          <div>Edit Game</div>
+          <img
+            className="editGameView-logo"
+            src={require("../img/trivializer_cropped.png")}
+            alt="trivializer logo"
+          />
+        </div>
+
         <input
           name="gameTitle"
           placeholder="Game Title"
@@ -79,8 +89,6 @@ class EditGameView extends Component {
           value={this.state.gameScheduled}
           onChange={this.handleChange}
         />
-        <button>Print Answer Sheets</button>
-        <button>Print Answer Key</button>
         <button onClick={this.handleUpdate}>Save Game</button>
       </div>
     );

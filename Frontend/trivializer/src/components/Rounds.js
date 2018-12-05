@@ -6,7 +6,8 @@ import {
   deleteRoundReq,
   editRoundReq,
   getQuestionsReq,
-  resetRoundStateReq
+  resetRoundStateReq,
+  getNewQuestionsReq
 } from "../actions";
 
 let categoryOptions = {
@@ -72,26 +73,36 @@ class Rounds extends Component {
 
   componentDidMount() {
     this.props.resetRoundStateReq();
-
-    if (this.lastRoundRef) {
-      console.log(
-        "this.lastRoundRef.clientWidth,this.lastRoundRef.clientHeight",
-        this.lastRoundRef.clientWidth,
-        this.lastRoundRef.clientHeight
-      );
-      this.props.getWidthHeight(
-        this.lastRoundRef.clientWidth,
-        this.lastRoundRef.clientHeight
-      );
-    }
   }
 
   componentDidUpdate = (prevProps, prevState) => {
+    // for (let item in prevProps) {
+    //   if (prevProps[item] !== this.props[item]) {
+    //     console.log("DIFFERENCE FOUND!!!");
+    //     console.log("item, prevProps[item]: ", item, prevProps[item]);
+    //     console.log("item, this.props[item]: ", item, this.props[item]);
+    //   }
+    // }
     if (prevProps.roundName !== this.props.roundName) {
-      if (this.props.fetched_questions) {
-        this.props.history.push(
-          `${this.props.gameId}/round/${this.props.round.roundId}`
-        );
+      if (this.props.fetched_saved_questions) {
+        if (
+          !this.props.history.location.pathname.split("/").includes("round")
+        ) {
+          // console.log("CONDITIONS MET TO PUSH TO HISTORY!!");
+          // console.log(
+          //   "this.props.fetched_saved_questions: ",
+          //   this.props.fetched_saved_questions
+          // );
+          // console.log(
+          //   "prevProps.roundName, this.props.roundName: ",
+          //   prevProps.roundName,
+          //   this.props.roundName
+          // );
+          // console.log("this.props.history: ", this.props.history);
+          this.props.history.push(
+            `${this.props.gameId}/round/${this.props.round.roundId}`
+          );
+        }
       }
     }
   };
@@ -114,9 +125,18 @@ class Rounds extends Component {
       difficulty: this.state.difficulty,
       questions: this.state.numQs
     };
+    // **************************
+    // If the new parameter are different from the old parameters
+    // make a new call to get the new questions from the Questions API
+    // save those questions under this roundID to the Questions Table
+    // **************************
 
     // Modify the existing round in the database
     this.props.editRoundReq(formattedBackendRound, this.props.round.roundId);
+    // Get the updated questions from the questionsAPI
+
+    let formattedQuestionsAPICall = this.formatQuestionsCall();
+    this.props.getNewQuestionsReq(formattedQuestionsAPICall);
   };
 
   delete = () => {
@@ -125,7 +145,7 @@ class Rounds extends Component {
 
   enterRound = () => {
     // First, save the round
-    this.saveRound();
+    // this.saveRound();
 
     // Get all of our info in the right format to call the questions API
     let formattedQuestionsRound = this.formatQuestionsCall();
@@ -162,11 +182,7 @@ class Rounds extends Component {
 
   render() {
     return (
-      <div
-        id={this.props.lastRound ? "lastRound" : null}
-        ref={this.props.lastRound ? el => (this.lastRoundRef = el) : null}
-        className="rounds"
-      >
+      <div className="rounds">
         <input
           type="text"
           onChange={this.handleChange}
@@ -270,12 +286,12 @@ class Rounds extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
-    fetching_questions: gamesList.fetching_questions,
-    fetched_questions: gamesList.fetched_questions,
+    fetched_saved_questions: gamesList.fetched_saved_questions,
     gameId: gamesList.gameId,
     gameName: gamesList.gameName,
     savingRound: gamesList.saving_round,
     savedRound: gamesList.saved_round,
+    editedRound: gamesList.edited_round,
     error: gamesList.error,
     rounds: gamesList.rounds,
     roundId: gamesList.roundId,
@@ -295,7 +311,8 @@ export default withRouter(
       deleteRoundReq,
       editRoundReq,
       getQuestionsReq,
-      resetRoundStateReq
+      resetRoundStateReq,
+      getNewQuestionsReq
     }
   )(Rounds)
 );
