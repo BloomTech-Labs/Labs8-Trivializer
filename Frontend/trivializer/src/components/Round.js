@@ -7,6 +7,7 @@ import "./Questions.css";
 import update from "react-addons-update";
 import ReactToPrint from "react-to-print";
 import { connect } from "react-redux";
+import RoundUserSheet from "./RoundUserSheet";
 
 const createDOMPurify = require("dompurify"); // Prevents XSS attacks from incoming HTML
 
@@ -318,7 +319,11 @@ class Round extends Component {
             </div>
           </div>
           {/* Hidden Answer sheets without highlighted answers. Shows on print */}
-          <div className="hiddenAnswers" ref={el => (this.answerSheetRef = el)}>
+          <RoundUserSheet
+            className="hiddenAnswers"
+            ref={el => (this.answerSheetRef = el)}
+          />
+          {/* <div className="hiddenAnswers" ref={el => (this.answerSheetRef = el)}>
             <div className="hiddenAnswers-info">
               <div>{this.state.gameName}</div>
               <div>{this.state.roundName}</div>
@@ -364,7 +369,7 @@ class Round extends Component {
                 </div>
               );
             })}
-          </div>
+          </div> */}
         </div>
       </div>
     );

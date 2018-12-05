@@ -27,10 +27,9 @@ import {
   EDITED_ROUND,
   SAVING_QUESTIONS,
   SAVED_QUESTIONS,
-  DELETING_QUESTIONS,
-  DELETED_QUESTIONS,
-  RESET,
+  RESET_ROUNDS,
   RESET_NEW_QUESTIONS,
+  RESET_ALL_QUESTIONS_ALL_ROUNDS,
   ERROR
 } from "../actions";
 import { combineReducers } from "redux";
@@ -271,7 +270,7 @@ const gamesReducer = (state = initialState, action) => {
       });
     // This resets the state in Rounds.js to avoid
     // triggering a push in componentDidUpdate when not necessary
-    case RESET:
+    case RESET_ROUNDS:
       console.log("RESET CALLED!!");
       return Object.assign({}, state, {
         fetched_saved_questions: false,
@@ -282,6 +281,14 @@ const gamesReducer = (state = initialState, action) => {
       console.log("RESET New  Questions CALLED!!");
       return Object.assign({}, state, {
         fetched_new_questions: false
+      });
+
+    case RESET_ALL_QUESTIONS_ALL_ROUNDS:
+      return Object.assign({}, state, {
+        fetched_all_rounds: false,
+        fetched_all_questions: false,
+        saved_round: false,
+        saved_questions: false
       });
     case ERROR:
       return Object.assign({}, state, {

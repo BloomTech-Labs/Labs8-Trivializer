@@ -27,10 +27,9 @@ export const FETCHING_ALL_QUESTIONS = "FETCHING_ALL_QUESTIONS";
 export const FETCHED_ALL_QUESTIONS = "FETCHED_ALL_QUESTIONS";
 export const SAVING_QUESTIONS = "SAVING_QUESTIONS";
 export const SAVED_QUESTIONS = "SAVED_QUESTIONS";
-export const DELETING_QUESTIONS = "DELETING_QUESTIONS";
-export const DELETED_QUESTIONS = "DELETED_QUESTIONS";
-export const RESET = "RESET";
+export const RESET_ROUNDS = "RESET_ROUNDS";
 export const RESET_NEW_QUESTIONS = "RESET_NEW_QUESTIONS";
+export const RESET_ALL_QUESTIONS_ALL_ROUNDS = "RESET_ALL_QUESTIONS_ALL_ROUNDS";
 export const ERROR = "ERROR";
 
 const questionsApiURL = "https://opentdb.com/api.php?";
@@ -306,13 +305,19 @@ export const getQuestionsReq = (info, roundId) => {
 
 export const resetRoundStateReq = () => {
   return dispatch => {
-    dispatch({ type: RESET });
+    dispatch({ type: RESET_ROUNDS });
   };
 };
 
 export const resetFetchedNewQuestions = () => {
   return dispatch => {
     dispatch({ type: RESET_NEW_QUESTIONS });
+  };
+};
+
+export const resetAllRoundsAllQuestionsReq = () => {
+  return dispatch => {
+    dispatch({ type: RESET_ALL_QUESTIONS_ALL_ROUNDS });
   };
 };
 
@@ -441,6 +446,13 @@ export const getAllQuestionsReq = () => {
       })
       .then(({ data }) => {
         console.log("data: ", data);
+        // Convert all arrays (stored as strings) back into arrays
+        data = data.map(question => {
+          question.incorrect_answers = question.incorrect_answers.split("--");
+          question.answers = question.answers.split("--");
+          return question;
+        });
+        console.log("data after split: ", data);
 
         dispatch({ type: FETCHED_ALL_QUESTIONS, payload: data });
       })

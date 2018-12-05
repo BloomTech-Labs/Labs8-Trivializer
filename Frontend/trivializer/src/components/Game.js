@@ -8,6 +8,7 @@ import RoundsList from "./RoundsList";
 import "./Game.css";
 import ReactToPrint from "react-to-print";
 import RoundAnswers from "./RoundAnswers";
+import PrintAllAnswers from "./PrintAllAnswers";
 
 /**
  * Game Component
@@ -66,7 +67,15 @@ class Game extends Component {
               <EditGameView game={this.props.game} />
 
               <div className="game-buttons">
-                <button onClick={this.printAll}>Print Answer Sheets</button>
+                <ReactToPrint
+                  trigger={() => (
+                    <button type="button" className="btn btn-primary round">
+                      Print Answer Sheets
+                    </button>
+                  )}
+                  content={() => this.answerSheetRef}
+                />
+
                 <button>Print Answer Key</button>
               </div>
             </div>
@@ -76,7 +85,7 @@ class Game extends Component {
         </div>
 
         <div className="hidden">
-          {/* Check if we have rounds on props (retrieved in RoundsList.js), and if so, prepare our printout without answers */}
+          <PrintAllAnswers ref={el => (this.answerSheetRef = el)} />
         </div>
       </div>
     );
