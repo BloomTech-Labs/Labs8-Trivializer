@@ -104,26 +104,28 @@ class PrintAll extends Component {
       this.props.all_questions
     ) {
       console.log("ALL_QUESTIONS DIFFERENT!!!!");
-      let rounds = this.props.rounds.filter(
-        round => round.game_id === this.props.gameId
-      );
+      console.log("THIS.PROPS.ALL_QUESTIONS: ", this.props.all_questions);
+      console.log("this.state.questions: ", this.state.questions);
+      // let rounds = this.props.rounds.filter(
+      //   round => round.game_id === this.props.gameId
+      // );
 
-      let roundIds = rounds.map(round => round.id);
+      // let roundIds = this.props.rounds.map(round => round.roundId);
 
-      let questions = this.props.all_questions.slice();
+      // let questions = this.props.all_questions.slice();
 
-      questions.reduce((acc, question) => {
-        if (roundIds.includes(question.rounds_id)) {
-          acc.push(question);
-        }
-        return acc;
-      }, []);
+      // questions.reduce((acc, question) => {
+      //   if (roundIds.includes(question.rounds_id)) {
+      //     acc.push(question);
+      //   }
+      //   return acc;
+      // }, []);
 
-      console.log("questions: ", questions);
+      // console.log("questions: ", questions);
 
       this.setState({
-        rounds: rounds,
-        questions: questions
+        // rounds: rounds,
+        questions: this.props.all_questions
       });
     }
 
@@ -165,10 +167,7 @@ class PrintAll extends Component {
   render() {
     console.log("this.state.questions: ", this.state.questions);
     console.log("this.state.rounds: ", this.state.rounds);
-    // if (!this.state.questions || !this.state.rounds) {
-    //   this.setState();
-    //   return null;
-    // }
+
     return (
       <div>
         {/* Map over questions and display questions with highlighted correct answer*/}
