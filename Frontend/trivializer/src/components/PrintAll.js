@@ -73,7 +73,7 @@ class PrintAll extends Component {
 
     // If we deleted a round, get all questions and rounds
     if (this.props.deleted_round) {
-      this.props.getAllRoundsReq();
+      this.props.fetchRoundsReq(this.props.gameId);
       this.props.getAllQuestionsReq();
       this.props.resetAllRoundsAllQuestionsReq();
     }
