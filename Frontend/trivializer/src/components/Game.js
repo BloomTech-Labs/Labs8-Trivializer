@@ -102,11 +102,15 @@ class Game extends Component {
           <PrintAll
             userSheets={false}
             game={this.props.game}
+            gameId={this.props.match.params.id}
+            rounds={this.props.rounds}
             ref={el => (this.answerKeyRef = el)}
           />
           <PrintAll
             userSheets={true}
             game={this.props.game}
+            gameId={this.props.match.params.id}
+            rounds={this.props.rounds}
             ref={el => (this.userSheetRef = el)}
           />
         </div>
