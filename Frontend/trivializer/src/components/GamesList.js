@@ -130,8 +130,10 @@ class GamesList extends Component {
 
               <div className="game-container">
                 <div className="game-summary">
-                  <div>New Game</div>
-                  <Link to={`/creategame`}>+</Link>
+                  <Link className="newgame-link" to={`/creategame`}>
+                    <div>New Game</div>
+                    <div>+</div>
+                  </Link>
                 </div>
               </div>
             ) : null}
