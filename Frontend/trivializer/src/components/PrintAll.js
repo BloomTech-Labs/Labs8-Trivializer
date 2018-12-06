@@ -3,6 +3,7 @@ import RoundAnswers from "./RoundAnswers";
 import { connect } from "react-redux";
 import "./PrintAll.css";
 import {
+  fetchRoundsReq,
   getAllRoundsReq,
   getAllQuestionsReq,
   resetAllRoundsAllQuestionsReq
@@ -20,58 +21,90 @@ class PrintAll extends Component {
   }
 
   componentDidMount = () => {
-    this.props.getAllRoundsReq();
+    console.log("COMPONENTDIDMOUNT!!");
+    this.props.fetchRoundsReq(this.props.gameId);
+    // this.props.getAllRoundsReq();
     this.props.getAllQuestionsReq();
+    // this.setState({
+    //   rounds: this.props.all_rounds,
+    //   questions: this.state.all_questions
+    // });
     console.log("this.props PrintAll: ", this.props);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    // If our props for either rounds or questions have updated, set them
-    // on state
-    // console.log(
-    //   "JSON.stringify(prevProps.all_rounds) !== JSON.stringify(this.props.all_rounds))",
+    // Check to see if rounds updated, If so, get new rounds
+    // if (
     //   JSON.stringify(prevProps.all_rounds) !==
-    //     JSON.stringify(this.props.all_rounds)
-    // );
-    if (
-      JSON.stringify(prevProps.all_rounds) !==
-        JSON.stringify(this.props.all_rounds) &&
-      this.props.all_rounds
-    ) {
-      let rounds = this.props.all_rounds.filter(
-        round => round.game_id === this.props.gameId
-      );
-      console.log("NEW ROUNDS!!!");
-      console.log("rounds: ", rounds);
-      // let roundIds = rounds.map(round => round.id);
-      // console.log("roundIds: ", roundIds);
-      // console.log("this.props.all_questions: ", this.props.all_questions);
-      // let questions = this.props.all_questions.slice();
-      // questions.reduce((acc, question) => {
-      //   if (roundIds.includes(question.rounds_id)) {
-      //     acc.push(question);
-      //   }
-      // }, []);
+    //     JSON.stringify(this.props.all_rounds) &&
+    //   this.props.all_rounds
+    // ) {
+    //   let rounds = this.props.all_rounds.filter(
+    //     round => round.game_id === this.props.gameId
+    //   );
+    //   console.log("NEW ROUNDS!!!");
+    //   console.log("rounds: ", rounds);
 
-      // console.log("questions: ", questions);
+    //   this.setState({
+    //     rounds: rounds
+    //   });
+    // }
 
-      this.setState({
-        rounds: rounds
-      });
-    }
-
-    // console.log(
-    //   "JSON.stringify(prevProps.all_questions) !== JSON.stringify(this.props.all_questions",
+    // Check to see if all questions updated, if so, get both new rounds and questions
+    // this redundancy seems necessary to miss rounds that the first check missed
+    // else if (
     //   JSON.stringify(prevProps.all_questions) !==
-    //     JSON.stringify(this.props.all_questions)
-    // );
+    //     JSON.stringify(this.props.all_questions) &&
+    //   this.props.all_questions &&
+    //   this.props.all_rounds
+    // ) {
+    //   // Check to see if our state's rounds and questions are in sync with
+    //   // this.props's rounds and questions
+    //   console.log("ALL_QUESTIONS DIFFERENT!!!!");
+    //   let rounds = this.props.all_rounds.filter(
+    //     round => round.game_id === this.props.gameId
+    //   );
+
+    //   let roundIds = rounds.map(round => round.id);
+
+    //   let questions = this.props.all_questions.slice();
+
+    //   questions.reduce((acc, question) => {
+    //     if (roundIds.includes(question.rounds_id)) {
+    //       acc.push(question);
+    //     }
+    //     return acc;
+    //   }, []);
+
+    //   console.log("questions: ", questions);
+
+    //   this.setState({
+    //     rounds: rounds,
+    //     questions: questions
+    //   });
 
     if (
-      JSON.stringify(prevProps.all_questions) !==
-        JSON.stringify(this.props.all_questions) &&
+      JSON.stringify(this.props.rounds) !== JSON.stringify(this.state.rounds) &&
+      this.props.rounds
+    ) {
+      console.log(
+        "this.props.rounds, this.state.rounds: ",
+        this.props.rounds,
+        this.state.rounds
+      );
+      // console.log(this.props.gameId);
+      // let rounds = this.props.rounds.filter(
+      //   round => round.game_id === this.props.gameId
+      // );
+      this.setState({ rounds: this.props.rounds });
+    }
+    if (
+      JSON.stringify(this.props.all_questions) !==
+        JSON.stringify(this.state.questions) &&
       this.props.all_questions
     ) {
-      let rounds = this.props.all_rounds.filter(
+      console.log("ALL_QUESTIONS DIFFERENT!!!!");
+      let rounds = this.props.rounds.filter(
         round => round.game_id === this.props.gameId
       );
 
@@ -80,14 +113,16 @@ class PrintAll extends Component {
       let questions = this.props.all_questions.slice();
 
       questions.reduce((acc, question) => {
-        console.log("acc: ", questions);
         if (roundIds.includes(question.rounds_id)) {
           acc.push(question);
         }
         return acc;
       }, []);
 
+      console.log("questions: ", questions);
+
       this.setState({
+        rounds: rounds,
         questions: questions
       });
     }
@@ -96,7 +131,7 @@ class PrintAll extends Component {
     // get rounds from the database
     if (
       this.props.saved_round &&
-      (!this.props.fetching_all_rounds &&
+      (!this.props.fetching_rounds &&
         !this.props.fetching_all_questions &&
         !this.props.saving_questions &&
         !this.props.saving_round)
@@ -109,8 +144,8 @@ class PrintAll extends Component {
     // If The Redux store indicates that we have saved new questions
     // get questions from the database
     if (
-      this.props.saved_questions &&
-      (!this.props.fetching_all_rounds &&
+      this.props.saved_questions && // !this.props.fetching_all_rounds &&
+      (!this.props.fetching_rounds &&
         !this.props.fetching_all_questions &&
         !this.props.saving_questions &&
         !this.props.saving_round)
@@ -130,12 +165,16 @@ class PrintAll extends Component {
   render() {
     console.log("this.state.questions: ", this.state.questions);
     console.log("this.state.rounds: ", this.state.rounds);
+    // if (!this.state.questions || !this.state.rounds) {
+    //   this.setState();
+    //   return null;
+    // }
     return (
       <div>
         {/* Map over questions and display questions with highlighted correct answer*/}
         {this.state.rounds.map((round, index) => {
           let questions = this.state.questions.filter(
-            question => question.rounds_id === round.id
+            question => question.rounds_id === round.roundId
           );
           return (
             <div>
@@ -182,11 +221,17 @@ const mapStateToProps = ({ gamesList }) => {
     saved_questions: gamesList.saved_questions,
     deleted_round: gamesList.deleted_round,
     fetching_all_rounds: gamesList.fetching_all_rounds,
-    fetching_all_questions: gamesList.fetching_all_questions
+    fetching_all_questions: gamesList.fetching_all_questions,
+    fetching_rounds: gamesList.fetching_rounds
   };
 };
 
 export default connect(
   mapStateToProps,
-  { getAllRoundsReq, getAllQuestionsReq, resetAllRoundsAllQuestionsReq }
+  {
+    fetchRoundsReq,
+    getAllRoundsReq,
+    getAllQuestionsReq,
+    resetAllRoundsAllQuestionsReq
+  }
 )(PrintAll);

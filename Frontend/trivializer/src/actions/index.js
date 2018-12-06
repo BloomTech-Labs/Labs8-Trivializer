@@ -34,8 +34,7 @@ export const ERROR = "ERROR";
 export const SET_USER_STATUS = "SET_USER_STATUS";
 
 const questionsApiURL = "https://opentdb.com/api.php?";
-const BE_URL =
-  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
+const BE_URL = process.env.REACT_APP_BE_URL || "http://localhost:3300/users/"; //"https://testsdepl.herokuapp.com/users";
 
 // sample games fetch with params
 // {
@@ -208,6 +207,7 @@ export const fetchRoundsReq = id => {
         }
       })
       .then(({ data }) => {
+        console.log("Returned rounds in actions: ", data);
         if (!data[0]["roundId"]) {
           data = [];
         }
