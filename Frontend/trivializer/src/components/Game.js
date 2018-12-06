@@ -20,7 +20,8 @@ class Game extends Component {
       game: null,
       gameId: null,
       roundId: 0,
-      rounds: []
+      rounds: [],
+      hideButtons: false
     };
   }
 
@@ -29,6 +30,41 @@ class Game extends Component {
     this.props.fetchGameReq(id);
     this.setState({ game: this.props.game, gameId: id });
   }
+
+  componentDidUpdate = prevProps => {
+    if (
+      !(
+        this.props.fetched_all_rounds === false &&
+        this.props.fetched_all_questions === false &&
+        this.props.saved_round === false &&
+        this.props.saved_round === false
+      )
+    ) {
+      console.log(
+        "this.props.fetched_all_rounds: ",
+        this.props.fetched_all_rounds,
+        "this.props.fetched_all_questions: ",
+        this.props.fetched_all_questions,
+        "this.props.saved_round: ",
+        this.props.saved_round,
+        "this.props.saved_questions: ",
+        this.props.saved_questions
+      );
+    }
+    if (
+      this.props.saved_round ||
+      this.props.saved_questions ||
+      this.props.deleted_round
+    ) {
+      this.setState({ hideButtons: true });
+    }
+    // if (
+    //   prevProps.fetched_all_questions === true &&
+    //   this.props.fetched_all_questions === false
+    // ) {
+    //   this.setState({ hideButtons: false });
+    // }
+  };
 
   render() {
     return (
@@ -53,7 +89,7 @@ class Game extends Component {
 
         <div className="main-content">
           <Navbar />
-          {!this.props.game ? (
+          {this.state.hideButton ? (
             <div>Loading...</div>
           ) : (
             <div className="editAndRounds">
@@ -61,10 +97,7 @@ class Game extends Component {
                 <EditGameView game={this.props.game} />
 
                 <div className="game-buttons">
-                  {this.props.fetched_all_rounds === false &&
-                  this.props.fetched_all_questions === false &&
-                  this.props.saved_round === false &&
-                  this.props.saved_round === false ? (
+                  {!this.props.fetched_all_questions ? (
                     <div>"Loading"</div>
                   ) : (
                     <ReactToPrint
@@ -79,7 +112,7 @@ class Game extends Component {
                   {this.props.fetched_all_rounds === false &&
                   this.props.fetched_all_questions === false &&
                   this.props.saved_round === false &&
-                  this.props.saved_round === false ? (
+                  this.props.saved_questions === false ? (
                     <div>"Loading"</div>
                   ) : (
                     <ReactToPrint
@@ -126,7 +159,8 @@ const mapStateToProps = ({ gamesList }) => {
     fetched_all_questions: gamesList.fetched_all_questions,
     fetched_all_rounds: gamesList.fetched_all_rounds,
     saved_round: gamesList.saved_round,
-    saved_questions: gamesList.saved_questions
+    saved_questions: gamesList.saved_questions,
+    deleted_round: gamesList.deleted_round
   };
 };
 

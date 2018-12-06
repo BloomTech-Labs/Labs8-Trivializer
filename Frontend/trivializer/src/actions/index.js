@@ -360,7 +360,7 @@ export const saveQuestionsReq = questionsPackage => {
       });
     console.log("ABOUT TO CALL POST TO QUESTIONS!!!");
 
-    axios
+    await axios
       .post(`${BE_URL}/questions`, questionsPackage, {
         headers: {
           Authorization: `${sessionStorage.getItem("jwt")}`

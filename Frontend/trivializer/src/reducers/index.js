@@ -168,7 +168,8 @@ const gamesReducer = (state = initialState, action) => {
         saved_round: true,
         rounds: newRounds,
         round: action.payload,
-        roundId: action.payload.roundId
+        roundId: action.payload.roundId,
+        fetched_all_questions: false
       });
     case DELETING_ROUND:
       return Object.assign({}, state, {
@@ -288,7 +289,7 @@ const gamesReducer = (state = initialState, action) => {
     case RESET_ALL_QUESTIONS_ALL_ROUNDS:
       return Object.assign({}, state, {
         fetched_all_rounds: false,
-        fetched_all_questions: false,
+        fetched_all_questions: true,
         saved_round: false,
         saved_questions: false,
         deleted_round: false
