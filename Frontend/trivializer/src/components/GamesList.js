@@ -103,33 +103,35 @@ class GamesList extends Component {
 
         <div className="main-content">
           <Navbar />
-          {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
-          {!this.props.games[0] ? (
-            <div className="game-container">
-              <h3 className="main-middle">Add New Game</h3>
-              <Link to={`/creategame`}>+</Link>
-            </div>
-          ) : (
-              this.props.games.map((game, i) => (
+          <div className="gameslist-container">
+            {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
+            {!this.props.games[0] ? (
+              <div className="game-container">
+                <h3 className="main-middle">Add New Game</h3>
+                <Link to={`/creategame`}>+</Link>
+              </div>
+            ) : (
+                this.props.games.map((game, i) => (
 
-                <div>
-                  <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
-                    <GameDetails index={i} game={game} />
-                  </Link>
-                  <button className="gameDelete" onClick={() => this.delete(game["gameId"])}>
-                    Delete
+                  <div className="game-container">
+                    <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
+                      <GameDetails index={i} game={game} />
+                    </Link>
+                    <button className="game-delete" onClick={() => this.delete(game["gameId"])}>
+                      Delete
             </button>
-                </div>
+                  </div>
 
-              ))
-            )}
-          {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
+                ))
+              )}
+            {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
 
-            <div>
-              <div>New Game</div>
-              <Link to={`/creategame`}>+</Link>
-            </div>
-          ) : null}
+              <div className="game-container">
+                <div>New Game</div>
+                <Link to={`/creategame`}>+</Link>
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
     );

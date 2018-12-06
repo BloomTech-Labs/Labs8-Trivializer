@@ -15,9 +15,9 @@ class Games extends Component {
         const played = new Date(this.props.game.datePlayed);
 
         return (
-            <div>
+            <div className="game">
                 <div>{this.props.game.gamename}</div>
-                <div>{this.props.game.description}</div>
+                <div className="game-description">{this.props.game.description}</div>
                 {/* <div>Add game image</div> */}
                 <div>
                     Created:{" "}
@@ -29,7 +29,7 @@ class Games extends Component {
                     {this.props.game.datePlayed === 0
                         ? null
                         : `${played.getMonth() + 1}-${played.getDate() +
-                              1}-${played.getFullYear()}`}
+                        1}-${played.getFullYear()}`}
                 </div>
             </div>
         );
