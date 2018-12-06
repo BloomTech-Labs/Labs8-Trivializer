@@ -30,6 +30,7 @@ const successPayment = data => {
       console.log("err.response: ", err.response);
     });
   alert("Payment Successful");
+  sessionStorage.setItem("status", 1);
 };
 
 const errorPayment = data => {

@@ -31,6 +31,7 @@ export const RESET_ROUNDS = "RESET_ROUNDS";
 export const RESET_NEW_QUESTIONS = "RESET_NEW_QUESTIONS";
 export const RESET_ALL_QUESTIONS_ALL_ROUNDS = "RESET_ALL_QUESTIONS_ALL_ROUNDS";
 export const ERROR = "ERROR";
+export const SET_USER_STATUS = "SET_USER_STATUS";
 
 const questionsApiURL = "https://opentdb.com/api.php?";
 const BE_URL =
@@ -140,6 +141,7 @@ export const deleteGameReq = id => {
       })
       .then(({ data }) => {
         dispatch({ type: DELETED_GAME, payload: data });
+        window.location.reload();
       })
       .catch(err => {
         console.log(err);
@@ -462,11 +464,16 @@ export const getAllQuestionsReq = () => {
       });
   };
 };
+export const setUserStatus = status => {
+  return dispatch => {
+    dispatch({ type: SET_USER_STATUS, payload: status });
+  };
+};
+
 // *********************   Accessory helper functions ******************//
 // Builds a call to the questions API based on which parameters in state are set
 const buildApiCall = callPackage => {
   let amount = `amount=${callPackage.numberOfQuestions || 1}`;
-
   let category = `${
     callPackage.category ? `&category=${callPackage.category}` : ""
   }`;

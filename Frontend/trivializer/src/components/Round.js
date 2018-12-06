@@ -7,6 +7,7 @@ import "./Questions.css";
 import update from "react-addons-update";
 import ReactToPrint from "react-to-print";
 import { connect } from "react-redux";
+import "./Components.css";
 
 const createDOMPurify = require("dompurify"); // Prevents XSS attacks from incoming HTML
 
@@ -330,6 +331,7 @@ class Round extends Component {
                 />
               </div>
             </div>
+
             <div className="instructions-round">
               ***Please Circle the Correct Answer***
             </div>

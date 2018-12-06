@@ -8,8 +8,6 @@ import "./Components.css";
 import axios from "axios";
 import "./GamesList.css";
 
-
-
 /**
  * GamesList Component
  * - renders a list of games for the logged in user
@@ -19,8 +17,8 @@ class GamesList extends Component {
     super(props);
     this.state = {
       games: [],
-      game: this.props.game
-
+      game: this.props.game,
+      gameLimit: 3
     };
   }
 
@@ -39,6 +37,7 @@ class GamesList extends Component {
         })
         .then(res => {
           sessionStorage.setItem("userId", JSON.stringify(res.data.userId));
+          sessionStorage.setItem("paid", JSON.stringify(res.data.paid));
           sessionStorage.setItem(
             "jwt",
             JSON.stringify(res.data.token)
@@ -47,7 +46,12 @@ class GamesList extends Component {
               .join("")
           );
           sessionStorage.setItem("google", "yes");
+          localStorage.removeItem("register");
         });
+    }
+
+    if (sessionStorage.getItem("status") == 1) {
+      this.setState({ gameLimit: 10 });
     }
   }
 
@@ -59,7 +63,6 @@ class GamesList extends Component {
     }
   };
 
-
   logout = e => {
     e.preventDefault();
     localStorage.clear();
@@ -67,9 +70,9 @@ class GamesList extends Component {
     this.props.history.push("/");
   };
 
-  delete = (id) => {
+  delete = id => {
+    console.log("delete hitting");
     this.props.deleteGameReq(id);
-    window.location.reload();
   };
 
   render() {
@@ -103,7 +106,7 @@ class GamesList extends Component {
           <Navbar />
           {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
           {!this.props.games[0] ? (
-            <div>
+            <div className="game-container">
               <h3 className="main-middle">Add New Game</h3>
               <Link to={`/creategame`}>+</Link>
             </div>
@@ -121,7 +124,7 @@ class GamesList extends Component {
 
               ))
             )}
-          {this.props.games.length > 0 ? (
+          {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
             <div>
               <div>New Game</div>
               <Link to={`/creategame`}>+</Link>
@@ -149,7 +152,7 @@ const mapStateToProps = ({ gamesList }) => {
   return {
     games: gamesList.games,
     game: gamesList.game,
-    gameId: gamesList.gameId,
+    gameId: gamesList.gameId
   };
 };
 
