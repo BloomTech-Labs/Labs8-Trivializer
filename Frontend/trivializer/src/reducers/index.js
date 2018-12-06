@@ -150,11 +150,7 @@ const gamesReducer = (state = initialState, action) => {
         deleting_game: true
       });
     case DELETED_GAME:
-      return Object.assign({}, state, {
-        deleting_game: false,
-        deleted_game: true,
-        games: action.payload
-      });
+      return state;
     case SAVING_ROUND:
       return Object.assign({}, state, {
         saving_round: true,
@@ -180,9 +176,7 @@ const gamesReducer = (state = initialState, action) => {
       });
     case DELETED_ROUND:
       let reducedRounds = state.rounds.slice();
-      reducedRounds = reducedRounds.filter(
-        round => round.roundId !== action.payload
-      );
+      reducedRounds = reducedRounds.filter(round => round.roundId !== action.payload);
       return Object.assign({}, state, {
         deleting_round: false,
         deleted_round: true,

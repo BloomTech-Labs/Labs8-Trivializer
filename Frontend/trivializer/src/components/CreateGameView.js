@@ -59,7 +59,7 @@ class CreateGameView extends Component {
     };
 
     this.props.submitGameReq(game);
-    // this.props.history.push("/gameslist");
+    setTimeout(() => this.props.history.push("/gameslist"), 1000);
   };
 
   render() {
@@ -94,6 +94,7 @@ class CreateGameView extends Component {
               onChange={this.handleChange}
             />
             <input
+              type="text"
               name="gameDescription"
               placeholder="Game Description"
               value={this.state.gameDescription}

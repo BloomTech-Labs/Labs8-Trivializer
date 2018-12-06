@@ -143,7 +143,14 @@ class LandingPage extends React.Component {
     let credentials;
     let url;
 
-    if (e.target.name === "register" && this.validateRegister()) {
+    if (e.target.name === "guest") {
+      credentials = {
+        username: `guest${Date.now()}`,
+        password: `guest${Date.now()}`,
+        email: `guest${Date.now()}@gmail.com`
+      };
+      url = this.state.registerURL;
+    } else if (e.target.name === "register" && this.validateRegister()) {
       credentials = {
         username: this.state.signup_username,
         password: this.state.signup_password,
@@ -172,6 +179,7 @@ class LandingPage extends React.Component {
         sessionStorage.setItem("jwt", result.token);
         sessionStorage.setItem("user", credentials.username);
         sessionStorage.setItem("userId", result.userId);
+        sessionStorage.setItem("status", result.status);
         this.redirect();
       })
       .catch(err => {
@@ -651,10 +659,10 @@ class LandingPage extends React.Component {
                 a welcome email and can reset their password via email as well.
               </p>
             </div>
+            <button className="main-button btn btn-success" name="guest" onClick={this.handleSubmit}>
+              {localStorage.getItem("user") ? "Go To Games" : "Play Without Logging In"}
+            </button>
 
-            <Link to="/gameslist" className="main-button btn btn-success">
-              Play Without Logging In
-            </Link>
           </div>
         </div>
       </div>

@@ -17,7 +17,8 @@ class GamesList extends Component {
     super(props);
     this.state = {
       games: [],
-      game: this.props.game
+      game: this.props.game,
+      gameLimit: 3
     };
   }
 
@@ -36,6 +37,7 @@ class GamesList extends Component {
         })
         .then(res => {
           sessionStorage.setItem("userId", JSON.stringify(res.data.userId));
+          sessionStorage.setItem("paid", JSON.stringify(res.data.paid));
           sessionStorage.setItem(
             "jwt",
             JSON.stringify(res.data.token)
@@ -44,7 +46,12 @@ class GamesList extends Component {
               .join("")
           );
           sessionStorage.setItem("google", "yes");
+          localStorage.removeItem("register");
         });
+    }
+
+    if (sessionStorage.getItem("status") == 1) {
+      this.setState({ gameLimit: 10 });
     }
   }
 
@@ -65,7 +72,6 @@ class GamesList extends Component {
 
   delete = id => {
     this.props.deleteGameReq(id);
-    window.location.reload();
   };
 
   render() {
@@ -99,26 +105,26 @@ class GamesList extends Component {
           <Navbar />
           {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
           {!this.props.games[0] ? (
-            <div>
+            <div className="game-container">
               <h3 className="main-middle">Add New Game</h3>
               <Link to={`/creategame`}>+</Link>
             </div>
           ) : (
-            this.props.games.map((game, i) => (
-              <div>
-                <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
-                  <GameDetails index={i} game={game} />
-                </Link>
-                <button
-                  className="gameDelete"
-                  onClick={() => this.delete(game["gameId"])}
-                >
-                  Delete
-                </button>
-              </div>
-            ))
-          )}
-          {this.props.games.length > 0 ? (
+              this.props.games.map((game, i) => (
+
+                <div>
+                  <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
+                    <GameDetails index={i} game={game} />
+                  </Link>
+                  <button className="gameDelete" onClick={() => this.delete(game["gameId"])}>
+                    Delete
+            </button>
+                </div>
+
+              ))
+            )}
+          {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
+
             <div>
               <div>New Game</div>
               <Link to={`/creategame`}>+</Link>
