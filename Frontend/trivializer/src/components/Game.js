@@ -60,6 +60,10 @@ class Game extends Component {
   };
 
   render() {
+    if (!this.props.game) {
+      return <div>Loading...</div>;
+    }
+
     return (
       <div className="game-page">
         <div className="top-content">
@@ -85,45 +89,45 @@ class Game extends Component {
           {this.state.hideButtons ? (
             <div>Loading...</div>
           ) : (
-            <div className="editAndRounds">
-              <div className="game-top">
-                <EditGameView game={this.props.game} />
+              <div className="editAndRounds">
+                <div className="game-top">
+                  <EditGameView game={this.props.game} />
 
-                <div className="game-buttons">
-                  {!this.props.show_buttons ? (
-                    <button type="button" className="btn btn-primary round">
-                      Print Answer Key
+                  <div className="game-buttons">
+                    {!this.props.show_buttons ? (
+                      <button type="button" className="btn btn-primary round">
+                        Print Answer Key
                     </button>
-                  ) : (
-                    <ReactToPrint
-                      trigger={() => (
-                        <button type="button" className="btn btn-primary round">
-                          Print Answer Key
+                    ) : (
+                        <ReactToPrint
+                          trigger={() => (
+                            <button type="button" className="btn btn-primary round">
+                              Print Answer Key
                         </button>
+                          )}
+                          content={() => this.answerKeyRef}
+                        />
                       )}
-                      content={() => this.answerKeyRef}
-                    />
-                  )}
-                  {!this.props.show_buttons ? (
-                    <button type="button" className="btn btn-primary round">
-                      Print Answer Sheet
+                    {!this.props.show_buttons ? (
+                      <button type="button" className="btn btn-primary round">
+                        Print Answer Sheet
                     </button>
-                  ) : (
-                    <ReactToPrint
-                      trigger={() => (
-                        <button type="button" className="btn btn-primary round">
-                          Print Answer Sheet
+                    ) : (
+                        <ReactToPrint
+                          trigger={() => (
+                            <button type="button" className="btn btn-primary round">
+                              Print Answer Sheet
                         </button>
+                          )}
+                          content={() => this.userSheetRef}
+                        />
                       )}
-                      content={() => this.userSheetRef}
-                    />
-                  )}
+                  </div>
                 </div>
-              </div>
 
-              <RoundsList id={this.props.match.params.id} />
-            </div>
-          )}
+                <RoundsList id={this.props.match.params.id} />
+              </div>
+            )}
         </div>
         <div className="hidden">
           <PrintAll
