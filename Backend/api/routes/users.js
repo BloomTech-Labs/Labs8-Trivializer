@@ -94,7 +94,7 @@ server.post("/register", async (req, res) => {
       subject: "Welcome",
       text: "Welcome to Bar Trivia. Thank you for registering!"
     };
-    mailgun.messages().send(data, function(error, body) {
+    mailgun.messages().send(data, function (error, body) {
       console.log(body);
     });
 
@@ -123,7 +123,7 @@ server.post("/login", utilities.getUser, async (req, res) => {
     if (decryptedPassword === password) {
       // Generate a new token and return it
       let token = utilities.generateToken(username);
-      res.status(201).json({ token: token, userId: user.id });
+      res.status(201).json({ token: token, userId: user.id, status: user.paid });
     } else {
       res.status(401).json({ error: "Incorrect Credentials" });
     }

@@ -20,7 +20,8 @@ class RoundsList extends Component {
     this.state = {
       newRoundOuterHeight: null,
       newRoundWidth: null,
-      newRoundHeight: null
+      newRoundHeight: null,
+      roundLimit: 3
     };
   }
 
@@ -29,6 +30,9 @@ class RoundsList extends Component {
 
     this.props.fetchRoundsReq(id);
     console.log("this.props RoundsList 1: ", this.props.new_questions);
+    if (sessionStorage.getItem("status") == 1) {
+      this.setState({ roundLimit: 10 });
+    }
   }
 
   componentDidUpdate = prevProps => {
@@ -117,31 +121,31 @@ class RoundsList extends Component {
   };
 
   render() {
+    if (this.props.fetchingRounds === true) {
+      return <div>Loading...</div>;
+    }
+
     return (
       <div>
-        {this.props.fetchingRounds === true ? (
-          "Loading...."
-        ) : (
-          <div>
-            <div className="roundsList">
-              {this.props.rounds.map((round, i) => {
-                return (
-                  <div key={round.roundId}>
-                    <Rounds index={i} round={round} />
-                  </div>
-                );
-              })}
-              <div id="newRound">
-                <div className="newRound-inner">
-                  <div>New Round</div>
-                  <button className="btn btn-primary" onClick={this.newRound}>
-                    +
+        <div className="roundsList">
+          {this.props.rounds.map((round, i) => {
+            return (
+              <div key={round.roundId}>
+                <Rounds index={i} round={round} />
+              </div>
+            );
+          })}
+          {this.props.rounds.length >= 0 && this.props.rounds.length < this.state.roundLimit ? (
+            <div id="newRound">
+              <div className="newRound-inner">
+                <div>New Round</div>
+                <button className="btn btn-primary" onClick={this.newRound}>
+                  +
                   </button>
-                </div>
               </div>
             </div>
-          </div>
-        )}
+          ) : null}
+        </div>
       </div>
     );
   }

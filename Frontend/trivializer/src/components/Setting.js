@@ -123,6 +123,7 @@ class Setting extends React.Component {
                     <input placeholder="Email" value={savedUser ? savedUser[0].email : null} />
                   </div>,
 
+
                   <div className="newpassword">
                     <p>New Password: </p>
                     <input placeholder="Enter new password" />

@@ -56,7 +56,7 @@ class Rounds extends Component {
     super(props);
     this.state = {
       round: this.props.round,
-      maxQuestions: 100,
+      maxQuestions: 5,
       roundName: this.props.round.roundName || "New Round",
       numQs: this.props.round.numQs || 1,
       category: this.props.round.category || "any",
@@ -73,6 +73,9 @@ class Rounds extends Component {
 
   componentDidMount() {
     this.props.resetRoundStateReq();
+    if (sessionStorage.getItem("status") == 1) {
+      this.setState({ maxQuestions: 10 });
+    }
   }
 
   componentDidUpdate = (prevProps, prevState) => {
