@@ -31,8 +31,7 @@ export const ERROR = "ERROR";
 export const SET_USER_STATUS = "SET_USER_STATUS";
 
 const questionsApiURL = "https://opentdb.com/api.php?";
-const BE_URL =
-  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
+const BE_URL = process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
 
 // sample games fetch with params
 // {
@@ -138,6 +137,7 @@ export const deleteGameReq = id => {
       })
       .then(({ data }) => {
         dispatch({ type: DELETED_GAME, payload: data });
+        window.location.reload();
       })
       .catch(err => {
         console.log(err);
@@ -389,10 +389,7 @@ export const getNewQuestionsReq = questionsPackage => {
         }
         if (data && data.results.length > 0) {
           data.results = data.results.map(question => {
-            question.answers = assembleAnswers(
-              question.correct_answer,
-              question.incorrect_answers
-            );
+            question.answers = assembleAnswers(question.correct_answer, question.incorrect_answers);
             return question;
           });
         }
@@ -416,7 +413,6 @@ export const setUserStatus = status => {
 // Builds a call to the questions API based on which parameters in state are set
 const buildApiCall = callPackage => {
   let amount = `amount=${callPackage.numberOfQuestions || 1}`;
-
   let category = `${
     callPackage.category ? `&category=${callPackage.category}` : ""
     }`;

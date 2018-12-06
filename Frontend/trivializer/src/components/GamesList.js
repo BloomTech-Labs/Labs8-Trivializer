@@ -8,8 +8,6 @@ import "./Components.css";
 import axios from "axios";
 import "./GamesList.css";
 
-
-
 /**
  * GamesList Component
  * - renders a list of games for the logged in user
@@ -39,6 +37,7 @@ class GamesList extends Component {
         })
         .then(res => {
           sessionStorage.setItem("userId", JSON.stringify(res.data.userId));
+          sessionStorage.setItem("paid", JSON.stringify(res.data.paid));
           sessionStorage.setItem(
             "jwt",
             JSON.stringify(res.data.token)
@@ -47,6 +46,7 @@ class GamesList extends Component {
               .join("")
           );
           sessionStorage.setItem("google", "yes");
+          localStorage.removeItem("register");
         });
     }
 
@@ -63,7 +63,6 @@ class GamesList extends Component {
     }
   };
 
-
   logout = e => {
     e.preventDefault();
     localStorage.clear();
@@ -71,9 +70,9 @@ class GamesList extends Component {
     this.props.history.push("/");
   };
 
-  delete = (id) => {
+  delete = id => {
+    console.log("delete hitting");
     this.props.deleteGameReq(id);
-    window.location.reload();
   };
 
   render() {
@@ -153,7 +152,7 @@ const mapStateToProps = ({ gamesList }) => {
   return {
     games: gamesList.games,
     game: gamesList.game,
-    gameId: gamesList.gameId,
+    gameId: gamesList.gameId
   };
 };
 

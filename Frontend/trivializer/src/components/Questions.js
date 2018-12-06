@@ -21,13 +21,7 @@ class Questions extends Component {
   componentDidMount = () => {};
 
   render() {
-    const {
-      question,
-      isDragging,
-      connectDragSource,
-      connectDropTarget,
-      index
-    } = this.props;
+    const { question, isDragging, connectDragSource, connectDropTarget, index } = this.props;
     const opacity = isDragging ? 0 : 1;
 
     return connectDragSource(
@@ -37,8 +31,7 @@ class Questions extends Component {
             <div style={{ opacity: opacity }}>
               <div
                 dangerouslySetInnerHTML={{
-                  __html:
-                    `${index + 1}) ` + DOMPurify.sanitize(question.question) // See line 5 for DOMPurify description
+                  __html: `${index + 1}) ` + DOMPurify.sanitize(question.question) // See line 5 for DOMPurify description
                 }}
               />
               <div>
@@ -56,8 +49,7 @@ class Questions extends Component {
                         dangerouslySetInnerHTML={{
                           // 0x41 is ASCII for 'A'
                           __html:
-                            `${String.fromCharCode(0x41 + index)}) ` +
-                            DOMPurify.sanitize(answer) // Purify incoming HTML while still displaying HTML entities
+                            `${String.fromCharCode(0x41 + index)}) ` + DOMPurify.sanitize(answer) // Purify incoming HTML while still displaying HTML entities
                         }}
                       />
                     );
@@ -70,14 +62,14 @@ class Questions extends Component {
             <button
               onClick={this.props.replaceQuestion}
               type="button"
-              className="btn btn-primary round"
+              className="btn btn-primary round replace-question"
             >
               Replace Question
             </button>
             <button
               onClick={this.props.undoReplace}
               type="button"
-              className="btn btn-primary round"
+              className="btn btn-primary round undo-replace"
             >
               Undo Replace
             </button>
