@@ -5,8 +5,9 @@
 }
 
 .game-container {
-  width: 315px;
+  width: 300px;
   height: 300px;
+  margin: 20px 10px 10px 20px;
 }
 
 .game-container .game-link {
@@ -23,23 +24,18 @@
 .game-summary {
   border: 2px solid red;
   border-radius: 10px;
-  margin: 20px 10px 10px 20px;
-  padding: 0;
+  margin: auto;
   display: flex;
   flex-flow: column;
   justify-content: center;
   height: 275px;
   width: 275px;
   transition: width 0.5s, height 0.5s, transform 0.5s;
-  top: 0;
-  left: 0;
 }
 
 .game-summary:hover {
-  width: 290px;
-  height: 290px;
-  top: 0;
-  left: 0;
+  width: 300px;
+  height: 300px;
 }
 
 .game-delete {
