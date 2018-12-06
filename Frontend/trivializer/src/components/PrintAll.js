@@ -96,15 +96,22 @@ class PrintAll extends Component {
 
     // If The Redux store indicates that we have saved a new round
     // get rounds from the database
-    if (this.props.saved_round) {
-      this.props.getAllQuestionsReq();
-      this.props.getAllRoundsReq();
-      this.props.resetAllRoundsAllQuestionsReq();
-    }
+    // if (this.props.saved_round) {
+    //   this.props.getAllQuestionsReq();
+    //   this.props.getAllRoundsReq();
+    //   this.props.resetAllRoundsAllQuestionsReq();
+    // }
 
     // If The Redux store indicates that we have saved new questions
     // get questions from the database
-    if (this.props.saved_questions) {
+    if (
+      (this.props.saved_questions || this.props.saved_round) &&
+      (!this.props.fetching_all_rounds &&
+        !this.props.fetching_all_questions &&
+        !this.props.saving_questions &&
+        !this.props.saving_round)
+    ) {
+      this.props.getAllRoundsReq();
       this.props.getAllQuestionsReq();
       this.props.resetAllRoundsAllQuestionsReq();
     }
@@ -165,9 +172,13 @@ const mapStateToProps = ({ gamesList }) => {
     rounds: gamesList.rounds,
     all_rounds: gamesList.all_rounds,
     all_questions: gamesList.all_questions,
+    saving_round: gamesList.saving_round,
     saved_round: gamesList.saved_round,
+    saving_questions: gamesList.saving_questions,
     saved_questions: gamesList.saved_questions,
-    deleted_round: gamesList.deleted_round
+    deleted_round: gamesList.deleted_round,
+    fetching_all_rounds: gamesList.fetching_all_rounds,
+    fetching_all_questions: gamesList.fetching_all_questions
   };
 };
 

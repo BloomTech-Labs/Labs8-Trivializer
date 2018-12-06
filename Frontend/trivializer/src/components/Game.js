@@ -20,8 +20,7 @@ class Game extends Component {
       game: null,
       gameId: null,
       roundId: 0,
-      rounds: [],
-      hideButtons: false
+      rounds: []
     };
   }
 
@@ -32,6 +31,13 @@ class Game extends Component {
   }
 
   componentDidUpdate = prevProps => {
+    if (prevProps.show_buttons !== this.props.show_buttons) {
+      console.log(
+        "prevProps.show_buttons, this.props.show_buttons: ",
+        prevProps.show_buttons,
+        this.props.show_buttons
+      );
+    }
     if (
       !(
         this.props.fetched_all_rounds === false &&
@@ -51,19 +57,6 @@ class Game extends Component {
         this.props.saved_questions
       );
     }
-    if (
-      this.props.saved_round ||
-      this.props.saved_questions ||
-      this.props.deleted_round
-    ) {
-      this.setState({ hideButtons: true });
-    }
-    // if (
-    //   prevProps.fetched_all_questions === true &&
-    //   this.props.fetched_all_questions === false
-    // ) {
-    //   this.setState({ hideButtons: false });
-    // }
   };
 
   render() {
@@ -89,7 +82,7 @@ class Game extends Component {
 
         <div className="main-content">
           <Navbar />
-          {this.state.hideButton ? (
+          {this.state.hideButtons ? (
             <div>Loading...</div>
           ) : (
             <div className="editAndRounds">
@@ -97,7 +90,8 @@ class Game extends Component {
                 <EditGameView game={this.props.game} />
 
                 <div className="game-buttons">
-                  {!this.props.fetched_all_questions ? (
+                  {!this.props.fetched_all_questions ||
+                  !this.props.saved_round ? (
                     <div>"Loading"</div>
                   ) : (
                     <ReactToPrint
@@ -109,10 +103,7 @@ class Game extends Component {
                       content={() => this.answerKeyRef}
                     />
                   )}
-                  {this.props.fetched_all_rounds === false &&
-                  this.props.fetched_all_questions === false &&
-                  this.props.saved_round === false &&
-                  this.props.saved_questions === false ? (
+                  {!this.props.show_buttons ? (
                     <div>"Loading"</div>
                   ) : (
                     <ReactToPrint
@@ -160,7 +151,7 @@ const mapStateToProps = ({ gamesList }) => {
     fetched_all_rounds: gamesList.fetched_all_rounds,
     saved_round: gamesList.saved_round,
     saved_questions: gamesList.saved_questions,
-    deleted_round: gamesList.deleted_round
+    show_buttons: gamesList.show_buttons
   };
 };
 

@@ -83,7 +83,8 @@ const initialState = {
   deleted_round: false,
   editing_round: false,
   edited_round: false,
-  error: null
+  error: null,
+  show_buttons: true
 };
 
 const gamesReducer = (state = initialState, action) => {
@@ -157,7 +158,8 @@ const gamesReducer = (state = initialState, action) => {
     case SAVING_ROUND:
       return Object.assign({}, state, {
         saving_round: true,
-        saved_round: false
+        saved_round: false,
+        showButtons: false
       });
     case SAVED_ROUND:
       console.log("action.payload!!", action.payload);
@@ -252,7 +254,8 @@ const gamesReducer = (state = initialState, action) => {
     case FETCHING_ALL_ROUNDS:
       return Object.assign({}, state, {
         fetching_all_rounds: true,
-        fetched_all_rounds: false
+        fetched_all_rounds: false,
+        show_buttons: false
       });
     case FETCHED_ALL_ROUNDS:
       return Object.assign({}, state, {
@@ -263,13 +266,15 @@ const gamesReducer = (state = initialState, action) => {
     case FETCHING_ALL_QUESTIONS:
       return Object.assign({}, state, {
         fetching_all_questions: true,
-        fetched_all_questions: false
+        fetched_all_questions: false,
+        show_buttons: false
       });
     case FETCHED_ALL_QUESTIONS:
       return Object.assign({}, state, {
         fetching_all_questions: false,
         fetched_all_questions: true,
-        all_questions: action.payload
+        all_questions: action.payload,
+        show_buttons: true
       });
     // This resets the state in Rounds.js to avoid
     // triggering a push in componentDidUpdate when not necessary
@@ -289,7 +294,7 @@ const gamesReducer = (state = initialState, action) => {
     case RESET_ALL_QUESTIONS_ALL_ROUNDS:
       return Object.assign({}, state, {
         fetched_all_rounds: false,
-        fetched_all_questions: true,
+        fetched_all_questions: false,
         saved_round: false,
         saved_questions: false,
         deleted_round: false

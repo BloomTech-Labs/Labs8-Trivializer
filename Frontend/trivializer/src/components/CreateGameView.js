@@ -34,6 +34,12 @@ class CreateGameView extends Component {
     });
   }
 
+  componentDidUpdate = prevProps => {
+    if (prevProps.saving_game === true && this.props.saved_game === true) {
+      this.props.history.push("/gameslist");
+    }
+  };
+
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -41,22 +47,19 @@ class CreateGameView extends Component {
   handleSubmit = () => {
     if (this.state.gameTitle === "") return null;
 
-
     const d = new Date(this.state.gameScheduled);
     const ms = d.getTime();
 
     const game = {
-        username: sessionStorage.getItem("user"),
-        gameTitle: this.state.gameTitle,
-        gameDescription: this.state.gameDescription,
-        gameCreatedMS: this.state.gameCreatedMS,
-        gameScheduledMS: ms || 0
+      username: sessionStorage.getItem("user"),
+      gameTitle: this.state.gameTitle,
+      gameDescription: this.state.gameDescription,
+      gameCreatedMS: this.state.gameCreatedMS,
+      gameScheduledMS: ms || 0
     };
 
-
-
     this.props.submitGameReq(game);
-    this.props.history.push("/gameslist");
+    // this.props.history.push("/gameslist");
   };
 
   render() {
@@ -111,8 +114,11 @@ class CreateGameView extends Component {
   }
 }
 
-const mapStateToProps = ({ games }) => {
-  return {};
+const mapStateToProps = ({ gamesList }) => {
+  return {
+    saving_game: gamesList.saving_game,
+    saved_game: gamesList.saved_game
+  };
 };
 
 export default connect(
