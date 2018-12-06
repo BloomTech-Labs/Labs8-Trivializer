@@ -620,9 +620,10 @@ class LandingPage extends React.Component {
               </p>
             </div>
 
-            <button name="guest" className="main-button btn btn-success" onClick={this.handleSubmit}>
-              Play Without Logging In
-            </button>
+
+            <Link to="/gameslist" className="main-button btn btn-success">
+              {localStorage.getItem("user") ? "Go To Games" : "Play Without Logging In"}
+            </Link>
           </div>
         </div>
       </div >
