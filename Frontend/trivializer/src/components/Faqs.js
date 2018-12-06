@@ -47,8 +47,9 @@ const Faqs = () => {
           <div>
             <p className="questions">What do I get with a Paid membership? </p>
             <p>
-              With a free account, you can only create at most 3 games. A paid membership lets you
-              create as many games as you want.
+              With a free account, you can only create at most 3 games, and have each game be at
+              most 5 questions. A paid membership lets you create as many games as you want with as
+              many questions as you want.
             </p>
           </div>
           <div>
