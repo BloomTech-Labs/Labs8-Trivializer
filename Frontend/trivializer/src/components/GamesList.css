@@ -22,7 +22,7 @@
 }
 
 .game-summary {
-  border: 2px solid red;
+  border: 2px solid #EE4432;
   border-radius: 10px;
   margin: auto;
   display: flex;
