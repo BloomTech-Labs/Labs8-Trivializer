@@ -619,11 +619,10 @@ class LandingPage extends React.Component {
                 can reset their password via email as well.
               </p>
             </div>
-
-
             <Link to="/gameslist" className="main-button btn btn-success">
               {localStorage.getItem("user") ? "Go To Games" : "Play Without Logging In"}
             </Link>
+
           </div>
         </div>
       </div >
