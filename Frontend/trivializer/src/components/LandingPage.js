@@ -23,10 +23,10 @@ class LandingPage extends React.Component {
     this.state = {
       registerURL:
         process.env.REACT_APP_BE_REGISTER_URL ||
-        "http://localhost:3300/users/register",
+        "https://testsdepl.herokuapp.com/users/register",
       signinURL:
         process.env.REACT_APP_BE_LOGIN_URL ||
-        "http://localhost:3300/users/login",
+        "https://testsdepl.herokuapp.com/users/login",
       signup_username: "",
       signup_email: "",
       signup_password: "",
