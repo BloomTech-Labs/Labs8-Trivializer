@@ -38,25 +38,6 @@ class Game extends Component {
         this.props.show_buttons
       );
     }
-    if (
-      !(
-        this.props.fetched_all_rounds === false &&
-        this.props.fetched_all_questions === false &&
-        this.props.saved_round === false &&
-        this.props.saved_round === false
-      )
-    ) {
-      console.log(
-        "this.props.fetched_all_rounds: ",
-        this.props.fetched_all_rounds,
-        "this.props.fetched_all_questions: ",
-        this.props.fetched_all_questions,
-        "this.props.saved_round: ",
-        this.props.saved_round,
-        "this.props.saved_questions: ",
-        this.props.saved_questions
-      );
-    }
   };
 
   render() {

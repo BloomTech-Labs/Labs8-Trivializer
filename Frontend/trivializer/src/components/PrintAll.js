@@ -71,23 +71,21 @@ class PrintAll extends Component {
         JSON.stringify(this.props.all_questions) &&
       this.props.all_questions
     ) {
-      console.log("NEW QUESTIONSS!!!");
       let rounds = this.props.all_rounds.filter(
         round => round.game_id === this.props.gameId
       );
-      console.log("rounds: ", rounds);
+
       let roundIds = rounds.map(round => round.id);
-      console.log("roundIds: ", roundIds);
-      console.log("this.props.all_questions: ", this.props.all_questions);
+
       let questions = this.props.all_questions.slice();
+
       questions.reduce((acc, question) => {
+        console.log("acc: ", questions);
         if (roundIds.includes(question.rounds_id)) {
           acc.push(question);
-          return acc;
         }
+        return acc;
       }, []);
-
-      console.log("questions: ", questions);
 
       this.setState({
         questions: questions
