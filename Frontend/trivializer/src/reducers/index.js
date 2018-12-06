@@ -242,6 +242,7 @@ const gamesReducer = (state = initialState, action) => {
         saved_questions: false
       });
     case SAVED_QUESTIONS:
+      console.log("IN SAVED QUESTIONS REDUCER");
       return Object.assign({}, state, {
         saving_questions: false,
         saved_questions: true,

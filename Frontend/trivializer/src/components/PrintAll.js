@@ -28,13 +28,11 @@ class PrintAll extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     // If our props for either rounds or questions have updated, set them
     // on state
-    console.log(
-      "JSON.stringify(prevProps.all_rounds) !== JSON.stringify(this.props.all_rounds) || JSON.stringify(prevProps.all_questions) !== JSON.stringify(this.props.all_questions)",
-      JSON.stringify(prevProps.all_rounds) !==
-        JSON.stringify(this.props.all_rounds) ||
-        JSON.stringify(prevProps.all_questions) !==
-          JSON.stringify(this.props.all_questions)
-    );
+    // console.log(
+    //   "JSON.stringify(prevProps.all_rounds) !== JSON.stringify(this.props.all_rounds))",
+    //   JSON.stringify(prevProps.all_rounds) !==
+    //     JSON.stringify(this.props.all_rounds)
+    // );
     if (
       JSON.stringify(prevProps.all_rounds) !==
         JSON.stringify(this.props.all_rounds) &&
@@ -43,6 +41,7 @@ class PrintAll extends Component {
       let rounds = this.props.all_rounds.filter(
         round => round.game_id === this.props.gameId
       );
+      console.log("NEW ROUNDS!!!");
       console.log("rounds: ", rounds);
       // let roundIds = rounds.map(round => round.id);
       // console.log("roundIds: ", roundIds);
@@ -61,11 +60,18 @@ class PrintAll extends Component {
       });
     }
 
+    // console.log(
+    //   "JSON.stringify(prevProps.all_questions) !== JSON.stringify(this.props.all_questions",
+    //   JSON.stringify(prevProps.all_questions) !==
+    //     JSON.stringify(this.props.all_questions)
+    // );
+
     if (
       JSON.stringify(prevProps.all_questions) !==
         JSON.stringify(this.props.all_questions) &&
       this.props.all_questions
     ) {
+      console.log("NEW QUESTIONSS!!!");
       let rounds = this.props.all_rounds.filter(
         round => round.game_id === this.props.gameId
       );
@@ -77,6 +83,7 @@ class PrintAll extends Component {
       questions.reduce((acc, question) => {
         if (roundIds.includes(question.rounds_id)) {
           acc.push(question);
+          return acc;
         }
       }, []);
 

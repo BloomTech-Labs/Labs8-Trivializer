@@ -33,8 +33,7 @@ export const RESET_ALL_QUESTIONS_ALL_ROUNDS = "RESET_ALL_QUESTIONS_ALL_ROUNDS";
 export const ERROR = "ERROR";
 
 const questionsApiURL = "https://opentdb.com/api.php?";
-const BE_URL =
-  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
+const BE_URL = process.env.REACT_APP_BE_URL || "http://localhost:3300/users";
 
 // sample games fetch with params
 // {
@@ -341,13 +340,13 @@ export const saveQuestionsReq = questionsPackage => {
 
   console.log("questionsPackage: ", questionsPackage);
 
-  return dispatch => {
+  return async dispatch => {
     console.log("IN dispatch, saveQuestionsReq");
     dispatch({ type: SAVING_QUESTIONS });
 
     // First, delete all existing questions in our round
     // Get the roundId from the first question
-    axios
+    await axios
       .delete(`${BE_URL}/questions/${questionsPackage[0].rounds_id}`, {
         headers: {
           Authorization: `${sessionStorage.getItem("jwt")}`
