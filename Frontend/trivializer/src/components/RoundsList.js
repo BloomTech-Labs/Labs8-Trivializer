@@ -126,13 +126,14 @@ class RoundsList extends Component {
               </div>
             );
           })}
-          {this.props.rounds.length >= 0 && this.props.rounds.length < this.state.roundLimit ? (
+          {this.props.rounds.length >= 0 &&
+          this.props.rounds.length < this.state.roundLimit ? (
             <div id="newRound">
               <div className="newRound-inner">
                 <div>New Round</div>
                 <button className="btn btn-primary" onClick={this.newRound}>
                   +
-                  </button>
+                </button>
               </div>
             </div>
           ) : null}
