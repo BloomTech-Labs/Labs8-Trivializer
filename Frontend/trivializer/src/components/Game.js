@@ -7,6 +7,7 @@ import EditGameView from "./EditGameView";
 import RoundsList from "./RoundsList";
 import "./Game.css";
 import ReactToPrint from "react-to-print";
+import PrintAll from "./PrintAll";
 
 /**
  * Game Component
@@ -29,13 +30,36 @@ class Game extends Component {
     this.setState({ game: this.props.game, gameId: id });
   }
 
-  printAll = () => {
-    this.props.rounds.map();
+  componentDidUpdate = prevProps => {
+    if (prevProps.show_buttons !== this.props.show_buttons) {
+      console.log(
+        "prevProps.show_buttons, this.props.show_buttons: ",
+        prevProps.show_buttons,
+        this.props.show_buttons
+      );
+    }
+    if (
+      !(
+        this.props.fetched_all_rounds === false &&
+        this.props.fetched_all_questions === false &&
+        this.props.saved_round === false &&
+        this.props.saved_round === false
+      )
+    ) {
+      console.log(
+        "this.props.fetched_all_rounds: ",
+        this.props.fetched_all_rounds,
+        "this.props.fetched_all_questions: ",
+        this.props.fetched_all_questions,
+        "this.props.saved_round: ",
+        this.props.saved_round,
+        "this.props.saved_questions: ",
+        this.props.saved_questions
+      );
+    }
   };
 
   render() {
-    if (!this.props.game) return <div>Loading...</div>;
-
     return (
       <div className="game-page">
         <div className="top-content">
@@ -58,22 +82,64 @@ class Game extends Component {
 
         <div className="main-content">
           <Navbar />
-          <div className="editAndRounds">
-            <div className="game-top">
-              <EditGameView game={this.props.game} />
+          {this.state.hideButtons ? (
+            <div>Loading...</div>
+          ) : (
+            <div className="editAndRounds">
+              <div className="game-top">
+                <EditGameView game={this.props.game} />
 
-              <div className="game-buttons">
-                <button>Print Answer Sheets</button>
-                <button>Print Answer Key</button>
+                <div className="game-buttons">
+                  {!this.props.show_buttons ? (
+                    <button type="button" className="btn btn-primary round">
+                      Print Answer Key
+                    </button>
+                  ) : (
+                    <ReactToPrint
+                      trigger={() => (
+                        <button type="button" className="btn btn-primary round">
+                          Print Answer Key
+                        </button>
+                      )}
+                      content={() => this.answerKeyRef}
+                    />
+                  )}
+                  {!this.props.show_buttons ? (
+                    <button type="button" className="btn btn-primary round">
+                      Print Answer Sheet
+                    </button>
+                  ) : (
+                    <ReactToPrint
+                      trigger={() => (
+                        <button type="button" className="btn btn-primary round">
+                          Print Answer Sheet
+                        </button>
+                      )}
+                      content={() => this.userSheetRef}
+                    />
+                  )}
+                </div>
               </div>
+
+              <RoundsList id={this.props.match.params.id} />
             </div>
-
-            <RoundsList id={this.props.match.params.id} />
-          </div>
+          )}
         </div>
-
         <div className="hidden">
-          {/* Check if we have rounds on props (retrieved in RoundsList.js), and if so, prepare our printout without answers */}
+          <PrintAll
+            userSheets={false}
+            game={this.props.game}
+            gameId={this.props.match.params.id}
+            rounds={this.props.rounds}
+            ref={el => (this.answerKeyRef = el)}
+          />
+          <PrintAll
+            userSheets={true}
+            game={this.props.game}
+            gameId={this.props.match.params.id}
+            rounds={this.props.rounds}
+            ref={el => (this.userSheetRef = el)}
+          />
         </div>
       </div>
     );
@@ -83,7 +149,12 @@ class Game extends Component {
 const mapStateToProps = ({ gamesList }) => {
   return {
     game: gamesList.game[0],
-    rounds: gamesList.rounds
+    rounds: gamesList.rounds,
+    fetched_all_questions: gamesList.fetched_all_questions,
+    fetched_all_rounds: gamesList.fetched_all_rounds,
+    saved_round: gamesList.saved_round,
+    saved_questions: gamesList.saved_questions,
+    show_buttons: gamesList.show_buttons
   };
 };
 

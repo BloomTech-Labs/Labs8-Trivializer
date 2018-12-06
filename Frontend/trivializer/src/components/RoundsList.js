@@ -56,19 +56,7 @@ class RoundsList extends Component {
             .includes(this.props.roundId)
         ) {
           console.log("CONDITION MET TO GET QUESTIONS!!!!");
-          console.log(
-            "prevProps.roundId, this.props.roundId: ",
-            prevProps.roundId,
-            this.props.roundId
-          );
-          console.log(
-            "!prevProps.rounds.map(round => {return roundId}).includes(this.props.roundId): ",
-            !prevProps.rounds
-              .map(round => {
-                return round.roundId;
-              })
-              .includes(this.props.roundId)
-          );
+
           let formattedRound = {
             gameId: this.props.gameId,
             roundName: this.props.round.roundName,
@@ -77,28 +65,35 @@ class RoundsList extends Component {
             difficulty: "easy",
             questions: 1
           };
-          console.log("this.props.round: ", this.props.round);
           this.props.getNewQuestionsReq(formattedRound);
         }
       }
     }
+
     // If the following two are true, we have received questions from the QuestionsAPI,
     // Save them to the Users Database
-    if (prevProps.new_questions !== this.props.new_questions) {
-      if (this.props.fetched_new_questions) {
-        console.log("CONDITION MET TO SAVE QUESTIONS!!!!");
-        let round_id = this.props.round.roundId;
-        let questionsPackage = this.props.new_questions.slice();
-        questionsPackage = questionsPackage.map(question => {
-          question.rounds_id = round_id;
-
-          return question;
-        });
-        console.log("questionsPackage: ", questionsPackage);
-        this.props.saveQuestionsReq(this.props.new_questions);
-        this.props.resetFetchedNewQuestions();
-      }
+    if (
+      JSON.stringify(prevProps.new_questions) !==
+      JSON.stringify(this.props.new_questions)
+    ) {
+      // if (this.props.fetched_new_questions) {
+      console.log("CONDITION MET TO SAVE QUESTIONS!!!!");
+      let round_id = this.props.roundId;
+      let questionsPackage = this.props.new_questions.slice();
+      questionsPackage = questionsPackage.map(question => {
+        question.rounds_id = round_id;
+        return question;
+      });
+      console.log(this.props.new_questions);
+      this.props.saveQuestionsReq(this.props.new_questions);
+      this.props.resetFetchedNewQuestions();
+      // }
     }
+    console.log(
+      "prevProps.roundId, this.props.roundId: ",
+      prevProps.roundId,
+      this.props.roundId
+    );
   };
 
   newRound = () => {
@@ -114,10 +109,6 @@ class RoundsList extends Component {
     console.log("round: ", round);
     // Save the Round to the database with default values
     this.props.saveRoundReq(round);
-
-    // Get the new questions, and set them to new_questions.
-    // componentWillUpdate will detect when update occurs and save new questions
-    // this.props.getNewQuestionsReq(formattedRound);
   };
 
   render() {
