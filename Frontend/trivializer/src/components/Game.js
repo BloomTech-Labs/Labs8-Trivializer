@@ -30,6 +30,35 @@ class Game extends Component {
     this.setState({ game: this.props.game, gameId: id });
   }
 
+  componentDidUpdate = prevProps => {
+    if (prevProps.show_buttons !== this.props.show_buttons) {
+      console.log(
+        "prevProps.show_buttons, this.props.show_buttons: ",
+        prevProps.show_buttons,
+        this.props.show_buttons
+      );
+    }
+    if (
+      !(
+        this.props.fetched_all_rounds === false &&
+        this.props.fetched_all_questions === false &&
+        this.props.saved_round === false &&
+        this.props.saved_round === false
+      )
+    ) {
+      console.log(
+        "this.props.fetched_all_rounds: ",
+        this.props.fetched_all_rounds,
+        "this.props.fetched_all_questions: ",
+        this.props.fetched_all_questions,
+        "this.props.saved_round: ",
+        this.props.saved_round,
+        "this.props.saved_questions: ",
+        this.props.saved_questions
+      );
+    }
+  };
+
   render() {
     return (
       <div className="game-page">
@@ -53,7 +82,7 @@ class Game extends Component {
 
         <div className="main-content">
           <Navbar />
-          {!this.props.game ? (
+          {this.state.hideButtons ? (
             <div>Loading...</div>
           ) : (
             <div className="editAndRounds">
@@ -61,11 +90,10 @@ class Game extends Component {
                 <EditGameView game={this.props.game} />
 
                 <div className="game-buttons">
-                  {this.props.fetched_all_rounds === false &&
-                  this.props.fetched_all_questions === false &&
-                  this.props.saved_round === false &&
-                  this.props.saved_round === false ? (
-                    <div>"Loading"</div>
+                  {!this.props.show_buttons ? (
+                    <button type="button" className="btn btn-primary round">
+                      Print Answer Key
+                    </button>
                   ) : (
                     <ReactToPrint
                       trigger={() => (
@@ -76,11 +104,10 @@ class Game extends Component {
                       content={() => this.answerKeyRef}
                     />
                   )}
-                  {this.props.fetched_all_rounds === false &&
-                  this.props.fetched_all_questions === false &&
-                  this.props.saved_round === false &&
-                  this.props.saved_round === false ? (
-                    <div>"Loading"</div>
+                  {!this.props.show_buttons ? (
+                    <button type="button" className="btn btn-primary round">
+                      Print Answer Sheet
+                    </button>
                   ) : (
                     <ReactToPrint
                       trigger={() => (
@@ -102,11 +129,15 @@ class Game extends Component {
           <PrintAll
             userSheets={false}
             game={this.props.game}
+            gameId={this.props.match.params.id}
+            rounds={this.props.rounds}
             ref={el => (this.answerKeyRef = el)}
           />
           <PrintAll
             userSheets={true}
             game={this.props.game}
+            gameId={this.props.match.params.id}
+            rounds={this.props.rounds}
             ref={el => (this.userSheetRef = el)}
           />
         </div>
@@ -122,7 +153,8 @@ const mapStateToProps = ({ gamesList }) => {
     fetched_all_questions: gamesList.fetched_all_questions,
     fetched_all_rounds: gamesList.fetched_all_rounds,
     saved_round: gamesList.saved_round,
-    saved_questions: gamesList.saved_questions
+    saved_questions: gamesList.saved_questions,
+    show_buttons: gamesList.show_buttons
   };
 };
 

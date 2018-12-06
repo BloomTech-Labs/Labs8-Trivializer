@@ -8,7 +8,7 @@ import {
   resetAllRoundsAllQuestionsReq
 } from "../actions";
 
-class PrintAllAnswerKey extends Component {
+class PrintAll extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,26 +28,96 @@ class PrintAllAnswerKey extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     // If our props for either rounds or questions have updated, set them
     // on state
+    // console.log(
+    //   "JSON.stringify(prevProps.all_rounds) !== JSON.stringify(this.props.all_rounds))",
+    //   JSON.stringify(prevProps.all_rounds) !==
+    //     JSON.stringify(this.props.all_rounds)
+    // );
     if (
-      prevProps.all_rounds !== this.props.all_rounds ||
-      prevProps.all_questions !== this.props.all_questions
+      JSON.stringify(prevProps.all_rounds) !==
+        JSON.stringify(this.props.all_rounds) &&
+      this.props.all_rounds
     ) {
+      let rounds = this.props.all_rounds.filter(
+        round => round.game_id === this.props.gameId
+      );
+      console.log("NEW ROUNDS!!!");
+      console.log("rounds: ", rounds);
+      // let roundIds = rounds.map(round => round.id);
+      // console.log("roundIds: ", roundIds);
+      // console.log("this.props.all_questions: ", this.props.all_questions);
+      // let questions = this.props.all_questions.slice();
+      // questions.reduce((acc, question) => {
+      //   if (roundIds.includes(question.rounds_id)) {
+      //     acc.push(question);
+      //   }
+      // }, []);
+
+      // console.log("questions: ", questions);
+
       this.setState({
-        rounds: this.props.all_rounds,
-        questions: this.props.all_questions,
-        userSheets: this.props.userSheets
+        rounds: rounds
       });
     }
+
+    // console.log(
+    //   "JSON.stringify(prevProps.all_questions) !== JSON.stringify(this.props.all_questions",
+    //   JSON.stringify(prevProps.all_questions) !==
+    //     JSON.stringify(this.props.all_questions)
+    // );
+
+    if (
+      JSON.stringify(prevProps.all_questions) !==
+        JSON.stringify(this.props.all_questions) &&
+      this.props.all_questions
+    ) {
+      console.log("NEW QUESTIONSS!!!");
+      let rounds = this.props.all_rounds.filter(
+        round => round.game_id === this.props.gameId
+      );
+      console.log("rounds: ", rounds);
+      let roundIds = rounds.map(round => round.id);
+      console.log("roundIds: ", roundIds);
+      console.log("this.props.all_questions: ", this.props.all_questions);
+      let questions = this.props.all_questions.slice();
+      questions.reduce((acc, question) => {
+        if (roundIds.includes(question.rounds_id)) {
+          acc.push(question);
+          return acc;
+        }
+      }, []);
+
+      console.log("questions: ", questions);
+
+      this.setState({
+        questions: questions
+      });
+    }
+
     // If The Redux store indicates that we have saved a new round
     // get rounds from the database
-    if (this.props.saved_round) {
+    if (
+      this.props.saved_round &&
+      (!this.props.fetching_all_rounds &&
+        !this.props.fetching_all_questions &&
+        !this.props.saving_questions &&
+        !this.props.saving_round)
+    ) {
+      this.props.getAllQuestionsReq();
       this.props.getAllRoundsReq();
       this.props.resetAllRoundsAllQuestionsReq();
     }
 
     // If The Redux store indicates that we have saved new questions
     // get questions from the database
-    if (this.props.saved_questions) {
+    if (
+      this.props.saved_questions &&
+      (!this.props.fetching_all_rounds &&
+        !this.props.fetching_all_questions &&
+        !this.props.saving_questions &&
+        !this.props.saving_round)
+    ) {
+      this.props.getAllRoundsReq();
       this.props.getAllQuestionsReq();
       this.props.resetAllRoundsAllQuestionsReq();
     }
@@ -60,7 +130,8 @@ class PrintAllAnswerKey extends Component {
     }
   };
   render() {
-    console.log("this.state: ", this.state);
+    console.log("this.state.questions: ", this.state.questions);
+    console.log("this.state.rounds: ", this.state.rounds);
     return (
       <div>
         {/* Map over questions and display questions with highlighted correct answer*/}
@@ -103,15 +174,21 @@ class PrintAllAnswerKey extends Component {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
+    gameId: gamesList.gameId,
+    rounds: gamesList.rounds,
     all_rounds: gamesList.all_rounds,
     all_questions: gamesList.all_questions,
+    saving_round: gamesList.saving_round,
     saved_round: gamesList.saved_round,
+    saving_questions: gamesList.saving_questions,
     saved_questions: gamesList.saved_questions,
-    deleted_round: gamesList.deleted_round
+    deleted_round: gamesList.deleted_round,
+    fetching_all_rounds: gamesList.fetching_all_rounds,
+    fetching_all_questions: gamesList.fetching_all_questions
   };
 };
 
 export default connect(
   mapStateToProps,
   { getAllRoundsReq, getAllQuestionsReq, resetAllRoundsAllQuestionsReq }
-)(PrintAllAnswerKey);
+)(PrintAll);

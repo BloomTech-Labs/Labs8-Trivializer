@@ -343,13 +343,13 @@ export const saveQuestionsReq = questionsPackage => {
 
   console.log("questionsPackage: ", questionsPackage);
 
-  return dispatch => {
+  return async dispatch => {
     console.log("IN dispatch, saveQuestionsReq");
     dispatch({ type: SAVING_QUESTIONS });
 
     // First, delete all existing questions in our round
     // Get the roundId from the first question
-    axios
+    await axios
       .delete(`${BE_URL}/questions/${questionsPackage[0].rounds_id}`, {
         headers: {
           Authorization: `${sessionStorage.getItem("jwt")}`
@@ -363,7 +363,7 @@ export const saveQuestionsReq = questionsPackage => {
       });
     console.log("ABOUT TO CALL POST TO QUESTIONS!!!");
 
-    axios
+    await axios
       .post(`${BE_URL}/questions`, questionsPackage, {
         headers: {
           Authorization: `${sessionStorage.getItem("jwt")}`
