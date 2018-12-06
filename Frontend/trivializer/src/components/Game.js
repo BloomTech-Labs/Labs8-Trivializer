@@ -90,9 +90,10 @@ class Game extends Component {
                 <EditGameView game={this.props.game} />
 
                 <div className="game-buttons">
-                  {!this.props.fetched_all_questions ||
-                  !this.props.saved_round ? (
-                    <div>"Loading"</div>
+                  {!this.props.show_buttons ? (
+                    <button type="button" className="btn btn-primary round">
+                      Print Answer Key
+                    </button>
                   ) : (
                     <ReactToPrint
                       trigger={() => (
@@ -104,7 +105,9 @@ class Game extends Component {
                     />
                   )}
                   {!this.props.show_buttons ? (
-                    <div>"Loading"</div>
+                    <button type="button" className="btn btn-primary round">
+                      Print Answer Sheet
+                    </button>
                   ) : (
                     <ReactToPrint
                       trigger={() => (

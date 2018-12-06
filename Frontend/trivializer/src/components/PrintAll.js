@@ -96,16 +96,22 @@ class PrintAll extends Component {
 
     // If The Redux store indicates that we have saved a new round
     // get rounds from the database
-    // if (this.props.saved_round) {
-    //   this.props.getAllQuestionsReq();
-    //   this.props.getAllRoundsReq();
-    //   this.props.resetAllRoundsAllQuestionsReq();
-    // }
+    if (
+      this.props.saved_round &&
+      (!this.props.fetching_all_rounds &&
+        !this.props.fetching_all_questions &&
+        !this.props.saving_questions &&
+        !this.props.saving_round)
+    ) {
+      this.props.getAllQuestionsReq();
+      this.props.getAllRoundsReq();
+      this.props.resetAllRoundsAllQuestionsReq();
+    }
 
     // If The Redux store indicates that we have saved new questions
     // get questions from the database
     if (
-      (this.props.saved_questions || this.props.saved_round) &&
+      this.props.saved_questions &&
       (!this.props.fetching_all_rounds &&
         !this.props.fetching_all_questions &&
         !this.props.saving_questions &&

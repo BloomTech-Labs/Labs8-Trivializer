@@ -49,11 +49,11 @@ class GamesList extends Component {
   }
 
   componentDidUpdate = prevProps => {
-    // if (JSON.stringify(prevProps.games) !== JSON.stringify(this.props.games)) {
-    //   console.log("prevProps.games: ", prevProps.games);
-    //   console.log("this.props.games: ", this.props.games);
-    //   this.setState({ games: this.props.games });
-    // }
+    if (JSON.stringify(prevProps.games) !== JSON.stringify(this.props.games)) {
+      console.log("prevProps.games: ", prevProps.games);
+      console.log("this.props.games: ", this.props.games);
+      this.setState({ games: this.props.games });
+    }
   };
 
   logout = e => {
