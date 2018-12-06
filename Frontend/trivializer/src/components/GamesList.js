@@ -114,12 +114,14 @@ class GamesList extends Component {
                 this.props.games.map((game, i) => (
 
                   <div className="game-container">
-                    <Link className="game-link" to={`/game/${game["gameId"]}`} key={game["gameId"]}>
-                      <GameDetails index={i} game={game} />
-                    </Link>
-                    <button className="game-delete" onClick={() => this.delete(game["gameId"])}>
-                      Delete
+                    <div className="game-summary">
+                      <Link className="game-link" to={`/game/${game["gameId"]}`} key={game["gameId"]}>
+                        <GameDetails index={i} game={game} />
+                      </Link>
+                      <button className="game-delete" onClick={() => this.delete(game["gameId"])}>
+                        Delete
             </button>
+                    </div>
                   </div>
 
                 ))
@@ -127,8 +129,10 @@ class GamesList extends Component {
             {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
 
               <div className="game-container">
-                <div>New Game</div>
-                <Link to={`/creategame`}>+</Link>
+                <div className="game-summary">
+                  <div>New Game</div>
+                  <Link to={`/creategame`}>+</Link>
+                </div>
               </div>
             ) : null}
           </div>
