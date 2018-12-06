@@ -112,10 +112,6 @@ class RoundsList extends Component {
   };
 
   render() {
-    if (this.props.fetchingRounds === true) {
-      return <div>Loading...</div>;
-    }
-
     return (
       <div>
         <div className="roundsList">
