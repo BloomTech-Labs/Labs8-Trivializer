@@ -100,7 +100,7 @@ server.post("/register", async (req, res) => {
 
     // Generate a new token and return it
     let token = utilities.generateToken(username);
-    res.status(201).json({ token: token, userId: userId[0] });
+    res.status(201).json({ token: token, userId: userId[0], status: credentials.paid });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -365,24 +365,24 @@ server.delete("/round/:id", utilities.protected, async (req, res) => {
 
 // Delete a game based on game id
 server.delete("/game/:id", utilities.protected, async (req, res) => {
-    const { id } = req.params;
-    try {
-      // Returns the id of the deleted game
-      let response = await db("Games")
-        .where({ id })
-        .del();
-  
-      // If response === 0 no game was deleted
-      if (response === 0) throw new Error(`Error deleting game ${id}`);
-  
-      console.log("id: ", id);
-  
-  
-      res.status(200).json(`Game ${response} deleted`);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  });
+  const { id } = req.params;
+  try {
+    // Returns the id of the deleted game
+    let response = await db("Games")
+      .where({ id })
+      .del();
+
+    // If response === 0 no game was deleted
+    if (response === 0) throw new Error(`Error deleting game ${id}`);
+
+    console.log("id: ", id);
+
+
+    res.status(200).json(`Game ${response} deleted`);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
 
 // Save a round
 server.post("/round", utilities.protected, async (req, res) => {
