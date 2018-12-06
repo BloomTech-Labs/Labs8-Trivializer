@@ -134,55 +134,59 @@ class LandingPage extends React.Component {
   // Handles the submit call on the Register modal
   handleSubmit = e => {
     e.preventDefault();
+    if (!localStorage.getItem("guest")) {
+      let credentials;
+      let url;
 
-    let credentials;
-    let url;
+      if (e.target.name === "guest") {
+        credentials = {
+          username: `guest${Date.now()}`,
+          password: `guest${Date.now()}`,
+          email: `guest${Date.now()}@gmail.com`
+        };
+        url = this.state.registerURL;
+      } else if (e.target.name === "register" && this.validateRegister()) {
+        credentials = {
+          username: this.state.signup_username,
+          password: this.state.signup_password,
+          email: this.state.signup_email
+        };
+        url = this.state.registerURL;
+      } else if (e.target.name === "signin" && this.validateSignin()) {
+        credentials = {
+          username: this.state.signin_username,
+          password: this.state.signin_password
+        };
+        url = this.state.signinURL;
+      } else {
+        return;
+      }
+      console.log("url is: ", url);
+      axios
+        .post(url, {
+          username: credentials.username,
+          password: credentials.password,
+          email: credentials.email || ""
+        })
+        .then(res => {
+          const result = res.data;
 
-    if (e.target.name === "guest") {
-      credentials = {
-        username: `guest${Date.now()}`,
-        password: `guest${Date.now()}`,
-        email: `guest${Date.now()}@gmail.com`
-      };
-      url = this.state.registerURL;
-    } else if (e.target.name === "register" && this.validateRegister()) {
-      credentials = {
-        username: this.state.signup_username,
-        password: this.state.signup_password,
-        email: this.state.signup_email
-      };
-      url = this.state.registerURL;
-    } else if (e.target.name === "signin" && this.validateSignin()) {
-      credentials = {
-        username: this.state.signin_username,
-        password: this.state.signin_password
-      };
-      url = this.state.signinURL;
-    } else {
-      return;
-    }
-    console.log("url is: ", url);
-    axios
-      .post(url, {
-        username: credentials.username,
-        password: credentials.password,
-        email: credentials.email || ""
-      })
-      .then(res => {
-        const result = res.data;
-
-        sessionStorage.setItem("jwt", result.token);
-        sessionStorage.setItem("user", credentials.username);
-        sessionStorage.setItem("userId", result.userId);
-        sessionStorage.setItem("status", result.status);
-        this.redirect();
-      })
-      .catch(err => {
-        console.log("err.response: ", err.response);
-        this.setState({
-          password_error: "Incorrect password, please try again."
+          sessionStorage.setItem("jwt", result.token);
+          sessionStorage.setItem("user", credentials.username);
+          sessionStorage.setItem("userId", result.userId);
+          sessionStorage.setItem("status", result.status);
+          localStorage.setItem("guest", "yes");
+          this.redirect();
+        })
+        .catch(err => {
+          console.log("err.response: ", err.response);
+          this.setState({
+            password_error: "Incorrect password, please try again."
+          });
         });
-      });
+    } else {
+      this.redirect();
+    }
   };
 
   googleLogin = e => {
