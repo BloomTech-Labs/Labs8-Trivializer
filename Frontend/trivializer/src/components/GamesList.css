@@ -41,12 +41,14 @@
 .game-delete {
   margin: 10px auto;
   width: 100px;
+  border-radius: 10px;
 }
 
 .game-delete:hover {
   box-shadow: 2px 2px;
   background: #EE4432;
   color: white;
+  cursor: pointer;
 }
 
 .game {
@@ -55,7 +57,7 @@
 
 .game-description
 {
-  border: 2px solid blue;
+  border: 2px solid lightskyblue;
   border-radius: 10px; 
   padding: 2%;
   word-wrap: break-word;
