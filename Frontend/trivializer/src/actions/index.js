@@ -11,6 +11,8 @@ export const UPDATING_GAME = "UPDATING_GAME";
 export const UPDATED_GAME = "UPDATED_GAME";
 export const FETCHING_ROUNDS = "FETCHING_ROUNDS";
 export const FETCHED_ROUNDS = "FETCHED_ROUNDS";
+export const FETCHING_ALL_ROUNDS = "FETCHING_ALL_ROUNDS";
+export const FETCHED_ALL_ROUNDS = "FETCHED_ALL_ROUNDS";
 export const SAVING_ROUND = "SAVING_ROUND";
 export const SAVED_ROUND = "SAVED_ROUND";
 export const DELETING_ROUND = "DELETING_ROUND";
@@ -21,12 +23,13 @@ export const FETCHING_SAVED_QUESTIONS = "FETCHING_SAVED_QUESTIONS";
 export const FETCHED_SAVED_QUESTIONS = "FETCHED_SAVED_QUESTIONS";
 export const FETCHING_NEW_QUESTIONS = "FETCHING_NEW_QUESTIONS";
 export const FETCHED_NEW_QUESTIONS = "FETCHED_NEW_QUESTIONS";
+export const FETCHING_ALL_QUESTIONS = "FETCHING_ALL_QUESTIONS";
+export const FETCHED_ALL_QUESTIONS = "FETCHED_ALL_QUESTIONS";
 export const SAVING_QUESTIONS = "SAVING_QUESTIONS";
 export const SAVED_QUESTIONS = "SAVED_QUESTIONS";
-export const DELETING_QUESTIONS = "DELETING_QUESTIONS";
-export const DELETED_QUESTIONS = "DELETED_QUESTIONS";
-export const RESET = "RESET";
+export const RESET_ROUNDS = "RESET_ROUNDS";
 export const RESET_NEW_QUESTIONS = "RESET_NEW_QUESTIONS";
+export const RESET_ALL_QUESTIONS_ALL_ROUNDS = "RESET_ALL_QUESTIONS_ALL_ROUNDS";
 export const ERROR = "ERROR";
 export const SET_USER_STATUS = "SET_USER_STATUS";
 
@@ -265,9 +268,11 @@ export const editRoundReq = (round, roundId) => {
         }
       })
       .then(({ data }) => {
+        console.log("data: ", data);
         dispatch({ type: EDITED_ROUND, payload: data });
       })
       .catch(err => {
+        console.log("err.message: ", err.message);
         dispatch({ type: ERROR, payload: err });
       });
   };
@@ -303,13 +308,19 @@ export const getQuestionsReq = (info, roundId) => {
 
 export const resetRoundStateReq = () => {
   return dispatch => {
-    dispatch({ type: RESET });
+    dispatch({ type: RESET_ROUNDS });
   };
 };
 
 export const resetFetchedNewQuestions = () => {
   return dispatch => {
     dispatch({ type: RESET_NEW_QUESTIONS });
+  };
+};
+
+export const resetAllRoundsAllQuestionsReq = () => {
+  return dispatch => {
+    dispatch({ type: RESET_ALL_QUESTIONS_ALL_ROUNDS });
   };
 };
 
@@ -331,13 +342,13 @@ export const saveQuestionsReq = questionsPackage => {
 
   console.log("questionsPackage: ", questionsPackage);
 
-  return dispatch => {
+  return async dispatch => {
     console.log("IN dispatch, saveQuestionsReq");
     dispatch({ type: SAVING_QUESTIONS });
 
     // First, delete all existing questions in our round
     // Get the roundId from the first question
-    axios
+    await axios
       .delete(`${BE_URL}/questions/${questionsPackage[0].rounds_id}`, {
         headers: {
           Authorization: `${sessionStorage.getItem("jwt")}`
@@ -351,7 +362,7 @@ export const saveQuestionsReq = questionsPackage => {
       });
     console.log("ABOUT TO CALL POST TO QUESTIONS!!!");
 
-    axios
+    await axios
       .post(`${BE_URL}/questions`, questionsPackage, {
         headers: {
           Authorization: `${sessionStorage.getItem("jwt")}`
@@ -364,7 +375,7 @@ export const saveQuestionsReq = questionsPackage => {
         dispatch({ type: SAVED_QUESTIONS, payload: data });
       })
       .catch(err => {
-        console.log("err.message saveQuestionsReq: ", err.message);
+        console.log("err.message saveQuestionsReq: ", err.response);
         dispatch({ type: ERROR, payload: err });
       });
 
@@ -403,9 +414,50 @@ export const getNewQuestionsReq = questionsPackage => {
   };
 };
 
-export const setUserStatus = status => {
+export const getAllRoundsReq = () => {
   return dispatch => {
-    dispatch({ type: SET_USER_STATUS, payload: status });
+    dispatch({ type: FETCHING_ALL_ROUNDS });
+    axios
+      .get(`${BE_URL}/rounds`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        console.log("data: ", data);
+
+        dispatch({ type: FETCHED_ALL_ROUNDS, payload: data });
+      })
+      .catch(err => {
+        console.log("err.message getQuestionsReq: ", err.message);
+        dispatch({ type: ERROR, payload: err });
+      });
+  };
+};
+
+export const getAllQuestionsReq = () => {
+  return dispatch => {
+    dispatch({ type: FETCHING_ALL_QUESTIONS });
+    axios
+      .get(`${BE_URL}/questions`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      })
+      .then(({ data }) => {
+        // Convert all arrays (stored as strings) back into arrays
+        data = data.map(question => {
+          question.incorrect_answers = question.incorrect_answers.split("--");
+          question.answers = question.answers.split("--");
+          return question;
+        });
+
+        dispatch({ type: FETCHED_ALL_QUESTIONS, payload: data });
+      })
+      .catch(err => {
+        console.log("err.message getQuestionsReq: ", err.message);
+        dispatch({ type: ERROR, payload: err });
+      });
   };
 };
 

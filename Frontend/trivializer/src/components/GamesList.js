@@ -56,7 +56,7 @@ class GamesList extends Component {
   }
 
   componentDidUpdate = prevProps => {
-    if (prevProps.games !== this.props.games) {
+    if (JSON.stringify(prevProps.games) !== JSON.stringify(this.props.games)) {
       console.log("prevProps.games: ", prevProps.games);
       console.log("this.props.games: ", this.props.games);
       this.setState({ games: this.props.games });
@@ -71,7 +71,6 @@ class GamesList extends Component {
   };
 
   delete = id => {
-    console.log("delete hitting");
     this.props.deleteGameReq(id);
   };
 
@@ -125,6 +124,7 @@ class GamesList extends Component {
               ))
             )}
           {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
+
             <div>
               <div>New Game</div>
               <Link to={`/creategame`}>+</Link>
