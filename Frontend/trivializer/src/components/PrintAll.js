@@ -3,6 +3,7 @@ import RoundAnswers from "./RoundAnswers";
 import { connect } from "react-redux";
 import "./PrintAll.css";
 import {
+  fetchRoundsReq,
   getAllRoundsReq,
   getAllQuestionsReq,
   resetAllRoundsAllQuestionsReq
@@ -20,122 +21,73 @@ class PrintAll extends Component {
   }
 
   componentDidMount = () => {
-    this.props.getAllRoundsReq();
+    console.log("COMPONENTDIDMOUNT!!");
+    this.props.fetchRoundsReq(this.props.gameId);
+    // this.props.getAllRoundsReq();
     this.props.getAllQuestionsReq();
+
     console.log("this.props PrintAll: ", this.props);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    // If our props for either rounds or questions have updated, set them
-    // on state
-    // console.log(
-    //   "JSON.stringify(prevProps.all_rounds) !== JSON.stringify(this.props.all_rounds))",
-    //   JSON.stringify(prevProps.all_rounds) !==
-    //     JSON.stringify(this.props.all_rounds)
-    // );
+    // Check to see if our rounds on state match that on props
     if (
-      JSON.stringify(prevProps.all_rounds) !==
-        JSON.stringify(this.props.all_rounds) &&
-      this.props.all_rounds
+      JSON.stringify(this.props.rounds) !== JSON.stringify(this.state.rounds) &&
+      this.props.rounds
     ) {
-      let rounds = this.props.all_rounds.filter(
-        round => round.game_id === this.props.gameId
+      console.log(
+        "this.props.rounds, this.state.rounds: ",
+        this.props.rounds,
+        this.state.rounds
       );
-      console.log("NEW ROUNDS!!!");
-      console.log("rounds: ", rounds);
-      // let roundIds = rounds.map(round => round.id);
-      // console.log("roundIds: ", roundIds);
-      // console.log("this.props.all_questions: ", this.props.all_questions);
-      // let questions = this.props.all_questions.slice();
-      // questions.reduce((acc, question) => {
-      //   if (roundIds.includes(question.rounds_id)) {
-      //     acc.push(question);
-      //   }
-      // }, []);
 
-      // console.log("questions: ", questions);
-
-      this.setState({
-        rounds: rounds
-      });
+      this.setState({ rounds: this.props.rounds });
     }
 
-    // console.log(
-    //   "JSON.stringify(prevProps.all_questions) !== JSON.stringify(this.props.all_questions",
-    //   JSON.stringify(prevProps.all_questions) !==
-    //     JSON.stringify(this.props.all_questions)
-    // );
-
+    // Check to see if our questions on state match those on props
     if (
-      JSON.stringify(prevProps.all_questions) !==
-        JSON.stringify(this.props.all_questions) &&
+      JSON.stringify(this.props.all_questions) !==
+        JSON.stringify(this.state.questions) &&
       this.props.all_questions
     ) {
-      let rounds = this.props.all_rounds.filter(
-        round => round.game_id === this.props.gameId
-      );
-
-      let roundIds = rounds.map(round => round.id);
-
-      let questions = this.props.all_questions.slice();
-
-      questions.reduce((acc, question) => {
-        console.log("acc: ", questions);
-        if (roundIds.includes(question.rounds_id)) {
-          acc.push(question);
-        }
-        return acc;
-      }, []);
-
       this.setState({
-        questions: questions
+        // rounds: rounds,
+        questions: this.props.all_questions
       });
-    }
-
-    // If The Redux store indicates that we have saved a new round
-    // get rounds from the database
-    if (
-      this.props.saved_round &&
-      (!this.props.fetching_all_rounds &&
-        !this.props.fetching_all_questions &&
-        !this.props.saving_questions &&
-        !this.props.saving_round)
-    ) {
-      this.props.getAllQuestionsReq();
-      this.props.getAllRoundsReq();
-      this.props.resetAllRoundsAllQuestionsReq();
     }
 
     // If The Redux store indicates that we have saved new questions
-    // get questions from the database
+    // get questions from the database additional parameters below are to
+    // limit the number of database calls we make
     if (
       this.props.saved_questions &&
-      (!this.props.fetching_all_rounds &&
+      (!this.props.fetching_rounds &&
         !this.props.fetching_all_questions &&
         !this.props.saving_questions &&
         !this.props.saving_round)
     ) {
-      this.props.getAllRoundsReq();
+      this.props.fetchRoundsReq(this.props.gameId);
       this.props.getAllQuestionsReq();
       this.props.resetAllRoundsAllQuestionsReq();
     }
 
     // If we deleted a round, get all questions and rounds
     if (this.props.deleted_round) {
-      this.props.getAllRoundsReq();
+      this.props.fetchRoundsReq(this.props.gameId);
       this.props.getAllQuestionsReq();
       this.props.resetAllRoundsAllQuestionsReq();
     }
   };
   render() {
-    console.log("this.state.questions: ", this.state.questions);
-    console.log("this.state.rounds: ", this.state.rounds);
+    console.log(this.state.questions);
+    console.log(this.state.rounds);
     return (
       <div>
         {/* Map over questions and display questions with highlighted correct answer*/}
+        {/* Filter questions by roundId */}
         {this.state.rounds.map((round, index) => {
           let questions = this.state.questions.filter(
-            question => question.rounds_id === round.id
+            question => question.rounds_id === round.roundId
           );
           return (
             <div>
@@ -182,11 +134,17 @@ const mapStateToProps = ({ gamesList }) => {
     saved_questions: gamesList.saved_questions,
     deleted_round: gamesList.deleted_round,
     fetching_all_rounds: gamesList.fetching_all_rounds,
-    fetching_all_questions: gamesList.fetching_all_questions
+    fetching_all_questions: gamesList.fetching_all_questions,
+    fetching_rounds: gamesList.fetching_rounds
   };
 };
 
 export default connect(
   mapStateToProps,
-  { getAllRoundsReq, getAllQuestionsReq, resetAllRoundsAllQuestionsReq }
+  {
+    fetchRoundsReq,
+    getAllRoundsReq,
+    getAllQuestionsReq,
+    resetAllRoundsAllQuestionsReq
+  }
 )(PrintAll);
