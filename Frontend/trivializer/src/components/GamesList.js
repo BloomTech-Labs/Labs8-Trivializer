@@ -94,7 +94,7 @@ class GamesList extends Component {
               </ol>
             </nav>
           </div>
-          {localStorage.getItem("user") || sessionStorage.getItem("jwt") ? (
+          {localStorage.getItem("user") && sessionStorage.getItem("jwt") ? (
             <div onClick={this.logout} className="top-rightside">
               Sign Out
             </div>
@@ -110,21 +110,18 @@ class GamesList extends Component {
               <Link to={`/creategame`}>+</Link>
             </div>
           ) : (
-              this.props.games.map((game, i) => (
-
-                <div>
-                  <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
-                    <GameDetails index={i} game={game} />
-                  </Link>
-                  <button className="gameDelete" onClick={() => this.delete(game["gameId"])}>
-                    Delete
-            </button>
-                </div>
-
-              ))
-            )}
+            this.props.games.map((game, i) => (
+              <div className="game">
+                <Link className="gameInfo" to={`/game/${game["gameId"]}`} key={game["gameId"]}>
+                  <GameDetails index={i} game={game} />
+                </Link>
+                <button className="deleteButton" onClick={() => this.delete(game["gameId"])}>
+                  Delete
+                </button>
+              </div>
+            ))
+          )}
           {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
-
             <div>
               <div>New Game</div>
               <Link to={`/creategame`}>+</Link>
