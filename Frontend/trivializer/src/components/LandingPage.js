@@ -50,6 +50,8 @@ class LandingPage extends React.Component {
   };
 
   validateRegister = () => {
+    localStorage.clear();
+    sessionStorage.clear();
     // Returning 1 lets us link to our backend, so we want to return 0 if any error occurs.
     let validation = 1;
     if (!this.state.signup_username) {
@@ -108,6 +110,8 @@ class LandingPage extends React.Component {
   };
 
   validateSignin = () => {
+    localStorage.clear();
+    sessionStorage.clear();
     let validation = 1;
     if (!this.state.signin_username) {
       validation = 0;
@@ -134,7 +138,7 @@ class LandingPage extends React.Component {
   // Handles the submit call on the Register modal
   handleSubmit = e => {
     e.preventDefault();
-    if (!localStorage.getItem("guest")) {
+    if (!localStorage.getItem("guest") && !sessionStorage.getItem("jwt")) {
       let credentials;
       let url;
 
@@ -190,6 +194,8 @@ class LandingPage extends React.Component {
   };
 
   googleLogin = e => {
+    localStorage.clear();
+    sessionStorage.clear();
     let googleUsername, googleUID;
     e.preventDefault();
     auth.signInWithPopup(provider).then(result => {
@@ -311,7 +317,7 @@ class LandingPage extends React.Component {
               <li class="navbar-right-list active">
                 <div className="navbar-link">About Us</div>
               </li>
-              {sessionStorage.getItem("userId") ? (
+              {sessionStorage.getItem("userId") && !localStorage.getItem("guest") ? (
                 <li class="navbar-right-list active">
                   <div href="#" onClick={this.signOut} className="navbar-link">
                     Sign Out
@@ -320,7 +326,8 @@ class LandingPage extends React.Component {
               ) : null}
 
               {/* Navbar Signup Link */}
-              {sessionStorage.getItem("userId") ? null : (
+
+              {sessionStorage.getItem("userId") && !localStorage.getItem("guest") ? null : (
                 <li class="navbar-right-list">
                   <div className="signup">
                     <div
@@ -447,7 +454,7 @@ class LandingPage extends React.Component {
               )}
 
               {/* Navbar Sign In Link */}
-              {sessionStorage.getItem("userId") ? null : (
+              {sessionStorage.getItem("userId") && !localStorage.getItem("guest") ? null : (
                 <li class="navbar-right-list">
                   <div className="signin">
                     <div

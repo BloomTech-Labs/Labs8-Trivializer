@@ -94,7 +94,7 @@ class GamesList extends Component {
               </ol>
             </nav>
           </div>
-          {localStorage.getItem("user") || sessionStorage.getItem("jwt") ? (
+          {localStorage.getItem("user") && sessionStorage.getItem("jwt") ? (
             <div onClick={this.logout} className="top-rightside">
               Sign Out
             </div>
@@ -122,7 +122,6 @@ class GamesList extends Component {
             ))
           )}
           {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
-
             <div>
               <div>New Game</div>
               <Link to={`/creategame`}>+</Link>
