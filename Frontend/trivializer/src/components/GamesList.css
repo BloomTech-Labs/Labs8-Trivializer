@@ -1,24 +1,30 @@
 /* Styles GamesList.css */
 .game {
-    border: 2px solid red;
-    margin: 3%;
-    padding: 1%;
-    display: flex;
-    flex-flow: column;
-    height: 15%;
-  }
+  border: 2px solid red;
+  margin: 3%;
+  padding: 1%;
+  display: flex;
+  flex-flow: column;
+  height: 15%;
+}
 
-  .deleteButton{
-    margin-top: 4%;
-      
-  }
-  .deleteButton:hover {
-    box-shadow: 2px 2px;
-    background: #EE4432;
-    color: white;
-  }
-  .gameInfo
-{
-    border: 2px solid blue; 
-    padding: 2%;
+.deleteButton {
+  margin-top: 4%;
+}
+.deleteButton:hover {
+  box-shadow: 2px 2px;
+  background: #ee4432;
+  color: white;
+}
+.gameInfo {
+  border: 2px solid blue;
+  padding: 2%;
+}
+
+.notification {
+  position: absolute;
+
+  padding: 2%;
+  left: 40%;
+  top: 10%;
 }

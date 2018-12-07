@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Rounds from "./Rounds";
 import { connect } from "react-redux";
+import Notifications from "./Notifications";
 import {
   fetchRoundsReq,
   saveRoundReq,
@@ -134,6 +135,7 @@ class RoundsList extends Component {
             </div>
           ) : null}
         </div>
+        <Notifications />
       </div>
     );
   }

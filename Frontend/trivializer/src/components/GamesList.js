@@ -7,6 +7,12 @@ import { fetchGamesReq, deleteGameReq } from "../actions";
 import "./Components.css";
 import axios from "axios";
 import "./GamesList.css";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
+import SpeechBubble from "./speech_bubble/SpeechBubble";
+import Notifications from "./Notifications";
 
 /**
  * GamesList Component
@@ -24,6 +30,12 @@ class GamesList extends Component {
 
   componentDidMount() {
     this.props.fetchGamesReq();
+    NotificationManager.info(
+      <SpeechBubble
+        title={"Welcome to Games!"}
+        phrase={"You can access your games here or hit New Game to create one"}
+      />
+    );
     // NOTE: setState after API request doesn't render state in time
     // this.setState({ games: this.props.games });
     // SOLUTION: render with props directly
@@ -103,6 +115,7 @@ class GamesList extends Component {
 
         <div className="main-content">
           <Navbar />
+          <Notifications className="notification" />
           {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
           {!this.props.games[0] ? (
             <div className="game-container">
@@ -110,21 +123,22 @@ class GamesList extends Component {
               <Link to={`/creategame`}>+</Link>
             </div>
           ) : (
-              this.props.games.map((game, i) => (
-
-                <div>
-                  <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
-                    <GameDetails index={i} game={game} />
-                  </Link>
-                  <button className="gameDelete" onClick={() => this.delete(game["gameId"])}>
-                    Delete
-            </button>
-                </div>
-
-              ))
-            )}
-          {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
-
+            this.props.games.map((game, i) => (
+              <div>
+                <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
+                  <GameDetails index={i} game={game} />
+                </Link>
+                <button
+                  className="gameDelete"
+                  onClick={() => this.delete(game["gameId"])}
+                >
+                  Delete
+                </button>
+              </div>
+            ))
+          )}
+          {this.props.games.length > 0 &&
+          this.props.games.length < this.state.gameLimit ? (
             <div>
               <div>New Game</div>
               <Link to={`/creategame`}>+</Link>
