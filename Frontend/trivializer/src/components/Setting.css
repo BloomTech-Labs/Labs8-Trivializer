@@ -1,5 +1,24 @@
 .profile-picture,
 .uploaded-picture {
   border-radius: 50%;
-  height: 200px;
+  height: 250px;
+}
+
+.name,
+.email {
+  margin-top: 40px;
+  display: flex;
+  font-size: 30px;
+}
+
+.name p,
+.email p {
+  margin: 0;
+  font-size: 30px;
+}
+
+.name div,
+.email div {
+  margin-right: 80px;
+  margin-left: 30px;
 }

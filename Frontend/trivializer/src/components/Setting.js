@@ -86,22 +86,27 @@ class Setting extends React.Component {
         <div className="main-content">
           <Navbar />
           <div className="main-middle">
-            <h1 className="main-middle">Setting Page</h1>
+            <h1 className="main-middle">Profile</h1>
 
             {savedUser.photoURL ? (
               <div className="picture">
-                <img className="profile-picture" src={savedUser.photoURL} alt="profile-pic" />
+                <img
+                  className="profile-picture"
+                  src={savedUser.photoURL}
+                  width="250px"
+                  alt="profile-pic"
+                />
               </div>
             ) : null}
             {sessionStorage.getItem("google")
               ? [
                   <div className="name">
                     <p>Name: </p>
-                    <input placeholder="Name" value={savedUser ? savedUser.displayName : null} />
+                    <div>{savedUser ? savedUser.displayName : null}</div>
                   </div>,
                   <div className="email">
                     <p>Email: </p>
-                    <input placeholder="Email" value={savedUser ? savedUser.email : null} />
+                    <div>{savedUser ? savedUser.email : null}</div>
                   </div>
                 ]
               : [
@@ -111,7 +116,7 @@ class Setting extends React.Component {
                     {this.state.imagePreviewUrl ? (
                       <img
                         className="uploaded-picture"
-                        width="200px"
+                        width="300px"
                         src={this.state.imagePreviewUrl}
                       />
                     ) : null}
