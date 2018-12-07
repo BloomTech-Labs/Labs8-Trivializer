@@ -76,7 +76,7 @@ class Setting extends React.Component {
               </ol>
             </nav>
           </div>
-          {localStorage.getItem("user") || sessionStorage.getItem("jwt") ? (
+          {localStorage.getItem("user") && sessionStorage.getItem("jwt") ? (
             <div onClick={this.logout} className="top-rightside">
               Sign Out
             </div>
@@ -122,7 +122,6 @@ class Setting extends React.Component {
                     <p>Email: </p>
                     <input placeholder="Email" value={savedUser ? savedUser[0].email : null} />
                   </div>,
-
 
                   <div className="newpassword">
                     <p>New Password: </p>
