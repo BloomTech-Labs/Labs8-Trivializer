@@ -55,10 +55,15 @@
 /* FAQs Page */
 .content-container {
   padding-top: 30px;
-  text-align: left;
+  text-align: center;
   padding-left: 5%;
   font-size: 20px;
   background-color: white;
+  width: 100%;
+}
+
+.faq-container {
+  text-align: left;
 }
 
 .content-container h1 {

@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import "./Setting.css";
 import axios from "axios";
+import "./Components.css";
 
 class Setting extends React.Component {
   constructor() {
@@ -85,60 +86,62 @@ class Setting extends React.Component {
 
         <div className="main-content">
           <Navbar />
-          <div className="main-middle">
-            <h1 className="main-middle">Profile</h1>
+          <div className="content-container">
+            <div className="main-middle">
+              <h1 className="main-middle">Profile</h1>
 
-            {savedUser.photoURL ? (
-              <div className="picture">
-                <img
-                  className="profile-picture"
-                  src={savedUser.photoURL}
-                  width="250px"
-                  alt="profile-pic"
-                />
-              </div>
-            ) : null}
-            {sessionStorage.getItem("google")
-              ? [
-                  <div className="name">
-                    <p>Name: </p>
-                    <div>{savedUser ? savedUser.displayName : null}</div>
-                  </div>,
-                  <div className="email">
-                    <p>Email: </p>
-                    <div>{savedUser ? savedUser.email : null}</div>
-                  </div>
-                ]
-              : [
-                  <input type="file" onChange={this.fileChangedHandler} />,
+              {savedUser.photoURL ? (
+                <div className="picture">
+                  <img
+                    className="profile-picture"
+                    src={savedUser.photoURL}
+                    width="250px"
+                    alt="profile-pic"
+                  />
+                </div>
+              ) : null}
+              {sessionStorage.getItem("google")
+                ? [
+                    <div className="name">
+                      <p>Name: </p>
+                      <div>{savedUser ? savedUser.displayName : null}</div>
+                    </div>,
+                    <div className="email">
+                      <p>Email: </p>
+                      <div>{savedUser ? savedUser.email : null}</div>
+                    </div>
+                  ]
+                : [
+                    <input type="file" onChange={this.fileChangedHandler} />,
 
-                  <div className="name">
-                    {this.state.imagePreviewUrl ? (
-                      <img
-                        className="uploaded-picture"
-                        width="300px"
-                        src={this.state.imagePreviewUrl}
-                      />
-                    ) : null}
-                    <p>Username: </p>
-                    <input placeholder="Name" value={savedUser ? savedUser[0].userName : null} />
-                  </div>,
-                  <div className="email">
-                    <p>Email: </p>
-                    <input placeholder="Email" value={savedUser ? savedUser[0].email : null} />
-                  </div>,
+                    <div className="name">
+                      {this.state.imagePreviewUrl ? (
+                        <img
+                          className="uploaded-picture"
+                          width="300px"
+                          src={this.state.imagePreviewUrl}
+                        />
+                      ) : null}
+                      <p>Username: </p>
+                      <input placeholder="Name" value={savedUser ? savedUser[0].userName : null} />
+                    </div>,
+                    <div className="email">
+                      <p>Email: </p>
+                      <input placeholder="Email" value={savedUser ? savedUser[0].email : null} />
+                    </div>,
 
-                  <div className="newpassword">
-                    <p>New Password: </p>
-                    <input placeholder="Enter new password" />
-                  </div>,
-                  <div>
-                    {savedUser ? (
-                      <div>Account Status: {savedUser[0].paid === 0 ? "Free" : "Premium"}</div>
-                    ) : null}
-                  </div>,
-                  <button onClick={this.uploadHandler}>Save Changes</button>
-                ]}
+                    <div className="newpassword">
+                      <p>New Password: </p>
+                      <input placeholder="Enter new password" />
+                    </div>,
+                    <div>
+                      {savedUser ? (
+                        <div>Account Status: {savedUser[0].paid === 0 ? "Free" : "Premium"}</div>
+                      ) : null}
+                    </div>,
+                    <button onClick={this.uploadHandler}>Save Changes</button>
+                  ]}
+            </div>
           </div>
         </div>
       </div>

@@ -39,7 +39,9 @@ const Billing = props => {
         <Navbar />
 
         {/* <h1 className="main-middle">Billing Page</h1> */}
-        <Pay />
+        <div className="content-container">
+          <Pay />
+        </div>
       </div>
     </div>
   );
