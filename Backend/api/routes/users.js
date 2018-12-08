@@ -11,7 +11,6 @@ const domain = process.env.DOMAIN_NAME;
 const mailgun = require("mailgun-js")({ apiKey: api_key, domain: domain });
 
 // Base endpoint (at users/)
-console.log("\n\nENVIRONMENT: ", process.env, "\n\n");
 server.get("/", (req, res) => {
   res.json("App is currently functioning");
 });
@@ -188,7 +187,7 @@ server.post("/creategame", utilities.protected, async (req, res) => {
       name: gameName,
       date_created: created,
       date_played: played === 0 ? 0 : played,
-      // user_id: userId,
+      user_id: userId,
       description: description
     };
     console.log("gamePackage: ", gamePackage);
@@ -200,8 +199,8 @@ server.post("/creategame", utilities.protected, async (req, res) => {
     let game = await db("Games")
       .where({ name: gameName })
       .first();
-    console.log("game in CREATEGAME!!: ", game);
-    if (!game) throw new Error(err.message);
+
+    if (!game) throw new Error({ message: "Game not saved in DB" });
 
     res.status(201).json(game);
   } catch (err) {
@@ -211,99 +210,99 @@ server.post("/creategame", utilities.protected, async (req, res) => {
 });
 
 // Saves a whole game, takes in the usernam, description, gamename, dateCreated, datePlayed, and rounds array
-server.post("/save", utilities.protected, async (req, res) => {
-  // Transactions allow us to perform multiple database calls, and if one of them doesn't work,
-  // roll back all other calls. Maintains data consistency
-  const {
-    username,
-    description,
-    gamename,
-    dateCreated,
-    datePlayed,
-    rounds
-  } = req.body;
+// server.post("/save", utilities.protected, async (req, res) => {
+//   // Transactions allow us to perform multiple database calls, and if one of them doesn't work,
+//   // roll back all other calls. Maintains data consistency
+//   const {
+//     username,
+//     description,
+//     gamename,
+//     dateCreated,
+//     datePlayed,
+//     rounds
+//   } = req.body;
 
-  try {
-    // Get user
-    await db.transaction(async trx => {
-      let userId = await trx("Users")
-        .where({ username })
-        .first()
-        .select("id"); // Get our user id based on username
-      if (userId) userId = userId.id;
-      else {
-        throw new Error("username not found");
-      }
-      //Enter game info in DB with userID
-      const gameInfo = {
-        name: gamename,
-        date_created: dateCreated,
-        date_played: datePlayed,
-        user_id: userId,
-        description: description
-      };
+//   try {
+//     // Get user
+//     await db.transaction(async trx => {
+//       let userId = await trx("Users")
+//         .where({ username })
+//         .first()
+//         .select("id"); // Get our user id based on username
+//       if (userId) userId = userId.id;
+//       else {
+//         throw new Error("username not found");
+//       }
+//       //Enter game info in DB with userID
+//       const gameInfo = {
+//         name: gamename,
+//         date_created: dateCreated,
+//         date_played: datePlayed,
+//         user_id: userId,
+//         description: description
+//       };
 
-      let gameId = (await trx("Games").insert(gameInfo))[0];
+//       let gameId = (await trx("Games").insert(gameInfo))[0];
 
-      // Enter Rounds in Database
+//       // Enter Rounds in Database
 
-      // Assemble what we're going to insert in rounds table
-      const roundsPackage = rounds.map(round => {
-        return {
-          name: round.roundName,
-          category: round.category,
-          type: round.type,
-          difficulty: round.difficulty,
-          number_of_questions: round.round.length,
-          game_id: gameId
-        };
-      });
+//       // Assemble what we're going to insert in rounds table
+//       const roundsPackage = rounds.map(round => {
+//         return {
+//           name: round.roundName,
+//           category: round.category,
+//           type: round.type,
+//           difficulty: round.difficulty,
+//           number_of_questions: round.round.length,
+//           game_id: gameId
+//         };
+//       });
 
-      let roundsPromises = roundsPackage.map(async round => {
-        // Insert all rounds into game
-        return (await trx("Rounds").insert(round))[0];
-      });
+//       let roundsPromises = roundsPackage.map(async round => {
+//         // Insert all rounds into game
+//         return (await trx("Rounds").insert(round))[0];
+//       });
 
-      let roundsIds;
+//       let roundsIds;
 
-      await Promise.all(roundsPromises).then(values => {
-        roundsIds = values;
-      });
+//       await Promise.all(roundsPromises).then(values => {
+//         roundsIds = values;
+//       });
 
-      // Insert questions/answers into database
-      let questions = [];
+//       // Insert questions/answers into database
+//       let questions = [];
 
-      rounds.forEach((namedRound, index) => {
-        namedRound.round.forEach(round => {
-          questions.push({
-            rounds_id: roundsIds[index],
-            category: round.category,
-            difficulty: round.difficulty,
-            type: round.type,
-            question: round.question,
-            correct_answer: round.correct_answer,
-            incorrect_answers: round.incorrect_answers.join("--")
-          });
-        });
-      });
+//       rounds.forEach((namedRound, index) => {
+//         namedRound.round.forEach(round => {
+//           questions.push({
+//             rounds_id: roundsIds[index],
+//             category: round.category,
+//             difficulty: round.difficulty,
+//             type: round.type,
+//             question: round.question,
+//             correct_answer: round.correct_answer,
+//             incorrect_answers: round.incorrect_answers.join("--")
+//           });
+//         });
+//       });
 
-      let indicator = await trx("Questions").insert(questions);
+//       let indicator = await trx("Questions").insert(questions);
 
-      const returnGame = {
-        gameId: gameId,
-        gamename: gamename,
-        description: description,
-        dateCreated: dateCreated,
-        datePlayed: datePlayed,
-        rounds: rounds
-      };
-      res.status(200).json(returnGame);
-    });
-  } catch (err) {
-    console.log("err.message: ", err.message);
-    res.status(501).json({ error: err.message });
-  }
-});
+//       const returnGame = {
+//         gameId: gameId,
+//         gamename: gamename,
+//         description: description,
+//         dateCreated: dateCreated,
+//         datePlayed: datePlayed,
+//         rounds: rounds
+//       };
+//       res.status(200).json(returnGame);
+//     });
+//   } catch (err) {
+//     console.log("err.message: ", err.message);
+//     res.status(501).json({ error: err.message });
+//   }
+// });
 
 // Updates a game, takes in username, created, played, gameName and description (string)
 server.put("/editgame/:id", utilities.protected, async (req, res) => {
@@ -342,6 +341,7 @@ server.post(
   utilities.getUser,
   utilities.protected,
   async (req, res) => {
+    console.log("\n\n\nGETTING GAMES!!!");
     try {
       console.log("req.userIn: ", req.userIn);
       const id = req.userIn.id; // This is set in utilities.getUser
@@ -360,6 +360,7 @@ server.post(
       console.log("games: ", games);
       res.status(200).json(games);
     } catch (err) {
+      console.log("Error getting games: ", err.message);
       res.status(500).json({ error: "Problem getting games" });
     }
   }
