@@ -87,7 +87,7 @@ class Setting extends React.Component {
         <div className="main-content">
           <Navbar />
           <div className="content-container">
-            <div className="main-middle">
+            <div className="main-middle setting-content">
               <h1 className="main-middle">Setting</h1>
 
               {sessionStorage.getItem("google") ? (
@@ -120,12 +120,13 @@ class Setting extends React.Component {
               ) : (
                 <div className="signinSetting">
                   <div className="siginAccount">
+                    <h2>Personal</h2>
                     <div className="signinUserName">
                       <p>Username</p>
                       <input placeholder="Name" value={savedUser ? savedUser[0].userName : null} />
                     </div>
                     <div className="signinEmail">
-                      <p>Email: </p>
+                      <p>Email </p>
                       <input placeholder="Email" value={savedUser ? savedUser[0].email : null} />
                     </div>
                     <div className="signinPassword">
@@ -134,6 +135,7 @@ class Setting extends React.Component {
                     </div>
                   </div>
                   <div className="signinTier">
+                    <h2>Account</h2>
                     <div className="signinType">
                       <p>Account Type</p>
                       <div>
