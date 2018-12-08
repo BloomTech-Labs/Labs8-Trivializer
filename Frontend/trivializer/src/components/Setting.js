@@ -11,7 +11,8 @@ class Setting extends React.Component {
     this.state = {
       savedUser: "",
       file: "",
-      imagePreviewUrl: ""
+      imagePreviewUrl: "",
+      pictureAdded: false
     };
   }
   componentDidMount() {
@@ -148,20 +149,29 @@ class Setting extends React.Component {
                     </div>
                     <div className="signinPicture">
                       <p>Picture</p>
-                      <input type="file" onChange={this.fileChangedHandler} />
-                      <div className="upload">
-                        {this.state.imagePreviewUrl ? (
-                          <img
-                            className="uploaded-picture"
-                            width="300px"
-                            src={this.state.imagePreviewUrl}
-                          />
-                        ) : null}
-                      </div>
+                      {this.state.pictureAdded ? (
+                        <div className="upload">
+                          {this.state.imagePreviewUrl ? (
+                            <img
+                              className="uploaded-picture"
+                              width="300px"
+                              src={this.state.imagePreviewUrl}
+                            />
+                          ) : null}
+                        </div>
+                      ) : (
+                        <input
+                          className="addPicture"
+                          type="file"
+                          onChange={this.fileChangedHandler}
+                        />
+                      )}
                     </div>
                   </div>
 
-                  <button onClick={this.uploadHandler}>Save Changes</button>
+                  <button type="btn" className="btn btn-secondary" onClick={this.uploadHandler}>
+                    Save Changes
+                  </button>
                 </div>
               )}
             </div>
