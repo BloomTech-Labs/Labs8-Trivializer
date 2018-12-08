@@ -13,7 +13,7 @@ class Games extends Component {
   render() {
     const created = new Date(this.props.game.dateCreated);
     const played = new Date(this.props.game.datePlayed);
-
+    
     return (
       <div>
         <div>{this.props.game.gamename}</div>

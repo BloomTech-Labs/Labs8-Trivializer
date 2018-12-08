@@ -110,25 +110,30 @@ class GamesList extends Component {
                 <Link to={`/creategame`}>+</Link>
               </div>
             ) : (
-              this.props.games.map((game, i) => (
-                <div className="game">
-                  <Link className="gameInfo" to={`/game/${game["gameId"]}`} key={game["gameId"]}>
-                    <GameDetails index={i} game={game} />
-                  </Link>
-                  <button className="deleteButton" onClick={() => this.delete(game["gameId"])}>
-                    Delete
-                  </button>
-                </div>
-              ))
-            )}
+                this.props.games.map((game, i) => (
+                  <div className="game-container">
+                    <div className="game-summary">
+                      <Link className="game-link" to={`/game/${game["gameId"]}`} key={game["gameId"]}>
+                        <GameDetails index={i} game={game} />
+                      </Link>
+                      <button className="game-delete" onClick={() => this.delete(game["gameId"])}>
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
             {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
-              <div>
-                <div>New Game</div>
-                <Link to={`/creategame`}>+</Link>
+              <div className="game-container">
+                <div className="game-summary">
+                  <Link className="newgame-link" to={`/creategame`}>
+                    <div>New Game</div>
+                    <div>+</div>
+                  </Link>
+                </div>
               </div>
             ) : null}
           </div>
-          {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
         </div>
       </div>
     );
