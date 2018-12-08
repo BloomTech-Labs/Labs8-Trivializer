@@ -87,40 +87,57 @@ class Setting extends React.Component {
 
         <div className="main-content">
           <Navbar />
-          <div className="content-container">
+          <div className="content-container setting-container">
             <div className="main-middle setting-content">
               <h1 className="main-middle">Setting</h1>
 
               {sessionStorage.getItem("google") ? (
-                [
-                  <div className="googleSetting">
-                    <div>
-                      {savedUser.photoURL ? (
-                        <div className="picture">
-                          <img
-                            className="profile-picture"
-                            src={savedUser.photoURL}
-                            width="250px"
-                            alt="profile-pic"
-                          />
-                        </div>
-                      ) : null}
-                    </div>
-                    ,
-                    <div className="name">
+                <div className="googleSetting">
+                  <div className="google-photo">
+                    {savedUser.photoURL ? (
+                      <div className="picture">
+                        <img
+                          className="profile-picture"
+                          src={savedUser.photoURL}
+                          width="250px"
+                          alt="profile-pic"
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <div className="signinAccount">
+                    <h2>Personal</h2>
+                    <div className="signinName">
                       <p>Name: </p>
                       <div>{savedUser ? savedUser.displayName : null}</div>
                     </div>
-                    ,
-                    <div className="email">
+                    <div className="signinEmail googleEmail">
                       <p>Email: </p>
                       <div>{savedUser ? savedUser.email : null}</div>
                     </div>
                   </div>
-                ]
+                  <div className="signinTier">
+                    <h2>Account</h2>
+                    <div className="signinFree">
+                      <p>Account Tier</p>
+                      <div>{savedUser ? <div>Free</div> : "None"}</div>
+                    </div>
+                    <div className="signinType">
+                      <p>Login Type</p>
+                      <div>Google Login</div>
+                    </div>
+                    <div className="signinUpgrade googleUpgrade">
+                      <p>Upgrade Account</p>
+                      <button type="button" className="btn btn-secondary">
+                        Upgrade Now
+                      </button>
+                    </div>
+                  </div>
+                </div>
               ) : (
                 <div className="signinSetting">
-                  <div className="siginAccount">
+                  <div className="signinAccount">
                     <h2>Personal</h2>
                     <div className="signinUserName">
                       <p>Username</p>
@@ -137,7 +154,7 @@ class Setting extends React.Component {
                   </div>
                   <div className="signinTier">
                     <h2>Account</h2>
-                    <div className="signinType">
+                    <div className="signinFree">
                       <p>Account Type</p>
                       <div>
                         {savedUser ? (
@@ -169,7 +186,11 @@ class Setting extends React.Component {
                     </div>
                   </div>
 
-                  <button type="btn" className="btn btn-secondary" onClick={this.uploadHandler}>
+                  <button
+                    type="btn"
+                    className="btn btn-secondary save-button"
+                    onClick={this.uploadHandler}
+                  >
                     Save Changes
                   </button>
                 </div>
