@@ -59,6 +59,9 @@ class Setting extends React.Component {
   uploadHandler = () => {
     console.log(this.state.selectedFile);
   };
+  upgradeButton = () => {
+    this.props.history.push("/billing");
+  };
 
   render() {
     const savedUser = this.state.savedUser;
@@ -129,7 +132,11 @@ class Setting extends React.Component {
                     </div>
                     <div className="signinUpgrade googleUpgrade">
                       <p>Upgrade Account</p>
-                      <button type="button" className="btn btn-secondary">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={this.upgradeButton}
+                      >
                         Upgrade Now
                       </button>
                     </div>
