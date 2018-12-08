@@ -6,7 +6,6 @@ let secret = process.env.SECRET; // Gets the secret stored in the .env file
 module.exports = {
   getUser: function(req, res, next) {
     let { username } = req.body;
-    console.log("username UTILITIES!!: ", username);
     try {
       db("Users")
         .where({ username })

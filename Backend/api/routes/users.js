@@ -173,23 +173,16 @@ server.post("/creategame", utilities.protected, async (req, res) => {
   console.log("ENTERED CREATEGAME\n\n\n\n");
   try {
     const { username, created, gameName, description, played } = req.body;
-    console.log("username: ", username);
-    console.log("created:", created);
-    console.log("gameName:", gameName);
-    console.log("description:", description);
-    console.log("played:", played);
 
     // Returns an array with a single user object, we just want the id here
     let user = await db("Users")
       .where({ username })
       .first();
-    console.log("user creategame!!!!", user);
+
     if (!user) throw new Error("No user by that name");
-    console.log("\n\nAFTER !user!!!\n\n");
     // Get the id from the returned user object
     let userId = user.id;
 
-    console.log("\n\nAFTER userId = user.id!!!\n\n");
     // Create package with all necessary fields for the Games table
     let gamePackage = {
       name: gameName,
@@ -204,8 +197,8 @@ server.post("/creategame", utilities.protected, async (req, res) => {
 
     console.log("\n\ngameId: ", gameId, "\n\n");
     console.log("gameName: ", gameName);
-    let game = await db("Game")
-      .where({ gameName })
+    let game = await db("Games")
+      .where({ name: gameName })
       .first();
     console.log("game in CREATEGAME!!: ", game);
     if (!game) throw new Error(err.message);
