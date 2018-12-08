@@ -13,42 +13,42 @@ const localPg = {
   const dbConnection = process.env.DATABASE_URL || localPg;
 
 module.exports = {
-    development: {
-        client: "sqlite3",
-        debug: false,
-        connection: {
-            filename: "./data/trivializer.sqlite3",
-            user: "admin",
-            password: "password"
-        },
-
-        useNullAsDefault: true,
-        pool: {
-            min: 2,
-            max: 10
-        },
-        migrations: {
-            directory: "./data/migrations",
-            tableName: "knex_migrations"
-        },
-        seeds: { directory: "./data/seeds" }
-    },
     // development: {
-    //     client: "pg",
-    //     connection: dbConnection,
-    //     pool: {
-    //       min: 2,
-    //       max: 10
+    //     client: "sqlite3",
+    //     debug: false,
+    //     connection: {
+    //         filename: "./data/trivializer.sqlite3",
+    //         user: "admin",
+    //         password: "password"
     //     },
+
     //     useNullAsDefault: true,
-    //     migrations: {
-    //       tableName: "knex_migrations",
-    //       directory: "./data/migrations"
+    //     pool: {
+    //         min: 2,
+    //         max: 10
     //     },
-    //     seeds: {
-    //       directory: "./data/seeds"
-    //     }
+    //     migrations: {
+    //         directory: "./data/migrations",
+    //         tableName: "knex_migrations"
+    //     },
+    //     seeds: { directory: "./data/seeds" }
     // },
+    development: {
+        client: "postgresql",
+        connection: `${process.env.DATABASE_URL}?ssl=true`,
+        pool: {
+          min: 2,
+          max: 10
+        },
+        useNullAsDefault: true,
+        migrations: {
+          tableName: "knex_migrations",
+          directory: "./data/migrations"
+        },
+        seeds: {
+          directory: "./data/seeds"
+        }
+    },
 
     staging: {
         client: "postgresql",

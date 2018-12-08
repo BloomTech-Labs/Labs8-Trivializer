@@ -27,7 +27,8 @@ class Setting extends React.Component {
     } else {
       let normalUserId = JSON.parse(sessionStorage.getItem("userId"));
       axios
-        .get(`https://testsdepl.herokuapp.com/users/users/${normalUserId}`, auth)
+        // .get(`https://testsdepl.herokuapp.com/users/users/${normalUserId}`, auth)
+        .get(`http://localhost:3300/users/users/${normalUserId}`, auth)
         .then(response => {
           this.setState({ savedUser: response.data });
         })

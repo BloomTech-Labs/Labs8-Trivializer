@@ -108,6 +108,9 @@ server.post("/register", async (req, res) => {
   try {
     // Try to insert the user
     let userId = await db("Users").insert(credentials);
+    let user = await db("Users")
+      .where({ username })
+      .first();
 
     if (!userId) throw new Error("Unable to add that user");
 
@@ -126,7 +129,7 @@ server.post("/register", async (req, res) => {
     let token = utilities.generateToken(username);
     res
       .status(201)
-      .json({ token: token, userId: userId[0], status: credentials.paid });
+      .json({ token: token, userId: user.id, status: credentials.paid });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -169,7 +172,8 @@ server.post("/creategame", utilities.protected, async (req, res) => {
     let user = await db("Users")
       .where({ username })
       .first();
-
+      
+      
     if (!user) throw new Error("No user by that name");
 
     // Get the id from the returned user object
@@ -186,10 +190,13 @@ server.post("/creategame", utilities.protected, async (req, res) => {
 
     // inserting into games returns an array with 1 game ID if successful
     let gameId = (await db("Games").insert(gamePackage))[0];
+    let game = await db("Game")
+      .where({ gameName })
+      .first();
 
-    if (!gameId) throw new Error("Error creating new game");
+    if (!game) throw new Error(err.message);
 
-    res.status(201).json(gameId);
+    res.status(201).json(game);
   } catch (err) {
     res.status(404).json({ error: err.message });
   }

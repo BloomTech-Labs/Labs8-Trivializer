@@ -9,12 +9,13 @@ const CURRENCY = "USD";
 
 const fromEuroToCent = amount => amount * 100;
 
-let savedUser = JSON.parse(sessionStorage.getItem("userId"));
+// let savedUser = JSON.parse(sessionStorage.getItem("userId"));
+let savedUser = sessionStorage.getItem("userId");
 console.log(savedUser);
 
 const successPayment = data => {
-  const url = "https://testsdepl.herokuapp.com/users/edituser";
-
+  // const url = "https://testsdepl.herokuapp.com/users/edituser";
+  const url = "http://localhost:3300/users/edituser";
   const paid = { paid: 1 };
   axios
     .put(`${url}/${savedUser}`, paid, {

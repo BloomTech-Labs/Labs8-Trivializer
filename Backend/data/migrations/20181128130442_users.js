@@ -6,11 +6,11 @@ exports.up = function(knex) {
           .string("username")
           .unique()
           .notNullable();
-        table.string("password").notNullable();
-        table.string("name");
-        table.string("email").notNullable();
-        table.string("phone");
-        table.string("logo");
+        table.text("password").notNullable();
+        table.text("name");
+        table.text("email").notNullable();
+        table.text("phone");
+        table.text("logo");
         table.integer("credit_card");
         table.integer("paid").notNullable();
       }),
@@ -18,7 +18,7 @@ exports.up = function(knex) {
         table.increments("id").primary();
         table.integer("user_id");
         table.foreign("user_id").references("Users.id").onDelete('CASCADE').onUpdate('CASCADE');
-        table.string("name").notNullable();
+        table.text("name").notNullable();
         table.text("description");
         table.timestamp("date_created").defaultTo(knex.fn.now());
         table.timestamp("date_played").defaultTo(null);
