@@ -1,24 +1,69 @@
 /* Styles GamesList.css */
-.game {
-    border: 2px solid red;
-    margin: 3%;
-    padding: 1%;
-    display: flex;
-    flex-flow: column;
-    height: 15%;
-  }
-
-  .deleteButton{
-    margin-top: 4%;
-      
-  }
-  .deleteButton:hover {
-    box-shadow: 2px 2px;
-    background: #EE4432;
-    color: white;
-  }
-  .gameInfo
-{
-    border: 2px solid blue; 
-    padding: 2%;
+.gameslist-container {
+  display: flex;
+  flex-wrap: wrap;
 }
+
+.game-container {
+  width: 300px;
+  height: 300px;
+  margin: 20px 10px 10px 20px;
+}
+
+.game-container .game-link {
+  color: black;
+  text-decoration: none;
+}
+
+.game-container .newgame-link {
+  text-decoration: none;
+  font-size: 24px;
+  margin: 0 auto;
+}
+
+.game-summary {
+  border: 2px solid #EE4432;
+  border-radius: 10px;
+  margin: auto;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  height: 275px;
+  width: 275px;
+  transition: width 0.5s, height 0.5s, transform 0.5s;
+}
+
+.game-summary:hover {
+  width: 300px;
+  height: 300px;
+}
+
+.game-delete {
+  margin: 10px auto;
+  width: 100px;
+  border-radius: 10px;
+}
+
+.game-delete:hover {
+  box-shadow: 2px 2px;
+  background: #EE4432;
+  color: white;
+  cursor: pointer;
+}
+
+.game {
+
+}
+
+.game-description
+{
+  border: 2px solid lightskyblue;
+  border-radius: 10px; 
+  padding: 2%;
+  word-wrap: break-word;
+  margin: 10px 20px;
+  height: 100px;
+  text-align: left;
+}
+
+

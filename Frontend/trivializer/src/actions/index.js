@@ -208,6 +208,7 @@ export const fetchRoundsReq = id => {
         }
       })
       .then(({ data }) => {
+        console.log("Returned rounds in actions: ", data);
         if (!data[0]["roundId"]) {
           data = [];
         }

@@ -95,7 +95,7 @@ class GamesList extends Component {
               </ol>
             </nav>
           </div>
-          {localStorage.getItem("user") || sessionStorage.getItem("jwt") ? (
+          {localStorage.getItem("user") && sessionStorage.getItem("jwt") ? (
             <div onClick={this.logout} className="top-rightside">
               Sign Out
             </div>
@@ -104,34 +104,46 @@ class GamesList extends Component {
 
         <div className="main-content">
           <Navbar />
-          {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
-          {!this.props.games[0] ? (
-            <div className="game-container">
-              <h3 className="main-middle">Add New Game</h3>
-              <Link to={`/creategame`}>+</Link>
-            </div>
-          ) : (
-            this.props.games.map((game, i) => (
-              <div>
-                <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
-                  <GameDetails index={i} game={game} />
-                </Link>
-                <button
-                  className="gameDelete"
-                  onClick={() => this.delete(game["gameId"])}
-                >
-                  Delete
-                </button>
+          <div className="gameslist-container">
+            {/* Ternary here should go: if [games] display <Games /> component, if NOT, display the add new game sign*/}
+            {!this.props.games[0] ? (
+              <div className="game-container">
+                <h3 className="main-middle">Add New Game</h3>
+                <Link to={`/creategame`}>+</Link>
               </div>
-            ))
-          )}
-          {this.props.games.length > 0 &&
-          this.props.games.length < this.state.gameLimit ? (
-            <div>
-              <div>New Game</div>
-              <Link to={`/creategame`}>+</Link>
-            </div>
-          ) : null}
+            ) : (
+              this.props.games.map((game, i) => (
+                <div className="game-container">
+                  <div className="game-summary">
+                    <Link
+                      className="game-link"
+                      to={`/game/${game["gameId"]}`}
+                      key={game["gameId"]}
+                    >
+                      <GameDetails index={i} game={game} />
+                    </Link>
+                    <button
+                      className="game-delete"
+                      onClick={() => this.delete(game["gameId"])}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+            {this.props.games.length > 0 &&
+            this.props.games.length < this.state.gameLimit ? (
+              <div className="game-container">
+                <div className="game-summary">
+                  <Link className="newgame-link" to={`/creategame`}>
+                    <div>New Game</div>
+                    <div>+</div>
+                  </Link>
+                </div>
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
     );

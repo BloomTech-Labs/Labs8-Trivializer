@@ -112,10 +112,6 @@ class RoundsList extends Component {
   };
 
   render() {
-    if (this.props.fetchingRounds === true) {
-      return <div>Loading...</div>;
-    }
-
     return (
       <div>
         <div className="roundsList">
@@ -149,7 +145,6 @@ const mapStateToProps = ({ gamesList }) => {
     roundId: gamesList.roundId,
     savedRound: gamesList.saved_round,
     fetchingRounds: gamesList.fetching_rounds,
-    fetchedRounds: gamesList.fetched_rounds,
     error: gamesList.error,
     rounds: gamesList.rounds,
     round: gamesList.round,
