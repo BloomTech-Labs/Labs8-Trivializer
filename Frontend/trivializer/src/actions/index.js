@@ -35,7 +35,7 @@ export const ERROR = "ERROR";
 export const SET_USER_STATUS = "SET_USER_STATUS";
 
 const questionsApiURL = "https://opentdb.com/api.php?";
-const BE_URL = process.env.REACT_APP_BE_URL || URL.current_URL; // See ../URLs/index.js to change
+const BE_URL = process.env.REACT_APP_BE_URL || URL.current_URL; // See ../URLs/index.js to change local vs served URL
 
 // sample games fetch with params
 // {

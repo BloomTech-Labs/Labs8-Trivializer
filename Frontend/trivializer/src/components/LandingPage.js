@@ -23,9 +23,9 @@ class LandingPage extends React.Component {
     super();
     this.state = {
       registerURL:
-        process.env.REACT_APP_BE_REGISTER_URL || `${URL.current_URL}/register`, // See ../URLs/index.js to change
+        process.env.REACT_APP_BE_REGISTER_URL || `${URL.current_URL}/register`, // See ../URLs/index.js to change local vs served URL
       signinURL:
-        process.env.REACT_APP_BE_LOGIN_URL || `${URL.current_URL}/login`, // See ../URLs/index.js to change
+        process.env.REACT_APP_BE_LOGIN_URL || `${URL.current_URL}/login`, // See ../URLs/index.js to change local vs served URL
       signup_username: "",
       signup_email: "",
       signup_password: "",
