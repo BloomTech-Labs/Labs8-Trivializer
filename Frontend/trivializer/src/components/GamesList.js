@@ -7,6 +7,7 @@ import { fetchGamesReq, deleteGameReq } from "../actions";
 import "./Components.css";
 import axios from "axios";
 import "./GamesList.css";
+import URL from "../URLs";
 
 /**
  * GamesList Component
@@ -31,11 +32,7 @@ class GamesList extends Component {
       let googleUsername = localStorage.getItem("user").displayName;
       let googleUID = localStorage.getItem("user").uid;
       axios
-        // .post("https://testsdepl.herokuapp.com/users/login", {
-        //   username: googleUsername,
-        //   password: googleUID
-        // })
-        .post("http://localhost:3300/users/login", {
+        .post(`${URL.current_URL}/login`, {
           username: googleUsername,
           password: googleUID
         })
@@ -114,21 +111,22 @@ class GamesList extends Component {
               <Link to={`/creategame`}>+</Link>
             </div>
           ) : (
-              this.props.games.map((game, i) => (
-
-                <div>
-                  <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
-                    <GameDetails index={i} game={game} />
-                  </Link>
-                  <button className="gameDelete" onClick={() => this.delete(game["gameId"])}>
-                    Delete
-            </button>
-                </div>
-
-              ))
-            )}
-          {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
-
+            this.props.games.map((game, i) => (
+              <div>
+                <Link to={`/game/${game["gameId"]}`} key={game["gameId"]}>
+                  <GameDetails index={i} game={game} />
+                </Link>
+                <button
+                  className="gameDelete"
+                  onClick={() => this.delete(game["gameId"])}
+                >
+                  Delete
+                </button>
+              </div>
+            ))
+          )}
+          {this.props.games.length > 0 &&
+          this.props.games.length < this.state.gameLimit ? (
             <div>
               <div>New Game</div>
               <Link to={`/creategame`}>+</Link>

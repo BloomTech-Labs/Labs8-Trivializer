@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import StripeCheckout from "react-stripe-checkout";
+import URL from "../URLs";
 
 import STRIPE_PUBLISHABLE from "../constants/stripe";
 import PAYMENT_SERVER_URL from "../constants/server";
@@ -14,8 +15,7 @@ let savedUser = sessionStorage.getItem("userId");
 console.log(savedUser);
 
 const successPayment = data => {
-  // const url = "https://testsdepl.herokuapp.com/users/edituser";
-  const url = "http://localhost:3300/users/edituser";
+  const url = URL.current_URL;
   const paid = { paid: 1 };
   axios
     .put(`${url}/${savedUser}`, paid, {

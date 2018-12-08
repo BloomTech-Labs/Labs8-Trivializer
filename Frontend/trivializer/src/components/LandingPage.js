@@ -5,6 +5,7 @@ import axios from "axios";
 import "./Components.css";
 import "./LandingPage.css";
 import { auth, provider } from "./OAuth/firebase";
+import URL from "../URLs";
 
 const username_regex = /^[a-zA-Z0-9]{4,}$/;
 const email_regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
@@ -21,18 +22,10 @@ class LandingPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      // registerURL:
-      //   process.env.REACT_APP_BE_REGISTER_URL ||
-      //   "https://testsdepl.app.com/users/register",
-      // signinURL:
-      //   process.env.REACT_APP_BE_LOGIN_URL ||
-      //   "https://testsdepl.herokuapp.com/users/login",
-        registerURL:
-        process.env.REACT_APP_BE_REGISTER_URL ||
-        "http://localhost:3300/users/register",
+      registerURL:
+        process.env.REACT_APP_BE_REGISTER_URL || `${URL.current_URL}/register`, // See ../URLs/index.js to change
       signinURL:
-        process.env.REACT_APP_BE_LOGIN_URL ||
-        "http://localhost:3300/users/login",
+        process.env.REACT_APP_BE_LOGIN_URL || `${URL.current_URL}/login`, // See ../URLs/index.js to change
       signup_username: "",
       signup_email: "",
       signup_password: "",
@@ -665,10 +658,15 @@ class LandingPage extends React.Component {
                 a welcome email and can reset their password via email as well.
               </p>
             </div>
-            <button className="main-button btn btn-success" name="guest" onClick={this.handleSubmit}>
-              {localStorage.getItem("user") ? "Go To Games" : "Play Without Logging In"}
+            <button
+              className="main-button btn btn-success"
+              name="guest"
+              onClick={this.handleSubmit}
+            >
+              {localStorage.getItem("user")
+                ? "Go To Games"
+                : "Play Without Logging In"}
             </button>
-
           </div>
         </div>
       </div>

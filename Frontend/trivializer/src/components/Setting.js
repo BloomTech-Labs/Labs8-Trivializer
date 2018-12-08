@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import "./Setting.css";
 import axios from "axios";
+import URL from "../URLs";
 
 class Setting extends React.Component {
   constructor() {
@@ -27,8 +28,7 @@ class Setting extends React.Component {
     } else {
       let normalUserId = JSON.parse(sessionStorage.getItem("userId"));
       axios
-        // .get(`https://testsdepl.herokuapp.com/users/users/${normalUserId}`, auth)
-        .get(`http://localhost:3300/users/users/${normalUserId}`, auth)
+        .get(`${URL.current_URL}/users/${normalUserId}`, auth) // See ../URLs/index.js to change local vs served URL
         .then(response => {
           this.setState({ savedUser: response.data });
         })
@@ -91,18 +91,28 @@ class Setting extends React.Component {
 
             {savedUser.photoURL ? (
               <div className="picture">
-                <img className="profile-picture" src={savedUser.photoURL} alt="profile-pic" />
+                <img
+                  className="profile-picture"
+                  src={savedUser.photoURL}
+                  alt="profile-pic"
+                />
               </div>
             ) : null}
             {sessionStorage.getItem("google")
               ? [
                   <div className="name">
                     <p>Name: </p>
-                    <input placeholder="Name" value={savedUser ? savedUser.displayName : null} />
+                    <input
+                      placeholder="Name"
+                      value={savedUser ? savedUser.displayName : null}
+                    />
                   </div>,
                   <div className="email">
                     <p>Email: </p>
-                    <input placeholder="Email" value={savedUser ? savedUser.email : null} />
+                    <input
+                      placeholder="Email"
+                      value={savedUser ? savedUser.email : null}
+                    />
                   </div>
                 ]
               : [
@@ -117,13 +127,18 @@ class Setting extends React.Component {
                       />
                     ) : null}
                     <p>Username: </p>
-                    <input placeholder="Name" value={savedUser ? savedUser[0].userName : null} />
+                    <input
+                      placeholder="Name"
+                      value={savedUser ? savedUser[0].userName : null}
+                    />
                   </div>,
                   <div className="email">
                     <p>Email: </p>
-                    <input placeholder="Email" value={savedUser ? savedUser[0].email : null} />
+                    <input
+                      placeholder="Email"
+                      value={savedUser ? savedUser[0].email : null}
+                    />
                   </div>,
-
 
                   <div className="newpassword">
                     <p>New Password: </p>
@@ -131,7 +146,10 @@ class Setting extends React.Component {
                   </div>,
                   <div>
                     {savedUser ? (
-                      <div>Account Status: {savedUser[0].paid === 0 ? "Free" : "Premium"}</div>
+                      <div>
+                        Account Status:{" "}
+                        {savedUser[0].paid === 0 ? "Free" : "Premium"}
+                      </div>
                     ) : null}
                   </div>,
                   <button onClick={this.uploadHandler}>Save Changes</button>

@@ -176,7 +176,9 @@ const gamesReducer = (state = initialState, action) => {
       });
     case DELETED_ROUND:
       let reducedRounds = state.rounds.slice();
-      reducedRounds = reducedRounds.filter(round => round.roundId !== action.payload);
+      reducedRounds = reducedRounds.filter(
+        round => round.roundId !== action.payload
+      );
       return Object.assign({}, state, {
         deleting_round: false,
         deleted_round: true,

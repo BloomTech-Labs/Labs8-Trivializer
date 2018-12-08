@@ -1,4 +1,5 @@
 import axios from "axios";
+import URL from "../URLs";
 export const FETCHING_GAMES = "FETCHING_GAMES";
 export const FETCHED_GAMES = "FETCHED_GAMES";
 export const FETCHING_GAME = "FETCHING_GAME";
@@ -34,9 +35,7 @@ export const ERROR = "ERROR";
 export const SET_USER_STATUS = "SET_USER_STATUS";
 
 const questionsApiURL = "https://opentdb.com/api.php?";
-const BE_URL =
-  // process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users";
-  process.env.REACT_APP_BE_URL || "http://localhost:3300/users";
+const BE_URL = process.env.REACT_APP_BE_URL || URL.current_URL; // See ../URLs/index.js to change
 
 // sample games fetch with params
 // {
