@@ -1,0 +1,23 @@
+.billing-content {
+  width: 75%;
+  margin: 0 auto;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  border-bottom: 1px solid black;
+}
+
+.first {
+  width: 300px;
+  border-right: 1px solid black;
+}
+
+.second {
+  width: 100px;
+}

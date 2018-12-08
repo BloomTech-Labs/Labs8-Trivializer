@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Pay from "./Pay";
 import { Link } from "react-router-dom";
 import "./Components.css";
+import "./Billing.css";
 
 const Billing = props => {
   const logout = e => {
@@ -35,12 +36,46 @@ const Billing = props => {
         ) : null}
       </div>
 
-      <div className="main-content">
+      <div className="main-content ">
         <Navbar />
 
         {/* <h1 className="main-middle">Billing Page</h1> */}
         <div className="content-container">
-          <Pay />
+          <div className="billing-content">
+            <div className="table">
+              <div className="row">
+                <div className="first" />
+                <div className="second">Free</div>
+                <div>Premium</div>
+              </div>
+              <div className="row">
+                <div className="first">Can Create Games</div>
+                <div className="second">✓</div>
+                <div>✓</div>
+              </div>
+              <div className="row">
+                <div className="first">Can Create Unlimited Games</div>
+                <div className="second" />
+                <div>✓</div>
+              </div>
+              <div className="row">
+                <div className="first">Access to More than 15 Categories of Trivia</div>
+                <div className="second">✓</div>
+                <div>✓</div>
+              </div>
+              <div className="row">
+                <div className="first">Print & Save Games</div>
+                <div className="second">✓</div>
+                <div>✓</div>
+              </div>
+              <div className="row">
+                <div className="first">Print & Save Games</div>
+                <div className="second">✓</div>
+                <div>✓</div>
+              </div>
+            </div>
+            <Pay />
+          </div>
         </div>
       </div>
     </div>
