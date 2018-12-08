@@ -11,6 +11,7 @@ const domain = process.env.DOMAIN_NAME;
 const mailgun = require("mailgun-js")({ apiKey: api_key, domain: domain });
 
 // Base endpoint (at users/)
+console.log("\n\nENVIRONMENT: ", process.env, "\n\n");
 server.get("/", (req, res) => {
   res.json("App is currently functioning");
 });
@@ -122,7 +123,8 @@ server.post("/register", async (req, res) => {
       text: "Welcome to Bar Trivia. Thank you for registering!"
     };
     mailgun.messages().send(data, function(error, body) {
-      console.log(body);
+      console.log("mailgun messages body: ", body);
+      console.log("process.env", process.env);
     });
 
     // Generate a new token and return it
@@ -137,13 +139,16 @@ server.post("/register", async (req, res) => {
 
 // Login a user takes in username and password. Validates credentials
 server.post("/login", utilities.getUser, async (req, res) => {
+  console.log("JUST ENTERED /login!!!");
   let { username, password } = req.body;
+  console.log("username: ", username);
+  console.log("password: ", password);
   try {
     // Hit users table searching for username
     let user = await db("Users")
       .where({ username })
       .first();
-
+    console.log("user login:", user);
     if (!user) throw new Error("Incorrect credentials");
     // decrypt the returned, hashed password
     decryptedPassword = sc.decrypt(user.password);
@@ -165,39 +170,49 @@ server.post("/login", utilities.getUser, async (req, res) => {
 
 // Creates a new game, takes in username, created, gameName and description (string)
 server.post("/creategame", utilities.protected, async (req, res) => {
+  console.log("ENTERED CREATEGAME\n\n\n\n");
   try {
     const { username, created, gameName, description, played } = req.body;
+    console.log("username: ", username);
+    console.log("created:", created);
+    console.log("gameName:", gameName);
+    console.log("description:", description);
+    console.log("played:", played);
 
     // Returns an array with a single user object, we just want the id here
     let user = await db("Users")
       .where({ username })
       .first();
-      
-      
+    console.log("user creategame!!!!", user);
     if (!user) throw new Error("No user by that name");
-
+    console.log("\n\nAFTER !user!!!\n\n");
     // Get the id from the returned user object
     let userId = user.id;
 
+    console.log("\n\nAFTER userId = user.id!!!\n\n");
     // Create package with all necessary fields for the Games table
     let gamePackage = {
       name: gameName,
       date_created: created,
       date_played: played === 0 ? 0 : played,
-      user_id: userId,
+      // user_id: userId,
       description: description
     };
-
+    console.log("gamePackage: ", gamePackage);
     // inserting into games returns an array with 1 game ID if successful
-    let gameId = (await db("Games").insert(gamePackage))[0];
+    let gameId = await db("Games").insert(gamePackage);
+
+    console.log("\n\ngameId: ", gameId, "\n\n");
+    console.log("gameName: ", gameName);
     let game = await db("Game")
       .where({ gameName })
       .first();
-
+    console.log("game in CREATEGAME!!: ", game);
     if (!game) throw new Error(err.message);
 
     res.status(201).json(game);
   } catch (err) {
+    console.log("error in createGame!!!", err.message);
     res.status(404).json({ error: err.message });
   }
 });
@@ -335,6 +350,7 @@ server.post(
   utilities.protected,
   async (req, res) => {
     try {
+      console.log("req.userIn: ", req.userIn);
       const id = req.userIn.id; // This is set in utilities.getUser
 
       let games = await db
@@ -348,7 +364,7 @@ server.post(
         .from("Users as u")
         .leftJoin("Games as g", "g.user_id", "u.id")
         .where("u.id", "=", id);
-
+      console.log("games: ", games);
       res.status(200).json(games);
     } catch (err) {
       res.status(500).json({ error: "Problem getting games" });
