@@ -72,7 +72,7 @@ class Setting extends React.Component {
                   <Link to="/">Home</Link>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                  Setting
+                  Settings
                 </li>
               </ol>
             </nav>
@@ -88,59 +88,78 @@ class Setting extends React.Component {
           <Navbar />
           <div className="content-container">
             <div className="main-middle">
-              <h1 className="main-middle">Profile</h1>
+              <h1 className="main-middle">Setting</h1>
 
-              {savedUser.photoURL ? (
-                <div className="picture">
-                  <img
-                    className="profile-picture"
-                    src={savedUser.photoURL}
-                    width="250px"
-                    alt="profile-pic"
-                  />
-                </div>
-              ) : null}
-              {sessionStorage.getItem("google")
-                ? [
+              {sessionStorage.getItem("google") ? (
+                [
+                  <div className="googleSetting">
+                    <div>
+                      {savedUser.photoURL ? (
+                        <div className="picture">
+                          <img
+                            className="profile-picture"
+                            src={savedUser.photoURL}
+                            width="250px"
+                            alt="profile-pic"
+                          />
+                        </div>
+                      ) : null}
+                    </div>
+                    ,
                     <div className="name">
                       <p>Name: </p>
                       <div>{savedUser ? savedUser.displayName : null}</div>
-                    </div>,
+                    </div>
+                    ,
                     <div className="email">
                       <p>Email: </p>
                       <div>{savedUser ? savedUser.email : null}</div>
                     </div>
-                  ]
-                : [
-                    <input type="file" onChange={this.fileChangedHandler} />,
-
-                    <div className="name">
-                      {this.state.imagePreviewUrl ? (
-                        <img
-                          className="uploaded-picture"
-                          width="300px"
-                          src={this.state.imagePreviewUrl}
-                        />
-                      ) : null}
-                      <p>Username: </p>
+                  </div>
+                ]
+              ) : (
+                <div className="signinSetting">
+                  <div className="siginAccount">
+                    <div className="signinUserName">
+                      <p>Username</p>
                       <input placeholder="Name" value={savedUser ? savedUser[0].userName : null} />
-                    </div>,
-                    <div className="email">
+                    </div>
+                    <div className="signinEmail">
                       <p>Email: </p>
                       <input placeholder="Email" value={savedUser ? savedUser[0].email : null} />
-                    </div>,
-
-                    <div className="newpassword">
-                      <p>New Password: </p>
+                    </div>
+                    <div className="signinPassword">
+                      <p>Change Password</p>
                       <input placeholder="Enter new password" />
-                    </div>,
-                    <div>
-                      {savedUser ? (
-                        <div>Account Status: {savedUser[0].paid === 0 ? "Free" : "Premium"}</div>
-                      ) : null}
-                    </div>,
-                    <button onClick={this.uploadHandler}>Save Changes</button>
-                  ]}
+                    </div>
+                  </div>
+                  <div className="signinTier">
+                    <div className="signinType">
+                      <p>Account Type</p>
+                      <div>
+                        {savedUser ? (
+                          <div>Account Status: {savedUser[0].paid === 0 ? "Free" : "Premium"}</div>
+                        ) : null}
+                      </div>
+                    </div>
+                    <div className="signinPicture">
+                      <p>Picture</p>
+                      <input type="file" onChange={this.fileChangedHandler} />
+                      <div className="upload">
+                        {this.state.imagePreviewUrl ? (
+                          <img
+                            className="uploaded-picture"
+                            width="300px"
+                            src={this.state.imagePreviewUrl}
+                          />
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+
+                  <button onClick={this.uploadHandler}>Save Changes</button>
+                </div>
+              )}
             </div>
           </div>
         </div>
