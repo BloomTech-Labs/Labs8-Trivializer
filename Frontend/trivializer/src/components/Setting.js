@@ -141,7 +141,9 @@ class Setting extends React.Component {
                       <div>
                         {savedUser ? (
                           <div>Account Status: {savedUser[0].paid === 0 ? "Free" : "Premium"}</div>
-                        ) : null}
+                        ) : (
+                          "None"
+                        )}
                       </div>
                     </div>
                     <div className="signinPicture">
