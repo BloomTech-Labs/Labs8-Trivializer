@@ -162,7 +162,7 @@ class Setting extends React.Component {
                   <div className="signinTier">
                     <h2>Account</h2>
                     <div className="signinFree">
-                      <p>Account Type</p>
+                      <p>Account Tier</p>
                       <div>
                         {savedUser ? (
                           <div>Account Status: {savedUser[0].paid === 0 ? "Free" : "Premium"}</div>
@@ -171,8 +171,18 @@ class Setting extends React.Component {
                         )}
                       </div>
                     </div>
+                    <div className="signinUpgrade">
+                      <p>Upgrade Account</p>
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={this.upgradeButton}
+                      >
+                        Upgrade Now
+                      </button>
+                    </div>
                     <div className="signinPicture">
-                      <p>Picture</p>
+                      <p>Add/Change Picture</p>
                       {this.state.pictureAdded ? (
                         <div className="upload">
                           {this.state.imagePreviewUrl ? (
@@ -195,7 +205,7 @@ class Setting extends React.Component {
 
                   <button
                     type="btn"
-                    className="btn btn-secondary save-button"
+                    className="btn btn-success save-button"
                     onClick={this.uploadHandler}
                   >
                     Save Changes
