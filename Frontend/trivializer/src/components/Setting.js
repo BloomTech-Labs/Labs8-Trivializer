@@ -3,11 +3,7 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import "./Setting.css";
 import axios from "axios";
-<<<<<<< HEAD
 import URL from "../URLs";
-=======
-import "./Components.css";
->>>>>>> master
 
 class Setting extends React.Component {
   constructor() {
@@ -95,73 +91,6 @@ class Setting extends React.Component {
             <div className="main-middle setting-content">
               <h1 className="main-middle">Setting</h1>
 
-<<<<<<< HEAD
-            {savedUser.photoURL ? (
-              <div className="picture">
-                <img
-                  className="profile-picture"
-                  src={savedUser.photoURL}
-                  alt="profile-pic"
-                />
-              </div>
-            ) : null}
-            {sessionStorage.getItem("google")
-              ? [
-                  <div className="name">
-                    <p>Name: </p>
-                    <input
-                      placeholder="Name"
-                      value={savedUser ? savedUser.displayName : null}
-                    />
-                  </div>,
-                  <div className="email">
-                    <p>Email: </p>
-                    <input
-                      placeholder="Email"
-                      value={savedUser ? savedUser.email : null}
-                    />
-                  </div>
-                ]
-              : [
-                  <input type="file" onChange={this.fileChangedHandler} />,
-
-                  <div className="name">
-                    {this.state.imagePreviewUrl ? (
-                      <img
-                        className="uploaded-picture"
-                        width="200px"
-                        src={this.state.imagePreviewUrl}
-                      />
-                    ) : null}
-                    <p>Username: </p>
-                    <input
-                      placeholder="Name"
-                      value={savedUser ? savedUser[0].userName : null}
-                    />
-                  </div>,
-                  <div className="email">
-                    <p>Email: </p>
-                    <input
-                      placeholder="Email"
-                      value={savedUser ? savedUser[0].email : null}
-                    />
-                  </div>,
-
-                  <div className="newpassword">
-                    <p>New Password: </p>
-                    <input placeholder="Enter new password" />
-                  </div>,
-                  <div>
-                    {savedUser ? (
-                      <div>
-                        Account Status:{" "}
-                        {savedUser[0].paid === 0 ? "Free" : "Premium"}
-                      </div>
-                    ) : null}
-                  </div>,
-                  <button onClick={this.uploadHandler}>Save Changes</button>
-                ]}
-=======
               {sessionStorage.getItem("google") ? (
                 [
                   <div className="googleSetting">
@@ -195,11 +124,17 @@ class Setting extends React.Component {
                     <h2>Personal</h2>
                     <div className="signinUserName">
                       <p>Username</p>
-                      <input placeholder="Name" value={savedUser ? savedUser[0].userName : null} />
+                      <input
+                        placeholder="Name"
+                        value={savedUser ? savedUser[0].userName : null}
+                      />
                     </div>
                     <div className="signinEmail">
                       <p>Email </p>
-                      <input placeholder="Email" value={savedUser ? savedUser[0].email : null} />
+                      <input
+                        placeholder="Email"
+                        value={savedUser ? savedUser[0].email : null}
+                      />
                     </div>
                     <div className="signinPassword">
                       <p>Change Password</p>
@@ -212,7 +147,10 @@ class Setting extends React.Component {
                       <p>Account Type</p>
                       <div>
                         {savedUser ? (
-                          <div>Account Status: {savedUser[0].paid === 0 ? "Free" : "Premium"}</div>
+                          <div>
+                            Account Status:{" "}
+                            {savedUser[0].paid === 0 ? "Free" : "Premium"}
+                          </div>
                         ) : (
                           "None"
                         )}
@@ -240,13 +178,16 @@ class Setting extends React.Component {
                     </div>
                   </div>
 
-                  <button type="btn" className="btn btn-secondary" onClick={this.uploadHandler}>
+                  <button
+                    type="btn"
+                    className="btn btn-secondary"
+                    onClick={this.uploadHandler}
+                  >
                     Save Changes
                   </button>
                 </div>
               )}
             </div>
->>>>>>> master
           </div>
         </div>
       </div>
