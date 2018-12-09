@@ -105,23 +105,30 @@ class GamesList extends Component {
           <Navbar />
           <div className="content-container">
             {!this.props.games[0] ? (
-              <div className="game-container">
+              <div className="">
                 <h3 className="main-middle">Add New Game</h3>
                 <Link to={`/creategame`}>+</Link>
               </div>
             ) : (
-              this.props.games.map((game, i) => (
-                <div className="game-container">
-                  <div className="game-summary">
-                    <Link className="game-link" to={`/game/${game["gameId"]}`} key={game["gameId"]}>
-                      <GameDetails index={i} game={game} />
-                    </Link>
-                    <button className="game-delete" onClick={() => this.delete(game["gameId"])}>
-                      Delete
-                    </button>
+              <div className="gamelist-container">
+                <div>Games</div>
+                {this.props.games.map((game, i) => (
+                  <div className="game-container">
+                    <div className="game-summary">
+                      <Link
+                        className="game-link"
+                        to={`/game/${game["gameId"]}`}
+                        key={game["gameId"]}
+                      >
+                        <GameDetails index={i} game={game} />
+                      </Link>
+                      <button className="game-delete" onClick={() => this.delete(game["gameId"])}>
+                        Delete
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))
+                ))}
+              </div>
             )}
             {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
               <div className="game-container">

@@ -5,8 +5,8 @@
 }
 
 .game-container {
-  width: 300px;
-  height: 300px;
+  width: 350px;
+  height: 350px;
   margin: 20px 10px 10px 20px;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .game-summary {
-  border: 2px solid #EE4432;
+  border: 2px solid black;
   border-radius: 10px;
   margin: auto;
   display: flex;
@@ -46,24 +46,21 @@
 
 .game-delete:hover {
   box-shadow: 2px 2px;
-  background: #EE4432;
+  background: #ee4432;
   color: white;
   cursor: pointer;
 }
 
-.game {
-
+.gamelist-container {
+  display: flex;
 }
 
-.game-description
-{
+.game-description {
   border: 2px solid lightskyblue;
-  border-radius: 10px; 
+  border-radius: 10px;
   padding: 2%;
   word-wrap: break-word;
   margin: 10px 20px;
   height: 100px;
   text-align: left;
 }
-
-
