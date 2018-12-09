@@ -51,6 +51,7 @@ const onToken = (amount, description) => token => {
 };
 const Checkout = ({ name, description, amount }) => (
   <StripeCheckout
+    id="paybutton"
     name={name}
     description={description}
     amount={fromEuroToCent(amount)}

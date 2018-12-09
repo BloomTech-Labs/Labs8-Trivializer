@@ -1,6 +1,7 @@
 .billing-content {
   width: 75%;
   margin: 0 auto;
+  padding-top: 20px;
 }
 
 .table {
@@ -63,6 +64,39 @@
   font-size: 23px;
 }
 
-.empty {
+.empty,
+.lastfirst {
   border-left: none;
+}
+
+.StripeCheckout {
+  width: 250px;
+  text-align: center !important;
+  background-image: none !important;
+}
+
+.StripeCheckout span {
+  height: 50px !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center;
+}
+
+.StripeCheckout:hover {
+  color: purple !important;
+}
+
+.secondthird {
+  width: 400px;
+  border: 1px solid white;
+}
+
+.lastrow {
+  margin-top: 20px;
+  border-bottom: none;
+}
+
+.lastfirst {
+  border-right: none;
 }

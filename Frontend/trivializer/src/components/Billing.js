@@ -76,8 +76,18 @@ const Billing = props => {
                 <div className="second" />
                 <div className="third">✓</div>
               </div>
+              <div className="row">
+                <div className="first">Cost</div>
+                <div className="second" />
+                <div className="third">$9.99</div>
+              </div>
+              <div className="row lastrow">
+                <div className="first lastfirst" />
+                <div className="secondthird">
+                  <Pay />
+                </div>
+              </div>
             </div>
-            <Pay />
           </div>
         </div>
       </div>
