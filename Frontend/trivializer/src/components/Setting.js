@@ -17,25 +17,27 @@ class Setting extends React.Component {
   }
   componentDidMount() {
     // First Checks if the user logged in through google or not.
-    const auth = {
-      headers: {
-        Authorization: `${sessionStorage.getItem("jwt")}`
+    if (!localStorage.getItem("guest")) {
+      const auth = {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
+        }
+      };
+      if (sessionStorage.getItem("google")) {
+        let savedUser = JSON.parse(localStorage.getItem("user"));
+        this.setState({ savedUser: savedUser });
+        // If not google login, there won't be a sessionStorage item to get
+      } else {
+        let normalUserId = JSON.parse(sessionStorage.getItem("userId"));
+        axios
+          .get(`https://testsdepl.herokuapp.com/users/users/${normalUserId}`, auth)
+          .then(response => {
+            this.setState({ savedUser: response.data });
+          })
+          .catch(err => {
+            console.log("err is: ", err.message);
+          });
       }
-    };
-    if (sessionStorage.getItem("google")) {
-      let savedUser = JSON.parse(localStorage.getItem("user"));
-      this.setState({ savedUser: savedUser });
-      // If not google login, there won't be a sessionStorage item to get
-    } else {
-      let normalUserId = JSON.parse(sessionStorage.getItem("userId"));
-      axios
-        .get(`https://testsdepl.herokuapp.com/users/users/${normalUserId}`, auth)
-        .then(response => {
-          this.setState({ savedUser: response.data });
-        })
-        .catch(err => {
-          console.log("err is: ", err.message);
-        });
     }
   }
   logout = e => {
