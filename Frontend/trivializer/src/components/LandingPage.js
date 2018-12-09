@@ -612,7 +612,9 @@ class LandingPage extends React.Component {
               name="guest"
               onClick={this.handleSubmit}
             >
-              {localStorage.getItem("user") ? "Go To Games" : "Play Without Logging In"}
+              {sessionStorage.getItem("jwt") && !localStorage.getItem("guest")
+                ? "Go To Games"
+                : "Play Without Logging In"}
             </button>
           </div>
         </div>
