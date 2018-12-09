@@ -278,8 +278,8 @@ const gamesReducer = (state = initialState, action) => {
       console.log("RESET CALLED!!");
       return Object.assign({}, state, {
         fetched_saved_questions: false,
-        roundName: null
-        // roundId: null Wait and see if this causes problems with componentDidUpdate, RoundsList.js lines 39-43
+        roundName: null,
+        roundId: null
       });
     case RESET_NEW_QUESTIONS:
       console.log("RESET New  Questions CALLED!!");

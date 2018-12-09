@@ -73,6 +73,7 @@ class Rounds extends Component {
   }
 
   componentDidMount() {
+    console.log("this.props.round.roundId: ", this.props.round.roundId);
     this.props.resetRoundStateReq();
     if (sessionStorage.getItem("status") == 1) {
       this.setState({ maxQuestions: 10 });
@@ -80,7 +81,10 @@ class Rounds extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (prevProps.roundName !== this.props.roundName) {
+    // After fetching saved question from DB in (enterRound, getQuestionsReq),
+    // the round ID will be set to whichever round it got the questions for.
+    // Check to see if this is that round, and if so, re-route to it
+    if (this.props.roundId === this.props.round.roundId) {
       if (this.props.fetched_saved_questions) {
         if (
           !this.props.history.location.pathname.split("/").includes("round")
