@@ -94,7 +94,7 @@ class GamesList extends Component {
               </ol>
             </nav>
           </div>
-          {localStorage.getItem("user") && sessionStorage.getItem("jwt") ? (
+          {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
             <div onClick={this.logout} className="top-rightside">
               Sign Out
             </div>

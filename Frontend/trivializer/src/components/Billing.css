@@ -71,13 +71,10 @@
 
 .StripeCheckout {
   width: 250px;
-  text-align: center !important;
-  background-image: none !important;
 }
 
 .StripeCheckout span {
   height: 50px !important;
-  text-align: center !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center;

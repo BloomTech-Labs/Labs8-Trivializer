@@ -22,12 +22,10 @@ class LandingPage extends React.Component {
     super();
     this.state = {
       registerURL:
-        process.env.REACT_APP_BE_REGISTER_URL ||
-        "https://testsdepl.herokuapp.com/users/register",
+        process.env.REACT_APP_BE_REGISTER_URL || "https://testsdepl.herokuapp.com/users/register",
       // "http://localhost:3300/users/register",
       signinURL:
-        process.env.REACT_APP_BE_LOGIN_URL ||
-        "https://testsdepl.herokuapp.com/users/login",
+        process.env.REACT_APP_BE_LOGIN_URL || "https://testsdepl.herokuapp.com/users/login",
       // "http://localhost:3300/users/login",
       signup_username: "",
       signup_email: "",
@@ -147,6 +145,7 @@ class LandingPage extends React.Component {
       let url;
 
       if (e.target.name === "guest") {
+        localStorage.setItem("guest", "yes");
         credentials = {
           username: `guest${Date.now()}`,
           password: `guest${Date.now()}`,
@@ -183,7 +182,7 @@ class LandingPage extends React.Component {
           sessionStorage.setItem("user", credentials.username);
           sessionStorage.setItem("userId", result.userId);
           sessionStorage.setItem("status", result.status);
-          localStorage.setItem("guest", "yes");
+
           this.redirect();
         })
         .catch(err => {
@@ -613,9 +612,7 @@ class LandingPage extends React.Component {
               name="guest"
               onClick={this.handleSubmit}
             >
-              {localStorage.getItem("user")
-                ? "Go To Games"
-                : "Play Without Logging In"}
+              {localStorage.getItem("user") ? "Go To Games" : "Play Without Logging In"}
             </button>
           </div>
         </div>

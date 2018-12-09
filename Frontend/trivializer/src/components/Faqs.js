@@ -25,7 +25,7 @@ const Faqs = () => {
             </ol>
           </nav>
         </div>
-        {localStorage.getItem("user") && sessionStorage.getItem("jwt") ? (
+        {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
           <div onClick={logout} className="top-rightside">
             Sign Out
           </div>
