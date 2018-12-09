@@ -321,7 +321,7 @@ server.put("/editgame/:id", utilities.protected, async (req, res) => {
 
     // get game by id
     let newGame = await db("Games").where("id", id);
-
+    console.log("newGame: ", newGame);
     res.status(200).json({
       gameId: newGame[0]["id"],
       gamename: newGame[0]["name"],
@@ -341,9 +341,7 @@ server.post(
   utilities.getUser,
   utilities.protected,
   async (req, res) => {
-    console.log("\n\n\nGETTING GAMES!!!");
     try {
-      console.log("req.userIn: ", req.userIn);
       const id = req.userIn.id; // This is set in utilities.getUser
 
       let games = await db
@@ -357,7 +355,6 @@ server.post(
         .from("Users as u")
         .leftJoin("Games as g", "g.user_id", "u.id")
         .where("u.id", "=", id);
-      console.log("games: ", games);
       res.status(200).json(games);
     } catch (err) {
       console.log("Error getting games: ", err.message);
@@ -371,14 +368,14 @@ server.get("/rounds/:id", utilities.protected, async (req, res) => {
   try {
     // Game Id passed in request URL
     const { id } = req.params;
-
+    console.log("Id in GET /rounds: ", id);
     // Gets all rounds from the Rounds table where the game id matches the passed in ID
     let rounds = await db
       // Choose which columns we want to select, and assign an alias
       .select(
         "r.id as roundId",
         "r.name as roundName",
-        "r.Number_of_questions as numQs",
+        "r.number_of_questions as numQs",
         "r.category as category",
         "r.difficulty as difficulty",
         "r.type as type"
@@ -386,9 +383,10 @@ server.get("/rounds/:id", utilities.protected, async (req, res) => {
       .from("Games as g")
       .leftJoin("Rounds as r", "r.game_id", "g.id")
       .where("g.id", "=", id);
-
+    console.log("\n\nrounds: ", rounds);
     res.status(200).json(rounds);
   } catch (err) {
+    console.log("err.message get rounds: ", newGame);
     res.status(500).json({ error: "Problem getting rounds" });
   }
 });
@@ -491,7 +489,7 @@ server.put("/round/:id", utilities.protected, async (req, res) => {
   try {
     const { id } = req.params;
     const edit = { ...req.body };
-
+    console.log("id, edit: ", id, edit);
     // update round by id
     let round = await db("Rounds")
       .where("id", id)
@@ -503,14 +501,14 @@ server.put("/round/:id", utilities.protected, async (req, res) => {
         difficulty: edit.difficulty,
         number_of_questions: edit.questions
       });
-
+    console.log("round: ", round);
     if (!round) {
       throw new Error("No Round with that ID");
     }
 
     // get round by id
     let newRound = await db("Rounds").where("id", id);
-
+    console.log("newRound: ", newRound);
     res.status(200).json({
       roundId: newRound[0]["id"],
       roundName: newRound[0]["name"],
