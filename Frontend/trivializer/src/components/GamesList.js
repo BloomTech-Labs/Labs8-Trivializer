@@ -103,11 +103,15 @@ class GamesList extends Component {
 
         <div className="main-content">
           <Navbar />
-          <div className="content-container">
+          <div className="content-container gamelist">
             {!this.props.games[0] ? (
-              <div className="">
-                <h3 className="main-middle">Add New Game</h3>
-                <Link to={`/creategame`}>+</Link>
+              <div className="addnewGame">
+                <h3 className="main-middle ">Add New Game</h3>
+
+                <Link to={`/creategame`}>
+                  {" "}
+                  <i class="fas fa-plus-circle" />
+                </Link>
               </div>
             ) : (
               <div className="gamelist-container">
