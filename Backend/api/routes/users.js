@@ -489,7 +489,7 @@ server.put("/round/:id", utilities.protected, async (req, res) => {
   try {
     const { id } = req.params;
     const edit = { ...req.body };
-    console.log("id, edit: ", id, edit);
+
     // update round by id
     let round = await db("Rounds")
       .where("id", id)
@@ -501,14 +501,14 @@ server.put("/round/:id", utilities.protected, async (req, res) => {
         difficulty: edit.difficulty,
         number_of_questions: edit.questions
       });
-    console.log("round: ", round);
+
     if (!round) {
       throw new Error("No Round with that ID");
     }
 
     // get round by id
     let newRound = await db("Rounds").where("id", id);
-    console.log("newRound: ", newRound);
+
     res.status(200).json({
       roundId: newRound[0]["id"],
       roundName: newRound[0]["name"],
