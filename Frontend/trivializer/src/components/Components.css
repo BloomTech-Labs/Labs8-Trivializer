@@ -32,7 +32,7 @@
 }
 
 .main-middle {
-  margin: 0 auto;
+  margin: 20px auto;
 }
 
 /* Stripe */
@@ -54,15 +54,21 @@
 
 /* FAQs Page */
 .content-container {
-  margin-top: 30px;
-  text-align: left;
-  margin-left: 5%;
+  padding-top: 30px;
+  text-align: center;
+  padding-left: 5%;
   font-size: 20px;
+  background-color: white;
+  width: 100%;
+}
+
+.faq-container {
+  text-align: left;
 }
 
 .content-container h1 {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 35px;
 }
 
 .question-container {

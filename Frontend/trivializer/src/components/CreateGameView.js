@@ -85,7 +85,7 @@ class CreateGameView extends Component {
 
         <div className="main-content">
           <NavBar />
-          <div>
+          <div className="content-container">
             <div>Logo</div>
             <input
               name="gameTitle"

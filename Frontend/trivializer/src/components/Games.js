@@ -11,15 +11,9 @@ class Games extends Component {
   }
 
   render() {
-    console.log(
-      "this.props.game.dateCreated: ",
-      typeof this.props.game.dateCreated
-    );
-    console.log("this.props.game.datePlayed: ", this.props.game.datePlayed);
     const created = new Date(parseInt(this.props.game.dateCreated));
     const played = new Date(parseInt(this.props.game.datePlayed));
-    console.log("created: ", created);
-    console.log("played: ", played);
+
     return (
       <div className="game">
         <div>{this.props.game.gamename}</div>

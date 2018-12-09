@@ -34,7 +34,7 @@ const Faqs = () => {
 
       <div className="main-content">
         <Navbar />
-        <div className="content-container">
+        <div className="content-container faq-container">
           <h1>Frequently Asked Questions</h1>
           <div className="question-container">
             <p className="questions">Why should I sign up for an account? </p>
