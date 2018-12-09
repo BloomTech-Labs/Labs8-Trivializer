@@ -6,18 +6,32 @@
 .table {
   display: flex;
   flex-direction: column;
+  width: 75%;
+  align-items: center;
+  margin: 0 auto;
 }
 
 .row {
   display: flex;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid grey;
+  height: 70px;
 }
 
 .first {
+  text-align: left;
   width: 300px;
-  border-right: 1px solid black;
+  border-right: 1px solid grey;
+  border-left: 1px solid grey;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .second {
-  width: 100px;
+  width: 200px;
+  border-right: 1px solid grey;
+}
+
+.third {
+  width: 150px;
+  border-right: 1px solid grey;
 }

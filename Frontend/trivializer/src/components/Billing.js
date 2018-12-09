@@ -41,39 +41,40 @@ const Billing = props => {
 
         {/* <h1 className="main-middle">Billing Page</h1> */}
         <div className="content-container">
+          <h1>Comparing Plans</h1>
           <div className="billing-content">
             <div className="table">
               <div className="row">
                 <div className="first" />
                 <div className="second">Free</div>
-                <div>Premium</div>
+                <div className="third">Premium</div>
               </div>
               <div className="row">
                 <div className="first">Can Create Games</div>
                 <div className="second">✓</div>
-                <div>✓</div>
+                <div className="third">✓</div>
               </div>
 
               <div className="row">
                 <div className="first">Access to More than 15 Categories of Trivia</div>
                 <div className="second">✓</div>
-                <div>✓</div>
+                <div className="third">✓</div>
               </div>
               <div className="row">
                 <div className="first">Print & Save Games</div>
                 <div className="second">✓</div>
-                <div>✓</div>
+                <div className="third">✓</div>
               </div>
 
               <div className="row">
                 <div className="first">Can Create Unlimited Games</div>
                 <div className="second" />
-                <div>✓</div>
+                <div className="third">✓</div>
               </div>
               <div className="row">
                 <div className="first">Games Can Have 10+ Questions</div>
                 <div className="second" />
-                <div>✓</div>
+                <div className="third">✓</div>
               </div>
             </div>
             <Pay />
