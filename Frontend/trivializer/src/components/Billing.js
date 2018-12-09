@@ -45,9 +45,9 @@ const Billing = props => {
           <div className="billing-content">
             <div className="table">
               <div className="row">
-                <div className="first" />
-                <div className="second">Free</div>
-                <div className="third">Premium</div>
+                <div className="first empty" />
+                <div className="second free">Free</div>
+                <div className="third premium">Premium</div>
               </div>
               <div className="row">
                 <div className="first">Can Create Games</div>
