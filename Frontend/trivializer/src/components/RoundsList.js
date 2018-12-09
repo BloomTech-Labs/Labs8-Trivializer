@@ -79,12 +79,13 @@ class RoundsList extends Component {
       // if (this.props.fetched_new_questions) {
       console.log("CONDITION MET TO SAVE QUESTIONS!!!!");
       let round_id = this.props.roundId;
+      console.log("this.props.roundId: ", this.props.roundId);
       let questionsPackage = this.props.new_questions.slice();
       questionsPackage = questionsPackage.map(question => {
         question.rounds_id = round_id;
         return question;
       });
-      console.log(this.props.new_questions);
+      console.log("this.props.new_questions: ", this.props.new_questions);
       this.props.saveQuestionsReq(this.props.new_questions);
       this.props.resetFetchedNewQuestions();
       // }

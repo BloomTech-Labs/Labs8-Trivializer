@@ -466,9 +466,16 @@ server.post("/round", utilities.protected, async (req, res) => {
       number_of_questions: questions
     };
 
-    // Returns an array of 1 item, pull that item out with [0]
-    let roundId = (await db("Rounds").insert(roundPackage))[0];
+    // Can't get our roundId back from Postgres, so make
+    // a separate call next to get the ID
+    let roundId = (await db("Rounds")
+      .insert(roundPackage)
+      .returning("id"))[0];
 
+    // if(!insertRoundSuccess) throw new Error({message: "Error inserting Round"})
+
+    // let roundId = db("Rounds").where({})
+    console.log("\n\nroundId!!!!", roundId, "\n\n");
     let returnPackage = {
       roundId: roundId,
       roundName: roundName,
@@ -480,6 +487,7 @@ server.post("/round", utilities.protected, async (req, res) => {
     // Return new round ID
     res.status(200).json(returnPackage);
   } catch (err) {
+    console.log("err.message!!!: ", err.message);
     res.status(400).json({ error: err.message });
   }
 });

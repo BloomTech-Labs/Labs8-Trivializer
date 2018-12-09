@@ -221,7 +221,7 @@ export const fetchRoundsReq = id => {
 };
 
 export const saveRoundReq = round => {
-  console.log(round);
+  console.log("round: ", round);
   return dispatch => {
     dispatch({ type: SAVING_ROUND });
     axios
@@ -235,6 +235,7 @@ export const saveRoundReq = round => {
         dispatch({ type: SAVED_ROUND, payload: data });
       })
       .catch(err => {
+        console.log("err.message saveRoundReq", err.message);
         dispatch({ type: ERROR, payload: err });
       });
   };
