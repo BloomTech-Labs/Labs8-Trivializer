@@ -53,23 +53,15 @@ class Round extends Component {
 
   // Builds a call to the questions API based on which parameters in state are set
   buildApiCall = howManyQuestions => {
-    let amount = `amount=${howManyQuestions ||
-      this.state.numberOfQuestions ||
-      1}`;
+    let amount = `amount=${howManyQuestions || this.state.numberOfQuestions || 1}`;
 
-    let category = `${
-      this.state.category ? `&category=${this.state.category}` : ""
-    }`;
+    let category = `${this.state.category ? `&category=${this.state.category}` : ""}`;
 
-    let difficulty = `${
-      this.state.difficulty ? `&difficulty=${this.state.difficulty}` : ""
-    }`;
+    let difficulty = `${this.state.difficulty ? `&difficulty=${this.state.difficulty}` : ""}`;
 
     let type = `${this.state.category ? `&type=${this.state.type}` : ""}`;
 
-    let concatenatedURL = `${
-      this.state.questionsURL
-    }${amount}${category}${difficulty}${type}`;
+    let concatenatedURL = `${this.state.questionsURL}${amount}${category}${difficulty}${type}`;
 
     return concatenatedURL;
   };
@@ -79,10 +71,7 @@ class Round extends Component {
   addIds = questionsIn => {
     let questions = questionsIn.map((question, i) => {
       question.id = i;
-      question.answers = this.assembleAnswers(
-        question.correct_answer,
-        question.incorrect_answers
-      );
+      question.answers = this.assembleAnswers(question.correct_answer, question.incorrect_answers);
       return question;
     });
 
@@ -149,10 +138,7 @@ class Round extends Component {
   // replace is a 2d array, with each sub array corresponding to the id that question
   undoReplace = (questionId, index) => {
     // Only proceed if we have replaced that question
-    if (
-      !this.state.replace[questionId] ||
-      this.state.replace[questionId].length < 1
-    ) {
+    if (!this.state.replace[questionId] || this.state.replace[questionId].length < 1) {
       return;
     }
 
@@ -245,71 +231,64 @@ class Round extends Component {
           <Navbar />
           {/* This is where the questions are displayed, since the answer key
             will look just like this, set a reference to this div as the answerKey for PDF printing */}
-          <div
-            className="main-content-round"
-            ref={el => (this.answerKeyRef = el)}
-          >
-            <div className="topContent-round">
-              <div>
-                <img
-                  className="logo-rounds"
-                  src={require("../img/trivializer_cropped.png")}
-                  alt="trivializer logo"
-                />
-              </div>
-              <div className="col1-round">
-                <div className="title-round">{`${this.state.gameName} - ${
-                  this.state.roundName
-                }`}</div>
-                <div className="info-round">
-                  {`Difficulty: ${this.state.difficulty ||
-                    "Any"} \xa0\xa0\xa0\xa0\xa0 Questions: ${
-                    this.state.questions.length
-                  }`}
-                </div>
-              </div>
-              <div className="col2-round">
-                <ReactToPrint
-                  trigger={() => (
-                    <button type="button" className="btn btn-primary round">
-                      Print Answer Sheet
-                    </button>
-                  )}
-                  content={() => this.answerSheetRef}
-                />
-                <ReactToPrint
-                  trigger={() => (
-                    <button type="button" className="btn btn-primary round">
-                      Print Answer Key
-                    </button>
-                  )}
-                  content={() => this.answerKeyRef}
-                />
+          <div className="content-container">
+            <div className="main-content-round" ref={el => (this.answerKeyRef = el)}>
+              <div className="topContent-round">
                 <div>
-                  <button
-                    onClick={this.saveQuestions}
-                    type="button"
-                    className="btn btn-primary save"
-                  >
-                    Save Round
-                  </button>
+                  <img
+                    className="logo-rounds"
+                    src={require("../img/trivializer_cropped.png")}
+                    alt="trivializer logo"
+                  />
+                </div>
+                <div className="col1-round">
+                  <div className="title-round">{`${this.state.gameName} - ${
+                    this.state.roundName
+                  }`}</div>
+                  <div className="info-round">
+                    {`Difficulty: ${this.state.difficulty ||
+                      "Any"} \xa0\xa0\xa0\xa0\xa0 Questions: ${this.state.questions.length}`}
+                  </div>
+                </div>
+                <div className="col2-round">
+                  <ReactToPrint
+                    trigger={() => (
+                      <button type="button" className="btn btn-primary round">
+                        Print Answer Sheet
+                      </button>
+                    )}
+                    content={() => this.answerSheetRef}
+                  />
+                  <ReactToPrint
+                    trigger={() => (
+                      <button type="button" className="btn btn-primary round">
+                        Print Answer Key
+                      </button>
+                    )}
+                    content={() => this.answerKeyRef}
+                  />
+                  <div>
+                    <button
+                      onClick={this.saveQuestions}
+                      type="button"
+                      className="btn btn-primary save"
+                    >
+                      Save Round
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div className="bottomContent-round">
-              {this.state.noResults ? (
-                <div>No Results from Questions API!</div>
-              ) : null}
+              {this.state.noResults ? <div>No Results from Questions API!</div> : null}
               {questions.map((question, index) => {
                 return (
                   <Questions
                     key={question.id}
                     index={index}
                     moveQuestion={this.moveQuestion}
-                    replaceQuestion={() =>
-                      this.replaceQuestion(question.id, index)
-                    }
+                    replaceQuestion={() => this.replaceQuestion(question.id, index)}
                     undoReplace={() => {
                       this.undoReplace(question.id, index);
                     }}
@@ -333,16 +312,13 @@ class Round extends Component {
               </div>
             </div>
 
-            <div className="instructions-round">
-              ***Please Circle the Correct Answer***
-            </div>
+            <div className="instructions-round">***Please Circle the Correct Answer***</div>
             {this.state.questions.map((question, index) => {
               return (
                 <div key={index} className="question">
                   <div
                     dangerouslySetInnerHTML={{
-                      __html:
-                        `${index + 1}) ` + DOMPurify.sanitize(question.question) // See line 5 for DOMPurify description
+                      __html: `${index + 1}) ` + DOMPurify.sanitize(question.question) // See line 5 for DOMPurify description
                     }}
                   />
                   <div>
