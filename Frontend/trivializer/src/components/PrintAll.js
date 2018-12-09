@@ -90,7 +90,7 @@ class PrintAll extends Component {
             question => question.rounds_id === round.roundId
           );
           return (
-            <div>
+            <div key={index}>
               {index !== 0 ? <div className="page-break" /> : null}
               <div className="hiddenAnswers-info">
                 <div>

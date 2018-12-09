@@ -330,6 +330,7 @@ export const resetAllRoundsAllQuestionsReq = () => {
 // questionsPackage needs rounds_id, category, difficulty, type, question, correct_answer, incorrect_answers
 export const saveQuestionsReq = questionsPackage => {
   console.log("SAVE QUESTIONS REQ CALLED!!!!!");
+  console.log("first questionsPackage: ", questionsPackage);
   questionsPackage = questionsPackage.map(question => {
     return {
       rounds_id: question.rounds_id,

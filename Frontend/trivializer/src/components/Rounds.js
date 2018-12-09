@@ -83,7 +83,9 @@ class Rounds extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     // After fetching saved question from DB in (enterRound, getQuestionsReq),
     // the round ID will be set to whichever round it got the questions for.
-    // Check to see if this is that round, and if so, re-route to it
+    // Check to see if this is that round, and that we have fetched the_saved_rounds
+    // indicating that we have received the questions for this round from the
+    // backend
     if (this.props.roundId === this.props.round.roundId) {
       if (this.props.fetched_saved_questions) {
         if (

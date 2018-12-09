@@ -15,67 +15,6 @@ server.get("/", (req, res) => {
   res.json("App is currently functioning");
 });
 
-// Testing endpoints
-// Get all users table
-server.get("/users", (req, res) => {
-  db("Users")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// Get all games table
-server.get("/games", (req, res) => {
-  db("Games")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// Get all Rounds table UNPROTECTED!!
-server.get("/rounds", (req, res) => {
-  db("Rounds")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// Get all Questions table UNPROTECTED
-server.get("/questions", (req, res) => {
-  db("Questions")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// Get all Rounds table
-server.get("/rounds", utilities.protected, (req, res) => {
-  db("Rounds")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
 // Get all Questions table
 server.get("/questions", utilities.protected, (req, res) => {
   db("Questions")
@@ -466,15 +405,14 @@ server.post("/round", utilities.protected, async (req, res) => {
       number_of_questions: questions
     };
 
-    // Can't get our roundId back from Postgres, so make
-    // a separate call next to get the ID
+    // Use postgres's .returning to get the ID of the
+    // recently entered round
     let roundId = (await db("Rounds")
       .insert(roundPackage)
       .returning("id"))[0];
 
-    // if(!insertRoundSuccess) throw new Error({message: "Error inserting Round"})
+    if (!roundId) throw new Error({ message: "Error inserting Round" });
 
-    // let roundId = db("Rounds").where({})
     console.log("\n\nroundId!!!!", roundId, "\n\n");
     let returnPackage = {
       roundId: roundId,
@@ -485,9 +423,10 @@ server.post("/round", utilities.protected, async (req, res) => {
       type: type
     };
     // Return new round ID
+    console.log("returnPackage: ", returnPackage);
     res.status(200).json(returnPackage);
   } catch (err) {
-    console.log("err.message!!!: ", err.message);
+    console.log("err.message in POST /round: ", err.message);
     res.status(400).json({ error: err.message });
   }
 });
