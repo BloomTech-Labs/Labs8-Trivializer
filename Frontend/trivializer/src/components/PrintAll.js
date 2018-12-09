@@ -79,8 +79,8 @@ class PrintAll extends Component {
     }
   };
   render() {
-    console.log(this.state.questions);
-    console.log(this.state.rounds);
+    // console.log(this.state.questions);
+    // console.log(this.state.rounds);
     return (
       <div>
         {/* Map over questions and display questions with highlighted correct answer*/}
