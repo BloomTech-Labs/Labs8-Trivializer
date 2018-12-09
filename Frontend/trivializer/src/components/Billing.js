@@ -53,11 +53,7 @@ const Billing = props => {
                 <div className="second">✓</div>
                 <div>✓</div>
               </div>
-              <div className="row">
-                <div className="first">Can Create Unlimited Games</div>
-                <div className="second" />
-                <div>✓</div>
-              </div>
+
               <div className="row">
                 <div className="first">Access to More than 15 Categories of Trivia</div>
                 <div className="second">✓</div>
@@ -68,9 +64,15 @@ const Billing = props => {
                 <div className="second">✓</div>
                 <div>✓</div>
               </div>
+
               <div className="row">
-                <div className="first">Print & Save Games</div>
-                <div className="second">✓</div>
+                <div className="first">Can Create Unlimited Games</div>
+                <div className="second" />
+                <div>✓</div>
+              </div>
+              <div className="row">
+                <div className="first">Games Can Have 10+ Questions</div>
+                <div className="second" />
                 <div>✓</div>
               </div>
             </div>
