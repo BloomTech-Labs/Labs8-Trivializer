@@ -329,8 +329,6 @@ export const resetAllRoundsAllQuestionsReq = () => {
 
 // questionsPackage needs rounds_id, category, difficulty, type, question, correct_answer, incorrect_answers
 export const saveQuestionsReq = questionsPackage => {
-  console.log("SAVE QUESTIONS REQ CALLED!!!!!");
-  console.log("first questionsPackage: ", questionsPackage);
   questionsPackage = questionsPackage.map(question => {
     return {
       rounds_id: question.rounds_id,
@@ -344,10 +342,7 @@ export const saveQuestionsReq = questionsPackage => {
     };
   });
 
-  console.log("questionsPackage: ", questionsPackage);
-
   return async dispatch => {
-    console.log("IN dispatch, saveQuestionsReq");
     dispatch({ type: SAVING_QUESTIONS });
 
     // First, delete all existing questions in our round

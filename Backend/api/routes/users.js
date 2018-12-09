@@ -15,18 +15,6 @@ server.get("/", (req, res) => {
   res.json("App is currently functioning");
 });
 
-// Get all Questions table
-server.get("/questions", utilities.protected, (req, res) => {
-  db("Questions")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
 // Add new user
 server.post("/register", async (req, res) => {
   // This table also includes credit card info, will handle in billing
@@ -71,16 +59,14 @@ server.post("/register", async (req, res) => {
       .status(201)
       .json({ token: token, userId: user.id, status: credentials.paid });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
 // Login a user takes in username and password. Validates credentials
 server.post("/login", utilities.getUser, async (req, res) => {
-  console.log("JUST ENTERED /login!!!");
   let { username, password } = req.body;
-  console.log("username: ", username);
-  console.log("password: ", password);
+
   try {
     // Hit users table searching for username
     let user = await db("Users")
@@ -99,10 +85,10 @@ server.post("/login", utilities.getUser, async (req, res) => {
         .status(201)
         .json({ token: token, userId: user.id, status: user.paid });
     } else {
-      res.status(401).json({ error: "Incorrect Credentials" });
+      res.status(401).json({ message: "Incorrect Credentials" });
     }
   } catch (err) {
-    res.status(401).json({ error: err.message });
+    res.status(401).json({ message: err.message });
   }
 });
 
@@ -129,12 +115,12 @@ server.post("/creategame", utilities.protected, async (req, res) => {
       user_id: userId,
       description: description
     };
-    console.log("gamePackage: ", gamePackage);
+
     // inserting into games returns an array with 1 game ID if successful
     let gameId = await db("Games").insert(gamePackage);
 
-    console.log("\n\ngameId: ", gameId, "\n\n");
-    console.log("gameName: ", gameName);
+    if (!gameId) throw new Error({ message: "Error inserting game" });
+
     let game = await db("Games")
       .where({ name: gameName })
       .first();
@@ -144,104 +130,9 @@ server.post("/creategame", utilities.protected, async (req, res) => {
     res.status(201).json(game);
   } catch (err) {
     console.log("error in createGame!!!", err.message);
-    res.status(404).json({ error: err.message });
+    res.status(404).json({ message: err.message });
   }
 });
-
-// Saves a whole game, takes in the usernam, description, gamename, dateCreated, datePlayed, and rounds array
-// server.post("/save", utilities.protected, async (req, res) => {
-//   // Transactions allow us to perform multiple database calls, and if one of them doesn't work,
-//   // roll back all other calls. Maintains data consistency
-//   const {
-//     username,
-//     description,
-//     gamename,
-//     dateCreated,
-//     datePlayed,
-//     rounds
-//   } = req.body;
-
-//   try {
-//     // Get user
-//     await db.transaction(async trx => {
-//       let userId = await trx("Users")
-//         .where({ username })
-//         .first()
-//         .select("id"); // Get our user id based on username
-//       if (userId) userId = userId.id;
-//       else {
-//         throw new Error("username not found");
-//       }
-//       //Enter game info in DB with userID
-//       const gameInfo = {
-//         name: gamename,
-//         date_created: dateCreated,
-//         date_played: datePlayed,
-//         user_id: userId,
-//         description: description
-//       };
-
-//       let gameId = (await trx("Games").insert(gameInfo))[0];
-
-//       // Enter Rounds in Database
-
-//       // Assemble what we're going to insert in rounds table
-//       const roundsPackage = rounds.map(round => {
-//         return {
-//           name: round.roundName,
-//           category: round.category,
-//           type: round.type,
-//           difficulty: round.difficulty,
-//           number_of_questions: round.round.length,
-//           game_id: gameId
-//         };
-//       });
-
-//       let roundsPromises = roundsPackage.map(async round => {
-//         // Insert all rounds into game
-//         return (await trx("Rounds").insert(round))[0];
-//       });
-
-//       let roundsIds;
-
-//       await Promise.all(roundsPromises).then(values => {
-//         roundsIds = values;
-//       });
-
-//       // Insert questions/answers into database
-//       let questions = [];
-
-//       rounds.forEach((namedRound, index) => {
-//         namedRound.round.forEach(round => {
-//           questions.push({
-//             rounds_id: roundsIds[index],
-//             category: round.category,
-//             difficulty: round.difficulty,
-//             type: round.type,
-//             question: round.question,
-//             correct_answer: round.correct_answer,
-//             incorrect_answers: round.incorrect_answers.join("--")
-//           });
-//         });
-//       });
-
-//       let indicator = await trx("Questions").insert(questions);
-
-//       const returnGame = {
-//         gameId: gameId,
-//         gamename: gamename,
-//         description: description,
-//         dateCreated: dateCreated,
-//         datePlayed: datePlayed,
-//         rounds: rounds
-//       };
-//       res.status(200).json(returnGame);
-//     });
-//   } catch (err) {
-//     console.log("err.message: ", err.message);
-//     res.status(501).json({ error: err.message });
-//   }
-// });
 
 // Updates a game, takes in username, created, played, gameName and description (string)
 server.put("/editgame/:id", utilities.protected, async (req, res) => {
@@ -270,7 +161,7 @@ server.put("/editgame/:id", utilities.protected, async (req, res) => {
     });
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -297,7 +188,7 @@ server.post(
       res.status(200).json(games);
     } catch (err) {
       console.log("Error getting games: ", err.message);
-      res.status(500).json({ error: "Problem getting games" });
+      res.status(500).json({ message: "Problem getting games" });
     }
   }
 );
@@ -326,7 +217,7 @@ server.get("/rounds/:id", utilities.protected, async (req, res) => {
     res.status(200).json(rounds);
   } catch (err) {
     console.log("err.message get rounds: ", newGame);
-    res.status(500).json({ error: "Problem getting rounds" });
+    res.status(500).json({ message: "Problem getting rounds" });
   }
 });
 
@@ -353,7 +244,7 @@ server.delete("/round/:id", utilities.protected, async (req, res) => {
 
     res.status(200).json(`Round ${response} deleted`);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
 });
 
@@ -372,7 +263,7 @@ server.delete("/game/:id", utilities.protected, async (req, res) => {
     console.log("id: ", id);
     res.status(200).json(`Game ${response} deleted`);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
 });
 
@@ -413,7 +304,6 @@ server.post("/round", utilities.protected, async (req, res) => {
 
     if (!roundId) throw new Error({ message: "Error inserting Round" });
 
-    console.log("\n\nroundId!!!!", roundId, "\n\n");
     let returnPackage = {
       roundId: roundId,
       roundName: roundName,
@@ -422,12 +312,11 @@ server.post("/round", utilities.protected, async (req, res) => {
       difficulty: difficulty,
       type: type
     };
-    // Return new round ID
-    console.log("returnPackage: ", returnPackage);
+
     res.status(200).json(returnPackage);
   } catch (err) {
     console.log("err.message in POST /round: ", err.message);
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
 });
 
@@ -466,7 +355,7 @@ server.put("/round/:id", utilities.protected, async (req, res) => {
     });
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -502,7 +391,7 @@ server.put("/editq/:id", utilities.protected, async (req, res) => {
     });
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -539,7 +428,7 @@ server.put("/edituser/:id", utilities.protected, async (req, res) => {
     });
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -578,7 +467,7 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
     res.status(200).json(questions);
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(500).json({ error: "Problem getting questions" });
+    res.status(500).json({ message: "Problem getting questions" });
   }
 });
 // Get User user info by user id
@@ -609,30 +498,25 @@ server.get("/users/:id", utilities.protected, async (req, res) => {
     res.status(200).json(users);
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(500).json({ error: "Problem getting user" });
+    res.status(500).json({ message: "Problem getting user" });
   }
 });
 
 // Save all questions for a round ID
 server.post("/questions", utilities.protected, async (req, res) => {
   try {
-    console.log("req.body!!!: ", req.body);
-    console.log("req.body[0].rounds_id!!!: ", req.body[0].rounds_id);
     // Check for valid Round Id
     let validRound = await db("Rounds").where({ id: req.body[0].rounds_id });
 
-    console.log("validRound: ", validRound);
     if (validRound.length < 1) {
-      throw new Error({ error: "Not a valid round ID" });
+      throw new Error({ message: "Not a valid round ID" });
     }
 
     let successfulInsert = await db("Questions").insert(req.body);
+    console.log("\n\nsuccessfulInsert: ", successfulInsert);
     res.status(200).json({ successfulInsert });
-
-    console.log("successfulInsert: ", successfulInsert);
   } catch (err) {
     console.log("err.message", err.message);
-    console.log("err: ", err);
     res.status(500).json(err);
   }
 });
@@ -652,7 +536,7 @@ server.delete("/questions/:id", utilities.protected, async (req, res) => {
     res.status(200).json(`Questions deleted`);
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
 });
 
@@ -671,8 +555,20 @@ server.delete("/game/:id", utilities.protected, async (req, res) => {
 
     res.status(200).json(`Game ${response} deleted`);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
+});
+
+// Get all Questions table
+server.get("/questions", utilities.protected, (req, res) => {
+  db("Questions")
+    .then(response => {
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 module.exports = server;
