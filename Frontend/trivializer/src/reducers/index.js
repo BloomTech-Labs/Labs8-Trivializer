@@ -38,7 +38,7 @@ const initialState = {
   all_rounds: [],
   all_questions: [],
   games: [],
-  game: [],
+  game: {},
   rounds: [],
   round: null,
   questions: [],
@@ -130,8 +130,8 @@ const gamesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         saving_game: false,
         saved_game: true,
-        // games: action.payload
-        gameId: action.payload
+        game: action.payload,
+        gameId: action.payload.id
       });
     case UPDATING_GAME:
       return Object.assign({}, state, {
