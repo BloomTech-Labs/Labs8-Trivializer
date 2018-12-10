@@ -1,8 +1,12 @@
 /* Vertical Navbar */
+.main-content {
+  background-color: #b13c2d;
+}
+
 .vertical-navbar {
   width: 150px;
   height: 75vh;
-  background-color: #f04e39;
+  background-color: #b13c2d;
   height: 95vh;
 }
 
@@ -29,11 +33,12 @@
 @media screen and (max-width: 780px) {
   .vertical-navbar {
     width: 120px;
+    height: 1200px;
   }
 }
 
 /* Phone View, killing off vertical navbar */
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 450px) {
   .vertical-navbar {
     display: none;
   }
@@ -50,7 +55,7 @@
   }
 
   .main-navigation {
-    margin-bottom: 20px;
+    padding-bottom: 0;
   }
 
   .hor-navbar {

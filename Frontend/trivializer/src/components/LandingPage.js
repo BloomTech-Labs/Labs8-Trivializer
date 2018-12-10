@@ -5,6 +5,7 @@ import axios from "axios";
 import "./Components.css";
 import "./LandingPage.css";
 import { auth, provider } from "./OAuth/firebase";
+import URL from "../URLs";
 
 const username_regex = /^[a-zA-Z0-9]{4,}$/;
 const email_regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
@@ -22,13 +23,9 @@ class LandingPage extends React.Component {
     super();
     this.state = {
       registerURL:
-        process.env.REACT_APP_BE_REGISTER_URL ||
-        "https://testsdepl.herokuapp.com/users/register",
-      // "http://localhost:3300/users/register",
+        process.env.REACT_APP_BE_REGISTER_URL || `${URL.current_URL}/register`, // See ../URLs/index.js to change local vs served URL
       signinURL:
-        process.env.REACT_APP_BE_LOGIN_URL ||
-        "https://testsdepl.herokuapp.com/users/login",
-      // "http://localhost:3300/users/login",
+        process.env.REACT_APP_BE_LOGIN_URL || `${URL.current_URL}/login`, // See ../URLs/index.js to change local vs served URL
       signup_username: "",
       signup_email: "",
       signup_password: "",
@@ -54,6 +51,8 @@ class LandingPage extends React.Component {
   };
 
   validateRegister = () => {
+    localStorage.clear();
+    sessionStorage.clear();
     // Returning 1 lets us link to our backend, so we want to return 0 if any error occurs.
     let validation = 1;
     if (!this.state.signup_username) {
@@ -114,6 +113,8 @@ class LandingPage extends React.Component {
   };
 
   validateSignin = () => {
+    localStorage.clear();
+    sessionStorage.clear();
     let validation = 1;
     if (!this.state.signin_username) {
       validation = 0;
@@ -141,58 +142,65 @@ class LandingPage extends React.Component {
   // Handles the submit call on the Register modal
   handleSubmit = e => {
     e.preventDefault();
+    if (!localStorage.getItem("guest") && !sessionStorage.getItem("jwt")) {
+      let credentials;
+      let url;
 
-    let credentials;
-    let url;
+      if (e.target.name === "guest") {
+        localStorage.setItem("guest", "yes");
+        credentials = {
+          username: `guest${Date.now()}`,
+          password: `guest${Date.now()}`,
+          email: `guest${Date.now()}@gmail.com`
+        };
+        url = this.state.registerURL;
+      } else if (e.target.name === "register" && this.validateRegister()) {
+        credentials = {
+          username: this.state.signup_username,
+          password: this.state.signup_password,
+          email: this.state.signup_email
+        };
+        url = this.state.registerURL;
+      } else if (e.target.name === "signin" && this.validateSignin()) {
+        credentials = {
+          username: this.state.signin_username,
+          password: this.state.signin_password
+        };
+        url = this.state.signinURL;
+      } else {
+        return;
+      }
+      console.log("url is: ", url);
+      axios
+        .post(url, {
+          username: credentials.username,
+          password: credentials.password,
+          email: credentials.email || ""
+        })
+        .then(res => {
+          const result = res.data;
 
-    if (e.target.name === "guest") {
-      credentials = {
-        username: `guest${Date.now()}`,
-        password: `guest${Date.now()}`,
-        email: `guest${Date.now()}@gmail.com`
-      };
-      url = this.state.registerURL;
-    } else if (e.target.name === "register" && this.validateRegister()) {
-      credentials = {
-        username: this.state.signup_username,
-        password: this.state.signup_password,
-        email: this.state.signup_email
-      };
-      url = this.state.registerURL;
-    } else if (e.target.name === "signin" && this.validateSignin()) {
-      credentials = {
-        username: this.state.signin_username,
-        password: this.state.signin_password
-      };
-      url = this.state.signinURL;
-    } else {
-      return;
-    }
-    console.log("url is: ", url);
-    axios
-      .post(url, {
-        username: credentials.username,
-        password: credentials.password,
-        email: credentials.email || ""
-      })
-      .then(res => {
-        const result = res.data;
+          sessionStorage.setItem("jwt", result.token);
+          sessionStorage.setItem("user", credentials.username);
+          sessionStorage.setItem("userId", result.userId);
+          sessionStorage.setItem("status", result.status);
 
-        sessionStorage.setItem("jwt", result.token);
-        sessionStorage.setItem("user", credentials.username);
-        sessionStorage.setItem("userId", result.userId);
-        sessionStorage.setItem("status", result.status);
-        this.redirect();
-      })
-      .catch(err => {
-        console.log("err.response: ", err.response);
-        this.setState({
-          password_error: "Incorrect password, please try again."
+          this.redirect();
+        })
+        .catch(err => {
+          console.log("err.response: ", err.response);
+          this.setState({
+            password_error: "Incorrect password, please try again."
+          });
         });
-      });
+    } else {
+      this.redirect();
+    }
   };
 
   googleLogin = e => {
+    localStorage.clear();
+    sessionStorage.clear();
     let googleUsername, googleUID;
     e.preventDefault();
     auth.signInWithPopup(provider).then(result => {
@@ -317,7 +325,8 @@ class LandingPage extends React.Component {
               <li class="navbar-right-list active">
                 <div className="navbar-link">About Us</div>
               </li>
-              {sessionStorage.getItem("userId") ? (
+              {sessionStorage.getItem("userId") &&
+              !localStorage.getItem("guest") ? (
                 <li class="navbar-right-list active">
                   <div href="#" onClick={this.signOut} className="navbar-link">
                     Sign Out
@@ -326,7 +335,9 @@ class LandingPage extends React.Component {
               ) : null}
 
               {/* Navbar Signup Link */}
-              {sessionStorage.getItem("userId") ? null : (
+
+              {sessionStorage.getItem("userId") &&
+              !localStorage.getItem("guest") ? null : (
                 <li class="navbar-right-list">
                   <div className="signup">
                     <div
@@ -468,7 +479,8 @@ class LandingPage extends React.Component {
               )}
 
               {/* Navbar Sign In Link */}
-              {sessionStorage.getItem("userId") ? null : (
+              {sessionStorage.getItem("userId") &&
+              !localStorage.getItem("guest") ? null : (
                 <li class="navbar-right-list">
                   <div className="signin">
                     <div
@@ -581,42 +593,26 @@ class LandingPage extends React.Component {
             />
             <li data-target="#carouselExampleIndicators" data-slide-to="1" />
             <li data-target="#carouselExampleIndicators" data-slide-to="2" />
-            <li data-target="#carouselExampleIndicators" data-slide-to="3" />
-            <li data-target="#carouselExampleIndicators" data-slide-to="4" />
           </ol>
           <div class="carousel-inner">
             <div class="carousel-item active">
               <img
                 className="carousel-design d-block w-100"
-                src="../img/back4.jpg"
+                src="../img/neon.jpg"
                 alt="First slide"
               />
             </div>
             <div class="carousel-item">
               <img
                 class="carousel-design d-block w-100"
-                src="../img/neon.jpg"
+                src="../img/barscore.jpg"
                 alt="Second slide"
               />
             </div>
             <div class="carousel-item">
               <img
                 class="carousel-design d-block w-100"
-                src="../img/questionmark2.jpg"
-                alt="Third slide"
-              />
-            </div>
-            <div class="carousel-item">
-              <img
-                class="carousel-design d-block w-100"
-                src="../img/trivia.jpg"
-                alt="Third slide"
-              />
-            </div>
-            <div class="carousel-item">
-              <img
-                class="carousel-design d-block w-100"
-                src="../img/trivia2.jpg"
+                src="../img/open.jpg"
                 alt="Third slide"
               />
             </div>
@@ -666,7 +662,7 @@ class LandingPage extends React.Component {
               name="guest"
               onClick={this.handleSubmit}
             >
-              {localStorage.getItem("user")
+              {sessionStorage.getItem("jwt") && !localStorage.getItem("guest")
                 ? "Go To Games"
                 : "Play Without Logging In"}
             </button>

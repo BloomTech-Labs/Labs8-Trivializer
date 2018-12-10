@@ -40,13 +40,11 @@ const NavBar = props => {
                 Games
               </Link>
             </li>
-            {sessionStorage.getItem("userId") ? (
-              <li class="nav-item">
-                <Link to="/billing" className="nav-link active">
-                  Billing
-                </Link>
-              </li>
-            ) : null}
+            <li class="nav-item">
+              <Link to="/billing" className="nav-link active">
+                Billing
+              </Link>
+            </li>
 
             <li class="nav-item">
               <Link to="/setting" className="nav-link active">

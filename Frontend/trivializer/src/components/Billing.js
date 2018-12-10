@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Pay from "./Pay";
 import { Link } from "react-router-dom";
 import "./Components.css";
+import "./Billing.css";
 
 const Billing = props => {
   const logout = e => {
@@ -28,18 +29,67 @@ const Billing = props => {
             </ol>
           </nav>
         </div>
-        {localStorage.getItem("user") || sessionStorage.getItem("jwt") ? (
+        {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
           <div onClick={logout} className="top-rightside">
             Sign Out
           </div>
         ) : null}
       </div>
 
-      <div className="main-content">
+      <div className="main-content ">
         <Navbar />
 
         {/* <h1 className="main-middle">Billing Page</h1> */}
-        <Pay />
+        <div className="content-container">
+          <h1>Comparing Plans</h1>
+          <div className="billing-content">
+            <div className="table">
+              <div className="row">
+                <div className="first empty" />
+                <div className="second free">Free</div>
+                <div className="third premium">Premium</div>
+              </div>
+              <div className="row">
+                <div className="first">Can Create Games</div>
+                <div className="second">✓</div>
+                <div className="third">✓</div>
+              </div>
+
+              <div className="row">
+                <div className="first">Access to More than 15 Categories of Trivia</div>
+                <div className="second">✓</div>
+                <div className="third">✓</div>
+              </div>
+              <div className="row">
+                <div className="first">Print & Save Games</div>
+                <div className="second">✓</div>
+                <div className="third">✓</div>
+              </div>
+
+              <div className="row">
+                <div className="first">Can Create Unlimited Games</div>
+                <div className="second" />
+                <div className="third">✓</div>
+              </div>
+              <div className="row">
+                <div className="first">Games Can Have 10+ Questions</div>
+                <div className="second" />
+                <div className="third">✓</div>
+              </div>
+              <div className="row">
+                <div className="first">Cost</div>
+                <div className="second" />
+                <div className="third">$9.99</div>
+              </div>
+              <div className="row lastrow">
+                <div className="first lastfirst" />
+                <div className="secondthird">
+                  <Pay />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

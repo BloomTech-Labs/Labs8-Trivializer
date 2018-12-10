@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import NavBar from "./Navbar";
 import { connect } from "react-redux";
 import { submitGameReq } from "../actions";
+import "./CreateGameView.css";
 
 /**
  * CreateGameView Component
@@ -59,7 +60,7 @@ class CreateGameView extends Component {
     };
 
     this.props.submitGameReq(game);
-    setTimeout(() => this.props.history.push("/gameslist"), 1000);
+    this.props.history.push("/gameslist");
   };
 
   render() {
@@ -85,29 +86,47 @@ class CreateGameView extends Component {
 
         <div className="main-content">
           <NavBar />
-          <div>
-            <div>Logo</div>
-            <input
-              name="gameTitle"
-              placeholder="Game Title"
-              value={this.state.gameTitle}
-              onChange={this.handleChange}
-            />
-            <input
-              type="text"
-              name="gameDescription"
-              placeholder="Game Description"
-              value={this.state.gameDescription}
-              onChange={this.handleChange}
-            />
-            <input
-              type="date"
-              name="gameScheduled"
-              placeholder="mm/dd/yyyy"
-              value={this.state.gameScheduled}
-              onChange={this.handleChange}
-            />
-            <button onClick={this.handleSubmit}>Save Game</button>
+          <div className="content-container ">
+            <div className="createnewGame-container">
+              <h1>Game Details</h1>
+              <form>
+                <div class="form-group">
+                  <div className="form-description">Game Title</div>
+                  <input
+                    name="gameTitle"
+                    class="form-control gameInput"
+                    placeholder="Ex. Wednesday Night Trivia"
+                    value={this.state.gameTitle}
+                    onChange={this.handleChange}
+                  />
+                </div>
+
+                <div class="form-group">
+                  <div className="form-description">Game Details</div>
+                  <textarea
+                    class="form-control descriptionInput"
+                    placeholder="Ex. Trivia for Wednesday night with college friends, category: TV & Entertainment"
+                    name="gameDescription"
+                    value={this.state.gameDescription}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div class="form-group third-form">
+                  <div className="form-description">Date to Play</div>
+                  <input
+                    className="calendar"
+                    type="date"
+                    name="gameScheduled"
+                    placeholder="Leave Blank For Today"
+                    value={this.state.gameScheduled}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <button className="savegameButton" onClick={this.handleSubmit}>
+                  Save Game
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
