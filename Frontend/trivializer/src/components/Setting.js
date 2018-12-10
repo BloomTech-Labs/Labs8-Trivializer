@@ -57,7 +57,9 @@ class Setting extends React.Component {
     const metadata = { contentType: file.type };
 
     const task = ref.child(name).put(file, metadata);
-    task.then(snapshot => snapshot.ref.getDownloadURL()).then(url => console.log(url));
+    task
+      .then(snapshot => snapshot.ref.getDownloadURL())
+      .then(url => this.setState({ imagePreviewUrl: url, pictureAdded: true }));
 
     /*
     let reader = new FileReader();
