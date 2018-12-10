@@ -38,7 +38,6 @@ class CreateGameView extends Component {
   componentDidUpdate = prevProps => {
     if (prevProps.gameId !== this.props.gameId) {
       this.props.history.push(`/game/${this.props.gameId}`);
-      // this.props.history.push(`/gameslist`);
     }
   };
 
@@ -61,7 +60,6 @@ class CreateGameView extends Component {
     };
 
     this.props.submitGameReq(game);
-    this.props.history.push("/gameslist");
   };
 
   render() {
@@ -123,7 +121,11 @@ class CreateGameView extends Component {
                     onChange={this.handleChange}
                   />
                 </div>
-                <button className="savegameButton" onClick={this.handleSubmit}>
+                <button
+                  type="button"
+                  className="savegameButton"
+                  onClick={this.handleSubmit}
+                >
                   Save Game
                 </button>
               </form>
