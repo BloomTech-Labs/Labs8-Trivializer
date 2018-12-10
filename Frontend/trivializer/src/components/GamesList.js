@@ -40,7 +40,7 @@ class GamesList extends Component {
           }
         />
       );
-      sessionStorage.setItem("gamesNotified", "true");
+      // sessionStorage.setItem("gamesNotified", "true");
     }
 
     // NOTE: setState after API request doesn't render state in time
@@ -98,6 +98,7 @@ class GamesList extends Component {
 
     return (
       <div className="gameslist-page">
+        <Notifications />
         <div className="top-content">
           <div className="top-leftside">
             <nav aria-label="breadcrumb">
@@ -120,7 +121,6 @@ class GamesList extends Component {
 
         <div className="main-content">
           <Navbar />
-          <Notifications />
           <div className="content-container whole">
             {!this.props.games[0] ? (
               <div className="addnewGame">

@@ -23,6 +23,7 @@
   border-radius: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
+  position: relative;
 }
 .rounds:hover {
   box-shadow: 1px 1px;
@@ -108,6 +109,35 @@
 
 .newRound-inner:hover {
   opacity: 1;
+}
+
+.rounds .notification-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 2%;
+
+  /* animation-name: slide-in;
+  animation-duration: 6s; */
+}
+
+@keyframes slide-in {
+  0% {
+    left: -50%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    left: 1%;
+  }
+  90% {
+    opacity: 1;
+    left: 1%;
+  }
+  to {
+    opacity: 0;
+    left: -50%;
+  }
 }
 
 @media print {

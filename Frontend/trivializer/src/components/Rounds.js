@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import "./Rounds.css";
 import { connect } from "react-redux";
+import Notifications from "./Notifications";
 import {
   deleteRoundReq,
   editRoundReq,
@@ -9,6 +10,10 @@ import {
   resetRoundStateReq,
   getNewQuestionsReq
 } from "../actions";
+import {
+  NotificationManager,
+  NotificationContainer
+} from "react-notifications";
 
 let categoryOptions = {
   any: "any",
@@ -88,18 +93,25 @@ class Rounds extends Component {
     // backend
     if (this.props.roundId === this.props.round.roundId) {
       if (this.props.fetched_saved_questions) {
-        if (!this.props.history.location.pathname.split("/").includes("round")) {
-          this.props.history.push(`${this.props.gameId}/round/${this.props.round.roundId}`);
+        if (
+          !this.props.history.location.pathname.split("/").includes("round")
+        ) {
+          this.props.history.push(
+            `${this.props.gameId}/round/${this.props.round.roundId}`
+          );
         }
       }
     }
 
+    // This makes the "See Questions" button clickable to enter the round again
+    // Listening for if we were formerly saving the questions, now we're not (meaning questions were saved)
+    // And our local state is set to savingRound === true
     if (
       prevProps.saving_questions !== this.props.saving_questions &&
       this.state.savingRound === true
     ) {
-      console.log("STATE IS DIFFERENT!!");
       this.setState({ savingRound: false });
+      NotificationManager.warning("SAVED!!!!!!!!", null, 100000);
     }
   };
 
@@ -135,6 +147,9 @@ class Rounds extends Component {
     // Get the updated questions from the questionsAPI
     let formattedQuestionsAPICall = this.formatQuestionsCall();
     this.props.getNewQuestionsReq(formattedQuestionsAPICall);
+
+    // These new fetched questions will be saved to the Users API in RoundsList,
+    // componentDidUpdate, roughly lines 78-81
   };
 
   delete = () => {
@@ -148,7 +163,10 @@ class Rounds extends Component {
     // Get all of our info in the right format to call the questions API
     let formattedQuestionsRound = this.formatQuestionsCall();
 
-    this.props.getQuestionsReq(formattedQuestionsRound, this.props.round.roundId);
+    this.props.getQuestionsReq(
+      formattedQuestionsRound,
+      this.props.round.roundId
+    );
   };
 
   // Format our current state to be set to Redux store
@@ -160,10 +178,13 @@ class Rounds extends Component {
       gameName: this.props.gameName !== null ? this.props.gameName : "Game",
       gameId: this.props.gameId,
       roundId: this.props.round.roundId,
-      roundName: this.state.roundName !== "" ? this.state.roundName : "New Round",
+      roundName:
+        this.state.roundName !== "" ? this.state.roundName : "New Round",
       numberOfQuestions: this.state.numQs > 0 ? this.state.numQs : 1,
       category:
-        categoryOptions[this.state.category] !== "any" ? categoryOptions[this.state.category] : "",
+        categoryOptions[this.state.category] !== "any"
+          ? categoryOptions[this.state.category]
+          : "",
       difficulty: this.state.difficulty !== "any" ? this.state.difficulty : "",
       type: this.state.type !== "any" ? this.state.type : "",
       questions: []
@@ -175,6 +196,7 @@ class Rounds extends Component {
   render() {
     return (
       <div className="rounds">
+        <Notifications />
         <input
           type="text"
           onChange={this.handleChange}

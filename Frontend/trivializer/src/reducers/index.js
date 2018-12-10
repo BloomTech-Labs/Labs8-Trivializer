@@ -281,6 +281,7 @@ const gamesReducer = (state = initialState, action) => {
         roundName: null
         // roundId: null Setting this to null leaves RoundsList Save Quetions without a roundId
       });
+    // Called by resetFetchedNewQuestions
     case RESET_NEW_QUESTIONS:
       console.log("RESET New  Questions CALLED!!");
       return Object.assign({}, state, {
