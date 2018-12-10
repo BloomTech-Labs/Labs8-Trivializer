@@ -49,7 +49,9 @@ class Setting extends React.Component {
   };
   fileChangedHandler = e => {
     let reader = new FileReader();
+    console.log("reader is: ", reader);
     let file = e.target.files[0];
+    console.log("file is: ", file);
     reader.onloadend = () => {
       this.setState({
         file: file,
@@ -60,14 +62,30 @@ class Setting extends React.Component {
 
     reader.readAsDataURL(file);
   };
-  uploadHandler = () => {
-    console.log(this.state.selectedFile);
-  };
+
   upgradeButton = () => {
     this.props.history.push("/billing");
   };
+  handleSubmit = () => {
+    let userId = JSON.parse(sessionStorage.getItem("userId"));
+    const auth = {
+      headers: {
+        Authorization: `${sessionStorage.getItem("jwt")}`
+      }
+    };
+    const changedInfo = { paid: 0, logo: JSON.stringify(this.state.imagePreviewUrl) };
+    axios
+      .put(`https://testsdepl.herokuapp.com/users/edituser/${userId}`, changedInfo, auth)
+      .then(response => {
+        console.log("response is: ", response);
+      })
+      .catch(err => {
+        console.log("err is: ", err.message);
+      });
+  };
 
   render() {
+    console.log("this.state is: ", this.state.imagePreviewUrl);
     const savedUser = this.state.savedUser;
     console.log("savedUser is: ", savedUser);
     return (
@@ -210,7 +228,7 @@ class Setting extends React.Component {
                   <button
                     type="btn"
                     className="btn btn-success save-button"
-                    onClick={this.uploadHandler}
+                    onClick={this.handleSubmit}
                   >
                     Save Changes
                   </button>
