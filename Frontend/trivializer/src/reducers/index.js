@@ -101,7 +101,7 @@ const gamesReducer = (state = initialState, action) => {
     case FETCHING_GAME:
       return Object.assign({}, state, {
         fetching_game: true,
-        game: []
+        game: {}
       });
     case FETCHED_GAME:
       return Object.assign({}, state, {
