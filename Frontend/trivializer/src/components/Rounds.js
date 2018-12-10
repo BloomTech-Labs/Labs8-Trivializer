@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import "./Rounds.css";
 import { connect } from "react-redux";
-import Notifications from "./Notifications";
+import SpeechBubble from "./speech_bubble/SpeechBubble";
 import {
   deleteRoundReq,
   editRoundReq,
@@ -10,10 +10,6 @@ import {
   resetRoundStateReq,
   getNewQuestionsReq
 } from "../actions";
-import {
-  NotificationManager,
-  NotificationContainer
-} from "react-notifications";
 
 let categoryOptions = {
   any: "any",
@@ -111,7 +107,6 @@ class Rounds extends Component {
       this.state.savingRound === true
     ) {
       this.setState({ savingRound: false });
-      NotificationManager.warning("SAVED!!!!!!!!", null, 100000);
     }
   };
 
@@ -196,7 +191,7 @@ class Rounds extends Component {
   render() {
     return (
       <div className="rounds">
-        <Notifications />
+        <SpeechBubble className="rounds-speechBubble" phrase="Saved!" />
         <input
           type="text"
           onChange={this.handleChange}

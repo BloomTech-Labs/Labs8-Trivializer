@@ -21,12 +21,9 @@ class PrintAll extends Component {
   }
 
   componentDidMount = () => {
-    console.log("COMPONENTDIDMOUNT!!");
     this.props.fetchRoundsReq(this.props.gameId);
     // this.props.getAllRoundsReq();
     this.props.getAllQuestionsReq();
-
-    console.log("this.props PrintAll: ", this.props);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -35,12 +32,6 @@ class PrintAll extends Component {
       JSON.stringify(this.props.rounds) !== JSON.stringify(this.state.rounds) &&
       this.props.rounds
     ) {
-      console.log(
-        "this.props.rounds, this.state.rounds: ",
-        this.props.rounds,
-        this.state.rounds
-      );
-
       this.setState({ rounds: this.props.rounds });
     }
 

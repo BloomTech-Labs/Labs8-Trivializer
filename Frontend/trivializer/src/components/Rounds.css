@@ -111,32 +111,32 @@
   opacity: 1;
 }
 
-.rounds .notification-container {
+.rounds-speechBubble {
   position: absolute;
   left: 50%;
-  top: 50%;
+  bottom: 50%;
   padding: 2%;
 
-  /* animation-name: slide-in;
-  animation-duration: 6s; */
+  animation-name: slide-in;
+  animation-duration: 6s;
 }
 
 @keyframes slide-in {
   0% {
-    left: -50%;
+    bottom: 0%;
     opacity: 0;
   }
   50% {
     opacity: 1;
-    left: 1%;
+    bottom: 50%;
   }
   90% {
     opacity: 1;
-    left: 1%;
+    bottom: 50%;
   }
   to {
     opacity: 0;
-    left: -50%;
+    bottom: 0%;
   }
 }
 
