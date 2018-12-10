@@ -19,7 +19,6 @@
   margin: 4%;
   display: flex;
   flex-flow: column;
-  width: 350px;
   border-radius: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -64,18 +63,27 @@
 }
 
 .roundsButton {
-  border-radius: 5%;
+  border-radius: 10%;
   margin: 1%;
   font-size: 12px;
 }
 
 .roundsButton:hover {
   box-shadow: 2px 2px;
-  background: lightcyan;
+  background: #007BFF;
+  color: white;
 }
 
 .roundsButton:active {
   transform: translateY(2px);
+}
+.save:hover{
+  background: #2db168;
+  color: white;
+}
+.delete:hover{
+  background: #b13c2d;
+  color: white;
 }
 
 .hidden {

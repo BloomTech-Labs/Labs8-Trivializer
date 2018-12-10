@@ -62,7 +62,7 @@ class EditGameView extends Component {
     return (
       <div className="editGameView">
         <div className="editGameView-top">
-          <div>Edit Game</div>
+          <div>Update Game Info</div>
           <img
             className="editGameView-logo"
             src={require("../img/trivializer_cropped.png")}
@@ -89,7 +89,7 @@ class EditGameView extends Component {
           value={this.state.gameScheduled}
           onChange={this.handleChange}
         />
-        <button onClick={this.handleUpdate}>Save Game</button>
+        <button className="saveButton" onClick={this.handleUpdate}>Save Game</button>
       </div>
     );
   }

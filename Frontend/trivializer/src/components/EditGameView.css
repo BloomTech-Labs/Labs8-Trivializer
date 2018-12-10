@@ -34,3 +34,15 @@
   max-width: 40%;
   overflow: hidden;
 }
+.saveButton {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  margin: 1% 4% 2% 4%;
+  border-radius: 10%;
+}
+.saveButton:hover {
+  background: #2db168;
+  color: white;
+  
+}
