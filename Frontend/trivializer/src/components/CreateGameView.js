@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import NavBar from "./Navbar";
 import { connect } from "react-redux";
 import { submitGameReq } from "../actions";
+import "./CreateGameView.css";
 
 /**
  * CreateGameView Component
@@ -85,21 +86,38 @@ class CreateGameView extends Component {
 
         <div className="main-content">
           <NavBar />
-          <div className="content-container">
-            <div>Logo</div>
-            <input
-              name="gameTitle"
-              placeholder="Game Title"
-              value={this.state.gameTitle}
-              onChange={this.handleChange}
-            />
-            <input
-              type="text"
-              name="gameDescription"
-              placeholder="Game Description"
-              value={this.state.gameDescription}
-              onChange={this.handleChange}
-            />
+          <div className="content-container ">
+            <div className="createnewGame-container">
+              <h1>Game Details</h1>
+              <form>
+                <div class="form-group">
+                  <label>Game Title</label>
+                  <input
+                    name="gameTitle"
+                    class="form-control"
+                    id="exampleFormControlInput1"
+                    placeholder="Game Title"
+                    value={this.state.gameTitle}
+                    onChange={this.handleChange}
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleFormControlTextarea1">Game Details</label>
+                  <input
+                    class="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="3"
+                    type="text"
+                    name="gameDescription"
+                    placeholder="Game Description"
+                    value={this.state.gameDescription}
+                    onChange={this.handleChange}
+                  />
+                </div>
+              </form>
+            </div>
+
             <input
               type="date"
               name="gameScheduled"
