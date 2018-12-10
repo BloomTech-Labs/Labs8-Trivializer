@@ -38,6 +38,12 @@ class Setting extends React.Component {
           .get(`https://testsdepl.herokuapp.com/users/users/${normalUserId}`, auth)
           .then(response => {
             this.setState({ savedUser: response.data });
+            if (this.state.savedUser[0].logo) {
+              this.setState({
+                imagePreviewUrl: this.state.savedUser[0].logo.slice(1, -1),
+                pictureAdded: true
+              });
+            }
           })
           .catch(err => {
             console.log("err is: ", err.message);
@@ -90,7 +96,7 @@ class Setting extends React.Component {
         Authorization: `${sessionStorage.getItem("jwt")}`
       }
     };
-    const changedInfo = { paid: 0, logo: JSON.stringify(this.state.imagePreviewUrl) };
+    const changedInfo = { logo: JSON.stringify(this.state.imagePreviewUrl) };
     axios
       .put(`https://testsdepl.herokuapp.com/users/edituser/${userId}`, changedInfo, auth)
       .then(response => {
@@ -102,9 +108,8 @@ class Setting extends React.Component {
   };
 
   render() {
-    console.log("this.state is: ", this.state.imagePreviewUrl);
+    console.log("this.state is: ", this.state);
     const savedUser = this.state.savedUser;
-    console.log("savedUser is: ", savedUser);
     return (
       <div className="setting-page">
         <div className="top-content">
@@ -190,6 +195,7 @@ class Setting extends React.Component {
                           className="uploaded-picture"
                           width="250px"
                           src={this.state.imagePreviewUrl}
+                          alt="profile-picture"
                         />
                       ) : null}
                     </div>
