@@ -22,11 +22,7 @@
 }
 
 .game-summary {
-<<<<<<< HEAD
   border: 2px solid black;
-=======
-  border: 2px solid #ee4432;
->>>>>>> 85d1dea3b4f7840c212c943048bf90457aa24e55
   border-radius: 10px;
   margin: auto;
   display: flex;
@@ -55,12 +51,8 @@
   cursor: pointer;
 }
 
-<<<<<<< HEAD
 .gamelist-container {
   display: flex;
-=======
-.game {
->>>>>>> 85d1dea3b4f7840c212c943048bf90457aa24e55
 }
 
 .game-description {
@@ -72,7 +64,6 @@
   height: 100px;
   text-align: left;
 }
-<<<<<<< HEAD
 
 .addnewGame {
   align-items: center;
@@ -100,5 +91,3 @@
   color: #b13c2d;
   cursor: pointer;
 }
-=======
->>>>>>> 85d1dea3b4f7840c212c943048bf90457aa24e55
