@@ -1,5 +1,4 @@
 .billing-content {
-  width: 75%;
   margin: 0 auto;
   padding-top: 20px;
 }
@@ -7,7 +6,6 @@
 .table {
   display: flex;
   flex-direction: column;
-  width: 75%;
   align-items: center;
   margin: 0 auto;
 }

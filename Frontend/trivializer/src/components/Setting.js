@@ -13,7 +13,8 @@ class Setting extends React.Component {
       file: "",
       imagePreviewUrl: "",
       pictureAdded: false,
-      changes: false
+      changes: false,
+      selectedFile: null
     };
   }
   componentDidMount() {
@@ -48,25 +49,50 @@ class Setting extends React.Component {
     this.props.history.push("/");
   };
   fileChangedHandler = e => {
+    this.setState({
+      selectedFile: e.target.files[0]
+    });
+    console.log("e is: ", e.target.files[0]);
+    /*
     let reader = new FileReader();
+    console.log("reader is: ", reader);
     let file = e.target.files[0];
+    console.log("file is: ", file);
     reader.onloadend = () => {
       this.setState({
         file: file,
-        imagePreviewUrl: reader.result
+        imagePreviewUrl: reader.result,
+        pictureAdded: true
       });
     };
 
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file);*/
   };
-  uploadHandler = () => {
-    console.log(this.state.selectedFile);
-  };
+  fileUploadHandler = () => {};
+
   upgradeButton = () => {
     this.props.history.push("/billing");
   };
+  handleSubmit = () => {
+    let userId = JSON.parse(sessionStorage.getItem("userId"));
+    const auth = {
+      headers: {
+        Authorization: `${sessionStorage.getItem("jwt")}`
+      }
+    };
+    const changedInfo = { paid: 0, logo: JSON.stringify(this.state.imagePreviewUrl) };
+    axios
+      .put(`https://testsdepl.herokuapp.com/users/edituser/${userId}`, changedInfo, auth)
+      .then(response => {
+        console.log("response is: ", response);
+      })
+      .catch(err => {
+        console.log("err is: ", err.message);
+      });
+  };
 
   render() {
+    console.log("this.state is: ", this.state.imagePreviewUrl);
     const savedUser = this.state.savedUser;
     console.log("savedUser is: ", savedUser);
     return (
@@ -147,21 +173,26 @@ class Setting extends React.Component {
                 </div>
               ) : (
                 <div className="signinSetting">
+                  {this.state.pictureAdded ? (
+                    <div className="upload">
+                      {this.state.imagePreviewUrl ? (
+                        <img
+                          className="uploaded-picture"
+                          width="250px"
+                          src={this.state.imagePreviewUrl}
+                        />
+                      ) : null}
+                    </div>
+                  ) : null}
                   <div className="signinAccount">
                     <h2>Personal</h2>
                     <div className="signinUserName">
                       <p>Username</p>
-                      <input
-                        placeholder="Name"
-                        value={savedUser ? savedUser[0].userName : null}
-                      />
+                      <input placeholder="Name" value={savedUser ? savedUser[0].userName : null} />
                     </div>
                     <div className="signinEmail">
                       <p>Email </p>
-                      <input
-                        placeholder="Email"
-                        value={savedUser ? savedUser[0].email : null}
-                      />
+                      <input placeholder="Email" value={savedUser ? savedUser[0].email : null} />
                     </div>
                     <div className="signinPassword">
                       <p>Change Password</p>
@@ -174,10 +205,7 @@ class Setting extends React.Component {
                       <p>Account Tier</p>
                       <div>
                         {savedUser ? (
-                          <div>
-                            Account Status:{" "}
-                            {savedUser[0].paid === 0 ? "Free" : "Premium"}
-                          </div>
+                          <div>{savedUser[0].paid === 0 ? "Free" : "Premium"}</div>
                         ) : (
                           "None"
                         )}
@@ -195,31 +223,19 @@ class Setting extends React.Component {
                     </div>
                     <div className="signinPicture">
                       <p>Add/Change Picture</p>
-                      {this.state.pictureAdded ? (
-                        <div className="upload">
-                          {this.state.imagePreviewUrl ? (
-                            <img
-                              className="uploaded-picture"
-                              width="300px"
-                              src={this.state.imagePreviewUrl}
-                            />
-                          ) : null}
-                        </div>
-                      ) : (
-                        <input
-                          className="addPicture"
-                          type="file"
-                          onChange={this.fileChangedHandler}
-                        />
-                      )}
+
+                      <input
+                        className="addPicture"
+                        type="file"
+                        onChange={this.fileChangedHandler}
+                      />
                     </div>
                   </div>
 
                   <button
                     type="btn"
                     className="btn btn-success save-button"
-
-                    onClick={this.uploadHandler}
+                    onClick={this.handleSubmit}
                   >
                     Save Changes
                   </button>
