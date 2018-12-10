@@ -103,7 +103,7 @@ class RoundsList extends Component {
   newRound = () => {
     let round = {
       gameId: this.props.gameId,
-      roundName: "Default Value",
+      roundName: "",
       category: "any",
       type: "multiple",
       difficulty: "easy",
