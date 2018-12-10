@@ -18,7 +18,6 @@ class GamesList extends Component {
     super(props);
     this.state = {
       games: [],
-      game: this.props.game,
       gameLimit: 3
     };
   }
@@ -139,7 +138,8 @@ class GamesList extends Component {
                       </div>
                     ))}
                   </div>
-                  {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
+                  {this.props.games.length > 0 &&
+                  this.props.games.length < this.state.gameLimit ? (
                     <div className="game-container">
                       <div className="game-summary">
                         <Link className="newgame-link" to={`/creategame`}>
@@ -173,9 +173,7 @@ function GameDetails({ game }) {
 
 const mapStateToProps = ({ gamesList }) => {
   return {
-    games: gamesList.games,
-    game: gamesList.game,
-    gameId: gamesList.gameId
+    games: gamesList.games
   };
 };
 

@@ -38,7 +38,7 @@ const initialState = {
   all_rounds: [],
   all_questions: [],
   games: [],
-  game: [],
+  game: {},
   rounds: [],
   round: null,
   questions: [],
@@ -67,7 +67,6 @@ const initialState = {
   fetched_all_rounds: false,
   fetching_all_questions: false,
   fetched_all_questions: false,
-  deleting_questions: false,
   deleting_questions: false,
   saving_game: false,
   saved_game: false,
@@ -102,7 +101,7 @@ const gamesReducer = (state = initialState, action) => {
     case FETCHING_GAME:
       return Object.assign({}, state, {
         fetching_game: true,
-        game: []
+        game: {}
       });
     case FETCHED_GAME:
       return Object.assign({}, state, {
@@ -131,8 +130,8 @@ const gamesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         saving_game: false,
         saved_game: true,
-        // games: action.payload
-        gameId: action.payload
+        game: action.payload,
+        gameId: action.payload.id
       });
     case UPDATING_GAME:
       return Object.assign({}, state, {

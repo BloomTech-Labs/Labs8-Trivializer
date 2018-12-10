@@ -36,8 +36,8 @@ class CreateGameView extends Component {
   }
 
   componentDidUpdate = prevProps => {
-    if (prevProps.saving_game === true && this.props.saved_game === true) {
-      this.props.history.push("/gameslist");
+    if (prevProps.gameId !== this.props.gameId) {
+      this.props.history.push(`/game/${this.props.gameId}`);
     }
   };
 
@@ -60,7 +60,6 @@ class CreateGameView extends Component {
     };
 
     this.props.submitGameReq(game);
-    this.props.history.push("/gameslist");
   };
 
   render() {
@@ -122,7 +121,11 @@ class CreateGameView extends Component {
                     onChange={this.handleChange}
                   />
                 </div>
-                <button className="savegameButton" onClick={this.handleSubmit}>
+                <button
+                  type="button"
+                  className="savegameButton"
+                  onClick={this.handleSubmit}
+                >
                   Save Game
                 </button>
               </form>
@@ -137,7 +140,8 @@ class CreateGameView extends Component {
 const mapStateToProps = ({ gamesList }) => {
   return {
     saving_game: gamesList.saving_game,
-    saved_game: gamesList.saved_game
+    saved_game: gamesList.saved_game,
+    gameId: gamesList.gameId
   };
 };
 
