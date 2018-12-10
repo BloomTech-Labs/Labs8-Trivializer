@@ -1,5 +1,5 @@
 /* Styles GamesList.css */
-.content-container {
+.gameslist-container {
   display: flex;
   flex-wrap: wrap;
 }
