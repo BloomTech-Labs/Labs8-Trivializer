@@ -1,8 +1,4 @@
 /* Styles GamesList.css */
-.gameslist-container {
-  display: flex;
-  flex-wrap: wrap;
-}
 
 .game-container {
   width: 350px;
@@ -51,10 +47,6 @@
   cursor: pointer;
 }
 
-.gamelist-container {
-  display: flex;
-}
-
 .game-description {
   border: 2px solid lightskyblue;
   border-radius: 10px;
@@ -74,8 +66,8 @@
 
 .gamelist {
   display: flex;
-  justify-content: center;
-  padding-top: 0;
+  flex-direction: column;
+  align-items: center;
 }
 
 .addnewGame h3 {
@@ -90,4 +82,15 @@
 .fas:hover {
   color: #b13c2d;
   cursor: pointer;
+}
+
+.gamelist-overallcontainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.gamelist-container {
+  display: flex;
+  flex-wrap: wrap;
 }
