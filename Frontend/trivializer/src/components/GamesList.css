@@ -129,7 +129,7 @@
   top: 10%;
 
   animation-name: slide-in;
-  animation-duration: 7s;
+  animation-duration: 6s;
 }
 
 @keyframes slide-in {

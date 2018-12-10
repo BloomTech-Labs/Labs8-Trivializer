@@ -60,7 +60,7 @@ class CreateGameView extends Component {
     };
 
     this.props.submitGameReq(game);
-    this.props.history.push("/gameslist");
+    // this.props.history.push("/gameslist");
   };
 
   render() {

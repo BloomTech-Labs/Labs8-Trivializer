@@ -31,8 +31,8 @@ class GamesList extends Component {
   componentDidMount() {
     this.props.fetchGamesReq();
     console.log("this.props.games.length: ", this.props.games.length);
-    if (this.props.games.length < 1) {
-      NotificationManager.warning(
+    if (!sessionStorage.getItem("gamesNotified")) {
+      NotificationManager.info(
         <SpeechBubble
           title={"Welcome to Games!"}
           phrase={
@@ -40,6 +40,7 @@ class GamesList extends Component {
           }
         />
       );
+      sessionStorage.setItem("gamesNotified", "true");
     }
 
     // NOTE: setState after API request doesn't render state in time
@@ -192,7 +193,8 @@ const mapStateToProps = ({ gamesList }) => {
   return {
     games: gamesList.games,
     game: gamesList.game,
-    gameId: gamesList.gameId
+    gameId: gamesList.gameId,
+    hide_welcome_notification: gamesList.hide_welcome_notification
   };
 };
 
