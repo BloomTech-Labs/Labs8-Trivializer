@@ -68,7 +68,6 @@ const initialState = {
   fetching_all_questions: false,
   fetched_all_questions: false,
   deleting_questions: false,
-  deleting_questions: false,
   saving_game: false,
   saved_game: false,
   saving_round: false,

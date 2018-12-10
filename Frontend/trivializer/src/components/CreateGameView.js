@@ -36,8 +36,9 @@ class CreateGameView extends Component {
   }
 
   componentDidUpdate = prevProps => {
-    if (prevProps.saving_game === true && this.props.saved_game === true) {
-      this.props.history.push("/gameslist");
+    if (prevProps.gameId !== this.props.gameId) {
+      this.props.history.push(`/game/${this.props.gameId}`);
+      // this.props.history.push(`/gameslist`);
     }
   };
 
@@ -137,7 +138,8 @@ class CreateGameView extends Component {
 const mapStateToProps = ({ gamesList }) => {
   return {
     saving_game: gamesList.saving_game,
-    saved_game: gamesList.saved_game
+    saved_game: gamesList.saved_game,
+    gameId: gamesList.gameId
   };
 };
 
