@@ -179,7 +179,7 @@ class Rounds extends Component {
           type="text"
           onChange={this.handleChange}
           name="roundName"
-          placeholder="Ex. Harry Potter Round"
+          placeholder="Ex. Marvel Round"
           value={this.state.roundName}
           className="roundsTitle"
         />
@@ -261,19 +261,19 @@ class Rounds extends Component {
             })}
           </select>
         </div>
-        <div className="roundsButtons">
-          <button onClick={this.saveRound} className="roundsButton">
+        <div className="roundsButtons ">
+          <button onClick={this.saveRound} className="roundsButton save">
             Save
           </button>
           {this.state.savingRound ? (
             <div>Saving Questions</div>
           ) : (
-            <button className="roundsButton" onClick={this.enterRound}>
+            <button className="roundsButton see" onClick={this.enterRound}>
               See Questions
             </button>
           )}
 
-          <button className="roundsButton" onClick={this.delete}>
+          <button className="roundsButton delete" onClick={this.delete}>
             Delete
           </button>
         </div>

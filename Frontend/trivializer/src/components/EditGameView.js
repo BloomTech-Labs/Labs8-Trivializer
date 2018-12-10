@@ -89,7 +89,7 @@ class EditGameView extends Component {
           value={this.state.gameScheduled}
           onChange={this.handleChange}
         />
-        <button onClick={this.handleUpdate}>Save Game</button>
+        <button className="saveButton" onClick={this.handleUpdate}>Save Game</button>
       </div>
     );
   }
