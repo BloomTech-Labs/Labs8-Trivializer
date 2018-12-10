@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import "./Setting.css";
 import axios from "axios";
 import URL from "../URLs";
+import firebase from "./OAuth/firebase";
+
+const ref = firebase.storage().ref();
 
 class Setting extends React.Component {
   constructor() {
@@ -49,10 +52,13 @@ class Setting extends React.Component {
     this.props.history.push("/");
   };
   fileChangedHandler = e => {
-    this.setState({
-      selectedFile: e.target.files[0]
-    });
-    console.log("e is: ", e.target.files[0]);
+    const file = e.target.files[0];
+    const name = +new Date() + "-" + file.name;
+    const metadata = { contentType: file.type };
+
+    const task = ref.child(name).put(file, metadata);
+    task.then(snapshot => snapshot.ref.getDownloadURL()).then(url => console.log(url));
+
     /*
     let reader = new FileReader();
     console.log("reader is: ", reader);
@@ -68,7 +74,9 @@ class Setting extends React.Component {
 
     reader.readAsDataURL(file);*/
   };
-  fileUploadHandler = () => {};
+  fileUploadHandler = () => {
+    axios.post("");
+  };
 
   upgradeButton = () => {
     this.props.history.push("/billing");
