@@ -18,7 +18,7 @@ const successPayment = data => {
   const url = URL.current_URL;
   const paid = { paid: 1 };
   axios
-    .put(`${url}/${savedUser}`, paid, {
+    .put(`${url}/edituser/${savedUser}`, paid, {
       headers: {
         Authorization: `${sessionStorage.getItem("jwt")}`
       }
@@ -52,7 +52,6 @@ const onToken = (amount, description) => token => {
 };
 const Checkout = ({ name, description, amount }) => (
   <StripeCheckout
-    id="paybutton"
     name={name}
     description={description}
     amount={fromEuroToCent(amount)}
