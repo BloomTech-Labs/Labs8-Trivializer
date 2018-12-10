@@ -104,7 +104,7 @@ class GamesList extends Component {
 
         <div className="main-content">
           <Navbar />
-          <div className="content-container ">
+          <div className="content-container whole">
             {!this.props.games[0] ? (
               <div className="addnewGame">
                 <h3 className="main-middle ">Add New Game</h3>

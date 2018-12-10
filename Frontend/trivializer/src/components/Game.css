@@ -26,3 +26,7 @@
 .hidden {
   display: none;
 }
+
+.game-title {
+  font-size: 26px;
+}

@@ -66,10 +66,11 @@
 }
 
 .addnewGame {
-  align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .gamelist {
@@ -110,4 +111,12 @@
 
 .small-fas {
   font-size: 50px;
+}
+
+.whole {
+  padding-top: 0;
+}
+
+.gamelist h1 {
+  margin-top: 25px;
 }
