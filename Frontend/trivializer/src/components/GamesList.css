@@ -24,31 +24,39 @@
   display: flex;
   flex-flow: column;
   justify-content: center;
-  height: 275px;
-  width: 275px;
+  height: 320px;
+  width: 320px;
   transition: width 0.5s, height 0.5s, transform 0.5s;
 }
 
 .game-summary:hover {
-  width: 300px;
-  height: 300px;
+  width: 340px;
+  height: 340px;
 }
 
 .game-delete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2db168;
+  border: 1px solid #2db168;
+  color: white;
   margin: 10px auto;
-  width: 100px;
-  border-radius: 10px;
+  width: 120px;
+  height: 37px;
+  border-radius: 5px;
 }
 
 .game-delete:hover {
   box-shadow: 2px 2px;
-  background: #ee4432;
+  background: #b13c2d;
+  border: 1px solid #b13c2d;
   color: white;
   cursor: pointer;
 }
 
 .game-description {
-  border: 2px solid lightskyblue;
+  border: 1px solid grey;
   border-radius: 10px;
   padding: 2%;
   word-wrap: break-word;
