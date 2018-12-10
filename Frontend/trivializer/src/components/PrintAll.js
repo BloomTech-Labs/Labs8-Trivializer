@@ -79,8 +79,8 @@ class PrintAll extends Component {
     }
   };
   render() {
-    console.log(this.state.questions);
-    console.log(this.state.rounds);
+    // console.log(this.state.questions);
+    // console.log(this.state.rounds);
     return (
       <div>
         {/* Map over questions and display questions with highlighted correct answer*/}
@@ -90,7 +90,7 @@ class PrintAll extends Component {
             question => question.rounds_id === round.roundId
           );
           return (
-            <div>
+            <div key={index}>
               {index !== 0 ? <div className="page-break" /> : null}
               <div className="hiddenAnswers-info">
                 <div>

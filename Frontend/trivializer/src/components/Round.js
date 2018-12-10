@@ -8,6 +8,7 @@ import update from "react-addons-update";
 import ReactToPrint from "react-to-print";
 import { connect } from "react-redux";
 import "./Components.css";
+import URL from "../URLs";
 
 const createDOMPurify = require("dompurify"); // Prevents XSS attacks from incoming HTML
 
@@ -31,8 +32,7 @@ class Round extends Component {
       type: this.props.type,
       questions: [],
       questionsURL: "https://opentdb.com/api.php?",
-      //"http://localhost:3300/users/",
-      usersAPI: "https://testsdepl.herokuapp.com/users",
+      usersAPI: `${URL.current_URL}`, // See ../URLs/index.js to change local vs served URL
       replace: [],
       noResults: false
     };

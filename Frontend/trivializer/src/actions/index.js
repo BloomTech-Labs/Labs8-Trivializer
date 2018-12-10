@@ -1,4 +1,5 @@
 import axios from "axios";
+import URL from "../URLs";
 export const FETCHING_GAMES = "FETCHING_GAMES";
 export const FETCHED_GAMES = "FETCHED_GAMES";
 export const FETCHING_GAME = "FETCHING_GAME";
@@ -34,8 +35,7 @@ export const ERROR = "ERROR";
 export const SET_USER_STATUS = "SET_USER_STATUS";
 
 const questionsApiURL = "https://opentdb.com/api.php?";
-const BE_URL =
-  process.env.REACT_APP_BE_URL || "https://testsdepl.herokuapp.com/users"; //"http://localhost:3300/users/";
+const BE_URL = process.env.REACT_APP_BE_URL || URL.current_URL; // See ../URLs/index.js to change local vs served URL
 
 // sample games fetch with params
 // {
@@ -221,7 +221,7 @@ export const fetchRoundsReq = id => {
 };
 
 export const saveRoundReq = round => {
-  console.log(round);
+  console.log("round: ", round);
   return dispatch => {
     dispatch({ type: SAVING_ROUND });
     axios
@@ -235,6 +235,7 @@ export const saveRoundReq = round => {
         dispatch({ type: SAVED_ROUND, payload: data });
       })
       .catch(err => {
+        console.log("err.message saveRoundReq", err.message);
         dispatch({ type: ERROR, payload: err });
       });
   };
@@ -328,7 +329,6 @@ export const resetAllRoundsAllQuestionsReq = () => {
 
 // questionsPackage needs rounds_id, category, difficulty, type, question, correct_answer, incorrect_answers
 export const saveQuestionsReq = questionsPackage => {
-  console.log("SAVE QUESTIONS REQ CALLED!!!!!");
   questionsPackage = questionsPackage.map(question => {
     return {
       rounds_id: question.rounds_id,
@@ -342,10 +342,7 @@ export const saveQuestionsReq = questionsPackage => {
     };
   });
 
-  console.log("questionsPackage: ", questionsPackage);
-
   return async dispatch => {
-    console.log("IN dispatch, saveQuestionsReq");
     dispatch({ type: SAVING_QUESTIONS });
 
     // First, delete all existing questions in our round

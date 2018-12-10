@@ -15,79 +15,6 @@ server.get("/", (req, res) => {
   res.json("App is currently functioning");
 });
 
-// Testing endpoints
-// Get all users table
-server.get("/users", (req, res) => {
-  db("Users")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// Get all games table
-server.get("/games", (req, res) => {
-  db("Games")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// Get all Rounds table UNPROTECTED!!
-server.get("/rounds", (req, res) => {
-  db("Rounds")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// Get all Questions table UNPROTECTED
-server.get("/questions", (req, res) => {
-  db("Questions")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// Get all Rounds table
-server.get("/rounds", utilities.protected, (req, res) => {
-  db("Rounds")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// Get all Questions table
-server.get("/questions", utilities.protected, (req, res) => {
-  db("Questions")
-    .then(response => {
-      res.status(200).json(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
 // Add new user
 server.post("/register", async (req, res) => {
   // This table also includes credit card info, will handle in billing
@@ -108,6 +35,9 @@ server.post("/register", async (req, res) => {
   try {
     // Try to insert the user
     let userId = await db("Users").insert(credentials);
+    let user = await db("Users")
+      .where({ username })
+      .first();
 
     if (!userId) throw new Error("Unable to add that user");
 
@@ -119,28 +49,30 @@ server.post("/register", async (req, res) => {
       text: "Welcome to Bar Trivia. Thank you for registering!"
     };
     mailgun.messages().send(data, function(error, body) {
-      console.log(body);
+      console.log("mailgun messages body: ", body);
+      console.log("process.env", process.env);
     });
 
     // Generate a new token and return it
     let token = utilities.generateToken(username);
     res
       .status(201)
-      .json({ token: token, userId: userId[0], status: credentials.paid });
+      .json({ token: token, userId: user.id, status: credentials.paid });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
 // Login a user takes in username and password. Validates credentials
 server.post("/login", utilities.getUser, async (req, res) => {
   let { username, password } = req.body;
+
   try {
     // Hit users table searching for username
     let user = await db("Users")
       .where({ username })
       .first();
-
+    console.log("user login:", user);
     if (!user) throw new Error("Incorrect credentials");
     // decrypt the returned, hashed password
     decryptedPassword = sc.decrypt(user.password);
@@ -153,15 +85,16 @@ server.post("/login", utilities.getUser, async (req, res) => {
         .status(201)
         .json({ token: token, userId: user.id, status: user.paid });
     } else {
-      res.status(401).json({ error: "Incorrect Credentials" });
+      res.status(401).json({ message: "Incorrect Credentials" });
     }
   } catch (err) {
-    res.status(401).json({ error: err.message });
+    res.status(401).json({ message: err.message });
   }
 });
 
 // Creates a new game, takes in username, created, gameName and description (string)
 server.post("/creategame", utilities.protected, async (req, res) => {
+  console.log("ENTERED CREATEGAME\n\n\n\n");
   try {
     const { username, created, gameName, description, played } = req.body;
 
@@ -171,7 +104,6 @@ server.post("/creategame", utilities.protected, async (req, res) => {
       .first();
 
     if (!user) throw new Error("No user by that name");
-
     // Get the id from the returned user object
     let userId = user.id;
 
@@ -185,108 +117,20 @@ server.post("/creategame", utilities.protected, async (req, res) => {
     };
 
     // inserting into games returns an array with 1 game ID if successful
-    let gameId = (await db("Games").insert(gamePackage))[0];
+    let gameId = await db("Games").insert(gamePackage);
 
-    if (!gameId) throw new Error("Error creating new game");
+    if (!gameId) throw new Error({ message: "Error inserting game" });
 
-    res.status(201).json(gameId);
+    let game = await db("Games")
+      .where({ name: gameName })
+      .first();
+
+    if (!game) throw new Error({ message: "Game not saved in DB" });
+
+    res.status(201).json(game);
   } catch (err) {
-    res.status(404).json({ error: err.message });
-  }
-});
-
-// Saves a whole game, takes in the usernam, description, gamename, dateCreated, datePlayed, and rounds array
-server.post("/save", utilities.protected, async (req, res) => {
-  // Transactions allow us to perform multiple database calls, and if one of them doesn't work,
-  // roll back all other calls. Maintains data consistency
-  const {
-    username,
-    description,
-    gamename,
-    dateCreated,
-    datePlayed,
-    rounds
-  } = req.body;
-
-  try {
-    // Get user
-    await db.transaction(async trx => {
-      let userId = await trx("Users")
-        .where({ username })
-        .first()
-        .select("id"); // Get our user id based on username
-      if (userId) userId = userId.id;
-      else {
-        throw new Error("username not found");
-      }
-      //Enter game info in DB with userID
-      const gameInfo = {
-        name: gamename,
-        date_created: dateCreated,
-        date_played: datePlayed,
-        user_id: userId,
-        description: description
-      };
-
-      let gameId = (await trx("Games").insert(gameInfo))[0];
-
-      // Enter Rounds in Database
-
-      // Assemble what we're going to insert in rounds table
-      const roundsPackage = rounds.map(round => {
-        return {
-          name: round.roundName,
-          category: round.category,
-          type: round.type,
-          difficulty: round.difficulty,
-          number_of_questions: round.round.length,
-          game_id: gameId
-        };
-      });
-
-      let roundsPromises = roundsPackage.map(async round => {
-        // Insert all rounds into game
-        return (await trx("Rounds").insert(round))[0];
-      });
-
-      let roundsIds;
-
-      await Promise.all(roundsPromises).then(values => {
-        roundsIds = values;
-      });
-
-      // Insert questions/answers into database
-      let questions = [];
-
-      rounds.forEach((namedRound, index) => {
-        namedRound.round.forEach(round => {
-          questions.push({
-            rounds_id: roundsIds[index],
-            category: round.category,
-            difficulty: round.difficulty,
-            type: round.type,
-            question: round.question,
-            correct_answer: round.correct_answer,
-            incorrect_answers: round.incorrect_answers.join("--")
-          });
-        });
-      });
-
-      let indicator = await trx("Questions").insert(questions);
-
-      const returnGame = {
-        gameId: gameId,
-        gamename: gamename,
-        description: description,
-        dateCreated: dateCreated,
-        datePlayed: datePlayed,
-        rounds: rounds
-      };
-      res.status(200).json(returnGame);
-    });
-  } catch (err) {
-    console.log("err.message: ", err.message);
-    res.status(501).json({ error: err.message });
+    console.log("error in createGame!!!", err.message);
+    res.status(404).json({ message: err.message });
   }
 });
 
@@ -307,7 +151,7 @@ server.put("/editgame/:id", utilities.protected, async (req, res) => {
 
     // get game by id
     let newGame = await db("Games").where("id", id);
-
+    console.log("newGame: ", newGame);
     res.status(200).json({
       gameId: newGame[0]["id"],
       gamename: newGame[0]["name"],
@@ -317,7 +161,7 @@ server.put("/editgame/:id", utilities.protected, async (req, res) => {
     });
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -341,10 +185,10 @@ server.post(
         .from("Users as u")
         .leftJoin("Games as g", "g.user_id", "u.id")
         .where("u.id", "=", id);
-
       res.status(200).json(games);
     } catch (err) {
-      res.status(500).json({ error: "Problem getting games" });
+      console.log("Error getting games: ", err.message);
+      res.status(500).json({ message: "Problem getting games" });
     }
   }
 );
@@ -354,14 +198,14 @@ server.get("/rounds/:id", utilities.protected, async (req, res) => {
   try {
     // Game Id passed in request URL
     const { id } = req.params;
-
+    console.log("Id in GET /rounds: ", id);
     // Gets all rounds from the Rounds table where the game id matches the passed in ID
     let rounds = await db
       // Choose which columns we want to select, and assign an alias
       .select(
         "r.id as roundId",
         "r.name as roundName",
-        "r.Number_of_questions as numQs",
+        "r.number_of_questions as numQs",
         "r.category as category",
         "r.difficulty as difficulty",
         "r.type as type"
@@ -369,10 +213,11 @@ server.get("/rounds/:id", utilities.protected, async (req, res) => {
       .from("Games as g")
       .leftJoin("Rounds as r", "r.game_id", "g.id")
       .where("g.id", "=", id);
-
+    console.log("\n\nrounds: ", rounds);
     res.status(200).json(rounds);
   } catch (err) {
-    res.status(500).json({ error: "Problem getting rounds" });
+    console.log("err.message get rounds: ", newGame);
+    res.status(500).json({ message: "Problem getting rounds" });
   }
 });
 
@@ -399,7 +244,7 @@ server.delete("/round/:id", utilities.protected, async (req, res) => {
 
     res.status(200).json(`Round ${response} deleted`);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
 });
 
@@ -418,7 +263,7 @@ server.delete("/game/:id", utilities.protected, async (req, res) => {
     console.log("id: ", id);
     res.status(200).json(`Game ${response} deleted`);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
 });
 
@@ -451,8 +296,13 @@ server.post("/round", utilities.protected, async (req, res) => {
       number_of_questions: questions
     };
 
-    // Returns an array of 1 item, pull that item out with [0]
-    let roundId = (await db("Rounds").insert(roundPackage))[0];
+    // Use postgres's .returning to get the ID of the
+    // recently entered round
+    let roundId = (await db("Rounds")
+      .insert(roundPackage)
+      .returning("id"))[0];
+
+    if (!roundId) throw new Error({ message: "Error inserting Round" });
 
     let returnPackage = {
       roundId: roundId,
@@ -462,10 +312,11 @@ server.post("/round", utilities.protected, async (req, res) => {
       difficulty: difficulty,
       type: type
     };
-    // Return new round ID
+
     res.status(200).json(returnPackage);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.log("err.message in POST /round: ", err.message);
+    res.status(400).json({ message: err.message });
   }
 });
 
@@ -504,7 +355,7 @@ server.put("/round/:id", utilities.protected, async (req, res) => {
     });
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -540,7 +391,7 @@ server.put("/editq/:id", utilities.protected, async (req, res) => {
     });
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -577,7 +428,7 @@ server.put("/edituser/:id", utilities.protected, async (req, res) => {
     });
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -616,7 +467,7 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
     res.status(200).json(questions);
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(500).json({ error: "Problem getting questions" });
+    res.status(500).json({ message: "Problem getting questions" });
   }
 });
 // Get User user info by user id
@@ -647,30 +498,25 @@ server.get("/users/:id", utilities.protected, async (req, res) => {
     res.status(200).json(users);
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(500).json({ error: "Problem getting user" });
+    res.status(500).json({ message: "Problem getting user" });
   }
 });
 
 // Save all questions for a round ID
 server.post("/questions", utilities.protected, async (req, res) => {
   try {
-    console.log("req.body!!!: ", req.body);
-    console.log("req.body[0].rounds_id!!!: ", req.body[0].rounds_id);
     // Check for valid Round Id
     let validRound = await db("Rounds").where({ id: req.body[0].rounds_id });
 
-    console.log("validRound: ", validRound);
     if (validRound.length < 1) {
-      throw new Error({ error: "Not a valid round ID" });
+      throw new Error({ message: "Not a valid round ID" });
     }
 
     let successfulInsert = await db("Questions").insert(req.body);
+    console.log("\n\nsuccessfulInsert: ", successfulInsert);
     res.status(200).json({ successfulInsert });
-
-    console.log("successfulInsert: ", successfulInsert);
   } catch (err) {
     console.log("err.message", err.message);
-    console.log("err: ", err);
     res.status(500).json(err);
   }
 });
@@ -690,7 +536,7 @@ server.delete("/questions/:id", utilities.protected, async (req, res) => {
     res.status(200).json(`Questions deleted`);
   } catch (err) {
     console.log("err.message: ", err.message);
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
 });
 
@@ -709,8 +555,20 @@ server.delete("/game/:id", utilities.protected, async (req, res) => {
 
     res.status(200).json(`Game ${response} deleted`);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
+});
+
+// Get all Questions table
+server.get("/questions", utilities.protected, (req, res) => {
+  db("Questions")
+    .then(response => {
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 module.exports = server;
