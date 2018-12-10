@@ -22,7 +22,7 @@
 }
 
 .game-summary {
-  border: 2px solid #EE4432;
+  border: 2px solid #ee4432;
   border-radius: 10px;
   margin: auto;
   display: flex;
@@ -46,24 +46,20 @@
 
 .game-delete:hover {
   box-shadow: 2px 2px;
-  background: #EE4432;
+  background: #ee4432;
   color: white;
   cursor: pointer;
 }
 
 .game {
-
 }
 
-.game-description
-{
+.game-description {
   border: 2px solid lightskyblue;
-  border-radius: 10px; 
+  border-radius: 10px;
   padding: 2%;
   word-wrap: break-word;
   margin: 10px 20px;
   height: 100px;
   text-align: left;
 }
-
-

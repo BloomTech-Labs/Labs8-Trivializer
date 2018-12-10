@@ -7,6 +7,7 @@ import { fetchGamesReq, deleteGameReq } from "../actions";
 import "./Components.css";
 import axios from "axios";
 import "./GamesList.css";
+import URL from "../URLs";
 
 /**
  * GamesList Component
@@ -31,7 +32,7 @@ class GamesList extends Component {
       let googleUsername = localStorage.getItem("user").displayName;
       let googleUID = localStorage.getItem("user").uid;
       axios
-        .post("https://testsdepl.herokuapp.com/users/login", {
+        .post(`${URL.current_URL}/login`, {
           username: googleUsername,
           password: googleUID
         })
@@ -111,12 +112,19 @@ class GamesList extends Component {
               </div>
             ) : (
               this.props.games.map((game, i) => (
-                <div className="game-container">
+                <div className="game-container" key={i}>
                   <div className="game-summary">
-                    <Link className="game-link" to={`/game/${game["gameId"]}`} key={game["gameId"]}>
+                    <Link
+                      className="game-link"
+                      to={`/game/${game["gameId"]}`}
+                      key={game["gameId"]}
+                    >
                       <GameDetails index={i} game={game} />
                     </Link>
-                    <button className="game-delete" onClick={() => this.delete(game["gameId"])}>
+                    <button
+                      className="game-delete"
+                      onClick={() => this.delete(game["gameId"])}
+                    >
                       Delete
                     </button>
                   </div>

@@ -176,7 +176,9 @@ const gamesReducer = (state = initialState, action) => {
       });
     case DELETED_ROUND:
       let reducedRounds = state.rounds.slice();
-      reducedRounds = reducedRounds.filter(round => round.roundId !== action.payload);
+      reducedRounds = reducedRounds.filter(
+        round => round.roundId !== action.payload
+      );
       return Object.assign({}, state, {
         deleting_round: false,
         deleted_round: true,
@@ -277,7 +279,7 @@ const gamesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         fetched_saved_questions: false,
         roundName: null
-        // roundId: null Wait and see if this causes problems with componentDidUpdate, RoundsList.js lines 39-43
+        // roundId: null Setting this to null leaves RoundsList Save Quetions without a roundId
       });
     case RESET_NEW_QUESTIONS:
       console.log("RESET New  Questions CALLED!!");
