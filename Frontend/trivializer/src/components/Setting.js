@@ -12,7 +12,8 @@ class Setting extends React.Component {
       savedUser: "",
       file: "",
       imagePreviewUrl: "",
-      pictureAdded: false
+      pictureAdded: false,
+      changes: false
     };
   }
   componentDidMount() {
