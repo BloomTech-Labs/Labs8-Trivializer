@@ -16,8 +16,10 @@ class Setting extends React.Component {
       file: "",
       imagePreviewUrl: "",
       pictureAdded: false,
-      changes: false,
-      selectedFile: null
+      selectedFile: null,
+      userName: "",
+      password: "",
+      email: ""
     };
   }
   componentDidMount() {
@@ -82,9 +84,6 @@ class Setting extends React.Component {
 
     reader.readAsDataURL(file);*/
   };
-  fileUploadHandler = () => {
-    axios.post("");
-  };
 
   upgradeButton = () => {
     this.props.history.push("/billing");
@@ -105,6 +104,9 @@ class Setting extends React.Component {
       .catch(err => {
         console.log("err is: ", err.message);
       });
+  };
+  changeAccountInfo = e => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   render() {
@@ -204,15 +206,28 @@ class Setting extends React.Component {
                     <h2>Personal</h2>
                     <div className="signinUserName">
                       <p>Username</p>
-                      <input placeholder="Name" value={savedUser ? savedUser[0].userName : null} />
+                      <input
+                        placeholder={savedUser ? savedUser[0].userName : null}
+                        name="userName"
+                        onChange={this.changeAccountInfo}
+                        value={this.state.userName}
+                      />
                     </div>
                     <div className="signinEmail">
                       <p>Email </p>
-                      <input placeholder="Email" value={savedUser ? savedUser[0].email : null} />
+                      <input
+                        placeholder={savedUser ? savedUser[0].email : null}
+                        onChange={this.changeAccountInfo}
+                        value={this.state.email}
+                      />
                     </div>
                     <div className="signinPassword">
                       <p>Change Password</p>
-                      <input placeholder="Enter new password" />
+                      <input
+                        type="password"
+                        onChange={this.changeAccountInfo}
+                        placeholder="Enter new password"
+                      />
                     </div>
                   </div>
                   <div className="signinTier">
