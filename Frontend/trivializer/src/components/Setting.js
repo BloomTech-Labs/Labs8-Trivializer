@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import "./Setting.css";
 import axios from "axios";
-import "./Components.css";
+import URL from "../URLs";
 
 class Setting extends React.Component {
   constructor() {
@@ -151,11 +151,17 @@ class Setting extends React.Component {
                     <h2>Personal</h2>
                     <div className="signinUserName">
                       <p>Username</p>
-                      <input placeholder="Name" value={savedUser ? savedUser[0].userName : null} />
+                      <input
+                        placeholder="Name"
+                        value={savedUser ? savedUser[0].userName : null}
+                      />
                     </div>
                     <div className="signinEmail">
                       <p>Email </p>
-                      <input placeholder="Email" value={savedUser ? savedUser[0].email : null} />
+                      <input
+                        placeholder="Email"
+                        value={savedUser ? savedUser[0].email : null}
+                      />
                     </div>
                     <div className="signinPassword">
                       <p>Change Password</p>
@@ -168,7 +174,10 @@ class Setting extends React.Component {
                       <p>Account Tier</p>
                       <div>
                         {savedUser ? (
-                          <div>Account Status: {savedUser[0].paid === 0 ? "Free" : "Premium"}</div>
+                          <div>
+                            Account Status:{" "}
+                            {savedUser[0].paid === 0 ? "Free" : "Premium"}
+                          </div>
                         ) : (
                           "None"
                         )}
@@ -209,6 +218,7 @@ class Setting extends React.Component {
                   <button
                     type="btn"
                     className="btn btn-success save-button"
+
                     onClick={this.uploadHandler}
                   >
                     Save Changes

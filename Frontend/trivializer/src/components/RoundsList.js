@@ -71,20 +71,24 @@ class RoundsList extends Component {
     }
 
     // If the following two are true, we have received questions from the QuestionsAPI,
+    // and have saved a new round, giving us a roundId on our props. Since we'll be saving
+    // the round every time we are saving the questions
     // Save them to the Users Database
     if (
       JSON.stringify(prevProps.new_questions) !==
-      JSON.stringify(this.props.new_questions)
+        JSON.stringify(this.props.new_questions) &&
+      this.props.roundId !== null
     ) {
       // if (this.props.fetched_new_questions) {
       console.log("CONDITION MET TO SAVE QUESTIONS!!!!");
       let round_id = this.props.roundId;
+      console.log("this.props.roundId: ", this.props.roundId);
       let questionsPackage = this.props.new_questions.slice();
       questionsPackage = questionsPackage.map(question => {
         question.rounds_id = round_id;
         return question;
       });
-      console.log(this.props.new_questions);
+      console.log("this.props.new_questions: ", this.props.new_questions);
       this.props.saveQuestionsReq(this.props.new_questions);
       this.props.resetFetchedNewQuestions();
       // }
