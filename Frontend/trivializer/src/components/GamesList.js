@@ -30,12 +30,18 @@ class GamesList extends Component {
 
   componentDidMount() {
     this.props.fetchGamesReq();
-    NotificationManager.info(
-      <SpeechBubble
-        title={"Welcome to Games!"}
-        phrase={"You can access your games here or hit New Game to create one"}
-      />
-    );
+    console.log("this.props.games.length: ", this.props.games.length);
+    if (this.props.games.length < 1) {
+      NotificationManager.info(
+        <SpeechBubble
+          title={"saved!"}
+          phrase={
+            "You can access your games here or hit New Game to create one"
+          }
+        />
+      );
+    }
+
     // NOTE: setState after API request doesn't render state in time
     // this.setState({ games: this.props.games });
     // SOLUTION: render with props directly
@@ -69,8 +75,6 @@ class GamesList extends Component {
 
   componentDidUpdate = prevProps => {
     if (JSON.stringify(prevProps.games) !== JSON.stringify(this.props.games)) {
-      console.log("prevProps.games: ", prevProps.games);
-      console.log("this.props.games: ", this.props.games);
       this.setState({ games: this.props.games });
     }
   };
@@ -115,6 +119,7 @@ class GamesList extends Component {
 
         <div className="main-content">
           <Navbar />
+          <Notifications />
           <div className="content-container whole">
             {!this.props.games[0] ? (
               <div className="addnewGame">
