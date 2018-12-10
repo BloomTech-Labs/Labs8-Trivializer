@@ -74,3 +74,8 @@
 .setting-container {
   padding-top: 0;
 }
+
+.upload {
+  display: flex;
+  justify-content: center;
+}

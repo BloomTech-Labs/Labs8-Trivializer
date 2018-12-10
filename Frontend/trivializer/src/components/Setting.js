@@ -53,7 +53,8 @@ class Setting extends React.Component {
     reader.onloadend = () => {
       this.setState({
         file: file,
-        imagePreviewUrl: reader.result
+        imagePreviewUrl: reader.result,
+        pictureAdded: true
       });
     };
 
@@ -147,6 +148,17 @@ class Setting extends React.Component {
                 </div>
               ) : (
                 <div className="signinSetting">
+                  {this.state.pictureAdded ? (
+                    <div className="upload">
+                      {this.state.imagePreviewUrl ? (
+                        <img
+                          className="uploaded-picture"
+                          width="250px"
+                          src={this.state.imagePreviewUrl}
+                        />
+                      ) : null}
+                    </div>
+                  ) : null}
                   <div className="signinAccount">
                     <h2>Personal</h2>
                     <div className="signinUserName">
@@ -186,23 +198,12 @@ class Setting extends React.Component {
                     </div>
                     <div className="signinPicture">
                       <p>Add/Change Picture</p>
-                      {this.state.pictureAdded ? (
-                        <div className="upload">
-                          {this.state.imagePreviewUrl ? (
-                            <img
-                              className="uploaded-picture"
-                              width="300px"
-                              src={this.state.imagePreviewUrl}
-                            />
-                          ) : null}
-                        </div>
-                      ) : (
-                        <input
-                          className="addPicture"
-                          type="file"
-                          onChange={this.fileChangedHandler}
-                        />
-                      )}
+
+                      <input
+                        className="addPicture"
+                        type="file"
+                        onChange={this.fileChangedHandler}
+                      />
                     </div>
                   </div>
 
