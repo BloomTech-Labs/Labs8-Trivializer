@@ -13,7 +13,8 @@ class Setting extends React.Component {
       file: "",
       imagePreviewUrl: "",
       pictureAdded: false,
-      changes: false
+      changes: false,
+      selectedFile: null
     };
   }
   componentDidMount() {
@@ -48,6 +49,11 @@ class Setting extends React.Component {
     this.props.history.push("/");
   };
   fileChangedHandler = e => {
+    this.setState({
+      selectedFile: e.target.files[0]
+    });
+    console.log("e is: ", e.target.files[0]);
+    /*
     let reader = new FileReader();
     console.log("reader is: ", reader);
     let file = e.target.files[0];
@@ -60,8 +66,9 @@ class Setting extends React.Component {
       });
     };
 
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file);*/
   };
+  fileUploadHandler = () => {};
 
   upgradeButton = () => {
     this.props.history.push("/billing");
