@@ -60,7 +60,7 @@ class CreateGameView extends Component {
     };
 
     this.props.submitGameReq(game);
-    setTimeout(() => this.props.history.push("/gameslist"), 1000);
+    this.props.history.push("/gameslist");
   };
 
   render() {
@@ -106,6 +106,7 @@ class CreateGameView extends Component {
                   <textarea
                     class="form-control descriptionInput"
                     placeholder="Ex. Trivia for Wednesday night with college friends, category: TV & Entertainment"
+                    name="gameDescription"
                     value={this.state.gameDescription}
                     onChange={this.handleChange}
                   />
