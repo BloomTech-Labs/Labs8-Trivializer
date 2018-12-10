@@ -102,3 +102,12 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+.cardnewGame {
+  color: black;
+  margin-bottom: 30px;
+}
+
+.small-fas {
+  font-size: 50px;
+}

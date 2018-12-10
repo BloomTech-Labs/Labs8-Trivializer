@@ -143,8 +143,8 @@ class GamesList extends Component {
                     <div className="game-container">
                       <div className="game-summary">
                         <Link className="newgame-link" to={`/creategame`}>
-                          <div>New Game</div>
-                          <div>+</div>
+                          <div className="cardnewGame">New Game</div>
+                          <i class="small-fas fas fa-plus-circle" />
                         </Link>
                       </div>
                     </div>
