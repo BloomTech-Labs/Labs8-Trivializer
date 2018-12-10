@@ -125,6 +125,28 @@
   position: absolute;
 
   padding: 2%;
-  left: 40%;
+  left: 5%;
   top: 10%;
+
+  animation-name: slide-in;
+  animation-duration: 7s;
+}
+
+@keyframes slide-in {
+  0% {
+    left: -50%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    left: 1%;
+  }
+  90% {
+    opacity: 1;
+    left: 1%;
+  }
+  to {
+    opacity: 0;
+    left: -50%;
+  }
 }

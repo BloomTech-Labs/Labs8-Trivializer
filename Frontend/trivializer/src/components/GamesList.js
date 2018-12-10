@@ -32,11 +32,11 @@ class GamesList extends Component {
     this.props.fetchGamesReq();
     console.log("this.props.games.length: ", this.props.games.length);
     if (this.props.games.length < 1) {
-      NotificationManager.info(
+      NotificationManager.warning(
         <SpeechBubble
-          title={"saved!"}
+          title={"Welcome to Games!"}
           phrase={
-            "You can access your games here or hit New Game to create one"
+            "You can access your games here or hit Add New Game to create one"
           }
         />
       );
