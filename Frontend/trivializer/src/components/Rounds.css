@@ -12,7 +12,6 @@
 
 .roundsList {
   display: flex;
-  justify-content: space-between;
   flex-flow: row wrap;
 }
 .rounds {
@@ -20,7 +19,6 @@
   margin: 4%;
   display: flex;
   flex-flow: column;
-  width: 350px;
   border-radius: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
