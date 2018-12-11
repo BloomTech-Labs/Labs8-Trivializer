@@ -212,7 +212,7 @@ class Setting extends React.Component {
                     <div className="signinUserName">
                       <p>Username</p>
                       <input
-                        placeholder={savedUser ? savedUser[0].userName : null}
+                        placeholder={savedUser ? savedUser[0].userName : "Please Log In"}
                         name="userName"
                         onChange={this.changeAccountInfo}
                         value={this.state.userName}
@@ -221,7 +221,7 @@ class Setting extends React.Component {
                     <div className="signinEmail">
                       <p>Email </p>
                       <input
-                        placeholder={savedUser ? savedUser[0].email : null}
+                        placeholder={savedUser ? savedUser[0].email : "Please Log In"}
                         name="email"
                         onChange={this.changeAccountInfo}
                         value={this.state.email}
