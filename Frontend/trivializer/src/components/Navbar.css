@@ -38,7 +38,7 @@
 }
 
 /* Phone View, killing off vertical navbar */
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 470px) {
   .vertical-navbar {
     display: none;
   }

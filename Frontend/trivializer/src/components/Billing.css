@@ -95,3 +95,28 @@
 .lastfirst {
   border-right: none;
 }
+
+@media screen and (max-width: 1000px) {
+  .first,
+  .second,
+  .third,
+  .free,
+  .premium {
+    width: 180px;
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .first,
+  .second,
+  .third,
+  .free,
+  .premium {
+    width: 110px;
+    font-size: 12px;
+  }
+  .table {
+    padding-right: 20px;
+  }
+}
