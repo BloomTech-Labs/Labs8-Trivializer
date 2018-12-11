@@ -54,8 +54,11 @@ class Game extends Component {
                 <li className="breadcrumb-item">
                   <Link to="/">Home</Link>
                 </li>
+                <li className="breadcrumb-item">
+                  <Link to="/gameslist">Games</Link>
+                </li>
                 <li className="breadcrumb-item active" aria-current="page">
-                  Games
+                  {this.props.game.gamename}
                 </li>
               </ol>
             </nav>
@@ -83,7 +86,10 @@ class Game extends Component {
                     ) : (
                       <ReactToPrint
                         trigger={() => (
-                          <button type="button" className="btn btn-primary round">
+                          <button
+                            type="button"
+                            className="btn btn-primary round"
+                          >
                             Print Answer Key
                           </button>
                         )}
@@ -97,7 +103,10 @@ class Game extends Component {
                     ) : (
                       <ReactToPrint
                         trigger={() => (
-                          <button type="button" className="btn btn-primary round">
+                          <button
+                            type="button"
+                            className="btn btn-primary round"
+                          >
                             Print Answer Sheet
                           </button>
                         )}
