@@ -95,7 +95,12 @@ class Setting extends React.Component {
         Authorization: `${sessionStorage.getItem("jwt")}`
       }
     };
-    const changedInfo = { logo: JSON.stringify(this.state.imagePreviewUrl) };
+    const userName = this.state.userName;
+    const email = this.state.email;
+    const password = this.state.password;
+    const changedInfo = {
+      logo: JSON.stringify(this.state.imagePreviewUrl)
+    };
     axios
       .put(`https://testsdepl.herokuapp.com/users/edituser/${userId}`, changedInfo, auth)
       .then(response => {
@@ -217,6 +222,7 @@ class Setting extends React.Component {
                       <p>Email </p>
                       <input
                         placeholder={savedUser ? savedUser[0].email : null}
+                        name="email"
                         onChange={this.changeAccountInfo}
                         value={this.state.email}
                       />
@@ -225,6 +231,7 @@ class Setting extends React.Component {
                       <p>Change Password</p>
                       <input
                         type="password"
+                        name="password"
                         onChange={this.changeAccountInfo}
                         placeholder="Enter new password"
                       />
