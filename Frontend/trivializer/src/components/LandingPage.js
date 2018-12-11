@@ -563,11 +563,7 @@ class LandingPage extends React.Component {
               />
             </div>
             <div class="carousel-item">
-              <img
-                class="carousel-design d-block w-100"
-                src="../img/barscore.jpg"
-                alt="Third slide"
-              />
+              <img class="carousel-design d-block w-100" src="../img/open.jpg" alt="Third slide" />
             </div>
           </div>
           <a
