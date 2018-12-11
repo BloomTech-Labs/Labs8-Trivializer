@@ -230,7 +230,8 @@ class Round extends Component {
           </div>
           {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
             <div onClick={this.logout} className="top-rightside">
-              Sign Out
+              <p>Log Out</p>
+              <i class="fas fa-sign-out-alt" />
             </div>
           ) : null}
         </div>

@@ -7,7 +7,6 @@ import "./Billing.css";
 
 const Billing = props => {
   const logout = e => {
-    console.log("props is: ", props);
     e.preventDefault();
     localStorage.clear();
     sessionStorage.clear();
@@ -31,7 +30,8 @@ const Billing = props => {
         </div>
         {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
           <div onClick={logout} className="top-rightside">
-            Sign Out
+            <p>Log Out</p>
+            <i class="fas fa-sign-out-alt" />
           </div>
         ) : null}
       </div>

@@ -68,21 +68,6 @@ class Setting extends React.Component {
     task
       .then(snapshot => snapshot.ref.getDownloadURL())
       .then(url => this.setState({ imagePreviewUrl: url, pictureAdded: true }));
-
-    /*
-    let reader = new FileReader();
-    console.log("reader is: ", reader);
-    let file = e.target.files[0];
-    console.log("file is: ", file);
-    reader.onloadend = () => {
-      this.setState({
-        file: file,
-        imagePreviewUrl: reader.result,
-        pictureAdded: true
-      });
-    };
-
-    reader.readAsDataURL(file);*/
   };
 
   upgradeButton = () => {
@@ -137,7 +122,8 @@ class Setting extends React.Component {
           </div>
           {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
             <div onClick={this.logout} className="top-rightside">
-              Sign Out
+              <p>Log Out</p>
+              <i class="fas fa-sign-out-alt" />
             </div>
           ) : null}
         </div>

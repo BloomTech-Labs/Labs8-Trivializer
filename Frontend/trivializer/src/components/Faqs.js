@@ -27,7 +27,8 @@ const Faqs = () => {
         </div>
         {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
           <div onClick={logout} className="top-rightside">
-            Sign Out
+            <p>Log Out</p>
+            <i class="fas fa-sign-out-alt" />
           </div>
         ) : null}
       </div>
