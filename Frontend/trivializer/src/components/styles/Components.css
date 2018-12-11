@@ -12,7 +12,7 @@
   display: flex;
   justify-content: space-between;
   background-color: #e9ecef;
-  height: 48px;
+  height: 52px;
 }
 
 /* Components Log Out Button */
@@ -83,4 +83,22 @@
 
 .editAndRound {
   background-color: white;
+}
+
+.top-rightside {
+  color: black;
+  text-decoration: none;
+}
+
+.top-rightside p {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.top-rightside p:hover {
+  color: #b13c2d;
+}
+
+.fa-sign-out-alt {
+  font-size: 25px !important;
 }

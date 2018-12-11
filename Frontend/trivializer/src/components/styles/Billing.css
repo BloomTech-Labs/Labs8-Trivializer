@@ -1,8 +1,10 @@
+/* Page Styles */
 .billing-content {
   margin: 0 auto;
   padding-top: 20px;
 }
 
+/* Table for Plans */
 .table {
   display: flex;
   flex-direction: column;
@@ -16,6 +18,7 @@
   height: 70px;
 }
 
+/* Different Rows */
 .first {
   display: flex;
   align-items: center;
@@ -96,6 +99,7 @@
   border-right: none;
 }
 
+/* Styles for Large Tablets & Laptops */
 @media screen and (max-width: 1000px) {
   .first,
   .second,
@@ -107,6 +111,7 @@
   }
 }
 
+/* Styles for tablets & smaller */
 @media screen and (max-width: 750px) {
   .first,
   .second,

@@ -3,11 +3,11 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import Questions from "./Questions";
 import axios from "axios";
-import "./Questions.css";
+import "./styles/Questions.css";
 import update from "react-addons-update";
 import ReactToPrint from "react-to-print";
 import { connect } from "react-redux";
-import "./Components.css";
+import "./styles/Components.css";
 import URL from "../URLs";
 
 const createDOMPurify = require("dompurify"); // Prevents XSS attacks from incoming HTML
@@ -201,6 +201,13 @@ class Round extends Component {
       });
   };
 
+  logout = e => {
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    this.props.history.push("/");
+  };
+
   render() {
     // Get questions from State
     const { questions } = this.state;
@@ -221,9 +228,12 @@ class Round extends Component {
               </ol>
             </nav>
           </div>
-          <Link className="top-rightside" to="/">
-            Sign Out
-          </Link>
+          {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
+            <div onClick={this.logout} className="top-rightside">
+              <p>Log Out</p>
+              <i class="fas fa-sign-out-alt" />
+            </div>
+          ) : null}
         </div>
 
         {/* ********************  Main Content  *************** */}
@@ -241,7 +251,7 @@ class Round extends Component {
                     alt="trivializer logo"
                   />
                 </div>
-                <div className="col1-round">
+                <div className="col3-round">
                   <div className="title-round">{`${this.state.gameName} - ${
                     this.state.roundName
                   }`}</div>

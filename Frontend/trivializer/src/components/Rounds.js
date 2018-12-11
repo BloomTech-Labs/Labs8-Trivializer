@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import "./Rounds.css";
+import "./styles/Rounds.css";
 import { connect } from "react-redux";
 import {
   deleteRoundReq,

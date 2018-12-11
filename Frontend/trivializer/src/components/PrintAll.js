@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import RoundAnswers from "./RoundAnswers";
 import { connect } from "react-redux";
-import "./PrintAll.css";
 import {
   fetchRoundsReq,
   getAllRoundsReq,
@@ -35,19 +34,14 @@ class PrintAll extends Component {
       JSON.stringify(this.props.rounds) !== JSON.stringify(this.state.rounds) &&
       this.props.rounds
     ) {
-      console.log(
-        "this.props.rounds, this.state.rounds: ",
-        this.props.rounds,
-        this.state.rounds
-      );
+      console.log("this.props.rounds, this.state.rounds: ", this.props.rounds, this.state.rounds);
 
       this.setState({ rounds: this.props.rounds });
     }
 
     // Check to see if our questions on state match those on props
     if (
-      JSON.stringify(this.props.all_questions) !==
-        JSON.stringify(this.state.questions) &&
+      JSON.stringify(this.props.all_questions) !== JSON.stringify(this.state.questions) &&
       this.props.all_questions
     ) {
       this.setState({
@@ -93,9 +87,7 @@ class PrintAll extends Component {
             <div key={index}>
               {index !== 0 ? <div className="page-break" /> : null}
               <div className="hiddenAnswers-info">
-                <div>
-                  {this.props.game ? this.props.game.gamename : "No Game Name"}
-                </div>
+                <div>{this.props.game ? this.props.game.gamename : "No Game Name"}</div>
                 <div>{round.name}</div>
                 <div>
                   <img
@@ -106,14 +98,9 @@ class PrintAll extends Component {
                 </div>
               </div>
 
-              <div className="instructions-round">
-                ***Please Circle the Correct Answer***
-              </div>
+              <div className="instructions-round">***Please Circle the Correct Answer***</div>
 
-              <RoundAnswers
-                questions={questions}
-                userSheets={this.props.userSheets}
-              />
+              <RoundAnswers questions={questions} userSheets={this.props.userSheets} />
             </div>
           );
         })}
