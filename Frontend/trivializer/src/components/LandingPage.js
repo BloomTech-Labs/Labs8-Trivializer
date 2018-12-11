@@ -594,15 +594,18 @@ class LandingPage extends React.Component {
             <div className="descriptions">
               <p className="description-text">
                 Trivializer helps bar trivia hosts create their question sets and answer sheets by
-                pulling from a large and free API of trivia questions.
+                pulling from a large and free API of trivia questions. Questions and answers sheets
+                can be printed easily and used on the fly.
               </p>
               <p className="description-text">
                 Categories for trivia questions include Entertainment, Science, Art, History, and
-                much more. Questions can be filtered by 3 different difficulty settings.{" "}
+                much more. Questions can be filtered by 3 different difficulty settings and includes
+                True/False or Multiple Choice types.
               </p>
               <p className="description-text">
                 There are free and paid tiers of the app. Users who register get a welcome email and
-                can reset their password via email as well.
+                can reset their password via email as well. Premium users enjoy unlimited games and
+                questions for their trivia rounds.
               </p>
             </div>
             <button

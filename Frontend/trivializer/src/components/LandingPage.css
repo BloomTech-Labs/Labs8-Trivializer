@@ -114,6 +114,10 @@ input:hover {
 }
 
 /*Main Text */
+.main-text {
+  width: 85%;
+  margin: 0 auto;
+}
 .main-text h1 {
   text-align: left;
   margin-left: 10%;
