@@ -22,7 +22,7 @@
 }
 
 .navbar-link:hover {
-  color: red;
+  color: #b13c2d;
 }
 
 /* Signup & Signin Modal*/
@@ -100,6 +100,12 @@ input:hover {
 #new-signup,
 #new-signin {
   cursor: pointer;
+}
+#new-signup:hover,
+#new-signin:hover {
+  cursor: pointer;
+  color: #b13c2d;
+  text-decoration: underline;
 }
 
 /* Carousel */
