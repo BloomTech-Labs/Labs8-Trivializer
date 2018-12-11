@@ -3,7 +3,6 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import "./styles/Setting.css";
 import axios from "axios";
-import URL from "../URLs";
 import firebase from "./OAuth/firebase";
 
 const ref = firebase.storage().ref();

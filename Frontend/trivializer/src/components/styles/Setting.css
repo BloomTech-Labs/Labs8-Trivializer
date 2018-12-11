@@ -1,39 +1,28 @@
-.profile-picture,
-.uploaded-picture {
-  border-radius: 50%;
-  height: 250px;
-}
-
-.name,
-.email {
-  margin-top: 40px;
-  display: flex;
-  font-size: 30px;
-}
-
-.name p,
-.email p {
-  margin: 0;
-  font-size: 30px;
-}
-
-.name div,
-.email div {
-  margin-right: 80px;
-  margin-left: 30px;
-}
-
+/* Page Styles */
 .setting-content {
   text-align: left;
   width: 75%;
   margin-top: 0;
 }
 
+.setting-container {
+  padding-top: 0;
+}
+
+/* Top Profile Picture */
+.profile-picture,
+.uploaded-picture {
+  border-radius: 50%;
+  height: 250px;
+}
+
+/* Headers */
 .setting-content h2 {
   text-align: left;
   border-bottom: 2px solid black;
 }
 
+/* Invidivual Info Areas */
 .signinUserName,
 .signinEmail,
 .signinPassword,
@@ -55,6 +44,10 @@
   border: none;
 }
 
+.google-photo {
+  text-align: center;
+}
+
 .signinTier {
   margin-top: 30px;
 }
@@ -65,14 +58,6 @@
 
 .save-button {
   margin-top: 20px;
-}
-
-.google-photo {
-  text-align: center;
-}
-
-.setting-container {
-  padding-top: 0;
 }
 
 .upload {
@@ -96,6 +81,7 @@
   outline: 0;
 }
 
+/* View for Laptops & Large Tablets */
 @media screen and (max-width: 1150px) {
   .setting-content {
     width: 100%;
@@ -113,6 +99,7 @@
   }
 }
 
+/* View for Tablets */
 @media screen and (max-width: 750px) {
   .setting-content {
     width: 100%;
@@ -132,6 +119,7 @@
   }
 }
 
+/* View for Phones */
 @media screen and (max-width: 550px) {
   .setting-content {
     width: 98%;
@@ -156,6 +144,7 @@
   }
 }
 
+/* View for Smaller sized Phones */
 @media screen and (max-width: 450px) {
   .setting-content {
     width: 90%;
