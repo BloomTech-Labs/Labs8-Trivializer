@@ -60,35 +60,36 @@ class EditGameView extends Component {
   render() {
     return (
       <div className="editGameView">
-        <div className="editGameView-top">
-          <div>Update Game Info</div>
-          {/*
-          <img
-            className="editGameView-logo"
-            src={require("../img/trivializer_cropped.png")}
-            alt="trivializer logo"
-          />*/}
+        <div className="title">
+          <div>Game Title</div>
+          <input
+            name="gameTitle"
+            placeholder="Game Title"
+            value={this.state.gameTitle}
+            onChange={this.handleChange}
+          />
         </div>
 
-        <input
-          name="gameTitle"
-          placeholder="Game Title"
-          value={this.state.gameTitle}
-          onChange={this.handleChange}
-        />
-        <input
-          name="gameDescription"
-          placeholder="Game Description"
-          value={this.state.gameDescription}
-          onChange={this.handleChange}
-        />
-        <input
-          type="date"
-          name="gameScheduled"
-          placeholder="mm/dd/yyyy"
-          value={this.state.gameScheduled}
-          onChange={this.handleChange}
-        />
+        <div className="description">
+          <div>Description</div>
+          <textarea
+            name="gameDescription"
+            placeholder="Game Description"
+            value={this.state.gameDescription}
+            onChange={this.handleChange}
+          />
+        </div>
+        <div className="date">
+          <div>Date</div>
+          <input
+            type="date"
+            name="gameScheduled"
+            placeholder="mm/dd/yyyy"
+            value={this.state.gameScheduled}
+            onChange={this.handleChange}
+          />
+        </div>
+
         <button className="saveButton" onClick={this.handleUpdate}>
           Update Game Info
         </button>
