@@ -107,7 +107,7 @@ class Setting extends React.Component {
     axios
       .put(`https://testsdepl.herokuapp.com/users/edituser/${userId}`, changedInfo, auth)
       .then(response => {
-        console.log("response is: ", response);
+        window.location.reload();
       })
       .catch(err => {
         console.log("err is: ", err.message);
