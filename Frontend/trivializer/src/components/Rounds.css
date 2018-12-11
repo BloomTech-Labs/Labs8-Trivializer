@@ -113,26 +113,29 @@
 
 .rounds-speechBubble {
   position: absolute;
-  left: 50%;
-  bottom: 50%;
-  padding: 2%;
 
-  animation-name: slide-in;
-  animation-duration: 6s;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  max-width: 200px;
+  opacity: 0;
+  animation-name: slide-up;
+  animation-duration: 1s;
+  z-index: 2;
 }
 
-@keyframes slide-in {
+@keyframes slide-up {
   0% {
     bottom: 0%;
     opacity: 0;
   }
   50% {
     opacity: 1;
-    bottom: 50%;
+    bottom: 30%;
   }
   90% {
     opacity: 1;
-    bottom: 50%;
+    bottom: 30%;
   }
   to {
     opacity: 0;

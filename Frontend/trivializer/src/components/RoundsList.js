@@ -88,16 +88,10 @@ class RoundsList extends Component {
         question.rounds_id = round_id;
         return question;
       });
-      console.log("this.props.new_questions: ", this.props.new_questions);
       this.props.saveQuestionsReq(this.props.new_questions);
       this.props.resetFetchedNewQuestions();
       // }
     }
-    console.log(
-      "prevProps.roundId, this.props.roundId: ",
-      prevProps.roundId,
-      this.props.roundId
-    );
   };
 
   newRound = () => {

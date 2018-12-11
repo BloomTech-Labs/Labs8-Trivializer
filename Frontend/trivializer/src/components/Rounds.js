@@ -69,7 +69,8 @@ class Rounds extends Component {
       original_difficulty: this.props.round.difficulty || "any",
       original_type: this.props.round.type || "any",
       changed: true,
-      savingRound: false
+      savingRound: false,
+      showSavedNotification: false
     };
   }
 
@@ -108,6 +109,19 @@ class Rounds extends Component {
     ) {
       this.setState({ savingRound: false });
     }
+
+    if (
+      prevProps.saving_questions === true &&
+      this.props.saving_questions === false &&
+      this.props.roundId === this.props.round.roundId
+    ) {
+      this.setState({ showSavedNotifications: true });
+      console.log(
+        "this.props.roundId, this.props.round.roundId: ",
+        this.props.roundId,
+        this.props.round.roundId
+      );
+    }
   };
 
   handleChange = e => {
@@ -120,7 +134,7 @@ class Rounds extends Component {
       return;
     }
     // For our button animation when saving round
-    this.setState({ savingRound: true });
+    this.setState({ savingRound: true, showSavedNotification: false });
 
     // Assemble backend info
     let formattedBackendRound = {
@@ -191,7 +205,11 @@ class Rounds extends Component {
   render() {
     return (
       <div className="rounds">
-        <SpeechBubble className="rounds-speechBubble" phrase="Saved!" />
+        {this.state.showSavedNotification === true ? (
+          <div className={"rounds-speechBubble"}>
+            <SpeechBubble phrase={"Saved!"} />
+          </div>
+        ) : null}
         <input
           type="text"
           onChange={this.handleChange}

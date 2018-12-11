@@ -416,6 +416,7 @@ server.put("/edituser/:id", utilities.protected, async (req, res) => {
     // get user by id
     let newUser = await db("Users").where("id", id);
 
+    console.log("newUser: ", newUser);
     res.status(200).json({
       userId: newUser[0]["id"],
       password: newUser[0]["password"],
