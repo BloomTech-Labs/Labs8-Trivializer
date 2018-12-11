@@ -401,6 +401,21 @@ server.put("/edituser/:id", utilities.protected, async (req, res) => {
     const { id } = req.params;
     const edit = { ...req.body };
 
+    // Test if parameter passed in, but with no value
+    // Remove to avoid setting value in database to ""
+    for (const key in edit) {
+      console.log("key: ", key);
+      if (edit[key] === "") {
+        delete edit[key];
+      }
+    }
+
+    if (edit["password"]) {
+      const hash = sc.encrypt(edit["password"]);
+      edit["password"] = hash;
+    }
+    console.log("edit: ", edit);
+
     // update user by id
     let question = await db("Users")
       .where("id", id)
@@ -411,10 +426,14 @@ server.put("/edituser/:id", utilities.protected, async (req, res) => {
         phone: edit.phone,
         logo: edit.logo,
         paid: edit.paid,
-        userName: edit.userName
+        username: edit.userName
       });
+
+    console.log("question: ", question);
     // get user by id
     let newUser = await db("Users").where("id", id);
+
+    console.log("newUser: ", newUser);
 
     res.status(200).json({
       userId: newUser[0]["id"],

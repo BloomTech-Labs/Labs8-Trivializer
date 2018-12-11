@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import "./Setting.css";
 import axios from "axios";
 import URL from "../URLs";
+import firebase from "./OAuth/firebase";
+
+const ref = firebase.storage().ref();
 
 class Setting extends React.Component {
   constructor() {
@@ -13,8 +16,10 @@ class Setting extends React.Component {
       file: "",
       imagePreviewUrl: "",
       pictureAdded: false,
-      changes: false,
-      selectedFile: null
+      selectedFile: null,
+      userName: "",
+      password: "",
+      email: ""
     };
   }
   componentDidMount() {
@@ -35,6 +40,12 @@ class Setting extends React.Component {
           .get(`https://testsdepl.herokuapp.com/users/users/${normalUserId}`, auth)
           .then(response => {
             this.setState({ savedUser: response.data });
+            if (this.state.savedUser[0].logo) {
+              this.setState({
+                imagePreviewUrl: this.state.savedUser[0].logo.slice(1, -1),
+                pictureAdded: true
+              });
+            }
           })
           .catch(err => {
             console.log("err is: ", err.message);
@@ -49,10 +60,15 @@ class Setting extends React.Component {
     this.props.history.push("/");
   };
   fileChangedHandler = e => {
-    this.setState({
-      selectedFile: e.target.files[0]
-    });
-    console.log("e is: ", e.target.files[0]);
+    const file = e.target.files[0];
+    const name = +new Date() + "-" + file.name;
+    const metadata = { contentType: file.type };
+
+    const task = ref.child(name).put(file, metadata);
+    task
+      .then(snapshot => snapshot.ref.getDownloadURL())
+      .then(url => this.setState({ imagePreviewUrl: url, pictureAdded: true }));
+
     /*
     let reader = new FileReader();
     console.log("reader is: ", reader);
@@ -68,7 +84,6 @@ class Setting extends React.Component {
 
     reader.readAsDataURL(file);*/
   };
-  fileUploadHandler = () => {};
 
   upgradeButton = () => {
     this.props.history.push("/billing");
@@ -80,21 +95,31 @@ class Setting extends React.Component {
         Authorization: `${sessionStorage.getItem("jwt")}`
       }
     };
-    const changedInfo = { paid: 0, logo: JSON.stringify(this.state.imagePreviewUrl) };
+    const userName = this.state.userName;
+    const email = this.state.email;
+    const password = this.state.password;
+    const changedInfo = {
+      logo: JSON.stringify(this.state.imagePreviewUrl),
+      userName: userName,
+      email: email,
+      password: password
+    };
     axios
       .put(`https://testsdepl.herokuapp.com/users/edituser/${userId}`, changedInfo, auth)
       .then(response => {
-        console.log("response is: ", response);
+        window.location.reload();
       })
       .catch(err => {
         console.log("err is: ", err.message);
       });
   };
+  changeAccountInfo = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
   render() {
-    console.log("this.state is: ", this.state.imagePreviewUrl);
+    console.log("this.state is: ", this.state);
     const savedUser = this.state.savedUser;
-    console.log("savedUser is: ", savedUser);
     return (
       <div className="setting-page">
         <div className="top-content">
@@ -180,6 +205,7 @@ class Setting extends React.Component {
                           className="uploaded-picture"
                           width="250px"
                           src={this.state.imagePreviewUrl}
+                          alt="profile-picture"
                         />
                       ) : null}
                     </div>
@@ -188,15 +214,30 @@ class Setting extends React.Component {
                     <h2>Personal</h2>
                     <div className="signinUserName">
                       <p>Username</p>
-                      <input placeholder="Name" value={savedUser ? savedUser[0].userName : null} />
+                      <input
+                        placeholder={savedUser ? savedUser[0].userName : "Please Log In"}
+                        name="userName"
+                        onChange={this.changeAccountInfo}
+                        value={this.state.userName}
+                      />
                     </div>
                     <div className="signinEmail">
                       <p>Email </p>
-                      <input placeholder="Email" value={savedUser ? savedUser[0].email : null} />
+                      <input
+                        placeholder={savedUser ? savedUser[0].email : "Please Log In"}
+                        name="email"
+                        onChange={this.changeAccountInfo}
+                        value={this.state.email}
+                      />
                     </div>
                     <div className="signinPassword">
                       <p>Change Password</p>
-                      <input placeholder="Enter new password" />
+                      <input
+                        type="password"
+                        name="password"
+                        onChange={this.changeAccountInfo}
+                        placeholder="Enter new password"
+                      />
                     </div>
                   </div>
                   <div className="signinTier">
