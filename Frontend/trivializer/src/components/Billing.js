@@ -2,8 +2,8 @@ import React from "react";
 import Navbar from "./Navbar";
 import Pay from "./Pay";
 import { Link } from "react-router-dom";
-import "./Components.css";
-import "./Billing.css";
+import "./styles/Components.css";
+import "./styles/Billing.css";
 
 const Billing = props => {
   const logout = e => {

@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
-import "./Setting.css";
+import "./styles/Setting.css";
 import axios from "axios";
 import URL from "../URLs";
 import firebase from "./OAuth/firebase";
@@ -238,16 +238,19 @@ class Setting extends React.Component {
                         )}
                       </div>
                     </div>
-                    <div className="signinUpgrade">
-                      <p>Upgrade Account</p>
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        onClick={this.upgradeButton}
-                      >
-                        Upgrade Now
-                      </button>
-                    </div>
+                    {savedUser && savedUser[0].paid === 0 ? (
+                      <div className="signinUpgrade">
+                        <p>Upgrade Account</p>
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={this.upgradeButton}
+                        >
+                          Upgrade Now
+                        </button>
+                      </div>
+                    ) : null}
+
                     <div className="signinPicture">
                       <p>Add/Change Picture</p>
 

@@ -8,7 +8,7 @@ import {
   saveQuestionsReq,
   resetFetchedNewQuestions
 } from "../actions";
-import "./Rounds.css";
+import "./styles/Rounds.css";
 
 /**
  * RoundsList Component
@@ -41,10 +41,7 @@ class RoundsList extends Component {
     // ***** rounds, the new rounds question will show
 
     // If the following two are true, we've saved a new Round and need to get it's questions
-    if (
-      prevProps.roundId !== this.props.roundId &&
-      this.props.roundId !== null
-    ) {
+    if (prevProps.roundId !== this.props.roundId && this.props.roundId !== null) {
       if (this.props.savedRound) {
         // Checks to see that current roundId is not in the prevProps rounds, this means
         // That we have a new round
@@ -75,8 +72,7 @@ class RoundsList extends Component {
     // the round every time we are saving the questions
     // Save them to the Users Database
     if (
-      JSON.stringify(prevProps.new_questions) !==
-        JSON.stringify(this.props.new_questions) &&
+      JSON.stringify(prevProps.new_questions) !== JSON.stringify(this.props.new_questions) &&
       this.props.roundId !== null
     ) {
       // if (this.props.fetched_new_questions) {
@@ -93,11 +89,7 @@ class RoundsList extends Component {
       this.props.resetFetchedNewQuestions();
       // }
     }
-    console.log(
-      "prevProps.roundId, this.props.roundId: ",
-      prevProps.roundId,
-      this.props.roundId
-    );
+    console.log("prevProps.roundId, this.props.roundId: ", prevProps.roundId, this.props.roundId);
   };
 
   newRound = () => {
@@ -126,8 +118,7 @@ class RoundsList extends Component {
               </div>
             );
           })}
-          {this.props.rounds.length >= 0 &&
-          this.props.rounds.length < this.state.roundLimit ? (
+          {this.props.rounds.length >= 0 && this.props.rounds.length < this.state.roundLimit ? (
             <div id="newRound">
               <div className="newRound-inner">
                 <div>New Round</div>

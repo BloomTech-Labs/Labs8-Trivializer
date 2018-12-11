@@ -3,11 +3,11 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import Questions from "./Questions";
 import axios from "axios";
-import "./Questions.css";
+import "./styles/Questions.css";
 import update from "react-addons-update";
 import ReactToPrint from "react-to-print";
 import { connect } from "react-redux";
-import "./Components.css";
+import "./styles/Components.css";
 import URL from "../URLs";
 
 const createDOMPurify = require("dompurify"); // Prevents XSS attacks from incoming HTML

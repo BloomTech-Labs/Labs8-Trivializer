@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import NavBar from "./Navbar";
 import { connect } from "react-redux";
 import { submitGameReq } from "../actions";
-import "./CreateGameView.css";
+import "./styles/CreateGameView.css";
 
 /**
  * CreateGameView Component

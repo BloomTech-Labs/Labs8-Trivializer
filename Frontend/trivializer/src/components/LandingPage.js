@@ -2,8 +2,8 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import axios from "axios";
-import "./Components.css";
-import "./LandingPage.css";
+import "./styles/Components.css";
+import "./styles/LandingPage.css";
 import { auth, provider } from "./OAuth/firebase";
 import URL from "../URLs";
 

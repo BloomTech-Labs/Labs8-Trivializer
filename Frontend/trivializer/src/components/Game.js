@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { fetchGameReq } from "../actions";
 import EditGameView from "./EditGameView";
 import RoundsList from "./RoundsList";
-import "./Game.css";
+import "./styles/Game.css";
 import ReactToPrint from "react-to-print";
 import PrintAll from "./PrintAll";
 

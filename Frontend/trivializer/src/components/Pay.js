@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Checkout from "./Checkout";
-import "./Components.css";
-import "./LandingPage.css";
+import "./styles/Components.css";
+import "./styles/LandingPage.css";
 
 class Pay extends Component {
   render() {

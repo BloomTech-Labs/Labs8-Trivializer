@@ -4,9 +4,9 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchGamesReq, deleteGameReq } from "../actions";
-import "./Components.css";
+import "./styles/Components.css";
 import axios from "axios";
-import "./GamesList.css";
+import "./styles/GamesList.css";
 import URL from "../URLs";
 
 /**
