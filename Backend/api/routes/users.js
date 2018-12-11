@@ -411,10 +411,12 @@ server.put("/edituser/:id", utilities.protected, async (req, res) => {
         phone: edit.phone,
         logo: edit.logo,
         paid: edit.paid,
-        userName: edit.userName
+        username: edit.userName
       });
     // get user by id
     let newUser = await db("Users").where("id", id);
+
+    console.log("newUser: ", newUser);
 
     res.status(200).json({
       userId: newUser[0]["id"],
