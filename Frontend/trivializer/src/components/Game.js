@@ -32,11 +32,6 @@ class Game extends Component {
 
   componentDidUpdate = prevProps => {
     if (prevProps.show_buttons !== this.props.show_buttons) {
-      console.log(
-        "prevProps.show_buttons, this.props.show_buttons: ",
-        prevProps.show_buttons,
-        this.props.show_buttons
-      );
     }
   };
 
@@ -94,7 +89,10 @@ class Game extends Component {
                     ) : (
                       <ReactToPrint
                         trigger={() => (
-                          <button type="button" className="btn btn-primary round">
+                          <button
+                            type="button"
+                            className="btn btn-primary round"
+                          >
                             Print Answer Key
                           </button>
                         )}
@@ -108,7 +106,10 @@ class Game extends Component {
                     ) : (
                       <ReactToPrint
                         trigger={() => (
-                          <button type="button" className="btn btn-primary round">
+                          <button
+                            type="button"
+                            className="btn btn-primary round"
+                          >
                             Print Answer Sheet
                           </button>
                         )}
