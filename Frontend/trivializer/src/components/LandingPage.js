@@ -310,9 +310,6 @@ class LandingPage extends React.Component {
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="landingpage-navbar-right navbar-nav ml-auto">
               <li class="navbar-right-list active">
-                <div className="navbar-link">How To Play</div>
-              </li>
-              <li class="navbar-right-list active">
                 <Link to="/faqs" className="navbar-link">
                   FAQ's
                 </Link>
