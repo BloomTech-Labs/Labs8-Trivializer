@@ -43,6 +43,43 @@ Deployed: [Site Here](https://trivializer.netlify.com/)
 
 Deployed: [Site Here](https://testsdepl.herokuapp.com/)
 
+## Reasoning:
+
+### React.js
+
+- Fast and responsive due to conditional rendering powered by Virtual DOM
+  Uses Javascript, which has a very large user base contributing to thousands of useful dependencies and packages.
+- Lightweight library vs heavy Framework like Angular
+- Developers can easily make a new UI feature and see it appear in real time
+- Allows for the creation of reusable components, which can be plug and played into various parts of an application.
+- Good consolidation of concerns, React only deals with the front-end view components of our application, allowing us to choose more appropriate tools for our back end.
+
+### Node.js
+
+- Node.js’ package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
+- Node’s non-blocking, asynchronous nature allows for quick interaction with our DB. As our application needed to make frequent calls to both store and retrieve information from the DB, this was essential.
+- Uses Javascript, which allowed us to use one uniform language resource across both our front and back end.
+
+### Express.js
+
+- Allows for easy creation of back end applications by removing the need to manually create request endpoints and handling various headers from the client
+- Allowed us to focus on endpoint logic, rather than verbose server calls
+- Allowed for quick inclusion of various middleware to handle cross origin resource (CORS) handling, additional security features and developer tools
+
+### SQLite
+
+- Originally chosen because of it’s easy scalability, concurrency and control through an easily shared file system.
+- SQLite works well with low traffic web sites, such as ours during development
+- Relational Database worked well with how our data was logically separated
+- Eventually ported over to PostGresQL due to difficulty in data retention on server
+
+### PostGresQL
+
+- Relational Database worked well with how our data was logically separated
+  Wide array of acceptable column types allows for error checking on both inputing values and retrieving values
+- Rich indexing of values allows for faster response times
+- Easy scalability, with some queries enjoying the benefits of [Parallelism](https://www.postgresql.org/docs/current/parallel-query.html)
+
 ## Endpoints:
 
 ### Users Endpoints
