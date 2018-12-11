@@ -40,7 +40,7 @@ class GamesList extends Component {
           }
         />
       );
-      // sessionStorage.setItem("gamesNotified", "true");
+      sessionStorage.setItem("gamesNotified", "true");
     }
 
     // NOTE: setState after API request doesn't render state in time

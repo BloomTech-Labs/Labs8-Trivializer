@@ -75,7 +75,6 @@ class Rounds extends Component {
   }
 
   componentDidMount() {
-    console.log("this.props.round.roundId: ", this.props.round.roundId);
     this.props.resetRoundStateReq();
     if (sessionStorage.getItem("status") == 1) {
       this.setState({ maxQuestions: 10 });
@@ -99,29 +98,26 @@ class Rounds extends Component {
         }
       }
     }
-
+    
     // This makes the "See Questions" button clickable to enter the round again
     // Listening for if we were formerly saving the questions, now we're not (meaning questions were saved)
     // And our local state is set to savingRound === true
     if (
-      prevProps.saving_questions !== this.props.saving_questions &&
-      this.state.savingRound === true
-    ) {
-      this.setState({ savingRound: false });
-    }
-
-    if (
-      prevProps.saving_questions === true &&
-      this.props.saving_questions === false &&
+      prevProps.saving_questions == true && this.props.saving_questions === false &&
+      this.state.savingRound === true &&
       this.props.roundId === this.props.round.roundId
     ) {
-      this.setState({ showSavedNotifications: true });
-      console.log(
-        "this.props.roundId, this.props.round.roundId: ",
-        this.props.roundId,
-        this.props.round.roundId
-      );
+      console.log("this.state: ", this.state);
+      this.setState({ savingRound: false, showSavedNotification: true });
     }
+
+    // if (
+    //   prevProps.saving_questions === true &&
+    //   this.props.saving_questions === false &&
+    //   this.props.roundId === this.props.round.roundId
+    // ) {
+    //   this.setState({ showSavedNotification: true });
+    // }
   };
 
   handleChange = e => {
@@ -203,9 +199,6 @@ class Rounds extends Component {
   };
 
   render() {
-    console.log("this.state: ", this.state);
-    console.log("this.props: ", this.props);
-
     return (
       <div className="rounds">
         {this.state.showSavedNotification === true ? (

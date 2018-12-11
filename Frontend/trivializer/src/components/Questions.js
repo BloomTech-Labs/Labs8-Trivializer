@@ -22,7 +22,13 @@ class Questions extends Component {
   componentDidMount = () => {};
 
   render() {
-    const { question, isDragging, connectDragSource, connectDropTarget, index } = this.props;
+    const {
+      question,
+      isDragging,
+      connectDragSource,
+      connectDropTarget,
+      index
+    } = this.props;
     const opacity = isDragging ? 0 : 1;
 
     return connectDragSource(
@@ -32,7 +38,8 @@ class Questions extends Component {
             <div style={{ opacity: opacity }}>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: `${index + 1}) ` + DOMPurify.sanitize(question.question) // See line 5 for DOMPurify description
+                  __html:
+                    `${index + 1}) ` + DOMPurify.sanitize(question.question) // See line 5 for DOMPurify description
                 }}
               />
               <div>
@@ -51,7 +58,8 @@ class Questions extends Component {
                         dangerouslySetInnerHTML={{
                           // 0x41 is ASCII for 'A'
                           __html:
-                            `${String.fromCharCode(0x41 + index)}) ` + DOMPurify.sanitize(answer) // Purify incoming HTML while still displaying HTML entities
+                            `${String.fromCharCode(0x41 + index)}) ` +
+                            DOMPurify.sanitize(answer) // Purify incoming HTML while still displaying HTML entities
                         }}
                       />
                     );
@@ -88,8 +96,7 @@ const questionSource = {
   beginDrag(props) {
     return {
       question: props.question,
-      index: props.index,
-      listId: props.listId
+      index: props.index
     };
   }
 };
