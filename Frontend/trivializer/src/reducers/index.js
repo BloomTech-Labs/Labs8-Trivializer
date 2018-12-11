@@ -205,6 +205,7 @@ const gamesReducer = (state = initialState, action) => {
         editedRounds = action.payload;
       }
       console.log("editedRounds: ", editedRounds);
+      console.log("action.payload.roundId: ", action.payload.roundId);
       return Object.assign({}, state, {
         editing_round: false,
         edited_round: true,

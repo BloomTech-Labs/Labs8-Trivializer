@@ -98,12 +98,13 @@ class Rounds extends Component {
         }
       }
     }
-    
+
     // This makes the "See Questions" button clickable to enter the round again
     // Listening for if we were formerly saving the questions, now we're not (meaning questions were saved)
     // And our local state is set to savingRound === true
     if (
-      prevProps.saving_questions == true && this.props.saving_questions === false &&
+      prevProps.saving_questions == true &&
+      this.props.saving_questions === false &&
       this.state.savingRound === true &&
       this.props.roundId === this.props.round.roundId
     ) {
@@ -162,9 +163,6 @@ class Rounds extends Component {
   };
 
   enterRound = () => {
-    // First, save the round
-    // this.saveRound();
-
     // Get all of our info in the right format to call the questions API
     let formattedQuestionsRound = this.formatQuestionsCall();
 
