@@ -46,3 +46,13 @@
   cursor: pointer;
   background-color: #8d3125;
 }
+
+@media screen and (max-width: 950px) {
+  .addnewGame {
+    height: 90vh;
+  }
+
+  .third-form {
+    flex-direction: column;
+  }
+}
