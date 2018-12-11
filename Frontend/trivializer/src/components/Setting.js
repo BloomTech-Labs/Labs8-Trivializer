@@ -99,7 +99,10 @@ class Setting extends React.Component {
     const email = this.state.email;
     const password = this.state.password;
     const changedInfo = {
-      logo: JSON.stringify(this.state.imagePreviewUrl)
+      logo: JSON.stringify(this.state.imagePreviewUrl),
+      userName: userName,
+      email: email,
+      password: password
     };
     axios
       .put(`https://testsdepl.herokuapp.com/users/edituser/${userId}`, changedInfo, auth)
