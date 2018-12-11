@@ -96,7 +96,13 @@
   outline: 0;
 }
 
-@media screen and (max-width: 950px) {
+@media screen and (max-width: 1150px) {
+  .setting-content {
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 0;
+  }
+
   .signinSetting {
     font-size: 18px;
   }
@@ -108,20 +114,27 @@
 }
 
 @media screen and (max-width: 750px) {
+  .setting-content {
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 0;
+  }
+
   .signinSetting {
     font-size: 15px;
   }
   .signinUserName input,
   .signinEmail input,
-  .signinPassword input {
+  .signinPassword input,
+  .signinPicture input,
+  .signinUpgrade input {
     width: 170px;
   }
 }
 
 @media screen and (max-width: 550px) {
   .setting-content {
-    width: 90%;
-    margin-left: 10px;
+    width: 98%;
   }
   .signinSetting {
     font-size: 15px;
@@ -134,11 +147,17 @@
     width: 150px;
   }
   .save-button {
-    width: 300px;
+    width: 290px;
     margin: 0 auto;
     margin-bottom: 35px;
     margin-top: 20px;
     display: flex;
     justify-content: center;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .setting-content {
+    width: 90%;
   }
 }
