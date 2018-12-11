@@ -40,6 +40,13 @@ class Game extends Component {
     }
   };
 
+  logout = e => {
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    this.props.history.push("/");
+  };
+
   render() {
     if (!this.props.game) {
       return <div>Loading...</div>;
@@ -60,9 +67,11 @@ class Game extends Component {
               </ol>
             </nav>
           </div>
-          <Link className="top-rightside" to="/">
-            Sign Out
-          </Link>
+          {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
+            <div onClick={this.logout} className="top-rightside">
+              Sign Out
+            </div>
+          ) : null}
         </div>
 
         <div className="main-content">

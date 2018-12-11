@@ -201,6 +201,13 @@ class Round extends Component {
       });
   };
 
+  logout = e => {
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    this.props.history.push("/");
+  };
+
   render() {
     // Get questions from State
     const { questions } = this.state;
@@ -221,9 +228,11 @@ class Round extends Component {
               </ol>
             </nav>
           </div>
-          <Link className="top-rightside" to="/">
-            Sign Out
-          </Link>
+          {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
+            <div onClick={this.logout} className="top-rightside">
+              Sign Out
+            </div>
+          ) : null}
         </div>
 
         {/* ********************  Main Content  *************** */}

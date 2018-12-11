@@ -62,6 +62,13 @@ class CreateGameView extends Component {
     this.props.submitGameReq(game);
   };
 
+  logout = e => {
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    this.props.history.push("/");
+  };
+
   render() {
     return (
       <div className="gameslist-page">
@@ -78,9 +85,11 @@ class CreateGameView extends Component {
               </ol>
             </nav>
           </div>
-          <Link className="top-rightside" to="/">
-            Sign Out
-          </Link>
+          {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
+            <div onClick={this.logout} className="top-rightside">
+              Sign Out
+            </div>
+          ) : null}
         </div>
 
         <div className="main-content">
@@ -121,11 +130,7 @@ class CreateGameView extends Component {
                     onChange={this.handleChange}
                   />
                 </div>
-                <button
-                  type="button"
-                  className="savegameButton"
-                  onClick={this.handleSubmit}
-                >
+                <button type="button" className="savegameButton" onClick={this.handleSubmit}>
                   Save Game
                 </button>
               </form>
