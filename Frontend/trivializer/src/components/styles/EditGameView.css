@@ -130,3 +130,11 @@
     margin-top: 20px;
   }
 }
+
+.info-round {
+  width: 400px;
+}
+
+.title-round {
+  font-weight: bold;
+}

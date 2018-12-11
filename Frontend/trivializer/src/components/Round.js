@@ -251,7 +251,7 @@ class Round extends Component {
                     alt="trivializer logo"
                   />
                 </div>
-                <div className="col1-round">
+                <div className="col3-round">
                   <div className="title-round">{`${this.state.gameName} - ${
                     this.state.roundName
                   }`}</div>
