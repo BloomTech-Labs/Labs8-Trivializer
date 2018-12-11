@@ -96,5 +96,49 @@
   outline: 0;
 }
 
+@media screen and (max-width: 950px) {
+  .signinSetting {
+    font-size: 18px;
+  }
+  .signinUserName input,
+  .signinEmail input,
+  .signinPassword input {
+    width: 200px;
+  }
+}
+
 @media screen and (max-width: 750px) {
+  .signinSetting {
+    font-size: 15px;
+  }
+  .signinUserName input,
+  .signinEmail input,
+  .signinPassword input {
+    width: 170px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .setting-content {
+    width: 90%;
+    margin-left: 10px;
+  }
+  .signinSetting {
+    font-size: 15px;
+  }
+  .signinUserName input,
+  .signinEmail input,
+  .signinPassword input,
+  .signinPicture input,
+  .signinUpgrade input {
+    width: 150px;
+  }
+  .save-button {
+    width: 300px;
+    margin: 0 auto;
+    margin-bottom: 35px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
 }
