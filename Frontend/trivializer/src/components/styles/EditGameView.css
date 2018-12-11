@@ -3,7 +3,7 @@
 .editGameView {
   display: flex;
   flex-flow: column;
-  border: 2px solid black;
+
   border-radius: 10px;
   align-items: center;
   padding: 2%;
@@ -44,5 +44,8 @@
 .saveButton:hover {
   background: #2db168;
   color: white;
-  
+}
+
+.game-top {
+  margin: 0 auto;
 }

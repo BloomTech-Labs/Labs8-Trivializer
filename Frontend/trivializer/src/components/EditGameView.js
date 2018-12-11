@@ -62,11 +62,12 @@ class EditGameView extends Component {
       <div className="editGameView">
         <div className="editGameView-top">
           <div>Update Game Info</div>
+          {/*
           <img
             className="editGameView-logo"
             src={require("../img/trivializer_cropped.png")}
             alt="trivializer logo"
-          />
+          />*/}
         </div>
 
         <input
@@ -89,7 +90,7 @@ class EditGameView extends Component {
           onChange={this.handleChange}
         />
         <button className="saveButton" onClick={this.handleUpdate}>
-          Save Game
+          Update Game Info
         </button>
       </div>
     );

@@ -82,6 +82,7 @@ class Game extends Component {
           ) : (
             <div className="content-container">
               <div className="editAndRounds">
+                <h1>Game Information</h1>
                 <div className="game-top">
                   <EditGameView game={this.props.game} />
 
