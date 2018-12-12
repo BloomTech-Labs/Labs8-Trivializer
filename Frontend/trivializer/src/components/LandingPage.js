@@ -38,7 +38,7 @@ class LandingPage extends React.Component {
   }
 
   redirect = e => {
-    // Note from nicky: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
+    // Note: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
     window.location.reload();
     this.props.history.push("/gameslist");
   };
@@ -137,8 +137,10 @@ class LandingPage extends React.Component {
   // Handles the submit call on the Register modal
   handleSubmit = e => {
     e.preventDefault();
+    localStorage.setItem("target", e.target.name);
 
-    if (e.target.name === "register" || e.target.name === "login") {
+    if (e.target.name === "register" || e.target.name === "signin") {
+      sessionStorage.clear();
       localStorage.removeItem("guest");
     }
     if (!localStorage.getItem("guest") && !sessionStorage.getItem("jwt")) {
