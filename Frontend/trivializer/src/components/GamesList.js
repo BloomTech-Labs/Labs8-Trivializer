@@ -50,7 +50,7 @@ class GamesList extends Component {
         });
     }
 
-    if (sessionStorage.getItem("status") == 1) {
+    if (sessionStorage.getItem("status") === "1") {
       this.setState({ gameLimit: 10 });
     }
   }

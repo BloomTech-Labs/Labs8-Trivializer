@@ -30,7 +30,7 @@ class RoundsList extends Component {
 
     this.props.fetchRoundsReq(id);
 
-    if (sessionStorage.getItem("status") == 1) {
+    if (sessionStorage.getItem("status") === "1") {
       this.setState({ roundLimit: 10 });
     }
   }
