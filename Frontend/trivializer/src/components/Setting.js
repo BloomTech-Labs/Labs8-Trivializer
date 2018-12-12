@@ -163,7 +163,13 @@ class Setting extends React.Component {
                     <h2>Account</h2>
                     <div className="signinFree">
                       <p>Account Tier</p>
-                      <div>{savedUser ? <div>Free</div> : "None"}</div>
+                      <div>
+                        {savedUser && sessionStorage.getItem("googlepaid") ? (
+                          <div>Premium</div>
+                        ) : (
+                          <div>Free</div>
+                        )}
+                      </div>
                     </div>
                     <div className="signinType">
                       <p>Login Type</p>
@@ -190,7 +196,7 @@ class Setting extends React.Component {
                           className="uploaded-picture"
                           width="250px"
                           src={this.state.imagePreviewUrl}
-                          alt="profile-picture"
+                          alt="prof"
                         />
                       ) : null}
                     </div>

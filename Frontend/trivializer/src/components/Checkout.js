@@ -12,7 +12,6 @@ const fromEuroToCent = amount => amount * 100;
 
 // let savedUser = JSON.parse(sessionStorage.getItem("userId"));
 let savedUser = sessionStorage.getItem("userId");
-console.log(savedUser);
 
 const successPayment = data => {
   const url = URL.current_URL;
@@ -24,6 +23,7 @@ const successPayment = data => {
       }
     })
     .then(res => {
+      sessionStorage.setItem("googlepaid", "yes");
       // return if null properties
       return JSON.res;
     })

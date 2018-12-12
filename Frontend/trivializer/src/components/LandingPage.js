@@ -137,8 +137,6 @@ class LandingPage extends React.Component {
   // Handles the submit call on the Register modal
   handleSubmit = e => {
     e.preventDefault();
-    localStorage.setItem("target", e.target.name);
-
     if (e.target.name === "register" || e.target.name === "signin") {
       sessionStorage.clear();
       localStorage.removeItem("guest");
@@ -287,7 +285,7 @@ class LandingPage extends React.Component {
     return (
       <div className="landing-page">
         {/* Top Navbar */}
-        <nav id="navbar-color" class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav id="navbar-color" className="navbar navbar-expand-lg navbar-light bg-light">
           {/* Navbar Left Side */}
           <img
             id="logo-img"
@@ -297,7 +295,7 @@ class LandingPage extends React.Component {
             height="85px"
           />
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -305,23 +303,23 @@ class LandingPage extends React.Component {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon" />
+            <span className="navbar-toggler-icon" />
           </button>
 
           {/* Navbar Right Side */}
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="landingpage-navbar-right navbar-nav ml-auto">
-              {/*<li class="navbar-right-list active">
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="landingpage-navbar-right navbar-nav ml-auto">
+              {/*<li className="navbar-right-list active">
                 <div className="navbar-link">How To Play</div>
     </li>*/}
-              <li class="navbar-right-list active">
+              <li className="navbar-right-list active">
                 <Link to="/faqs" className="navbar-link">
                   FAQ's
                 </Link>
               </li>
 
               {sessionStorage.getItem("userId") && !localStorage.getItem("guest") ? (
-                <li class="navbar-right-list active">
+                <li className="navbar-right-list active">
                   <div href="#" onClick={this.signOut} className="navbar-link">
                     Sign Out
                   </div>
@@ -331,7 +329,7 @@ class LandingPage extends React.Component {
               {/* Navbar Signup Link */}
 
               {sessionStorage.getItem("userId") && !localStorage.getItem("guest") ? null : (
-                <li class="navbar-right-list">
+                <li className="navbar-right-list">
                   <div className="signup">
                     <div
                       id="new-signup"
@@ -446,6 +444,7 @@ class LandingPage extends React.Component {
                             <img
                               src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
                               onClick={this.googleLogin}
+                              alt="googlesignup"
                             />
                             <span className="google-text"> Sign In With Google</span>
                           </div>
@@ -458,7 +457,7 @@ class LandingPage extends React.Component {
 
               {/* Navbar Sign In Link */}
               {sessionStorage.getItem("userId") && !localStorage.getItem("guest") ? null : (
-                <li class="navbar-right-list">
+                <li className="navbar-right-list">
                   <div className="signin">
                     <div
                       id="new-signin"
@@ -530,7 +529,10 @@ class LandingPage extends React.Component {
                           </div>
 
                           <div className="google-button-signup" onClick={this.googleLogin}>
-                            <img src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg" />
+                            <img
+                              src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
+                              alt="googlebutton"
+                            />
                             <span className="google-text"> Sign In With Google</span>
                           </div>
                         </div>
@@ -544,48 +546,52 @@ class LandingPage extends React.Component {
         </nav>
 
         {/* Carousel */}
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-          <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active" />
+        <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
+          <ol className="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" className="active" />
             <li data-target="#carouselExampleIndicators" data-slide-to="1" />
             <li data-target="#carouselExampleIndicators" data-slide-to="2" />
           </ol>
-          <div class="carousel-inner">
-            <div class="carousel-item active">
+          <div className="carousel-inner">
+            <div className="carousel-item active">
               <img
                 className="carousel-design d-block w-100"
                 src="../img/neon.jpg"
                 alt="First slide"
               />
             </div>
-            <div class="carousel-item">
+            <div className="carousel-item">
               <img
-                class="carousel-design d-block w-100"
+                className="carousel-design d-block w-100"
                 src="../img/barscore.jpg"
                 alt="Second slide"
               />
             </div>
-            <div class="carousel-item">
-              <img class="carousel-design d-block w-100" src="../img/open.jpg" alt="Third slide" />
+            <div className="carousel-item">
+              <img
+                className="carousel-design d-block w-100"
+                src="../img/open.jpg"
+                alt="Third slide"
+              />
             </div>
           </div>
           <a
-            class="carousel-control-prev"
+            className="carousel-control-prev"
             href="#carouselExampleIndicators"
             role="button"
             data-slide="prev"
           >
-            <span class="carousel-control-prev-icon" aria-hidden="true" />
-            <span class="sr-only">Previous</span>
+            <span className="carousel-control-prev-icon" aria-hidden="true" />
+            <span className="sr-only">Previous</span>
           </a>
           <a
-            class="carousel-control-next"
+            className="carousel-control-next"
             href="#carouselExampleIndicators"
             role="button"
             data-slide="next"
           >
-            <span class="carousel-control-next-icon" aria-hidden="true" />
-            <span class="sr-only">Next</span>
+            <span className="carousel-control-next-icon" aria-hidden="true" />
+            <span className="sr-only">Next</span>
           </a>
         </div>
 

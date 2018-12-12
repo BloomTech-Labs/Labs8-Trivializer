@@ -13,8 +13,8 @@ const NavBar = props => {
   return (
     <div class="main-navigation">
       <nav class="hor-navbar navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">
-          Bar Trivializer
+        <a class="navbar-brand" href="/">
+          Trivializer
         </a>
         <button
           class="navbar-toggler"
