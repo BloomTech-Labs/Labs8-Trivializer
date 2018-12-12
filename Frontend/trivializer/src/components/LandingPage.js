@@ -8,7 +8,7 @@ import { auth, provider } from "./OAuth/firebase";
 import URL from "../URLs";
 
 const username_regex = /^[a-zA-Z0-9]{4,}$/;
-const email_regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+const email_regex = /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/;
 const password_regex = /(?=.*\d)(?=.*[a-z])[0-9a-zA-Z]{8,}/;
 
 function validate(field, regex) {
@@ -326,7 +326,8 @@ class LandingPage extends React.Component {
                 </Link>
               </li>
 
-              {sessionStorage.getItem("userId") && !localStorage.getItem("guest") ? (
+              {sessionStorage.getItem("userId") &&
+              !localStorage.getItem("guest") ? (
                 <li className="navbar-right-list active">
                   <div href="#" onClick={this.signOut} className="navbar-link">
                     Sign Out
@@ -336,7 +337,8 @@ class LandingPage extends React.Component {
 
               {/* Navbar Signup Link */}
 
-              {sessionStorage.getItem("userId") && !localStorage.getItem("guest") ? null : (
+              {sessionStorage.getItem("userId") &&
+              !localStorage.getItem("guest") ? null : (
                 <li className="navbar-right-list">
                   <div className="signup">
                     <div
@@ -479,7 +481,8 @@ class LandingPage extends React.Component {
               )}
 
               {/* Navbar Sign In Link */}
-              {sessionStorage.getItem("userId") && !localStorage.getItem("guest") ? null : (
+              {sessionStorage.getItem("userId") &&
+              !localStorage.getItem("guest") ? null : (
                 <li className="navbar-right-list">
                   <div className="signin">
                     <div
@@ -558,12 +561,18 @@ class LandingPage extends React.Component {
                             </form>
                           </div>
 
-                          <div className="google-button-signup" onClick={this.googleLogin}>
+                          <div
+                            className="google-button-signup"
+                            onClick={this.googleLogin}
+                          >
                             <img
                               src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
                               alt="googlebutton"
                             />
-                            <span className="google-text"> Sign In With Google</span>
+                            <span className="google-text">
+                              {" "}
+                              Sign In With Google
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -576,9 +585,17 @@ class LandingPage extends React.Component {
         </nav>
 
         {/* Carousel */}
-        <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
+        <div
+          id="carouselExampleIndicators"
+          className="carousel slide"
+          data-ride="carousel"
+        >
           <ol className="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" className="active" />
+            <li
+              data-target="#carouselExampleIndicators"
+              data-slide-to="0"
+              className="active"
+            />
             <li data-target="#carouselExampleIndicators" data-slide-to="1" />
             <li data-target="#carouselExampleIndicators" data-slide-to="2" />
           </ol>

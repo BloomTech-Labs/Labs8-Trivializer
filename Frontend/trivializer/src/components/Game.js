@@ -68,7 +68,7 @@ class Game extends Component {
           {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
             <div onClick={this.logout} className="top-rightside">
               <p>Log Out</p>
-              <i class="fas fa-sign-out-alt" />
+              <i className="fas fa-sign-out-alt" />
             </div>
           ) : null}
         </div>
