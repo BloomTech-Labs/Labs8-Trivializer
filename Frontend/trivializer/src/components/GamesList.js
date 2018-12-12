@@ -95,7 +95,7 @@ class GamesList extends Component {
           {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
             <div onClick={this.logout} className="top-rightside">
               <p>Log Out</p>
-              <i class="fas fa-sign-out-alt" />
+              <i className="fas fa-sign-out-alt" />
             </div>
           ) : null}
         </div>
@@ -109,7 +109,7 @@ class GamesList extends Component {
 
                 <Link to={`/creategame`}>
                   {" "}
-                  <i class="fas fa-plus-circle" />
+                  <i className="fas fa-plus-circle" />
                 </Link>
               </div>
             ) : (
@@ -143,7 +143,7 @@ class GamesList extends Component {
                       <div className="game-summary">
                         <Link className="newgame-link" to={`/creategame`}>
                           <div className="cardnewGame">New Game</div>
-                          <i class="small-fas fas fa-plus-circle" />
+                          <i className="small-fas fas fa-plus-circle" />
                         </Link>
                       </div>
                     </div>
