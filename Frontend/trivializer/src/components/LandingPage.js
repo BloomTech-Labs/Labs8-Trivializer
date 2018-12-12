@@ -40,7 +40,7 @@ class LandingPage extends React.Component {
   }
 
   redirect = e => {
-    // Note from nicky: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
+    // Note: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
     window.location.reload();
     this.props.history.push("/gameslist");
   };
@@ -142,8 +142,8 @@ class LandingPage extends React.Component {
   // Handles the submit call on the Register modal
   handleSubmit = e => {
     e.preventDefault();
-
-    if (e.target.name === "register" || e.target.name === "login") {
+    if (e.target.name === "register" || e.target.name === "signin") {
+      sessionStorage.clear();
       localStorage.removeItem("guest");
     }
     if (!localStorage.getItem("guest") && !sessionStorage.getItem("jwt")) {
@@ -326,8 +326,7 @@ class LandingPage extends React.Component {
                 </Link>
               </li>
 
-              {sessionStorage.getItem("userId") &&
-              !localStorage.getItem("guest") ? (
+              {sessionStorage.getItem("userId") && !localStorage.getItem("guest") ? (
                 <li className="navbar-right-list active">
                   <div href="#" onClick={this.signOut} className="navbar-link">
                     Sign Out
@@ -337,8 +336,7 @@ class LandingPage extends React.Component {
 
               {/* Navbar Signup Link */}
 
-              {sessionStorage.getItem("userId") &&
-              !localStorage.getItem("guest") ? null : (
+              {sessionStorage.getItem("userId") && !localStorage.getItem("guest") ? null : (
                 <li className="navbar-right-list">
                   <div className="signup">
                     <div
@@ -466,6 +464,7 @@ class LandingPage extends React.Component {
                             <img
                               src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
                               onClick={this.googleLogin}
+                              alt="googlesignup"
                             />
                             <span className="google-text">
                               {" "}
@@ -480,8 +479,7 @@ class LandingPage extends React.Component {
               )}
 
               {/* Navbar Sign In Link */}
-              {sessionStorage.getItem("userId") &&
-              !localStorage.getItem("guest") ? null : (
+              {sessionStorage.getItem("userId") && !localStorage.getItem("guest") ? null : (
                 <li className="navbar-right-list">
                   <div className="signin">
                     <div
@@ -560,15 +558,12 @@ class LandingPage extends React.Component {
                             </form>
                           </div>
 
-                          <div
-                            className="google-button-signup"
-                            onClick={this.googleLogin}
-                          >
-                            <img src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg" />
-                            <span className="google-text">
-                              {" "}
-                              Sign In With Google
-                            </span>
+                          <div className="google-button-signup" onClick={this.googleLogin}>
+                            <img
+                              src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
+                              alt="googlebutton"
+                            />
+                            <span className="google-text"> Sign In With Google</span>
                           </div>
                         </div>
                       </div>
@@ -581,17 +576,9 @@ class LandingPage extends React.Component {
         </nav>
 
         {/* Carousel */}
-        <div
-          id="carouselExampleIndicators"
-          className="carousel slide"
-          data-ride="carousel"
-        >
+        <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
           <ol className="carousel-indicators">
-            <li
-              data-target="#carouselExampleIndicators"
-              data-slide-to="0"
-              className="active"
-            />
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" className="active" />
             <li data-target="#carouselExampleIndicators" data-slide-to="1" />
             <li data-target="#carouselExampleIndicators" data-slide-to="2" />
           </ol>

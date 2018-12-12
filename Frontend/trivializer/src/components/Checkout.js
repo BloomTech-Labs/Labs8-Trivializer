@@ -23,6 +23,7 @@ const successPayment = data => {
       }
     })
     .then(res => {
+      sessionStorage.setItem("googlepaid", "yes");
       // return if null properties
       return JSON.res;
     })

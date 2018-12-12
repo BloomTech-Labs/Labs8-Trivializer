@@ -11,10 +11,10 @@ const NavBar = props => {
     window.location = "/";
   };
   return (
-    <div className="main-navigation">
-      <nav className="hor-navbar navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand" href="#">
-          Bar Trivializer
+    <div class="main-navigation">
+      <nav class="hor-navbar navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+          Trivializer
         </a>
         <button
           className="navbar-toggler"
