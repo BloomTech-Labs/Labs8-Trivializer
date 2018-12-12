@@ -1,8 +1,11 @@
 const server = require("express")(); // sets up an express instance and returns a callback function
+// const server = require("express");
 const db = require("../../data/db");
 const utilities = require("../util/utilities");
 
 var simplecrypt = require("simplecrypt");
+
+
 
 var sc = simplecrypt({ password: process.env.SECRET });
 
@@ -14,7 +17,11 @@ const mailgun = require("mailgun-js")({ apiKey: api_key, domain: domain });
 server.get("/", (req, res) => {
   res.json("App is currently functioning");
 });
+server.post("/greet", (req, res) => {
+  const {name} = req.body
 
+  res.status(200).json({hello:name})
+})
 // Add new user
 server.post("/register", async (req, res) => {
   // This table also includes credit card info, will handle in billing

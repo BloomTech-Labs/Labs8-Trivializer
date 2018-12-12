@@ -4,7 +4,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "test": "jest --watch --verbose"
   },
   "engines": {
     "node": "8.11.1"
@@ -26,8 +27,14 @@
     "simplecrypt": "^0.1.0",
     "sqlite3": "^4.0.2",
     "stripe": "^6.15.0"
+    
   },
   "devDependencies": {
-    "nodemon": "^1.18.3"
+    "nodemon": "^1.18.3",
+    "supertest": "^3.3.0",
+    "jest": "^23.6.0"
+  },
+  "jest": {
+    "testEnvirnoment": "node"
   }
 }
