@@ -208,7 +208,6 @@ export const fetchRoundsReq = id => {
         }
       })
       .then(({ data }) => {
-        console.log("Returned rounds in actions: ", data);
         if (!data[0]["roundId"]) {
           data = [];
         }
@@ -221,7 +220,6 @@ export const fetchRoundsReq = id => {
 };
 
 export const saveRoundReq = round => {
-  console.log("round: ", round);
   return dispatch => {
     dispatch({ type: SAVING_ROUND });
     axios
@@ -231,7 +229,6 @@ export const saveRoundReq = round => {
         }
       })
       .then(({ data }) => {
-        console.log("Saved Round data: ", data);
         dispatch({ type: SAVED_ROUND, payload: data });
       })
       .catch(err => {
@@ -271,21 +268,16 @@ export const editRoundReq = (round, roundId) => {
         }
       })
       .then(({ data }) => {
-        console.log("data: ", data);
         dispatch({ type: EDITED_ROUND, payload: data });
       })
       .catch(err => {
-        console.log("err.message: ", err.message);
         dispatch({ type: ERROR, payload: err });
       });
   };
 };
 
 export const getQuestionsReq = (info, roundId) => {
-  console.log("info: ", info);
-
   return dispatch => {
-    console.log("IN dispatch, getQuestionsReq");
     dispatch({ type: FETCHING_SAVED_QUESTIONS });
     axios
       .get(`${BE_URL}/questions/${roundId}`, {
@@ -294,7 +286,6 @@ export const getQuestionsReq = (info, roundId) => {
         }
       })
       .then(({ data }) => {
-        console.log("data: ", data);
         // If we have results from the Users API, assign questions to our info packet
         if (data[0] && data[0].questionId !== null) {
           info.questions = data;
@@ -354,12 +345,13 @@ export const saveQuestionsReq = questionsPackage => {
         }
       })
       .then(response => {
-        console.log("response: ", response);
+        if (!response) {
+          throw new Error({ message: "Error deleting questions" });
+        }
       })
       .catch(err => {
         console.log("err.message: ", err.message);
       });
-    console.log("ABOUT TO CALL POST TO QUESTIONS!!!");
 
     await axios
       .post(`${BE_URL}/questions`, questionsPackage, {
@@ -368,8 +360,6 @@ export const saveQuestionsReq = questionsPackage => {
         }
       })
       .then(({ data }) => {
-        console.log("data from Save questions: ", data);
-
         // Send info packet, either with new questions or original (should be empty array)
         dispatch({ type: SAVED_QUESTIONS, payload: data });
       })
@@ -377,22 +367,17 @@ export const saveQuestionsReq = questionsPackage => {
         console.log("err.message saveQuestionsReq: ", err.response);
         dispatch({ type: ERROR, payload: err });
       });
-
-    console.log("DONE WITH POST TO /QUESTIONS!!!");
   };
 };
 
 export const getNewQuestionsReq = questionsPackage => {
-  console.log("questionsPackage: ", questionsPackage);
   return dispatch => {
-    console.log("IN dispatch, getQuestionsReq");
     dispatch({ type: FETCHING_NEW_QUESTIONS });
     let concatenatedURL = buildApiCall(questionsPackage);
-    console.log("concatenatedURL: ", concatenatedURL);
+
     axios
       .get(`${concatenatedURL}`)
       .then(({ data }) => {
-        console.log("data NEW Questions: ", data);
         // questions API returns 0 on success, check for errors from API
         if (data.response_code !== 0) {
           dispatch({ type: ERROR });
@@ -426,8 +411,6 @@ export const getAllRoundsReq = () => {
         }
       })
       .then(({ data }) => {
-        console.log("data: ", data);
-
         dispatch({ type: FETCHED_ALL_ROUNDS, payload: data });
       })
       .catch(err => {

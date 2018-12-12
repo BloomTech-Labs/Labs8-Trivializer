@@ -2,8 +2,8 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import axios from "axios";
-import "./Components.css";
-import "./LandingPage.css";
+import "./styles/Components.css";
+import "./styles/LandingPage.css";
 import { auth, provider } from "./OAuth/firebase";
 import URL from "../URLs";
 
@@ -309,14 +309,15 @@ class LandingPage extends React.Component {
           {/* Navbar Right Side */}
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="landingpage-navbar-right navbar-nav ml-auto">
+              {/*<li class="navbar-right-list active">
+                <div className="navbar-link">How To Play</div>
+    </li>*/}
               <li class="navbar-right-list active">
                 <Link to="/faqs" className="navbar-link">
                   FAQ's
                 </Link>
               </li>
-              <li class="navbar-right-list active">
-                <div className="navbar-link">About Us</div>
-              </li>
+
               {sessionStorage.getItem("userId") && !localStorage.getItem("guest") ? (
                 <li class="navbar-right-list active">
                   <div href="#" onClick={this.signOut} className="navbar-link">
@@ -563,11 +564,7 @@ class LandingPage extends React.Component {
               />
             </div>
             <div class="carousel-item">
-              <img
-                class="carousel-design d-block w-100"
-                src="../img/barscore.jpg"
-                alt="Third slide"
-              />
+              <img class="carousel-design d-block w-100" src="../img/open.jpg" alt="Third slide" />
             </div>
           </div>
           <a
@@ -597,15 +594,18 @@ class LandingPage extends React.Component {
             <div className="descriptions">
               <p className="description-text">
                 Trivializer helps bar trivia hosts create their question sets and answer sheets by
-                pulling from a large and free API of trivia questions.
+                pulling from a large and free API of trivia questions. Questions and answers sheets
+                can be printed easily and used on the fly.
               </p>
               <p className="description-text">
                 Categories for trivia questions include Entertainment, Science, Art, History, and
-                much more. Questions can be filtered by 3 different difficulty settings.{" "}
+                much more. Questions can be filtered by 3 different difficulty settings and includes
+                True/False or Multiple Choice types.
               </p>
               <p className="description-text">
                 There are free and paid tiers of the app. Users who register get a welcome email and
-                can reset their password via email as well.
+                can reset their password via email as well. Premium users enjoy unlimited games and
+                questions for their trivia rounds.
               </p>
             </div>
             <button

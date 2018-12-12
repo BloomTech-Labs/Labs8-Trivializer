@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { fetchGameReq } from "../actions";
 import EditGameView from "./EditGameView";
 import RoundsList from "./RoundsList";
-import "./Game.css";
+import "./styles/Game.css";
 import ReactToPrint from "react-to-print";
 import PrintAll from "./PrintAll";
 
@@ -32,12 +32,14 @@ class Game extends Component {
 
   componentDidUpdate = prevProps => {
     if (prevProps.show_buttons !== this.props.show_buttons) {
-      console.log(
-        "prevProps.show_buttons, this.props.show_buttons: ",
-        prevProps.show_buttons,
-        this.props.show_buttons
-      );
     }
+  };
+
+  logout = e => {
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    this.props.history.push("/");
   };
 
   render() {
@@ -63,9 +65,12 @@ class Game extends Component {
               </ol>
             </nav>
           </div>
-          <Link className="top-rightside" to="/">
-            Sign Out
-          </Link>
+          {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
+            <div onClick={this.logout} className="top-rightside">
+              <p>Log Out</p>
+              <i class="fas fa-sign-out-alt" />
+            </div>
+          ) : null}
         </div>
 
         <div className="main-content">
@@ -75,6 +80,7 @@ class Game extends Component {
           ) : (
             <div className="content-container">
               <div className="editAndRounds">
+                <h1>Game Information</h1>
                 <div className="game-top">
                   <EditGameView game={this.props.game} />
 

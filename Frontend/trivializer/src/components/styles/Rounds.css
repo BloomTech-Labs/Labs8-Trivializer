@@ -19,12 +19,14 @@
   margin: 4%;
   display: flex;
   flex-flow: column;
-  border-radius: 10px;
+  border-radius: 5px;
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
 .rounds:hover {
   box-shadow: 1px 1px;
+  border: 3px solid grey;
 }
 .roundsTitle {
   align-self: center;
@@ -66,22 +68,30 @@
   border-radius: 10%;
   margin: 1%;
   font-size: 12px;
+  padding: 0;
+}
+
+.see {
+  font-size: 12px !important;
 }
 
 .roundsButton:hover {
   box-shadow: 2px 2px;
-  background: #007BFF;
+  border: 1px solid #007bff;
+  background: #007bff;
   color: white;
 }
 
 .roundsButton:active {
   transform: translateY(2px);
 }
-.save:hover{
+.save:hover {
+  border: 1px solid #2db168;
   background: #2db168;
   color: white;
 }
-.delete:hover{
+.delete:hover {
+  border: 1px solid #b13c2d;
   background: #b13c2d;
   color: white;
 }
@@ -118,6 +128,14 @@
   opacity: 1;
 }
 
+.roundsButtons button {
+  width: 90px;
+  height: 30px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
 @media print {
   .btn-primary {
     display: none;
@@ -137,5 +155,18 @@
     display: flex;
     flex-flow: column;
     justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .roundsList {
+    width: 75%;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .see {
+    font-size: 11px !important;
   }
 }

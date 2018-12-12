@@ -1,9 +1,8 @@
 import React from "react";
 import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
-import "./Setting.css";
+import "./styles/Setting.css";
 import axios from "axios";
-import URL from "../URLs";
 import firebase from "./OAuth/firebase";
 
 const ref = firebase.storage().ref();
@@ -68,21 +67,6 @@ class Setting extends React.Component {
     task
       .then(snapshot => snapshot.ref.getDownloadURL())
       .then(url => this.setState({ imagePreviewUrl: url, pictureAdded: true }));
-
-    /*
-    let reader = new FileReader();
-    console.log("reader is: ", reader);
-    let file = e.target.files[0];
-    console.log("file is: ", file);
-    reader.onloadend = () => {
-      this.setState({
-        file: file,
-        imagePreviewUrl: reader.result,
-        pictureAdded: true
-      });
-    };
-
-    reader.readAsDataURL(file);*/
   };
 
   upgradeButton = () => {
@@ -137,7 +121,8 @@ class Setting extends React.Component {
           </div>
           {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
             <div onClick={this.logout} className="top-rightside">
-              Sign Out
+              <p>Log Out</p>
+              <i class="fas fa-sign-out-alt" />
             </div>
           ) : null}
         </div>
@@ -252,16 +237,19 @@ class Setting extends React.Component {
                         )}
                       </div>
                     </div>
-                    <div className="signinUpgrade">
-                      <p>Upgrade Account</p>
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        onClick={this.upgradeButton}
-                      >
-                        Upgrade Now
-                      </button>
-                    </div>
+                    {savedUser && savedUser[0].paid === 0 ? (
+                      <div className="signinUpgrade">
+                        <p>Upgrade Account</p>
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={this.upgradeButton}
+                        >
+                          Upgrade Now
+                        </button>
+                      </div>
+                    ) : null}
+
                     <div className="signinPicture">
                       <p>Add/Change Picture</p>
 

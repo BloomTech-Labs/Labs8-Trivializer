@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./Questions.css";
+import "./styles/Questions.css";
 import { DragSource, DropTarget } from "react-dnd";
 import { findDOMNode } from "react-dom";
 import flow from "lodash/flow"; // Necessary for react DnD to attach more than one function ("Role") to this component, i.e. any question is both a DragSource AND a DropTarget
@@ -42,8 +42,7 @@ class Questions extends Component {
                       <li
                         key={index}
                         style={
-                          answer === question.correct_answer &&
-                          !this.state.userSheet
+                          answer === question.correct_answer && !this.state.userSheet
                             ? { fontWeight: "bold" }
                             : { fontWeight: "normal" }
                         }

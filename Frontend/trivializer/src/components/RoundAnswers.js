@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Questions from "./Questions";
-import "./RoundAnswers.css";
+import "./styles/RoundAnswers.css";
 
 class RoundAnswers extends Component {
   constructor(props) {
@@ -21,11 +21,7 @@ class RoundAnswers extends Component {
           return (
             <div key={question.id}>
               {(index + 1) % 6 === 0 ? <div className="page-break" /> : null}
-              <Questions
-                index={index}
-                question={question}
-                userSheets={this.props.userSheets}
-              />
+              <Questions index={index} question={question} userSheets={this.props.userSheets} />
             </div>
           );
         })}

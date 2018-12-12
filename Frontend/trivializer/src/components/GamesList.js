@@ -4,9 +4,9 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchGamesReq, deleteGameReq } from "../actions";
-import "./Components.css";
+import "./styles/Components.css";
 import axios from "axios";
-import "./GamesList.css";
+import "./styles/GamesList.css";
 import URL from "../URLs";
 
 /**
@@ -57,8 +57,6 @@ class GamesList extends Component {
 
   componentDidUpdate = prevProps => {
     if (JSON.stringify(prevProps.games) !== JSON.stringify(this.props.games)) {
-      console.log("prevProps.games: ", prevProps.games);
-      console.log("this.props.games: ", this.props.games);
       this.setState({ games: this.props.games });
     }
   };
@@ -96,7 +94,8 @@ class GamesList extends Component {
           </div>
           {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
             <div onClick={this.logout} className="top-rightside">
-              Sign Out
+              <p>Log Out</p>
+              <i class="fas fa-sign-out-alt" />
             </div>
           ) : null}
         </div>

@@ -3,11 +3,11 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import Questions from "./Questions";
 import axios from "axios";
-import "./Questions.css";
+import "./styles/Questions.css";
 import update from "react-addons-update";
 import ReactToPrint from "react-to-print";
 import { connect } from "react-redux";
-import "./Components.css";
+import "./styles/Components.css";
 import URL from "../URLs";
 
 const createDOMPurify = require("dompurify"); // Prevents XSS attacks from incoming HTML
@@ -169,9 +169,7 @@ class Round extends Component {
   };
 
   saveQuestions = async () => {
-    console.log(this.props.roundId);
-    // Package all questions with   _id
-    console.log("this.state.questions: ", this.state.questions);
+    // Package all questions with rounds_id
     let questionsPackage = this.state.questions.map(question => {
       return {
         rounds_id: this.props.roundId,
@@ -184,7 +182,6 @@ class Round extends Component {
         answers: question.answers.join("--")
       };
     });
-    console.log("questionsPackage: ", questionsPackage);
 
     // First, delete all existing questions in our round
     await axios
@@ -193,9 +190,7 @@ class Round extends Component {
           Authorization: `${sessionStorage.getItem("jwt")}`
         }
       })
-      .then(response => {
-        console.log("response: ", response);
-      })
+      .then(response => {})
       .catch(err => {
         console.log("err.message: ", err.message);
       });
@@ -207,12 +202,17 @@ class Round extends Component {
           Authorization: `${sessionStorage.getItem("jwt")}`
         }
       })
-      .then(response => {
-        console.log(response);
-      })
+      .then(response => {})
       .catch(err => {
         console.log("err.message: ", err.message);
       });
+  };
+
+  logout = e => {
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    this.props.history.push("/");
   };
 
   render() {
@@ -243,9 +243,12 @@ class Round extends Component {
               </ol>
             </nav>
           </div>
-          <Link className="top-rightside" to="/">
-            Sign Out
-          </Link>
+          {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
+            <div onClick={this.logout} className="top-rightside">
+              <p>Log Out</p>
+              <i class="fas fa-sign-out-alt" />
+            </div>
+          ) : null}
         </div>
 
         {/* ********************  Main Content  *************** */}
@@ -266,7 +269,7 @@ class Round extends Component {
                     alt="trivializer logo"
                   />
                 </div>
-                <div className="col1-round">
+                <div className="col3-round">
                   <div className="title-round">{`${this.state.gameName} - ${
                     this.state.roundName
                   }`}</div>

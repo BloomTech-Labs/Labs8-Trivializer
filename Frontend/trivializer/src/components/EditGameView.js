@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchGameReq, updateGameReq } from "../actions";
-import "./EditGameView.css";
+import "./styles/EditGameView.css";
 
 /**
  * EditGameView
@@ -20,7 +20,6 @@ class EditGameView extends Component {
   }
 
   componentDidMount() {
-    console.log("This.props EDITGAMEVIEW, ", this.props);
     if (this.props.game) {
       const d = new Date(parseInt(this.props.game.datePlayed));
       const day =
@@ -53,43 +52,45 @@ class EditGameView extends Component {
       gameScheduledMS: ms || 0
     };
 
-    console.log(game);
-
     this.props.updateGameReq(this.props.game.gameId, game);
   };
 
   render() {
     return (
       <div className="editGameView">
-        <div className="editGameView-top">
-          <div>Update Game Info</div>
-          <img
-            className="editGameView-logo"
-            src={require("../img/trivializer_cropped.png")}
-            alt="trivializer logo"
+        <div className="title">
+          <div>Game Title</div>
+          <input
+            name="gameTitle"
+            placeholder="Game Title"
+            value={this.state.gameTitle}
+            onChange={this.handleChange}
           />
         </div>
 
-        <input
-          name="gameTitle"
-          placeholder="Game Title"
-          value={this.state.gameTitle}
-          onChange={this.handleChange}
-        />
-        <input
-          name="gameDescription"
-          placeholder="Game Description"
-          value={this.state.gameDescription}
-          onChange={this.handleChange}
-        />
-        <input
-          type="date"
-          name="gameScheduled"
-          placeholder="mm/dd/yyyy"
-          value={this.state.gameScheduled}
-          onChange={this.handleChange}
-        />
-        <button className="saveButton" onClick={this.handleUpdate}>Save Game</button>
+        <div className="description">
+          <div>Description</div>
+          <textarea
+            name="gameDescription"
+            placeholder="Game Description"
+            value={this.state.gameDescription}
+            onChange={this.handleChange}
+          />
+        </div>
+        <div className="date">
+          <div>Date</div>
+          <input
+            type="date"
+            name="gameScheduled"
+            placeholder="mm/dd/yyyy"
+            value={this.state.gameScheduled}
+            onChange={this.handleChange}
+          />
+        </div>
+
+        <button className="saveButton" onClick={this.handleUpdate}>
+          Update Game Info
+        </button>
       </div>
     );
   }

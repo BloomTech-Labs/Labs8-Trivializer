@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import "./Rounds.css";
+import "./styles/Rounds.css";
 import { connect } from "react-redux";
 import {
   deleteRoundReq,
@@ -73,7 +73,6 @@ class Rounds extends Component {
   }
 
   componentDidMount() {
-    console.log("this.props.round.roundId: ", this.props.round.roundId);
     this.props.resetRoundStateReq();
     if (sessionStorage.getItem("status") == 1) {
       this.setState({ maxQuestions: 10 });
@@ -88,8 +87,12 @@ class Rounds extends Component {
     // backend
     if (this.props.roundId === this.props.round.roundId) {
       if (this.props.fetched_saved_questions) {
-        if (!this.props.history.location.pathname.split("/").includes("round")) {
-          this.props.history.push(`${this.props.gameId}/round/${this.props.round.roundId}`);
+        if (
+          !this.props.history.location.pathname.split("/").includes("round")
+        ) {
+          this.props.history.push(
+            `${this.props.gameId}/round/${this.props.round.roundId}`
+          );
         }
       }
     }
@@ -98,7 +101,6 @@ class Rounds extends Component {
       prevProps.saving_questions !== this.props.saving_questions &&
       this.state.savingRound === true
     ) {
-      console.log("STATE IS DIFFERENT!!");
       this.setState({ savingRound: false });
     }
   };
@@ -148,7 +150,10 @@ class Rounds extends Component {
     // Get all of our info in the right format to call the questions API
     let formattedQuestionsRound = this.formatQuestionsCall();
 
-    this.props.getQuestionsReq(formattedQuestionsRound, this.props.round.roundId);
+    this.props.getQuestionsReq(
+      formattedQuestionsRound,
+      this.props.round.roundId
+    );
   };
 
   // Format our current state to be set to Redux store
@@ -160,10 +165,13 @@ class Rounds extends Component {
       gameName: this.props.gameName !== null ? this.props.gameName : "Game",
       gameId: this.props.gameId,
       roundId: this.props.round.roundId,
-      roundName: this.state.roundName !== "" ? this.state.roundName : "New Round",
+      roundName:
+        this.state.roundName !== "" ? this.state.roundName : "New Round",
       numberOfQuestions: this.state.numQs > 0 ? this.state.numQs : 1,
       category:
-        categoryOptions[this.state.category] !== "any" ? categoryOptions[this.state.category] : "",
+        categoryOptions[this.state.category] !== "any"
+          ? categoryOptions[this.state.category]
+          : "",
       difficulty: this.state.difficulty !== "any" ? this.state.difficulty : "",
       type: this.state.type !== "any" ? this.state.type : "",
       questions: []
