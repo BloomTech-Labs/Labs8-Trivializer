@@ -74,7 +74,7 @@ class Rounds extends Component {
 
   componentDidMount() {
     this.props.resetRoundStateReq();
-    if (sessionStorage.getItem("status") == 1) {
+    if (sessionStorage.getItem("status") === "1") {
       this.setState({ maxQuestions: 10 });
     }
   }

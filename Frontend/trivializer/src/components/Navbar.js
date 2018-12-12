@@ -17,7 +17,7 @@ const NavBar = props => {
           Trivializer
         </a>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-toggle="collapse"
           data-target="#navbarSupportedContent"
@@ -25,34 +25,34 @@ const NavBar = props => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon" />
+          <span className="navbar-toggler-icon" />
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <Link to="" class="nav-link active">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item active">
+              <Link to="" className="nav-link active">
                 Home
               </Link>
             </li>
-            <li class="nav-item">
-              <Link to="/gameslist" class="nav-link active">
+            <li className="nav-item">
+              <Link to="/gameslist" className="nav-link active">
                 Games
               </Link>
             </li>
-            <li class="nav-item">
+            <li className="nav-item">
               <Link to="/billing" className="nav-link active">
                 Billing
               </Link>
             </li>
 
-            <li class="nav-item">
+            <li className="nav-item">
               <Link to="/setting" className="nav-link active">
                 Setting
               </Link>
             </li>
             {localStorage.getItem("user") || sessionStorage.getItem("jwt") ? (
-              <li class="nav-item">
+              <li className="nav-item">
                 <div onClick={logout} className="nav-logout nav-link active">
                   Sign Out
                 </div>
@@ -61,11 +61,11 @@ const NavBar = props => {
           </ul>
         </div>
       </nav>
-      <div class="vertical-navbar">
-        <ul class="nav flex-column">
-          <div class="inner-nav">
-            <li class="nav-item">
-              <Link to="/gameslist" class="nav-link active">
+      <div className="vertical-navbar">
+        <ul className="nav flex-column">
+          <div className="inner-nav">
+            <li className="nav-item">
+              <Link to="/gameslist" className="nav-link active">
                 Games
               </Link>
             </li>

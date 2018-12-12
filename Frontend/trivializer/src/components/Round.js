@@ -229,8 +229,16 @@ class Round extends Component {
                 <li className="breadcrumb-item">
                   <Link to="/">Home</Link>
                 </li>
+                <li className="breadcrumb-item">
+                  <Link to="/gameslist">Games</Link>
+                </li>
+                <li className="breadcrumb-item">
+                  <Link to={`/game/${this.state.gameId}`}>
+                    {this.state.gameName}
+                  </Link>
+                </li>
                 <li className="breadcrumb-item active" aria-current="page">
-                  Games
+                  {this.state.roundName}
                 </li>
               </ol>
             </nav>

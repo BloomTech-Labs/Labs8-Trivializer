@@ -56,8 +56,11 @@ class Game extends Component {
                 <li className="breadcrumb-item">
                   <Link to="/">Home</Link>
                 </li>
+                <li className="breadcrumb-item">
+                  <Link to="/gameslist">Games</Link>
+                </li>
                 <li className="breadcrumb-item active" aria-current="page">
-                  Games
+                  {this.props.game.gamename}
                 </li>
               </ol>
             </nav>

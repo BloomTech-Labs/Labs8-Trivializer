@@ -22,8 +22,10 @@ class LandingPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      registerURL: process.env.REACT_APP_BE_REGISTER_URL || `${URL.current_URL}/register`, // See ../URLs/index.js to change local vs served URL
-      signinURL: process.env.REACT_APP_BE_LOGIN_URL || `${URL.current_URL}/login`, // See ../URLs/index.js to change local vs served URL
+      registerURL:
+        process.env.REACT_APP_BE_REGISTER_URL || `${URL.current_URL}/register`, // See ../URLs/index.js to change local vs served URL
+      signinURL:
+        process.env.REACT_APP_BE_LOGIN_URL || `${URL.current_URL}/login`, // See ../URLs/index.js to change local vs served URL
       signup_username: "",
       signup_email: "",
       signup_password: "",
@@ -60,7 +62,8 @@ class LandingPage extends React.Component {
       if (validate(this.state.signup_username, username_regex) !== true) {
         validation = 0;
         this.setState({
-          username_error: "Needs to be: at least 4 characters, letters and numbers only."
+          username_error:
+            "Needs to be: at least 4 characters, letters and numbers only."
         });
       } else {
         this.setState({ username_error: "" });
@@ -86,7 +89,8 @@ class LandingPage extends React.Component {
       if (validate(this.state.signup_password, password_regex) !== true) {
         validation = 0;
         this.setState({
-          password_error: "1 lowercase letter, 1 number, and at least 8 characters needed."
+          password_error:
+            "1 lowercase letter, 1 number, and at least 8 characters needed."
         });
       } else {
         this.setState({ password_error: "" });
@@ -119,7 +123,8 @@ class LandingPage extends React.Component {
       if (validate(this.state.signin_username, username_regex) !== true) {
         validation = 0;
         this.setState({
-          username_error: "Needs to be: at least 4 characters, letters and numbers only."
+          username_error:
+            "Needs to be: at least 4 characters, letters and numbers only."
         });
       } else {
         this.setState({ username_error: "" });
@@ -285,7 +290,10 @@ class LandingPage extends React.Component {
     return (
       <div className="landing-page">
         {/* Top Navbar */}
-        <nav id="navbar-color" className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav
+          id="navbar-color"
+          className="navbar navbar-expand-lg navbar-light bg-light"
+        >
           {/* Navbar Left Side */}
           <img
             id="logo-img"
@@ -353,7 +361,10 @@ class LandingPage extends React.Component {
                       <div className="modal-dialog" role="document">
                         <div className="modal-content">
                           <div className="modal-header">
-                            <h5 className="signup-title modal-title" id="exampleModalLabel">
+                            <h5
+                              className="signup-title modal-title"
+                              id="exampleModalLabel"
+                            >
                               Sign Up Below
                             </h5>
 
@@ -386,7 +397,9 @@ class LandingPage extends React.Component {
                                     : { visibility: "hidden" }
                                 }
                               >
-                                {this.state.username_error ? this.state.username_error : null}
+                                {this.state.username_error
+                                  ? this.state.username_error
+                                  : null}
                               </label>
                               <input
                                 name="signup_email"
@@ -402,7 +415,9 @@ class LandingPage extends React.Component {
                                     : { visibility: "hidden" }
                                 }
                               >
-                                {this.state.email_error ? this.state.email_error : null}
+                                {this.state.email_error
+                                  ? this.state.email_error
+                                  : null}
                               </label>
                               <input
                                 type="password"
@@ -412,7 +427,9 @@ class LandingPage extends React.Component {
                                 placeholder="Password"
                               />
                               <label className="validation-label">
-                                {this.state.password_error ? this.state.password_error : null}
+                                {this.state.password_error
+                                  ? this.state.password_error
+                                  : null}
                               </label>
                               <input
                                 type="password"
@@ -440,13 +457,19 @@ class LandingPage extends React.Component {
                               </button>
                             </form>
                           </div>
-                          <div className="google-button-signup" onClick={this.googleLogin}>
+                          <div
+                            className="google-button-signup"
+                            onClick={this.googleLogin}
+                          >
                             <img
                               src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
                               onClick={this.googleLogin}
                               alt="googlesignup"
                             />
-                            <span className="google-text"> Sign In With Google</span>
+                            <span className="google-text">
+                              {" "}
+                              Sign In With Google
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -481,7 +504,10 @@ class LandingPage extends React.Component {
                       <div className="modal-dialog" role="document">
                         <div className="login-modal modal-content">
                           <div className="modal-header">
-                            <h5 className="login-title modal-title" id="exampleModalLabel">
+                            <h5
+                              className="login-title modal-title"
+                              id="exampleModalLabel"
+                            >
                               Login Below
                             </h5>
                             <button
@@ -506,7 +532,9 @@ class LandingPage extends React.Component {
                                 placeholder="Username"
                               />
                               <label className="validation-label">
-                                {this.state.username_error ? this.state.username_error : null}
+                                {this.state.username_error
+                                  ? this.state.username_error
+                                  : null}
                               </label>
                               <input
                                 type="password"
@@ -516,7 +544,9 @@ class LandingPage extends React.Component {
                                 placeholder="Password"
                               />
                               <label className="validation-label">
-                                {this.state.password_error ? this.state.password_error : null}
+                                {this.state.password_error
+                                  ? this.state.password_error
+                                  : null}
                               </label>
                               <button
                                 name="signin"
@@ -601,19 +631,22 @@ class LandingPage extends React.Component {
             <h1>Welcome to Bar Trivia</h1>
             <div className="descriptions">
               <p className="description-text">
-                Trivializer helps bar trivia hosts create their question sets and answer sheets by
-                pulling from a large and free API of trivia questions. Questions and answers sheets
-                can be printed easily and used on the fly.
+                Trivializer helps bar trivia hosts create their question sets
+                and answer sheets by pulling from a large and free API of trivia
+                questions. Questions and answers sheets can be printed easily
+                and used on the fly.
               </p>
               <p className="description-text">
-                Categories for trivia questions include Entertainment, Science, Art, History, and
-                much more. Questions can be filtered by 3 different difficulty settings and includes
-                True/False or Multiple Choice types.
+                Categories for trivia questions include Entertainment, Science,
+                Art, History, and much more. Questions can be filtered by 3
+                different difficulty settings and includes True/False or
+                Multiple Choice types.
               </p>
               <p className="description-text">
-                There are free and paid tiers of the app. Users who register get a welcome email and
-                can reset their password via email as well. Premium users enjoy unlimited games and
-                questions for their trivia rounds.
+                There are free and paid tiers of the app. Users who register get
+                a welcome email and can reset their password via email as well.
+                Premium users enjoy unlimited games and questions for their
+                trivia rounds.
               </p>
             </div>
             <button
