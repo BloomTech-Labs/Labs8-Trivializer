@@ -374,7 +374,6 @@ export const getNewQuestionsReq = questionsPackage => {
   return dispatch => {
     dispatch({ type: FETCHING_NEW_QUESTIONS });
     let concatenatedURL = buildApiCall(questionsPackage);
-
     axios
       .get(`${concatenatedURL}`)
       .then(({ data }) => {
@@ -463,7 +462,7 @@ const buildApiCall = callPackage => {
     callPackage.difficulty ? `&difficulty=${callPackage.difficulty}` : ""
   }`;
 
-  let type = `${callPackage.category ? `&type=${callPackage.type}` : ""}`;
+  let type = `${callPackage.type ? `&type=${callPackage.type}` : ""}`;
 
   let concatenatedURL = `${questionsApiURL}${amount}${category}${difficulty}${type}`;
 
@@ -480,5 +479,3 @@ const assembleAnswers = (correct_answer, incorrect_answers) => {
 
   return answers;
 };
-
-const formatSaveQuestionsPackage = () => {};

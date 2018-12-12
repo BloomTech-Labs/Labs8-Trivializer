@@ -85,7 +85,7 @@ class RoundsList extends Component {
         return question;
       });
 
-      this.props.saveQuestionsReq(this.props.new_questions);
+      this.props.saveQuestionsReq(questionsPackage);
       this.props.resetFetchedNewQuestions();
     }
   };

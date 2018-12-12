@@ -126,11 +126,6 @@ class Rounds extends Component {
       difficulty: this.state.difficulty,
       questions: this.state.numQs
     };
-    // **************************
-    // If the new parameter are different from the old parameters
-    // make a new call to get the new questions from the Questions API
-    // save those questions under this roundID to the Questions Table
-    // **************************
 
     // Modify the existing round in the database
     this.props.editRoundReq(formattedBackendRound, this.props.round.roundId);
