@@ -246,7 +246,7 @@ class Round extends Component {
           {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
             <div onClick={this.logout} className="top-rightside">
               <p>Log Out</p>
-              <i class="fas fa-sign-out-alt" />
+              <i className="fas fa-sign-out-alt" />
             </div>
           ) : null}
         </div>
@@ -308,28 +308,28 @@ class Round extends Component {
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="bottomContent-round">
-              {this.state.noResults ? (
-                <div>No Results from Questions API!</div>
-              ) : null}
-              {questions.map((question, index) => {
-                return (
-                  <Questions
-                    key={question.id}
-                    index={index}
-                    moveQuestion={this.moveQuestion}
-                    replaceQuestion={() =>
-                      this.replaceQuestion(question.id, index)
-                    }
-                    undoReplace={() => {
-                      this.undoReplace(question.id, index);
-                    }}
-                    question={question}
-                  />
-                );
-              })}
+              <div className="bottomContent-round">
+                {this.state.noResults ? (
+                  <div>No Results from Questions API!</div>
+                ) : null}
+                {questions.map((question, index) => {
+                  return (
+                    <Questions
+                      key={question.id}
+                      index={index}
+                      moveQuestion={this.moveQuestion}
+                      replaceQuestion={() =>
+                        this.replaceQuestion(question.id, index)
+                      }
+                      undoReplace={() => {
+                        this.undoReplace(question.id, index);
+                      }}
+                      question={question}
+                    />
+                  );
+                })}
+              </div>
             </div>
           </div>
           {/* Hidden Answer sheets without highlighted answers. Shows on print */}
