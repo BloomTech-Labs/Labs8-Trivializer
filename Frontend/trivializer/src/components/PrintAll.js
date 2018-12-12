@@ -20,12 +20,10 @@ class PrintAll extends Component {
   }
 
   componentDidMount = () => {
-    console.log("COMPONENTDIDMOUNT!!");
+    // Start by getting all rounds for this game, and all the questions
+    // in DB
     this.props.fetchRoundsReq(this.props.gameId);
-    // this.props.getAllRoundsReq();
     this.props.getAllQuestionsReq();
-
-    console.log("this.props PrintAll: ", this.props);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -34,24 +32,23 @@ class PrintAll extends Component {
       JSON.stringify(this.props.rounds) !== JSON.stringify(this.state.rounds) &&
       this.props.rounds
     ) {
-      console.log("this.props.rounds, this.state.rounds: ", this.props.rounds, this.state.rounds);
-
       this.setState({ rounds: this.props.rounds });
     }
 
     // Check to see if our questions on state match those on props
     if (
-      JSON.stringify(this.props.all_questions) !== JSON.stringify(this.state.questions) &&
+      JSON.stringify(this.props.all_questions) !==
+        JSON.stringify(this.state.questions) &&
       this.props.all_questions
     ) {
       this.setState({
-        // rounds: rounds,
         questions: this.props.all_questions
       });
     }
 
     // If The Redux store indicates that we have saved new questions
-    // get questions from the database additional parameters below are to
+    // get questions from the database.
+    // Additional parameters below are to
     // limit the number of database calls we make
     if (
       this.props.saved_questions &&
@@ -73,8 +70,6 @@ class PrintAll extends Component {
     }
   };
   render() {
-    // console.log(this.state.questions);
-    // console.log(this.state.rounds);
     return (
       <div>
         {/* Map over questions and display questions with highlighted correct answer*/}
@@ -87,7 +82,9 @@ class PrintAll extends Component {
             <div key={index}>
               {index !== 0 ? <div className="page-break" /> : null}
               <div className="hiddenAnswers-info">
-                <div>{this.props.game ? this.props.game.gamename : "No Game Name"}</div>
+                <div>
+                  {this.props.game ? this.props.game.gamename : "No Game Name"}
+                </div>
                 <div>{round.name}</div>
                 <div>
                   <img
@@ -98,9 +95,14 @@ class PrintAll extends Component {
                 </div>
               </div>
 
-              <div className="instructions-round">***Please Circle the Correct Answer***</div>
+              <div className="instructions-round">
+                ***Please Circle the Correct Answer***
+              </div>
 
-              <RoundAnswers questions={questions} userSheets={this.props.userSheets} />
+              <RoundAnswers
+                questions={questions}
+                userSheets={this.props.userSheets}
+              />
             </div>
           );
         })}

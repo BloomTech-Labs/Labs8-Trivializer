@@ -57,8 +57,6 @@ class GamesList extends Component {
 
   componentDidUpdate = prevProps => {
     if (JSON.stringify(prevProps.games) !== JSON.stringify(this.props.games)) {
-      console.log("prevProps.games: ", prevProps.games);
-      console.log("this.props.games: ", this.props.games);
       this.setState({ games: this.props.games });
     }
   };
@@ -139,7 +137,8 @@ class GamesList extends Component {
                       </div>
                     ))}
                   </div>
-                  {this.props.games.length > 0 && this.props.games.length < this.state.gameLimit ? (
+                  {this.props.games.length > 0 &&
+                  this.props.games.length < this.state.gameLimit ? (
                     <div className="game-container">
                       <div className="game-summary">
                         <Link className="newgame-link" to={`/creategame`}>

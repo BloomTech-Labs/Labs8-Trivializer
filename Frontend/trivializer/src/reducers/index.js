@@ -157,7 +157,6 @@ const gamesReducer = (state = initialState, action) => {
         showButtons: false
       });
     case SAVED_ROUND:
-      console.log("action.payload!!", action.payload);
       let newRounds = state.rounds.slice();
       newRounds.push(action.payload);
       return Object.assign({}, state, {
@@ -222,7 +221,6 @@ const gamesReducer = (state = initialState, action) => {
         fetched_saved_questions: false
       });
     case FETCHED_SAVED_QUESTIONS:
-      console.log("action.payload", action.payload);
       return Object.assign({}, state, {
         fetching_saved_questions: false,
         fetched_saved_questions: true,
@@ -240,7 +238,6 @@ const gamesReducer = (state = initialState, action) => {
         saved_questions: false
       });
     case SAVED_QUESTIONS:
-      console.log("IN SAVED QUESTIONS REDUCER");
       return Object.assign({}, state, {
         saving_questions: false,
         saved_questions: true,
@@ -274,14 +271,12 @@ const gamesReducer = (state = initialState, action) => {
     // This resets the state in Rounds.js to avoid
     // triggering a push in componentDidUpdate when not necessary
     case RESET_ROUNDS:
-      console.log("RESET CALLED!!");
       return Object.assign({}, state, {
         fetched_saved_questions: false,
         roundName: null
         // roundId: null Setting this to null leaves RoundsList Save Quetions without a roundId
       });
     case RESET_NEW_QUESTIONS:
-      console.log("RESET New  Questions CALLED!!");
       return Object.assign({}, state, {
         fetched_new_questions: false
       });
