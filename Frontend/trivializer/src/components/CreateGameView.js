@@ -88,7 +88,7 @@ class CreateGameView extends Component {
           {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
             <div onClick={this.logout} className="top-rightside">
               <p>Log Out</p>
-              <i class="fas fa-sign-out-alt" />
+              <i className="fas fa-sign-out-alt" />
             </div>
           ) : null}
         </div>
@@ -99,28 +99,28 @@ class CreateGameView extends Component {
             <div className="createnewGame-container">
               <h1>Game Details</h1>
               <form>
-                <div class="form-group">
+                <div className="form-group">
                   <div className="form-description">Game Title</div>
                   <input
                     name="gameTitle"
-                    class="form-control gameInput"
+                    className="form-control gameInput"
                     placeholder="Ex. Wednesday Night Trivia"
                     value={this.state.gameTitle}
                     onChange={this.handleChange}
                   />
                 </div>
 
-                <div class="form-group">
+                <div className="form-group">
                   <div className="form-description">Game Details</div>
                   <textarea
-                    class="form-control descriptionInput"
+                    className="form-control descriptionInput"
                     placeholder="Ex. Trivia for Wednesday night with college friends, category: TV & Entertainment"
                     name="gameDescription"
                     value={this.state.gameDescription}
                     onChange={this.handleChange}
                   />
                 </div>
-                <div class="form-group third-form">
+                <div className="form-group third-form">
                   <div className="form-description">Date to Play</div>
                   <input
                     className="calendar"
@@ -131,7 +131,11 @@ class CreateGameView extends Component {
                     onChange={this.handleChange}
                   />
                 </div>
-                <button type="button" className="savegameButton" onClick={this.handleSubmit}>
+                <button
+                  type="button"
+                  className="savegameButton"
+                  onClick={this.handleSubmit}
+                >
                   Save Game
                 </button>
               </form>
