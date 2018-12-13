@@ -13,12 +13,12 @@ class SpeechBubble extends Component {
   render() {
     return (
       <div>
-        <div class="speech-bubble-ds">
+        <div className="speech-bubble-ds">
           <p>
             <strong>{this.props.title}</strong>
           </p>
           <p>{this.props.phrase}</p>
-          <div class="speech-bubble-ds-arrow" />
+          <div className="speech-bubble-ds-arrow" />
         </div>
       </div>
     );

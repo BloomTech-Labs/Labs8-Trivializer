@@ -77,7 +77,7 @@ class Rounds extends Component {
   componentDidMount() {
     this.props.resetRoundStateReq();
     if (sessionStorage.getItem("status") === "1") {
-      this.setState({ maxQuestions: 10 });
+      this.setState({ maxQuestions: 10, showSavedNotification: false });
     }
   }
 
@@ -108,16 +108,8 @@ class Rounds extends Component {
       this.state.savingRound === true &&
       this.props.roundId === this.props.round.roundId
     ) {
-      this.setState({ savingRound: false });
+      this.setState({ savingRound: false, showSavedNotification: true });
     }
-
-    // if (
-    //   prevProps.saving_questions === true &&
-    //   this.props.saving_questions === false &&
-    //   this.props.roundId === this.props.round.roundId
-    // ) {
-    //   this.setState({ showSavedNotification: true });
-    // }
   };
 
   handleChange = e => {
@@ -193,11 +185,6 @@ class Rounds extends Component {
   render() {
     return (
       <div className="rounds">
-        {this.state.showSavedNotification === true ? (
-          <div className={"rounds-speechBubble"}>
-            <SpeechBubble phrase={"Saved!"} />
-          </div>
-        ) : null}
         <input
           type="text"
           onChange={this.handleChange}
@@ -300,6 +287,11 @@ class Rounds extends Component {
             Delete
           </button>
         </div>
+        {this.state.showSavedNotification === true ? (
+          <div className={"rounds-speechBubble"}>
+            <SpeechBubble phrase={"Saved!"} />
+          </div>
+        ) : null}
       </div>
     );
   }

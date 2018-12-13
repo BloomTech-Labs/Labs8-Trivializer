@@ -188,8 +188,8 @@ const gamesReducer = (state = initialState, action) => {
         edited_round: false
       });
     case EDITED_ROUND:
-      console.log("EDITED ROUND ID: ", action.payload.roundId);
       let editedRounds = state.rounds.slice();
+      console.log("editedRounds", editedRounds);
       // Replaces the old Round in Redux store with new, modified round from database
       if (editedRounds) {
         editedRounds = editedRounds.map(round => {
@@ -202,6 +202,7 @@ const gamesReducer = (state = initialState, action) => {
       } else {
         editedRounds = action.payload;
       }
+      console.log("state.rounds", state.rounds);
       console.log("editedRounds: ", editedRounds);
       console.log("action.payload.roundId: ", action.payload.roundId);
       return Object.assign({}, state, {

@@ -115,6 +115,7 @@ class RoundsList extends Component {
               </div>
             );
           })}
+          {/* The following adds a round limit to unpaid users */}
           {this.props.rounds.length >= 0 &&
           this.props.rounds.length < this.state.roundLimit ? (
             <div id="newRound">
