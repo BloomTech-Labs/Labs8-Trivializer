@@ -106,27 +106,27 @@ class RoundsList extends Component {
 
   render() {
     return (
-      <div>
-        <div className="roundsList">
-          {this.props.rounds.map((round, i) => {
-            return (
-              <div key={round.roundId}>
+      <div className="roundslist-container">
+        {this.props.rounds.map((round, i) => {
+          return (
+            <div className="rounds-container">
+              <div className="rounds-summary" key={round.roundId}>
                 <Rounds index={i} round={round} />
               </div>
-            );
-          })}
-          {this.props.rounds.length >= 0 &&
-          this.props.rounds.length < this.state.roundLimit ? (
-            <div id="newRound">
-              <div className="newRound-inner">
-                <div>New Round</div>
-                <button className="btn btn-primary" onClick={this.newRound}>
-                  +
-                </button>
-              </div>
             </div>
-          ) : null}
-        </div>
+          );
+        })}
+        {this.props.rounds.length >= 0 &&
+        this.props.rounds.length < this.state.roundLimit ? (
+          <div className="rounds-container">
+            <div className="rounds-summary">
+              <div>New Round</div>
+              <button className="btn btn-primary" onClick={this.newRound}>
+                +
+              </button>
+            </div>
+          </div>
+        ) : null}
       </div>
     );
   }
