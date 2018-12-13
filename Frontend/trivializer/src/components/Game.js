@@ -25,15 +25,13 @@ class Game extends Component {
   }
 
   componentDidMount() {
+    console.log("this.props", this.props);
     const id = Number(this.props.match.params.id);
     this.props.fetchGameReq(id);
     this.setState({ game: this.props.game, gameId: id });
   }
 
-  componentDidUpdate = prevProps => {
-    if (prevProps.show_buttons !== this.props.show_buttons) {
-    }
-  };
+  componentDidUpdate = prevProps => {};
 
   logout = e => {
     e.preventDefault();
@@ -43,10 +41,6 @@ class Game extends Component {
   };
 
   render() {
-    if (!this.props.game) {
-      return <div>Loading...</div>;
-    }
-
     return (
       <div className="game-page">
         <div className="top-content">
@@ -128,6 +122,9 @@ class Game extends Component {
           )}
         </div>
         <div className="hidden">
+          {/* The first is for the answer Key, userSheets === false, with highlighted answers
+          the second is for users and has no highlighted answers*/}
+
           <PrintAll
             userSheets={false}
             game={this.props.game}

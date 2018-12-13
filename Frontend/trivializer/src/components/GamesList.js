@@ -6,11 +6,8 @@ import { connect } from "react-redux";
 import { fetchGamesReq, deleteGameReq } from "../actions";
 import "./styles/Components.css";
 import axios from "axios";
-import "./GamesList.css";
-import {
-  NotificationContainer,
-  NotificationManager
-} from "react-notifications";
+import "./styles/GamesList.css";
+import { NotificationManager } from "react-notifications";
 import SpeechBubble from "./speech_bubble/SpeechBubble";
 import Notifications from "./Notifications";
 import "./styles/GamesList.css";
@@ -31,7 +28,6 @@ class GamesList extends Component {
 
   componentDidMount() {
     this.props.fetchGamesReq();
-    console.log("this.props.games.length: ", this.props.games.length);
     if (!sessionStorage.getItem("gamesNotified")) {
       NotificationManager.info(
         <SpeechBubble
@@ -139,7 +135,7 @@ class GamesList extends Component {
                 <div className="gamelist-overallcontainer">
                   <div className="gamelist-container">
                     {this.props.games.map((game, i) => (
-                      <div className="game-container">
+                      <div className="game-container" key={i}>
                         <div className="game-summary">
                           <Link
                             className="game-link"

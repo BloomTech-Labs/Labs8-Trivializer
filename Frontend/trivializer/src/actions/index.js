@@ -121,6 +121,7 @@ export const submitGameReq = game => {
         }
       })
       .then(({ data }) => {
+        console.log("data: ", data);
         dispatch({ type: SAVED_GAME, payload: data });
       })
       .catch(err => {

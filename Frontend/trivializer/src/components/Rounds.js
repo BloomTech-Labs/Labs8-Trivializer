@@ -103,7 +103,7 @@ class Rounds extends Component {
     // Listening for if we were formerly saving the questions, now we're not (meaning questions were saved)
     // And our local state is set to savingRound === true
     if (
-      prevProps.saving_questions == true &&
+      prevProps.saving_questions === true &&
       this.props.saving_questions === false &&
       this.state.savingRound === true &&
       this.props.roundId === this.props.round.roundId

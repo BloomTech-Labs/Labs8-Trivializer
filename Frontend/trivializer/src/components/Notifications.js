@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  NotificationContainer,
-  NotificationManager
-} from "react-notifications";
+import { NotificationContainer } from "react-notifications";
 
 class Example extends React.Component {
   render() {
