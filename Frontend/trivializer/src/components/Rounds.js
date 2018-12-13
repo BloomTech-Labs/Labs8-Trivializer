@@ -194,7 +194,7 @@ class Rounds extends Component {
             value={this.state.numQs}
             onChange={this.handleChange}
             id="numQs"
-            className="select"
+            className="amount"
           >
             {[...Array(this.state.maxQuestions).keys()].map((number, i) => {
               number = number + 1;
@@ -215,7 +215,7 @@ class Rounds extends Component {
             name="category"
             value={this.state.category}
             onChange={this.handleChange}
-            className="select"
+            className="category"
           >
             {Object.keys(categoryOptions).map((option, i) => {
               return (
@@ -234,7 +234,7 @@ class Rounds extends Component {
             name="difficulty"
             value={this.state.difficulty}
             onChange={this.handleChange}
-            className="select"
+            className="difficulty"
           >
             {Object.keys(difficultyOptions).map((option, i) => {
               return (
@@ -253,7 +253,7 @@ class Rounds extends Component {
             name="type"
             value={this.state.type}
             onChange={this.handleChange}
-            className="select"
+            className="type"
           >
             {Object.keys(typeOptions).map((option, i) => {
               return (

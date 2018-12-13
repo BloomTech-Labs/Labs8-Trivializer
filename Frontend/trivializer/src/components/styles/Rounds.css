@@ -38,24 +38,14 @@
   height: 340px;
 }
 
-/* .rounds {
-  border: 2px solid black; */
-/* margin: 4%;
-  display: flex;
-  flex-flow: column;
+.rounds .dropdown select {
   border-radius: 5px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-} */
+}
 
-/* .rounds:hover {
-  box-shadow: 1px 1px;
-  border: 3px solid grey;
-} */
-
-.roundsTitle {
-  align-self: center;
-  max-width: 75%;
+.rounds .category,
+.rounds .difficulty,
+.rounds .type {
+  width: 150px;
 }
 
 .roundsOption {
@@ -77,7 +67,7 @@
 }
 
 .select:hover {
-  box-shadow: 2px 2px;
+  /* box-shadow: 2px 2px; */
 }
 
 .select {
