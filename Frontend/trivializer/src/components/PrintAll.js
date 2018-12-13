@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import RoundAnswers from "./RoundAnswers";
 import { connect } from "react-redux";
-import "./PrintAll.css";
 import {
   fetchRoundsReq,
   getAllRoundsReq,
@@ -21,8 +20,9 @@ class PrintAll extends Component {
   }
 
   componentDidMount = () => {
+    // Start by getting all rounds for this game, and all the questions
+    // in DB
     this.props.fetchRoundsReq(this.props.gameId);
-    // this.props.getAllRoundsReq();
     this.props.getAllQuestionsReq();
   };
 
@@ -42,13 +42,13 @@ class PrintAll extends Component {
       this.props.all_questions
     ) {
       this.setState({
-        // rounds: rounds,
         questions: this.props.all_questions
       });
     }
 
     // If The Redux store indicates that we have saved new questions
-    // get questions from the database additional parameters below are to
+    // get questions from the database.
+    // Additional parameters below are to
     // limit the number of database calls we make
     if (
       this.props.saved_questions &&
@@ -70,8 +70,6 @@ class PrintAll extends Component {
     }
   };
   render() {
-    // console.log(this.state.questions);
-    // console.log(this.state.rounds);
     return (
       <div>
         {/* Map over questions and display questions with highlighted correct answer*/}

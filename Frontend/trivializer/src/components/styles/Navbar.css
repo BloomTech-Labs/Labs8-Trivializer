@@ -7,7 +7,7 @@
   width: 150px;
   height: 75vh;
   background-color: #b13c2d;
-  height: 95vh;
+  height: 94.5vh;
 }
 
 .vertical-navbar li {
@@ -38,7 +38,7 @@
 }
 
 /* Phone View, killing off vertical navbar */
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 470px) {
   .vertical-navbar {
     display: none;
   }

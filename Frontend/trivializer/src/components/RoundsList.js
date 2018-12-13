@@ -8,7 +8,7 @@ import {
   saveQuestionsReq,
   resetFetchedNewQuestions
 } from "../actions";
-import "./Rounds.css";
+import "./styles/Rounds.css";
 
 /**
  * RoundsList Component
@@ -29,8 +29,8 @@ class RoundsList extends Component {
     const id = Number(this.props.id);
 
     this.props.fetchRoundsReq(id);
-    console.log("this.props RoundsList 1: ", this.props.new_questions);
-    if (sessionStorage.getItem("status") == 1) {
+
+    if (sessionStorage.getItem("status") === "1") {
       this.setState({ roundLimit: 10 });
     }
   }
@@ -55,8 +55,6 @@ class RoundsList extends Component {
             })
             .includes(this.props.roundId)
         ) {
-          console.log("CONDITION MET TO GET QUESTIONS!!!!");
-
           let formattedRound = {
             gameId: this.props.gameId,
             roundName: this.props.round.roundName,
@@ -79,32 +77,29 @@ class RoundsList extends Component {
         JSON.stringify(this.props.new_questions) &&
       this.props.roundId !== null
     ) {
-      // if (this.props.fetched_new_questions) {
-      console.log("CONDITION MET TO SAVE QUESTIONS!!!!");
       let round_id = this.props.roundId;
-      console.log("this.props.roundId: ", this.props.roundId);
+
       let questionsPackage = this.props.new_questions.slice();
       questionsPackage = questionsPackage.map(question => {
         question.rounds_id = round_id;
         return question;
       });
-      this.props.saveQuestionsReq(this.props.new_questions);
+
+      this.props.saveQuestionsReq(questionsPackage);
       this.props.resetFetchedNewQuestions();
-      // }
     }
   };
 
   newRound = () => {
     let round = {
       gameId: this.props.gameId,
-      roundName: "Default Value",
+      roundName: "",
       category: "any",
       type: "multiple",
       difficulty: "easy",
       questions: 1
     };
 
-    console.log("round: ", round);
     // Save the Round to the database with default values
     this.props.saveRoundReq(round);
   };

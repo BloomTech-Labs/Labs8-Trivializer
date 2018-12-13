@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchGamesReq, deleteGameReq } from "../actions";
-import "./Components.css";
+import "./styles/Components.css";
 import axios from "axios";
 import "./GamesList.css";
 import {
@@ -13,6 +13,8 @@ import {
 } from "react-notifications";
 import SpeechBubble from "./speech_bubble/SpeechBubble";
 import Notifications from "./Notifications";
+import "./styles/GamesList.css";
+import URL from "../URLs";
 
 /**
  * GamesList Component
@@ -23,7 +25,6 @@ class GamesList extends Component {
     super(props);
     this.state = {
       games: [],
-      game: this.props.game,
       gameLimit: 3
     };
   }
@@ -69,7 +70,7 @@ class GamesList extends Component {
         });
     }
 
-    if (sessionStorage.getItem("status") == 1) {
+    if (sessionStorage.getItem("status") === "1") {
       this.setState({ gameLimit: 10 });
     }
   }
@@ -114,7 +115,8 @@ class GamesList extends Component {
           </div>
           {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
             <div onClick={this.logout} className="top-rightside">
-              Sign Out
+              <p>Log Out</p>
+              <i className="fas fa-sign-out-alt" />
             </div>
           ) : null}
         </div>
@@ -128,7 +130,7 @@ class GamesList extends Component {
 
                 <Link to={`/creategame`}>
                   {" "}
-                  <i class="fas fa-plus-circle" />
+                  <i className="fas fa-plus-circle" />
                 </Link>
               </div>
             ) : (
@@ -162,7 +164,7 @@ class GamesList extends Component {
                       <div className="game-summary">
                         <Link className="newgame-link" to={`/creategame`}>
                           <div className="cardnewGame">New Game</div>
-                          <i class="small-fas fas fa-plus-circle" />
+                          <i className="small-fas fas fa-plus-circle" />
                         </Link>
                       </div>
                     </div>

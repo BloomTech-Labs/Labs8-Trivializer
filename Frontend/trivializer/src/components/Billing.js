@@ -2,12 +2,11 @@ import React from "react";
 import Navbar from "./Navbar";
 import Pay from "./Pay";
 import { Link } from "react-router-dom";
-import "./Components.css";
-import "./Billing.css";
+import "./styles/Components.css";
+import "./styles/Billing.css";
 
 const Billing = props => {
   const logout = e => {
-    console.log("props is: ", props);
     e.preventDefault();
     localStorage.clear();
     sessionStorage.clear();
@@ -31,7 +30,8 @@ const Billing = props => {
         </div>
         {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
           <div onClick={logout} className="top-rightside">
-            Sign Out
+            <p>Log Out</p>
+            <i class="fas fa-sign-out-alt" />
           </div>
         ) : null}
       </div>

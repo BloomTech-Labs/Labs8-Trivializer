@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { fetchGameReq } from "../actions";
 import EditGameView from "./EditGameView";
 import RoundsList from "./RoundsList";
-import "./Game.css";
+import "./styles/Game.css";
 import ReactToPrint from "react-to-print";
 import PrintAll from "./PrintAll";
 
@@ -35,6 +35,13 @@ class Game extends Component {
     }
   };
 
+  logout = e => {
+    e.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    this.props.history.push("/");
+  };
+
   render() {
     if (!this.props.game) {
       return <div>Loading...</div>;
@@ -49,15 +56,21 @@ class Game extends Component {
                 <li className="breadcrumb-item">
                   <Link to="/">Home</Link>
                 </li>
+                <li className="breadcrumb-item">
+                  <Link to="/gameslist">Games</Link>
+                </li>
                 <li className="breadcrumb-item active" aria-current="page">
-                  Games
+                  {this.props.game.gamename}
                 </li>
               </ol>
             </nav>
           </div>
-          <Link className="top-rightside" to="/">
-            Sign Out
-          </Link>
+          {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
+            <div onClick={this.logout} className="top-rightside">
+              <p>Log Out</p>
+              <i className="fas fa-sign-out-alt" />
+            </div>
+          ) : null}
         </div>
 
         <div className="main-content">
@@ -67,6 +80,7 @@ class Game extends Component {
           ) : (
             <div className="content-container">
               <div className="editAndRounds">
+                <h1>Game Information</h1>
                 <div className="game-top">
                   <EditGameView game={this.props.game} />
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./Game.css";
+import "./styles/Game.css";
 
 /**
  * Games Component
@@ -25,7 +25,7 @@ class Games extends Component {
         </div>
         <div>
           Played:{" "}
-          {this.props.game.datePlayed === 0
+          {this.props.game.datePlayed === "0"
             ? null
             : `${played.getMonth() + 1}-${played.getDate() + 1}-${played.getFullYear()}`}
         </div>

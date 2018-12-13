@@ -22,7 +22,7 @@
 }
 
 .navbar-link:hover {
-  color: red;
+  color: #b13c2d;
 }
 
 /* Signup & Signin Modal*/
@@ -101,6 +101,12 @@ input:hover {
 #new-signin {
   cursor: pointer;
 }
+#new-signup:hover,
+#new-signin:hover {
+  cursor: pointer;
+  color: #b13c2d;
+  text-decoration: underline;
+}
 
 /* Carousel */
 .carousel-design {
@@ -108,6 +114,10 @@ input:hover {
 }
 
 /*Main Text */
+.main-text {
+  width: 85%;
+  margin: 0 auto;
+}
 .main-text h1 {
   text-align: left;
   margin-left: 10%;

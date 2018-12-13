@@ -48,10 +48,7 @@ server.post("/register", async (req, res) => {
       subject: "Welcome",
       text: "Welcome to Bar Trivia. Thank you for registering!"
     };
-    mailgun.messages().send(data, function(error, body) {
-      console.log("mailgun messages body: ", body);
-      console.log("process.env", process.env);
-    });
+    mailgun.messages().send(data, function(error, body) {});
 
     // Generate a new token and return it
     let token = utilities.generateToken(username);
@@ -72,7 +69,7 @@ server.post("/login", utilities.getUser, async (req, res) => {
     let user = await db("Users")
       .where({ username })
       .first();
-    console.log("user login:", user);
+
     if (!user) throw new Error("Incorrect credentials");
     // decrypt the returned, hashed password
     decryptedPassword = sc.decrypt(user.password);
@@ -94,7 +91,6 @@ server.post("/login", utilities.getUser, async (req, res) => {
 
 // Creates a new game, takes in username, created, gameName and description (string)
 server.post("/creategame", utilities.protected, async (req, res) => {
-  console.log("ENTERED CREATEGAME\n\n\n\n");
   try {
     const { username, created, gameName, description, played } = req.body;
 
@@ -151,7 +147,7 @@ server.put("/editgame/:id", utilities.protected, async (req, res) => {
 
     // get game by id
     let newGame = await db("Games").where("id", id);
-    console.log("newGame: ", newGame);
+
     res.status(200).json({
       gameId: newGame[0]["id"],
       gamename: newGame[0]["name"],
@@ -198,7 +194,7 @@ server.get("/rounds/:id", utilities.protected, async (req, res) => {
   try {
     // Game Id passed in request URL
     const { id } = req.params;
-    console.log("Id in GET /rounds: ", id);
+
     // Gets all rounds from the Rounds table where the game id matches the passed in ID
     let rounds = await db
       // Choose which columns we want to select, and assign an alias
@@ -213,7 +209,7 @@ server.get("/rounds/:id", utilities.protected, async (req, res) => {
       .from("Games as g")
       .leftJoin("Rounds as r", "r.game_id", "g.id")
       .where("g.id", "=", id);
-    console.log("\n\nrounds: ", rounds);
+
     res.status(200).json(rounds);
   } catch (err) {
     console.log("err.message get rounds: ", newGame);
@@ -233,14 +229,10 @@ server.delete("/round/:id", utilities.protected, async (req, res) => {
     // If response === 0 no round was deleted
     if (response === 0) throw new Error(`Error deleting round ${id}`);
 
-    console.log("id: ", id);
-
     // delete all questions based on that round
     let responseQuestions = await db("Questions")
       .where({ rounds_id: id })
       .del();
-
-    console.log("response, responseQuestions: ", response, responseQuestions);
 
     res.status(200).json(`Round ${response} deleted`);
   } catch (err) {
@@ -260,7 +252,6 @@ server.delete("/game/:id", utilities.protected, async (req, res) => {
     // If response === 0 no game was deleted
     if (response === 0) throw new Error(`Error deleting game ${id}`);
 
-    console.log("id: ", id);
     res.status(200).json(`Game ${response} deleted`);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -401,6 +392,19 @@ server.put("/edituser/:id", utilities.protected, async (req, res) => {
     const { id } = req.params;
     const edit = { ...req.body };
 
+    // Test if parameter passed in, but with no value
+    // Remove to avoid setting value in database to ""
+    for (const key in edit) {
+      if (edit[key] === "") {
+        delete edit[key];
+      }
+    }
+
+    if (edit["password"]) {
+      const hash = sc.encrypt(edit["password"]);
+      edit["password"] = hash;
+    }
+
     // update user by id
     let question = await db("Users")
       .where("id", id)
@@ -411,8 +415,9 @@ server.put("/edituser/:id", utilities.protected, async (req, res) => {
         phone: edit.phone,
         logo: edit.logo,
         paid: edit.paid,
-        userName: edit.userName
+        username: edit.userName
       });
+
     // get user by id
     let newUser = await db("Users").where("id", id);
 
@@ -457,7 +462,6 @@ server.get("/questions/:id", utilities.protected, async (req, res) => {
       .leftJoin("Questions as q", "q.rounds_id", "r.id")
       .where("q.rounds_id", "=", id);
 
-    console.log("questions: ", questions);
     if (questions) {
       questions = questions.map(question => {
         question.incorrect_answers = question.incorrect_answers.split("--");
@@ -494,8 +498,6 @@ server.get("/users/:id", utilities.protected, async (req, res) => {
       .from("Users as u")
       .where("u.id", "=", id);
 
-    //   console.log("questions: ", questions);
-
     res.status(200).json(users);
   } catch (err) {
     console.log("err.message: ", err.message);
@@ -514,7 +516,7 @@ server.post("/questions", utilities.protected, async (req, res) => {
     }
 
     let successfulInsert = await db("Questions").insert(req.body);
-    console.log("\n\nsuccessfulInsert: ", successfulInsert);
+
     res.status(200).json({ successfulInsert });
   } catch (err) {
     console.log("err.message", err.message);
@@ -531,8 +533,6 @@ server.delete("/questions/:id", utilities.protected, async (req, res) => {
     let responseQuestions = await db("Questions")
       .where({ rounds_id: id })
       .del();
-
-    console.log("responseQuestions: ", responseQuestions);
 
     res.status(200).json(`Questions deleted`);
   } catch (err) {
@@ -551,8 +551,6 @@ server.delete("/game/:id", utilities.protected, async (req, res) => {
 
     // If response === 0 no game was deleted
     if (response === 0) throw new Error(`Error deleting game ${id}`);
-
-    console.log("id: ", id);
 
     res.status(200).json(`Game ${response} deleted`);
   } catch (err) {

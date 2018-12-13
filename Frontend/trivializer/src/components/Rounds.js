@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import "./Rounds.css";
+import "./styles/Rounds.css";
 import { connect } from "react-redux";
 import SpeechBubble from "./speech_bubble/SpeechBubble";
 import {
@@ -58,7 +58,7 @@ class Rounds extends Component {
     this.state = {
       round: this.props.round,
       maxQuestions: 5,
-      roundName: this.props.round.roundName || "New Round",
+      roundName: this.props.round.roundName || "",
       numQs: this.props.round.numQs || 1,
       category: this.props.round.category || "any",
       difficulty: this.props.round.difficulty || "any",
@@ -76,7 +76,7 @@ class Rounds extends Component {
 
   componentDidMount() {
     this.props.resetRoundStateReq();
-    if (sessionStorage.getItem("status") == 1) {
+    if (sessionStorage.getItem("status") === "1") {
       this.setState({ maxQuestions: 10 });
     }
   }
@@ -108,8 +108,7 @@ class Rounds extends Component {
       this.state.savingRound === true &&
       this.props.roundId === this.props.round.roundId
     ) {
-      console.log("this.state: ", this.state);
-      this.setState({ savingRound: false, showSavedNotification: true });
+      this.setState({ savingRound: false });
     }
 
     // if (
@@ -142,11 +141,6 @@ class Rounds extends Component {
       difficulty: this.state.difficulty,
       questions: this.state.numQs
     };
-    // **************************
-    // If the new parameter are different from the old parameters
-    // make a new call to get the new questions from the Questions API
-    // save those questions under this roundID to the Questions Table
-    // **************************
 
     // Modify the existing round in the database
     this.props.editRoundReq(formattedBackendRound, this.props.round.roundId);
@@ -208,6 +202,7 @@ class Rounds extends Component {
           type="text"
           onChange={this.handleChange}
           name="roundName"
+          placeholder="Ex. Marvel Round"
           value={this.state.roundName}
           className="roundsTitle"
         />
@@ -289,19 +284,19 @@ class Rounds extends Component {
             })}
           </select>
         </div>
-        <div className="roundsButtons">
-          <button onClick={this.saveRound} className="roundsButton">
+        <div className="roundsButtons ">
+          <button onClick={this.saveRound} className="roundsButton save">
             Save
           </button>
           {this.state.savingRound ? (
             <div>Saving Questions</div>
           ) : (
-            <button className="roundsButton" onClick={this.enterRound}>
+            <button className="roundsButton see" onClick={this.enterRound}>
               See Questions
             </button>
           )}
 
-          <button className="roundsButton" onClick={this.delete}>
+          <button className="roundsButton delete" onClick={this.delete}>
             Delete
           </button>
         </div>

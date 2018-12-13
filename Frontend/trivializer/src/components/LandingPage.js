@@ -2,13 +2,13 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import axios from "axios";
-import "./Components.css";
-import "./LandingPage.css";
+import "./styles/Components.css";
+import "./styles/LandingPage.css";
 import { auth, provider } from "./OAuth/firebase";
 import URL from "../URLs";
 
 const username_regex = /^[a-zA-Z0-9]{4,}$/;
-const email_regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+const email_regex = /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/;
 const password_regex = /(?=.*\d)(?=.*[a-z])[0-9a-zA-Z]{8,}/;
 
 function validate(field, regex) {
@@ -40,7 +40,7 @@ class LandingPage extends React.Component {
   }
 
   redirect = e => {
-    // Note from nicky: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
+    // Note: This redirect function, and the reload in it, is here because I was using <Link> before, and whenever I clicked it to direct it to /gameslist, the background would stay blurred as if the modal is still open. If there's a better fix for it, please let me know :)
     window.location.reload();
     this.props.history.push("/gameslist");
   };
@@ -142,6 +142,10 @@ class LandingPage extends React.Component {
   // Handles the submit call on the Register modal
   handleSubmit = e => {
     e.preventDefault();
+    if (e.target.name === "register" || e.target.name === "signin") {
+      sessionStorage.clear();
+      localStorage.removeItem("guest");
+    }
     if (!localStorage.getItem("guest") && !sessionStorage.getItem("jwt")) {
       let credentials;
       let url;
@@ -170,7 +174,6 @@ class LandingPage extends React.Component {
       } else {
         return;
       }
-      console.log("url is: ", url);
       axios
         .post(url, {
           username: credentials.username,
@@ -289,7 +292,7 @@ class LandingPage extends React.Component {
         {/* Top Navbar */}
         <nav
           id="navbar-color"
-          class="navbar navbar-expand-lg navbar-light bg-light"
+          className="navbar navbar-expand-lg navbar-light bg-light"
         >
           {/* Navbar Left Side */}
           <img
@@ -300,7 +303,7 @@ class LandingPage extends React.Component {
             height="85px"
           />
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -308,26 +311,24 @@ class LandingPage extends React.Component {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon" />
+            <span className="navbar-toggler-icon" />
           </button>
 
           {/* Navbar Right Side */}
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="landingpage-navbar-right navbar-nav ml-auto">
-              <li class="navbar-right-list active">
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="landingpage-navbar-right navbar-nav ml-auto">
+              {/*<li className="navbar-right-list active">
                 <div className="navbar-link">How To Play</div>
-              </li>
-              <li class="navbar-right-list active">
+    </li>*/}
+              <li className="navbar-right-list active">
                 <Link to="/faqs" className="navbar-link">
                   FAQ's
                 </Link>
               </li>
-              <li class="navbar-right-list active">
-                <div className="navbar-link">About Us</div>
-              </li>
+
               {sessionStorage.getItem("userId") &&
               !localStorage.getItem("guest") ? (
-                <li class="navbar-right-list active">
+                <li className="navbar-right-list active">
                   <div href="#" onClick={this.signOut} className="navbar-link">
                     Sign Out
                   </div>
@@ -338,7 +339,7 @@ class LandingPage extends React.Component {
 
               {sessionStorage.getItem("userId") &&
               !localStorage.getItem("guest") ? null : (
-                <li class="navbar-right-list">
+                <li className="navbar-right-list">
                   <div className="signup">
                     <div
                       id="new-signup"
@@ -465,6 +466,7 @@ class LandingPage extends React.Component {
                             <img
                               src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
                               onClick={this.googleLogin}
+                              alt="googlesignup"
                             />
                             <span className="google-text">
                               {" "}
@@ -481,7 +483,7 @@ class LandingPage extends React.Component {
               {/* Navbar Sign In Link */}
               {sessionStorage.getItem("userId") &&
               !localStorage.getItem("guest") ? null : (
-                <li class="navbar-right-list">
+                <li className="navbar-right-list">
                   <div className="signin">
                     <div
                       id="new-signin"
@@ -563,7 +565,10 @@ class LandingPage extends React.Component {
                             className="google-button-signup"
                             onClick={this.googleLogin}
                           >
-                            <img src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg" />
+                            <img
+                              src="https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/8215f6659adc202403198fef903a447e/sign-in-with-google.svg"
+                              alt="googlebutton"
+                            />
                             <span className="google-text">
                               {" "}
                               Sign In With Google
@@ -582,58 +587,58 @@ class LandingPage extends React.Component {
         {/* Carousel */}
         <div
           id="carouselExampleIndicators"
-          class="carousel slide"
+          className="carousel slide"
           data-ride="carousel"
         >
-          <ol class="carousel-indicators">
+          <ol className="carousel-indicators">
             <li
               data-target="#carouselExampleIndicators"
               data-slide-to="0"
-              class="active"
+              className="active"
             />
             <li data-target="#carouselExampleIndicators" data-slide-to="1" />
             <li data-target="#carouselExampleIndicators" data-slide-to="2" />
           </ol>
-          <div class="carousel-inner">
-            <div class="carousel-item active">
+          <div className="carousel-inner">
+            <div className="carousel-item active">
               <img
                 className="carousel-design d-block w-100"
                 src="../img/neon.jpg"
                 alt="First slide"
               />
             </div>
-            <div class="carousel-item">
+            <div className="carousel-item">
               <img
-                class="carousel-design d-block w-100"
+                className="carousel-design d-block w-100"
                 src="../img/barscore.jpg"
                 alt="Second slide"
               />
             </div>
-            <div class="carousel-item">
+            <div className="carousel-item">
               <img
-                class="carousel-design d-block w-100"
+                className="carousel-design d-block w-100"
                 src="../img/open.jpg"
                 alt="Third slide"
               />
             </div>
           </div>
           <a
-            class="carousel-control-prev"
+            className="carousel-control-prev"
             href="#carouselExampleIndicators"
             role="button"
             data-slide="prev"
           >
-            <span class="carousel-control-prev-icon" aria-hidden="true" />
-            <span class="sr-only">Previous</span>
+            <span className="carousel-control-prev-icon" aria-hidden="true" />
+            <span className="sr-only">Previous</span>
           </a>
           <a
-            class="carousel-control-next"
+            className="carousel-control-next"
             href="#carouselExampleIndicators"
             role="button"
             data-slide="next"
           >
-            <span class="carousel-control-next-icon" aria-hidden="true" />
-            <span class="sr-only">Next</span>
+            <span className="carousel-control-next-icon" aria-hidden="true" />
+            <span className="sr-only">Next</span>
           </a>
         </div>
 
@@ -645,16 +650,20 @@ class LandingPage extends React.Component {
               <p className="description-text">
                 Trivializer helps bar trivia hosts create their question sets
                 and answer sheets by pulling from a large and free API of trivia
-                questions.
+                questions. Questions and answers sheets can be printed easily
+                and used on the fly.
               </p>
               <p className="description-text">
                 Categories for trivia questions include Entertainment, Science,
                 Art, History, and much more. Questions can be filtered by 3
-                different difficulty settings.{" "}
+                different difficulty settings and includes True/False or
+                Multiple Choice types.
               </p>
               <p className="description-text">
                 There are free and paid tiers of the app. Users who register get
                 a welcome email and can reset their password via email as well.
+                Premium users enjoy unlimited games and questions for their
+                trivia rounds.
               </p>
             </div>
             <button

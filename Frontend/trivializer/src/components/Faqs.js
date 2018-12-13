@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
-import "./Components.css";
+import "./styles/Components.css";
 
 const Faqs = () => {
   const logout = e => {
@@ -27,7 +27,8 @@ const Faqs = () => {
         </div>
         {sessionStorage.getItem("jwt") && !localStorage.getItem("guest") ? (
           <div onClick={logout} className="top-rightside">
-            Sign Out
+            <p>Log Out</p>
+            <i class="fas fa-sign-out-alt" />
           </div>
         ) : null}
       </div>
