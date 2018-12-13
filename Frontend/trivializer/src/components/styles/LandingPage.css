@@ -1,6 +1,7 @@
 /* Top Navbar */
 .bg-light {
-  background-color: white !important; /*Note: important is put here because by default, our white is not white enough to match our logo white. */
+  background-color: white !important;
+  /*Note: important is put here because by default, our white is not white enough to match our logo white. */
 }
 
 .landingpage-navbar-right {
@@ -17,6 +18,7 @@
 .navbar-right-list:hover {
   cursor: pointer;
 }
+
 .navbar-link {
   color: black;
 }
@@ -76,6 +78,7 @@ input:hover {
   width: 100%;
   height: 50px;
 }
+
 .login-button {
   margin-top: 18px;
 }
@@ -101,6 +104,7 @@ input:hover {
 #new-signin {
   cursor: pointer;
 }
+
 #new-signup:hover,
 #new-signin:hover {
   cursor: pointer;
@@ -118,6 +122,7 @@ input:hover {
   width: 85%;
   margin: 0 auto;
 }
+
 .main-text h1 {
   text-align: left;
   margin-left: 10%;
@@ -174,6 +179,7 @@ input:hover {
   .description-text {
     width: 80%;
   }
+
   #navbar-color img {
     margin-left: -20px;
   }

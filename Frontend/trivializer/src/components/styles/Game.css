@@ -28,5 +28,16 @@
 }
 
 .game-title {
+  text-align: center;
   font-size: 26px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 20px;
+}
+
+.game-description {
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

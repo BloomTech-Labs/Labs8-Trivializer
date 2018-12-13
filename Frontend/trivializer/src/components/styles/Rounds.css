@@ -38,8 +38,22 @@
   height: 340px;
 }
 
+.cardnewRound {
+  color: black;
+  margin-bottom: 30px;
+}
+
+.rounds .roundsTitle,
 .rounds .dropdown select {
   border-radius: 5px;
+}
+
+.rounds .roundsTitle {
+  padding: 0 5px;
+}
+
+.rounds .amount {
+  width: 45px;
 }
 
 .rounds .category,
@@ -66,13 +80,13 @@
   font-size: 17px;
 }
 
-.select:hover {
-  /* box-shadow: 2px 2px; */
-}
+/* .select:hover {
+  box-shadow: 2px 2px;
+} */
 
 .select {
   max-width: 50%;
-  font-size: 10px;
+  /* font-size: 10px; */
 }
 
 .roundsButtons {
@@ -82,27 +96,31 @@
   margin: 1% 4% 2% 4%;
 }
 
-.roundsButton {
-  border-radius: 10%;
+.roundsButtons button {
+  width: 90px;
+  height: 30px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
   margin: 1%;
-  font-size: 12px;
   padding: 0;
 }
 
-.see {
+/* .see {
   font-size: 12px !important;
-}
+} */
 
-.roundsButton:hover {
-  box-shadow: 2px 2px;
+.goto-questions:hover {
+  /* box-shadow: 2px 2px; */
   border: 1px solid #007bff;
   background: #007bff;
   color: white;
 }
 
-.roundsButton:active {
+/* .roundsButton:active {
   transform: translateY(2px);
-}
+} */
 
 .save:hover {
   border: 1px solid #2db168;
@@ -124,16 +142,16 @@
   max-width: 200px;
 }
 
-#newRound {
+/* #newRound {
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-items: center;
   width: 25%;
   min-height: 240px;
-}
+} */
 
-.newRound-inner {
+/* .newRound-inner {
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -142,19 +160,11 @@
   width: 100%;
   margin: 4%;
   opacity: 0.5;
-}
+} */
 
-.newRound-inner:hover {
+/* .newRound-inner:hover {
   opacity: 1;
-}
-
-.roundsButtons button {
-  width: 90px;
-  height: 30px;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-}
+} */
 
 @media print {
   .btn-primary {
@@ -188,7 +198,7 @@
 }
 
 @media screen and (max-width: 950px) {
-  .see {
+  /* .see {
     font-size: 11px !important;
-  }
+  } */
 }

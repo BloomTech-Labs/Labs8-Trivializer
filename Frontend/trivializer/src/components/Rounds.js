@@ -264,15 +264,18 @@ class Rounds extends Component {
             })}
           </select>
         </div>
-        <div className="roundsButtons ">
+        <div className="roundsButtons">
           <button onClick={this.saveRound} className="roundsButton save">
             Save
           </button>
           {this.state.savingRound ? (
-            <div>Saving Questions</div>
+            <div>Saving...</div>
           ) : (
-            <button className="roundsButton see" onClick={this.enterRound}>
-              See Questions
+            <button
+              className="roundsButton goto-questions"
+              onClick={this.enterRound}
+            >
+              Questions
             </button>
           )}
 
