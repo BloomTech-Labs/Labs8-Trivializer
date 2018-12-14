@@ -118,7 +118,7 @@ class GamesList extends Component {
                 <div className="gamelist-overallcontainer">
                   <div className="gamelist-container">
                     {this.props.games.map((game, i) => (
-                      <div className="game-container">
+                      <div key={game["gameId"]} className="game-container">
                         <div className="game-summary">
                           <Link
                             className="game-link"
