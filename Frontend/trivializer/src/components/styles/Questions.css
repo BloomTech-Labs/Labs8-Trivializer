@@ -5,6 +5,7 @@
   flex-flow: row;
   justify-content: space-between;
   border: 2px solid black;
+  border-radius: 10px;
   margin: 2%;
   text-align: left;
   padding: 1%;
@@ -44,9 +45,11 @@
   flex-flow: row;
   justify-content: center;
 }
+
 .col-1-round {
   min-width: 75%;
 }
+
 .col-2-round {
   display: flex;
   flex-flow: column;
@@ -57,6 +60,7 @@
   margin: 2%;
   width: 160px;
 }
+
 .btn-primary.save {
   margin: 2%;
   background: #74cc21;
@@ -93,18 +97,22 @@
   justify-content: space-around;
   align-items: center;
 }
+
 .instructions-round {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 @media print {
   .hiddenAnswers {
     display: block;
   }
+
   .questions-col2 {
     display: none;
   }
+
   .question {
     flex-flow: column;
   }
