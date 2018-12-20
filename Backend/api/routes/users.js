@@ -559,6 +559,7 @@ server.get("/allquestions/:id", utilities.protected, (req, res) => {
     .leftJoin("Rounds as r", "r.id", "q.rounds_id")
     .leftJoin("Games as g", "g.id", "r.game_id")
     .where("g.id", "=", req.params.id)
+    .orderBy("q.rounds_id")
     .then(response => {
       res.status(200).json(response);
     })

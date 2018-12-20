@@ -70,15 +70,23 @@ class PrintAll extends Component {
     }
   };
   render() {
-    let counter = 0;
+    let questionIndex = 0;
     return (
       <div>
         {/* Map over questions and display questions with highlighted correct answer*/}
         {/* Filter questions by roundId */}
+        {/* questions are in order based on round_id, start at questionIndex to avoid iterating over already printed questions */}
         {this.state.rounds.map((round, index) => {
-          let questions = this.state.questions.filter(
-            question => question.rounds_id === round.roundId
-          );
+          let questions = this.state.questions
+            .slice(questionIndex)
+            .filter(question => {
+              if (question.rounds_id === round.roundId) {
+                questionIndex++;
+                return question;
+              } else {
+                return null;
+              }
+            });
           return (
             <div key={index}>
               {index !== 0 ? <div className="page-break" /> : null}

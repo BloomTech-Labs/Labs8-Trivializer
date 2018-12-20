@@ -436,7 +436,7 @@ export const getAllQuestionsReq = gameId => {
           question.answers = question.answers.split("--");
           return question;
         });
-
+        console.log("data", data);
         dispatch({ type: FETCHED_ALL_QUESTIONS, payload: data });
       })
       .catch(err => {
