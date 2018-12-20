@@ -424,15 +424,11 @@ export const getAllQuestionsReq = gameId => {
   return dispatch => {
     dispatch({ type: FETCHING_ALL_QUESTIONS });
     axios
-      .get(
-        `${BE_URL}/questions`,
-        { gameId },
-        {
-          headers: {
-            Authorization: `${sessionStorage.getItem("jwt")}`
-          }
+      .get(`${BE_URL}/allquestions/${gameId}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("jwt")}`
         }
-      )
+      })
       .then(({ data }) => {
         // Convert all arrays (stored as strings) back into arrays
         data = data.map(question => {

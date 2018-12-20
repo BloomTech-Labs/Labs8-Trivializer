@@ -541,12 +541,25 @@ server.delete("/questions/:id", utilities.protected, async (req, res) => {
   }
 });
 
-// Get all Questions table
-server.get("/questions", utilities.protected, (req, res) => {
-  console.log("req.body", req.body);
+// Get all Questions for a GAME ID passed in
+server.get("/allquestions/:id", utilities.protected, (req, res) => {
   db("Questions")
+    .select(
+      "q.id",
+      "q.rounds_id",
+      "q.category",
+      "q.difficulty",
+      "q.type",
+      "q.question",
+      "q.correct_answer",
+      "q.incorrect_answers",
+      "q.answers"
+    )
+    .from("Questions as q")
+    .leftJoin("Rounds as r", "r.id", "q.rounds_id")
+    .leftJoin("Games as g", "g.id", "r.game_id")
+    .where("g.id", "=", req.params.id)
     .then(response => {
-      console.log("response", response);
       res.status(200).json(response);
     })
     .catch(err => {

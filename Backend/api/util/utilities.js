@@ -47,6 +47,7 @@ module.exports = {
     if (token) {
       jwt.verify(token, secret, (err, decodedToken) => {
         if (err) {
+          console.log("Token Invalid!!");
           return res
             .status(401)
             .json({ error: "you shall not pass!! - token invalid" });
@@ -56,6 +57,7 @@ module.exports = {
         next();
       });
     } else {
+      console.log("No Token!!");
       return res.status(401).json({ error: "you shall not pass!! - no token" });
     }
   }

@@ -70,6 +70,7 @@ class PrintAll extends Component {
     }
   };
   render() {
+    let counter = 0;
     return (
       <div>
         {/* Map over questions and display questions with highlighted correct answer*/}
