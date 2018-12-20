@@ -208,11 +208,12 @@ server.get("/rounds/:id", utilities.protected, async (req, res) => {
       )
       .from("Games as g")
       .leftJoin("Rounds as r", "r.game_id", "g.id")
-      .where("g.id", "=", id);
+      .where("g.id", "=", id)
+      .orderBy("roundId");
 
     res.status(200).json(rounds);
   } catch (err) {
-    console.log("err.message get rounds: ", newGame);
+    console.log("err.message get rounds: ", err.message);
     res.status(500).json({ message: "Problem getting rounds" });
   }
 });

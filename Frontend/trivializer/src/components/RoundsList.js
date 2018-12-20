@@ -21,7 +21,8 @@ class RoundsList extends Component {
       newRoundOuterHeight: null,
       newRoundWidth: null,
       newRoundHeight: null,
-      roundLimit: 3
+      roundLimit: 3,
+      rounds: []
     };
   }
 
