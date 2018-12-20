@@ -541,31 +541,30 @@ server.delete("/questions/:id", utilities.protected, async (req, res) => {
   }
 });
 
-server.delete("/game/:id", utilities.protected, async (req, res) => {
-  const { id } = req.params;
-  try {
-    // Returns the id of the deleted game
-    let response = await db("Games")
-      .where({ id })
-      .del();
-
-    // If response === 0 no game was deleted
-    if (response === 0) throw new Error(`Error deleting game ${id}`);
-
-    res.status(200).json(`Game ${response} deleted`);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
-
-// Get all Questions table
-server.get("/questions", utilities.protected, (req, res) => {
+// Get all Questions for a GAME ID passed in
+server.get("/allquestions/:id", utilities.protected, (req, res) => {
   db("Questions")
+    .select(
+      "q.id",
+      "q.rounds_id",
+      "q.category",
+      "q.difficulty",
+      "q.type",
+      "q.question",
+      "q.correct_answer",
+      "q.incorrect_answers",
+      "q.answers"
+    )
+    .from("Questions as q")
+    .leftJoin("Rounds as r", "r.id", "q.rounds_id")
+    .leftJoin("Games as g", "g.id", "r.game_id")
+    .where("g.id", "=", req.params.id)
+    .orderBy("q.rounds_id")
     .then(response => {
       res.status(200).json(response);
     })
     .catch(err => {
-      console.log(err);
+      console.log("err.message: ", err.message);
       res.status(500).json(err);
     });
 });

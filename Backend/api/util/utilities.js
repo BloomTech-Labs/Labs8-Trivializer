@@ -4,6 +4,7 @@ const db = require("../../data/db");
 let secret = process.env.SECRET; // Gets the secret stored in the .env file
 
 module.exports = {
+  // Gets a user from the DB and assigns that user to req.userIn
   getUser: function(req, res, next) {
     let { username } = req.body;
     try {
@@ -25,6 +26,7 @@ module.exports = {
     }
   },
 
+  // Generates a new users, or a logged in users token
   generateToken: function(username) {
     const payload = {
       username: username
@@ -38,12 +40,14 @@ module.exports = {
     return jwt.sign(payload, secret, options);
   },
 
+  // Validates a users JWT token
   protected: function(req, res, next) {
     const token = req.headers.authorization;
 
     if (token) {
       jwt.verify(token, secret, (err, decodedToken) => {
         if (err) {
+          console.log("Token Invalid!!");
           return res
             .status(401)
             .json({ error: "you shall not pass!! - token invalid" });
@@ -53,6 +57,7 @@ module.exports = {
         next();
       });
     } else {
+      console.log("No Token!!");
       return res.status(401).json({ error: "you shall not pass!! - no token" });
     }
   }

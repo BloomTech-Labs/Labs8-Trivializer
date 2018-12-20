@@ -4,8 +4,8 @@
 const URL = {
   // Change commented URL to change between local and live testing
 
-  current_URL: "https://testsdepl.herokuapp.com/users"
-  // current_URL: "http://localhost:3300/users"
+  // current_URL: "https://testsdepl.herokuapp.com/users"
+  current_URL: "http://localhost:3300/users"
 };
 
 export default URL;

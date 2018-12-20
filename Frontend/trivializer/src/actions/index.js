@@ -419,11 +419,12 @@ export const getAllRoundsReq = () => {
   };
 };
 
-export const getAllQuestionsReq = () => {
+// Gets all questions based on a game ID
+export const getAllQuestionsReq = gameId => {
   return dispatch => {
     dispatch({ type: FETCHING_ALL_QUESTIONS });
     axios
-      .get(`${BE_URL}/questions`, {
+      .get(`${BE_URL}/allquestions/${gameId}`, {
         headers: {
           Authorization: `${sessionStorage.getItem("jwt")}`
         }
@@ -435,7 +436,7 @@ export const getAllQuestionsReq = () => {
           question.answers = question.answers.split("--");
           return question;
         });
-
+        console.log("data", data);
         dispatch({ type: FETCHED_ALL_QUESTIONS, payload: data });
       })
       .catch(err => {

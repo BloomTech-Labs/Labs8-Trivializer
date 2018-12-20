@@ -23,7 +23,7 @@ class PrintAll extends Component {
     // Start by getting all rounds for this game, and all the questions
     // in DB
     this.props.fetchRoundsReq(this.props.gameId);
-    this.props.getAllQuestionsReq();
+    this.props.getAllQuestionsReq(this.props.gameId);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -58,26 +58,35 @@ class PrintAll extends Component {
         !this.props.saving_round)
     ) {
       this.props.fetchRoundsReq(this.props.gameId);
-      this.props.getAllQuestionsReq();
+      this.props.getAllQuestionsReq(this.props.gameId);
       this.props.resetAllRoundsAllQuestionsReq();
     }
 
     // If we deleted a round, get all questions and rounds
     if (this.props.deleted_round) {
       this.props.fetchRoundsReq(this.props.gameId);
-      this.props.getAllQuestionsReq();
+      this.props.getAllQuestionsReq(this.props.gameId);
       this.props.resetAllRoundsAllQuestionsReq();
     }
   };
   render() {
+    let questionIndex = 0;
     return (
       <div>
         {/* Map over questions and display questions with highlighted correct answer*/}
         {/* Filter questions by roundId */}
+        {/* questions are in order based on round_id, start at questionIndex to avoid iterating over already printed questions */}
         {this.state.rounds.map((round, index) => {
-          let questions = this.state.questions.filter(
-            question => question.rounds_id === round.roundId
-          );
+          let questions = this.state.questions
+            .slice(questionIndex)
+            .filter(question => {
+              if (question.rounds_id === round.roundId) {
+                questionIndex++;
+                return question;
+              } else {
+                return null;
+              }
+            });
           return (
             <div key={index}>
               {index !== 0 ? <div className="page-break" /> : null}
