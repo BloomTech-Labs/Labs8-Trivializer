@@ -543,12 +543,14 @@ server.delete("/questions/:id", utilities.protected, async (req, res) => {
 
 // Get all Questions table
 server.get("/questions", utilities.protected, (req, res) => {
+  console.log("req.body", req.body);
   db("Questions")
     .then(response => {
+      console.log("response", response);
       res.status(200).json(response);
     })
     .catch(err => {
-      console.log(err);
+      console.log("err.message: ", err.message);
       res.status(500).json(err);
     });
 });

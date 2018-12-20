@@ -23,7 +23,7 @@ class PrintAll extends Component {
     // Start by getting all rounds for this game, and all the questions
     // in DB
     this.props.fetchRoundsReq(this.props.gameId);
-    this.props.getAllQuestionsReq();
+    this.props.getAllQuestionsReq(this.props.gameId);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -58,14 +58,14 @@ class PrintAll extends Component {
         !this.props.saving_round)
     ) {
       this.props.fetchRoundsReq(this.props.gameId);
-      this.props.getAllQuestionsReq();
+      this.props.getAllQuestionsReq(this.props.gameId);
       this.props.resetAllRoundsAllQuestionsReq();
     }
 
     // If we deleted a round, get all questions and rounds
     if (this.props.deleted_round) {
       this.props.fetchRoundsReq(this.props.gameId);
-      this.props.getAllQuestionsReq();
+      this.props.getAllQuestionsReq(this.props.gameId);
       this.props.resetAllRoundsAllQuestionsReq();
     }
   };
