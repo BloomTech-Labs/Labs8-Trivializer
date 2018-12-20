@@ -541,23 +541,6 @@ server.delete("/questions/:id", utilities.protected, async (req, res) => {
   }
 });
 
-server.delete("/game/:id", utilities.protected, async (req, res) => {
-  const { id } = req.params;
-  try {
-    // Returns the id of the deleted game
-    let response = await db("Games")
-      .where({ id })
-      .del();
-
-    // If response === 0 no game was deleted
-    if (response === 0) throw new Error(`Error deleting game ${id}`);
-
-    res.status(200).json(`Game ${response} deleted`);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
-
 // Get all Questions table
 server.get("/questions", utilities.protected, (req, res) => {
   db("Questions")
