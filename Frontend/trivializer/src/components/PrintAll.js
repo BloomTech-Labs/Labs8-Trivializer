@@ -70,23 +70,21 @@ class PrintAll extends Component {
     }
   };
   render() {
-    let questionIndex = 0;
+    let questionsByRoundId = this.state.questions.reduce((acc, question) => {
+      if (acc[question.rounds_id]) {
+        acc[question.rounds_id].push(question);
+      } else {
+        acc[question.rounds_id] = [question];
+      }
+
+      return acc;
+    }, {});
     return (
       <div>
         {/* Map over questions and display questions with highlighted correct answer*/}
-        {/* Filter questions by roundId */}
-        {/* questions are in order based on round_id, start at questionIndex to avoid iterating over already printed questions */}
+        {/* questionsByRoundId is object with round.roundId as the key, and arrays of questions as values */}
         {this.state.rounds.map((round, index) => {
-          let questions = this.state.questions
-            .slice(questionIndex)
-            .filter(question => {
-              if (question.rounds_id === round.roundId) {
-                questionIndex++;
-                return question;
-              } else {
-                return null;
-              }
-            });
+          let questions = questionsByRoundId[round.roundId] || [];
           return (
             <div key={index}>
               {index !== 0 ? <div className="page-break" /> : null}
