@@ -7,6 +7,7 @@ import EditGameView from "./EditGameView";
 import RoundsList from "./RoundsList";
 import "./styles/Game.css";
 import PrintAll from "./PrintAll";
+import ReactToPrint from "react-to-print";
 
 /**
  * Game Component
@@ -79,6 +80,36 @@ class Game extends Component {
           ) : (
             <div className="content-container">
               <div className="editAndRounds">
+                <div className="printButtons">
+                  {!this.props.show_buttons ? (
+                    <button type="button" className="btn btn-primary round">
+                      Print Answer Key
+                    </button>
+                  ) : (
+                    <ReactToPrint
+                      trigger={() => (
+                        <button type="button" className="btn btn-primary round">
+                          Print Answer Key
+                        </button>
+                      )}
+                      content={() => this.props.answerKeyRef}
+                    />
+                  )}
+                  {!this.props.show_buttons ? (
+                    <button type="button" className="btn btn-primary round">
+                      Print Answer Sheet
+                    </button>
+                  ) : (
+                    <ReactToPrint
+                      trigger={() => (
+                        <button type="button" className="btn btn-primary round">
+                          Print Answer Sheet
+                        </button>
+                      )}
+                      content={() => this.props.userSheetRef}
+                    />
+                  )}
+                </div>
                 <h1>Game Information</h1>
                 <div className="game-top">
                   <EditGameView
