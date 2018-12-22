@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchGameReq, updateGameReq } from "../actions";
 import "./styles/EditGameView.css";
+import ReactToPrint from "react-to-print";
 
 /**
  * EditGameView
@@ -87,10 +88,43 @@ class EditGameView extends Component {
             onChange={this.handleChange}
           />
         </div>
-
-        <button className="saveButton" onClick={this.handleUpdate}>
-          Update Game Info
-        </button>
+        <div className="game-buttons">
+          <div className="printButtons">
+            {!this.props.show_buttons ? (
+              <button type="button" className="btn btn-primary round">
+                Print Answer Key
+              </button>
+            ) : (
+              <ReactToPrint
+                trigger={() => (
+                  <button type="button" className="btn btn-primary round">
+                    Print Answer Key
+                  </button>
+                )}
+                content={() => this.props.answerKeyRef}
+              />
+            )}
+            {!this.props.show_buttons ? (
+              <button type="button" className="btn btn-primary round">
+                Print Answer Sheet
+              </button>
+            ) : (
+              <ReactToPrint
+                trigger={() => (
+                  <button type="button" className="btn btn-primary round">
+                    Print Answer Sheet
+                  </button>
+                )}
+                content={() => this.props.userSheetRef}
+              />
+            )}
+          </div>
+          <div className="saveButton-container">
+            <button className="saveButton" onClick={this.handleUpdate}>
+              Update Game Info
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

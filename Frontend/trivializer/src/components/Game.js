@@ -6,7 +6,6 @@ import { fetchGameReq } from "../actions";
 import EditGameView from "./EditGameView";
 import RoundsList from "./RoundsList";
 import "./styles/Game.css";
-import ReactToPrint from "react-to-print";
 import PrintAll from "./PrintAll";
 
 /**
@@ -82,44 +81,11 @@ class Game extends Component {
               <div className="editAndRounds">
                 <h1>Game Information</h1>
                 <div className="game-top">
-                  <EditGameView game={this.props.game} />
-
-                  <div className="game-buttons">
-                    {!this.props.show_buttons ? (
-                      <button type="button" className="btn btn-primary round">
-                        Print Answer Key
-                      </button>
-                    ) : (
-                      <ReactToPrint
-                        trigger={() => (
-                          <button
-                            type="button"
-                            className="btn btn-primary round"
-                          >
-                            Print Answer Key
-                          </button>
-                        )}
-                        content={() => this.answerKeyRef}
-                      />
-                    )}
-                    {!this.props.show_buttons ? (
-                      <button type="button" className="btn btn-primary round">
-                        Print Answer Sheet
-                      </button>
-                    ) : (
-                      <ReactToPrint
-                        trigger={() => (
-                          <button
-                            type="button"
-                            className="btn btn-primary round"
-                          >
-                            Print Answer Sheet
-                          </button>
-                        )}
-                        content={() => this.userSheetRef}
-                      />
-                    )}
-                  </div>
+                  <EditGameView
+                    game={this.props.game}
+                    answerKeyRef={ref => (this.answerKeyRef = ref)}
+                    userSheetRef={ref => (this.userSheetRef = ref)}
+                  />
                 </div>
 
                 <RoundsList id={this.props.match.params.id} />

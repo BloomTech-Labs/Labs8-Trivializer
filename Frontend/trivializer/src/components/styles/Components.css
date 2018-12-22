@@ -28,7 +28,7 @@
 /* Main Content of components */
 .main-content {
   display: flex;
-  width: 90%;
+  /* width: 90%; */
 }
 
 .main-middle {
