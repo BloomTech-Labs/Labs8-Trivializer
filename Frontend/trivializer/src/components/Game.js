@@ -20,7 +20,8 @@ class Game extends Component {
       game: null,
       gameId: null,
       roundId: 0,
-      rounds: []
+      rounds: [],
+      showModifyGame: false
     };
   }
 
@@ -30,11 +31,6 @@ class Game extends Component {
     this.setState({ game: this.props.game, gameId: id });
   }
 
-  componentDidUpdate = prevProps => {
-    if (prevProps.show_buttons !== this.props.show_buttons) {
-    }
-  };
-
   logout = e => {
     e.preventDefault();
     localStorage.clear();
@@ -42,6 +38,9 @@ class Game extends Component {
     this.props.history.push("/");
   };
 
+  modifyGameInfo = e => {
+    this.setState({ showModifyGame: !this.state.showModifyGame });
+  };
   render() {
     if (!this.props.game) {
       return <div>Loading...</div>;
@@ -78,42 +77,43 @@ class Game extends Component {
           <div className="content-container">
             <div className="editAndRounds">
               <div className="printButtons">
-                {!this.props.show_buttons ? (
-                  <button type="button" className="btn btn-primary round">
-                    Print Answer Key
-                  </button>
-                ) : (
-                  <ReactToPrint
-                    trigger={() => (
-                      <button type="button" className="btn btn-primary round">
-                        Print Answer Key
-                      </button>
-                    )}
-                    content={() => this.answerKeyRef}
-                  />
-                )}
-                {!this.props.show_buttons ? (
-                  <button type="button" className="btn btn-primary round">
-                    Print Answer Sheet
-                  </button>
-                ) : (
-                  <ReactToPrint
-                    trigger={() => (
-                      <button type="button" className="btn btn-primary round">
-                        Print Answer Sheet
-                      </button>
-                    )}
-                    content={() => this.userSheetRef}
-                  />
-                )}
-              </div>
-              <h1>Game Information</h1>
-              <div className="game-top">
-                <EditGameView
-                  game={this.props.game}
-                  answerKeyRef={ref => (this.answerKeyRef = ref)}
-                  userSheetRef={ref => (this.userSheetRef = ref)}
+                <ReactToPrint
+                  trigger={() => (
+                    <button type="button" className="btn btn-primary round">
+                      Print Answer Key
+                    </button>
+                  )}
+                  content={() => this.answerKeyRef}
                 />
+
+                <ReactToPrint
+                  trigger={() => (
+                    <button type="button" className="btn btn-primary round">
+                      Print Answer Sheet
+                    </button>
+                  )}
+                  content={() => this.userSheetRef}
+                />
+
+                <button
+                  type="button"
+                  className="btn btn-primary round"
+                  onClick={this.modifyGameInfo}
+                >
+                  Modify Game info
+                </button>
+              </div>
+              <div className="game-top">
+                {this.state.showModifyGame ? (
+                  <div>
+                    <h1>Game Information</h1>
+                    <EditGameView
+                      game={this.props.game}
+                      answerKeyRef={ref => (this.answerKeyRef = ref)}
+                      userSheetRef={ref => (this.userSheetRef = ref)}
+                    />
+                  </div>
+                ) : null}
               </div>
 
               <RoundsList id={this.props.match.params.id} />
