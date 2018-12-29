@@ -75,54 +75,50 @@ class Game extends Component {
 
         <div className="main-content">
           <Navbar />
-          {this.state.hideButtons ? (
-            <div>Loading...</div>
-          ) : (
-            <div className="content-container">
-              <div className="editAndRounds">
-                <div className="printButtons">
-                  {!this.props.show_buttons ? (
-                    <button type="button" className="btn btn-primary round">
-                      Print Answer Key
-                    </button>
-                  ) : (
-                    <ReactToPrint
-                      trigger={() => (
-                        <button type="button" className="btn btn-primary round">
-                          Print Answer Key
-                        </button>
-                      )}
-                      content={() => this.props.answerKeyRef}
-                    />
-                  )}
-                  {!this.props.show_buttons ? (
-                    <button type="button" className="btn btn-primary round">
-                      Print Answer Sheet
-                    </button>
-                  ) : (
-                    <ReactToPrint
-                      trigger={() => (
-                        <button type="button" className="btn btn-primary round">
-                          Print Answer Sheet
-                        </button>
-                      )}
-                      content={() => this.props.userSheetRef}
-                    />
-                  )}
-                </div>
-                <h1>Game Information</h1>
-                <div className="game-top">
-                  <EditGameView
-                    game={this.props.game}
-                    answerKeyRef={ref => (this.answerKeyRef = ref)}
-                    userSheetRef={ref => (this.userSheetRef = ref)}
+          <div className="content-container">
+            <div className="editAndRounds">
+              <div className="printButtons">
+                {!this.props.show_buttons ? (
+                  <button type="button" className="btn btn-primary round">
+                    Print Answer Key
+                  </button>
+                ) : (
+                  <ReactToPrint
+                    trigger={() => (
+                      <button type="button" className="btn btn-primary round">
+                        Print Answer Key
+                      </button>
+                    )}
+                    content={() => this.answerKeyRef}
                   />
-                </div>
-
-                <RoundsList id={this.props.match.params.id} />
+                )}
+                {!this.props.show_buttons ? (
+                  <button type="button" className="btn btn-primary round">
+                    Print Answer Sheet
+                  </button>
+                ) : (
+                  <ReactToPrint
+                    trigger={() => (
+                      <button type="button" className="btn btn-primary round">
+                        Print Answer Sheet
+                      </button>
+                    )}
+                    content={() => this.userSheetRef}
+                  />
+                )}
               </div>
+              <h1>Game Information</h1>
+              <div className="game-top">
+                <EditGameView
+                  game={this.props.game}
+                  answerKeyRef={ref => (this.answerKeyRef = ref)}
+                  userSheetRef={ref => (this.userSheetRef = ref)}
+                />
+              </div>
+
+              <RoundsList id={this.props.match.params.id} />
             </div>
-          )}
+          </div>
         </div>
         <div className="hidden">
           <PrintAll
