@@ -11,13 +11,13 @@
 .game-top {
   display: flex;
   flex-flow: row;
-  align-items: center;
-  justify-content: space-evenly;
-  overflow: hidden;
+  justify-content: flex-start;
+  margin: 0 auto;
 }
 
 .printButtons {
   display: flex;
+  flex-flow: row wrap;
 }
 
 .hidden {
@@ -39,6 +39,10 @@
   text-overflow: ellipsis;
 }
 
+.game-editGameView {
+  overflow-y: hidden;
+  width: 50%;
+}
 /* Animation for editGameView */
 
 .showEditGame-enter {
@@ -56,4 +60,11 @@
 .showEditGame-leave.showEditGame-leave-active {
   max-height: 0px;
   transition: all 1000ms ease-out;
+}
+
+@media screen and (max-width: 950px) {
+  .game-editGameView {
+    width: 100%;
+    transition: width 2s;
+  }
 }

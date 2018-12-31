@@ -89,7 +89,7 @@ class EditGameView extends Component {
         </div>
 
         <button className="saveButton" onClick={this.handleUpdate}>
-          Update Game Info
+          Update
         </button>
       </div>
     );

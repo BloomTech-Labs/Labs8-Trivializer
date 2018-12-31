@@ -105,7 +105,10 @@ class Game extends Component {
                 </button>
               </div>
               <div className="game-top">
-                <CSSTransitionGroup transitionName="showEditGame">
+                <CSSTransitionGroup
+                  transitionName="showEditGame"
+                  className="game-editGameView"
+                >
                   {this.state.showModifyGame ? (
                     <div key="showModifyGame">
                       <h1>Game Information</h1>
