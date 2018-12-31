@@ -10,7 +10,7 @@
 }
 
 .editGameView input {
-  margin: 4% 0 4% 4%;
+  margin: 4% 0 4% 0;
   /* text-align: center; */
   /* width: 80%; */
 }
@@ -20,8 +20,8 @@
 }
 
 .saveButton {
-  margin: 0 auto;
-  margin-left: 50%;
+  align-self: flex-end;
+  max-width: 150px;
   color: white;
   background-color: #b13c2d;
   border: 1px solid #b13c2d;
@@ -61,6 +61,7 @@
 .date input {
   /* width: 400px;
   height: 45px; */
+  max-width: 220px;
   border-radius: 5px;
   text-align: left;
   align-self: flex-end;
@@ -84,7 +85,7 @@
   .title input,
   .description textarea,
   .date input {
-    /* width: 300px; */
+    width: 250px;
   }
 
   .description textarea {
@@ -92,7 +93,7 @@
   }
 
   .saveButton {
-    height: 45px;
+    /* height: 45px; */
   }
 }
 
@@ -112,7 +113,7 @@
 
   .saveButton {
     height: 35px;
-    margin-left: 25%;
+    /* margin-left: 25%; */
     margin-top: 20px;
   }
 }

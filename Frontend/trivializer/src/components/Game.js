@@ -110,7 +110,7 @@ class Game extends Component {
                   className="game-editGameView"
                 >
                   {this.state.showModifyGame ? (
-                    <div key="showModifyGame">
+                    <div key="showModifyGame" className="game-showModifyGame">
                       <h1>Game Information</h1>
                       <EditGameView
                         game={this.props.game}
