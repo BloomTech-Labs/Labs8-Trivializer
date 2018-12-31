@@ -31,10 +31,8 @@
   transition: width 2s ease;
 }
 
-.game-showModifyGame {
-  display: flex;
-  flex-flow: column;
-  align-items: flex-start;
+.game-showModifyGame h1 {
+  text-align: left;
 }
 
 /* Animation for editGameView */

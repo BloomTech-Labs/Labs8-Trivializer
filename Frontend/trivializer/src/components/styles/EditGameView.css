@@ -3,10 +3,10 @@
 .editGameView {
   display: flex;
   flex-flow: column;
-  padding: 2%;
+  /* padding: 2%; */
   width: 100%;
   background: #2da2b1;
-  margin: 1%;
+  /* margin: 1%; */
 }
 
 .editGameView input {
