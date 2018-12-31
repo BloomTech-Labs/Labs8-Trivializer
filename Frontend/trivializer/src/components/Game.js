@@ -8,6 +8,7 @@ import RoundsList from "./RoundsList";
 import "./styles/Game.css";
 import PrintAll from "./PrintAll";
 import ReactToPrint from "react-to-print";
+import { CSSTransitionGroup } from "react-transition-group";
 
 /**
  * Game Component
@@ -104,16 +105,18 @@ class Game extends Component {
                 </button>
               </div>
               <div className="game-top">
-                {this.state.showModifyGame ? (
-                  <div>
-                    <h1>Game Information</h1>
-                    <EditGameView
-                      game={this.props.game}
-                      answerKeyRef={ref => (this.answerKeyRef = ref)}
-                      userSheetRef={ref => (this.userSheetRef = ref)}
-                    />
-                  </div>
-                ) : null}
+                <CSSTransitionGroup transitionName="showEditGame">
+                  {this.state.showModifyGame ? (
+                    <div key="showModifyGame">
+                      <h1>Game Information</h1>
+                      <EditGameView
+                        game={this.props.game}
+                        answerKeyRef={ref => (this.answerKeyRef = ref)}
+                        userSheetRef={ref => (this.userSheetRef = ref)}
+                      />
+                    </div>
+                  ) : null}
+                </CSSTransitionGroup>
               </div>
 
               <RoundsList id={this.props.match.params.id} />
