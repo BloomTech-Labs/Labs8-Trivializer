@@ -13,6 +13,7 @@
   flex-flow: row;
   align-items: center;
   justify-content: space-evenly;
+  overflow: hidden;
 }
 
 .printButtons {
@@ -36,4 +37,23 @@
   white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Animation for editGameView */
+
+.showEditGame-enter {
+  max-height: 0px;
+  transition: max-height 1s ease;
+}
+
+.showEditGame-enter.showEditGame-enter-active {
+  max-height: 500px;
+}
+.showEditGame-leave {
+  max-height: 500px;
+}
+
+.showEditGame-leave.showEditGame-leave-active {
+  max-height: 0px;
+  transition: all 1000ms ease-out;
 }
