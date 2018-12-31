@@ -25,6 +25,7 @@
 .rounds-summary {
   border: 2px solid black;
   border-radius: 10px;
+  background: #b13c2d;
   margin: auto;
   display: flex;
   flex-flow: column;
